@@ -1,0 +1,44 @@
+.banner-content {
+  position:relative;
+  width: 80%;  
+  max-width:960px;
+  margin: 0 auto; 
+  margin-top:60px;
+  overflow: hidden;
+  height:335px;}
+
+.banner-content h1{
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 15px;
+    padding-top: 50px;
+}
+
+.banner-content h1 small{
+    margin-top: 10px;
+}
+
+.banner-content#bannercontent{
+    position:relative;
+    width:80%;
+    height:100%;
+    float:left;
+}
+
+.banner-content#bannericons{
+      position:relative;
+  width:20%%;
+        height:100%;
+    float:right;
+}
+
+#bannericonrow {
+    position:relative;
+    display:table-row;
+    float:right;
+}
+
+
+
+
+
+
