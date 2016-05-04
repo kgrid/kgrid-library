@@ -92,9 +92,12 @@ public class FusekiTest {
 						String actualPredicate = predicate.substring("http://fedora.info/definitions/v4/repository#".length());
 						System.out.println(actualPredicate);
 						if("lastModified".equals(actualPredicate) || "created".equals(actualPredicate) ){
-							// #TODO 
+							// #TODO add properties in the fedora object
 						}
-						
+					} else {
+						if(predicate.contains("http://uofm.org/objectteller/") == true) {
+							
+						}
 					}
 					System.out.println(binding.get("o"));
 					System.out.println("---------------");
