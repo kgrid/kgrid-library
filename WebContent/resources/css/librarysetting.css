@@ -1,0 +1,223 @@
+.settingcontainer {
+    width: 0%; 
+    height:100%; 
+    position:fixed;
+    top: 0;
+    left:0;
+    background-color:rgba(0,0,0,0.7);
+    transition: 300ms;
+    z-index:20;
+    display:none;
+}
+
+.settingoverlay {position:relative; max-width: 60%; height:80%; margin: 100px auto;     background-color:transparent;
+   align-items: right;}
+
+.settingcontent {
+    position:relative;
+    width: 96%; 
+    height:80%; 
+    background-color:white; 
+    margin:0 auto;
+    align-items: right;
+    top: 3%;z-index:3;
+
+}
+
+
+.settingcontent table{
+    text-align: left; width: 100%;border-collapse:separate;border-spacing:6px 6px;margin:0 auto; padding:10px;display:block;
+}
+.settingcontent table td{
+    font-size:21px;
+
+   border:none;
+}
+
+input[type=text] {
+    font-size:18px;
+    width:90%;
+    height:21px;
+    border:1px solid black;
+	-moz-border-radius: 1em;
+    -webkit-border-radius: 1em;    
+    border-radius: 10px;
+    margin-left:5px;
+    padding-left:10px;
+}
+
+input[type=text], select {
+    font-size:18px;
+    width:90%;
+    height:30px;
+    border:1px solid black;
+	-moz-border-radius: 1em;
+    -webkit-border-radius: 1em;   
+    border-radius: 10px;
+    outline:none;
+}
+
+
+input[type=password] {
+    font-size:18px;
+    width:90%;
+    height:21px;
+    border:1px solid black;
+	-moz-border-radius: 1em;
+    -webkit-border-radius: 1em;    
+     border-radius: 10px;
+   padding-left:10px;
+        margin-left:5px;
+
+}
+
+input[type=password],select{
+    font-size:18px;
+    width:90%;
+    height:30px;
+    border:1px solid black;
+	-moz-border-radius: 1em;
+    -webkit-border-radius: 1em;    
+     border-radius: 10px;
+    outline:none;
+}
+
+.settingcontent table td.cheader{
+    font-size:24px;
+    border:none;
+    text-align:center;
+}
+
+.settingcontent table td.rheader{
+    font-size:21px;
+     border:none;
+    text-align:right;
+}
+
+.settingcontent table td.actbutton{
+    font-size:21px;
+    border:none;
+    text-align:center;
+}
+
+.settingcontent table td.actresult{
+    font-size:21px;
+    border:none;
+    text-align:center;
+}
+
+.settingcontent#saveaction{
+    align-items: center;
+}
+.testbutton {
+ 
+    height:42px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    color:white;
+    background-color:green;
+    border:none;
+    border-radius: 15px;
+    font-size:21px;
+    padding:7px 14px;
+    margin:0 auto;
+	cursor:pointer;
+    
+}
+
+.testbutton:hover{
+    background: lightgreen;
+}
+.savebutton {
+   background:green;
+ 	border-color:white; 
+	border-width:2px;
+	color:white;
+	cursor:pointer;
+	padding:7px 21px;
+
+    position:relative;
+ 
+	font-size:21px; 
+    margin-top: 10px;
+ 	margin:15px 50px 15px 560px; 
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+
+}
+
+.savebutton:hover { background:lightblue; }
+
+
+.greenroundbutton {
+    width:36px;
+    height:36px;
+    border-radius: 100%;
+    color:white;
+    background-color:green;
+    border:none;
+    font-size:20px;
+    padding:8px 10px;
+}
+
+.greenroundbutton:hover{
+    background-color: lightgreen;
+    
+}
+
+.roundbutton {
+    width:36px;
+    height:36px;
+    border-radius: 100%;
+    color:green;
+    background-color:transparent;
+    border:1px solid green;
+    font-size:20px;
+    padding:4px 4px;
+ 
+    
+}
+.roundbutton:hover{
+    background-color: lightgreen;
+    
+}
+
+.greenroundbutton#closebutton{
+    position:relative;
+    float:right;
+    z-index: 4;
+ 
+}
+.greenroundbutton#closebutton, select{
+outline:none;}
+.greenroundbutton#backtotop{
+        position:absolute;
+    top:65px;
+    left: 1200px;
+}
+.greenroundbutton#newobject{
+        position:absolute;
+    top:65px;
+    left: 1250px;
+}
+.greenroundbutton#newuser{
+        position:absolute;
+    top:65px;
+    left: 1300px;
+}
+.greenroundbutton#infoicon{
+        position:absolute;
+    top:65px;
+    left: 1350px;
+}
+
+
+
+.roundbutton#shareduser{
+        position:absolute;
+    top:165px;
+    left: 1250px;
+}
+
+
