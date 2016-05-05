@@ -10,16 +10,25 @@ public class User {
 	@NotEmpty(message = "Please enter your password.")
 	private String passwd;
 	
-
+	private int id;
+	
+	private String first_name;
+	
+	private String last_name;
+	
 	private String role;
 
-	public User(String username, String password, String role) {
+	public User(String username, String passwd, int id, String first_name, String last_name, String role) {
 		super();
 		this.username = username;
-		this.passwd = password;
+		this.passwd = passwd;
+		this.id = id;
+		this.first_name = first_name;
+		this.last_name = last_name;
 		this.role = role;
-	} 
-	
+	}
+
+
 	public User(){}
 
 	public String getUsername() {
@@ -46,10 +55,38 @@ public class User {
 		this.role = role;
 	}
 
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getFirst_name() {
+		return first_name;
+	}
+
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
+	}
+
+	public String getLast_name() {
+		return last_name;
+	}
+
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
+
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + passwd + ", role=" + role + "]";
+		return "User [username=" + username + ", passwd=" + passwd + ", id=" + id + ", first_name=" + first_name
+				+ ", last_name=" + last_name + ", role=" + role + "]";
 	}
+
+	
 	
 	
 }
