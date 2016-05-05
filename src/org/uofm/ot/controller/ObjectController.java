@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.FedoraObject;
 import org.uofm.ot.fedoraAccessLayer.FedoraObjectService;
+import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.model.User;
 import org.uofm.ot.ui.util.Menu;
 import org.apache.http.entity.mime.content.ContentBody; 
@@ -35,20 +36,53 @@ import org.apache.http.entity.mime.content.StringBody;
 public class ObjectController {
 
 	private FedoraObjectService fedoraObjectService;
+	
+	private FusekiService fusekiService;
 
 	public void setFedoraObjectService(FedoraObjectService fedoraObjectService) {
 		this.fedoraObjectService = fedoraObjectService;
 	}
+	
+	
+
+	public void setFusekiService(FusekiService fusekiService) {
+		this.fusekiService = fusekiService;
+	}
+
+
 
 	@RequestMapping(value = "/object.{objectURI}", method = RequestMethod.GET)
 	public String getObject( @PathVariable String objectURI, ModelMap model) {
-		String view = "objects/objectInfo";
-		FedoraObject object = fedoraObjectService.getObject(objectURI);
+		String view = "objects/ObjectView";
+	//	FedoraObject object = fedoraObjectService.getObject(objectURI);
 
-		model.addAttribute("fedoraObject",object);
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.OBJECTS.getName());
-		model.addAttribute("ActiveSubTab", Menu.LHSingleObjectMenuOptions.SUMMARY.getName());
-		model.addAttribute("PageType", "Single");
+		FedoraObject object = new FedoraObject();
+		object.setURI(objectURI);
+
+		try {
+			object = fusekiService.getObjectProperties(object);
+
+			System.out.println("----------------------");
+			System.out.println(object);
+			System.out.println("----------------------");
+			
+			
+			object.setPayload(fedoraObjectService.getObjectContent(objectURI, "Payload"));
+
+			object.setFunctionDescriptor(fedoraObjectService.getObjectContent(objectURI, "Metadata"));
+
+			System.out.println("----------------------");
+			System.out.println(object);
+			System.out.println("----------------------");
+
+			
+			model.addAttribute("fedoraObject",object);
+		
+		} catch (ObjectTellerException e) {
+			// #TODO : Add Error Message here
+			System.out.println("********************************************** Inside exception "+ e);
+			e.printStackTrace();
+		}
 		return view;
 	}
 
