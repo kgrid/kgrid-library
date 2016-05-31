@@ -6,9 +6,13 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.uofm.ot.dao.SystemConfigurationDAO;
@@ -18,6 +22,8 @@ import org.uofm.ot.fedoraAccessLayer.FedoraObject;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.model.Server_details;
 import org.uofm.ot.model.User;
+
+import com.google.gson.Gson;
 
 @Controller
 public class LoginController {
@@ -50,8 +56,8 @@ public class LoginController {
 			ArrayList<FedoraObject> list = fusekiService.getPublicFedoraObjects();
 			model.addAttribute("objects", list);
 		} catch(ObjectTellerException ex){
-			logger.error("Exception occured while retrieving objects "+ex);
-			// # TODO Add error message in model. 
+			logger.error("Exception occured while retrieving objects "+ex.getCause());
+			model.addAttribute("ErrorMessage","Exception occured while retrieving objects "+ex.getCause());
 		}
 		return "login/login";
 	}
@@ -61,6 +67,7 @@ public class LoginController {
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
 	public String verifyLogin(@Valid User user, BindingResult bindingResult , HttpSession session, ModelMap model) throws ObjectTellerException {
 		String view = null;
+
 		if(bindingResult.hasErrors()){
 			view = "login/login";
 		} else{
@@ -77,6 +84,7 @@ public class LoginController {
 				view = "login/home";
 			}
 		}
+
 		return view;
 	}
 
@@ -103,8 +111,8 @@ public class LoginController {
 			
 			model.addAttribute("LibraryName", fusekiService.getLibraryName());
 		} catch(ObjectTellerException ex){
-			logger.error("Exception occured while retrieving objects "+ex);
-			// # TODO Add error message in model. 
+			logger.error("Exception occured while retrieving objects "+ex.getCause());
+			model.addAttribute("ErrorMessage","Exception occured while retrieving objects "+ex.getCause());
 		}
 		return "login/home";
 	}
@@ -114,4 +122,20 @@ public class LoginController {
 		session.removeAttribute("DBUser");
 		return login(model) ; 
 	}
+	
+	@RequestMapping(value="/Onlylogin", method=RequestMethod.POST , consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<String> onlyLogin(@RequestBody String string, HttpSession httpSession) {		
+		
+		Gson gson = new Gson();
+		User userObject = gson.fromJson(string, User.class);
+		
+		User resUser = userDao.getUserByUsernameAndPassword(userObject.getUsername(), userObject.getPasswd());
+					
+		httpSession.setAttribute("DBUser", resUser);
+		String result = gson.toJson(resUser);
+		
+		return new ResponseEntity<String>( result, HttpStatus.OK) ; 
+
+	}
+	
 }
