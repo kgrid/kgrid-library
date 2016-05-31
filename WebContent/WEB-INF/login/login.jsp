@@ -10,7 +10,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="<c:url value="/resources/css/w3.css" />"
 	type="text/css" />
-	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
 <link rel="stylesheet" href="<c:url value="/resources/css/box.css" />"
 	type="text/css" />
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />"
@@ -20,8 +19,10 @@
 	type="text/css" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/datagrid.css" />" type="text/css" />
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/button.css" />" type="text/css" />
 <link rel="shortcut icon"
-	href="<c:url value="/resources/images/OT.logo.4.tiny3.16x16.ico" />" />
+	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" />" />
 <script type="text/javascript">
 	function clearTextboxes() {
 		document.getElementById("username").value = "";
@@ -33,49 +34,60 @@
 <script type="text/javascript"
 	src="/ObjectTeller/resources/js/dropdown.js"></script>
 <script src="/ObjectTeller/resources/js/scroll.js"></script>
+<script>
+   $(document).ready(function () {
+  
+       $('#backtotop').click(function () {
+           $("html, body").animate({
+               scrollTop: 0
+           }, 600);
+           return false;
+       });
+		var user="";
+		if(user==""){
+			$(".login-link").show();
+			$(".logout-link").hide();
+		}else{
+			$(".login-link").hide();
+			$(".logout-link").show();
+		}				
+		
 
+		
+		
+   });
+ </script>
 <title><spring:message code="LOGIN_TITLE" /></title>
 </head>
 
 <body onload="clearTextboxes()">
-
+    <button class="greenroundbutton" id="backtotop">
+    <img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
+    </button>
+    <div id="bannerbk">   <img src="<c:url value="/resources/images/bannerBackground.png"/>">
+ 
+    </div>
+    <div id="logo"><img src="<c:url value="/resources/images/logo.png"/>" width="200px" height="auto"></div>
+    
 	<div id="top-stuff">
-		<div id="top-bar-out">
-			<div id="topnav">
-				<div id="logo">KOGLIA</div>
-
-				<div id="nav">
-					<ul>
-						<li><a href="#"><spring:message code="BANNER_ABOUT" /></a></li>
-						<li><a href="#"><spring:message code="BANNER_FAQ" /></a></li>
-						<li><a href="#"><spring:message code="BANNER_CONTACT_US" /></a></li>
-					</ul>
-				</div>
+		<%@ include file="../common/navbar.jsp" %>
+	</div>
 
 				<div class="active-links">
-					<div id="session">
+					<div id="session" class="login-link">
 						<a id="signin-link" href="#"> <strong><spring:message
 									code="LOG_IN_BUTTON" /></strong>
 						</a>
 					</div>
-
-
-					<div id="signin-dropdown">
+					<div id="signin-dropdown" class="dropdown">
 						<sf:form method="POST" modelAttribute="user" class="signin"
 							action="home">
 							<fieldset class="textbox">
-								<h2>
-									<spring:message code="LOGIN_ID" />
-								</h2>
 								<sf:input name="username" path="username" type="text"
-									autocomplete="on"></sf:input>
-								<h2>
-									<spring:message code="PASSWORD" />
-								</h2>
-								<sf:input type="password" path="passwd" name="passwd"
-									autocomplete="off" size="15" style="font-size:15px"></sf:input>
+									autocomplete="on" placeholder="Username"></sf:input>
+								<sf:input type="password" path="passwd" placeholder="Password" name="passwd"
+									autocomplete="off" ></sf:input>
 							</fieldset>
-
 							<fieldset class="remb">
 								<label class="remember"> <input type="checkbox"
 									value="1" name="remember_me" /> <span><spring:message
@@ -87,21 +99,46 @@
 										code="PASSWORD_RESET" /></a>
 							</p>
 						</sf:form>
-
+					</div>
+					<%-- <div id="logoutsession" class="logout-link">
+					<ul>
+						<li id="user">
+						<a id="user-link" href="#"> <strong><spring:message code="HELLO_MESSAGE" />
+								${DBUser.first_name} </strong>
+						</a></li>
+						<li id="icon" class="down"><img src="<c:url value="/resources/images/Chevron_Icon.png"/>" />
+						</li>
+						</ul>
 					</div>
 
-				</div>
-			</div>
-		</div>
 
-	</div>
-	<div class="banner-content">
+					<div id="logout-dropdown" class="dropdown">
+						<sf:form method="POST" class="signin" action="" >
+							<fieldset class="links">
+								<button id="settings" onclick="openNav()"><spring:message code="SETTINGS" /></button>
+							</fieldset>
+						</sf:form>
+						<sf:form method="POST" class="signin" action="logout" >
+							<fieldset class="links">
+								<button id="logout" class="submit button" type="submit"><spring:message code="LOGOUT"/></button>
+							</fieldset>
+						</sf:form>
+
+					</div> --%>
+				</div>
+
+
+
+	<div class="banner-content" id="landing">
 		<h1>
 			<spring:message code="PRODUCT_NAME" />
 			<small><spring:message code="PRODUCT_NAME_DESCRIPTION" /></small>
 		</h1>
 	</div>
 	<div class="header">
+	<button class="greenroundbutton" id="infoicon">
+    <img src="<c:url value="/resources/images/Information_Icon.png"/>">
+    </button>	
 		<div class="headercontainer">
 			<div class="headercol">
 				<ul>
@@ -126,23 +163,24 @@
 					varStatus="loopStatus">
 					<tr>
 						<td>
-							<div class="backrow">
+							<div class="backrow clickable">
+							
 								<ul>
+								
 									<li class="data-type"><c:choose>
 											<c:when test="${not fedoraObject.published}">
-												<spring:message code="CHOICE_NO" />
 											</c:when>
 											<c:otherwise>
-												<spring:message code="CHOICE_YES" />
+												<img src="<c:url value="/resources/images/LittleGreenDot.png"/>">
 											</c:otherwise>
 										</c:choose></li>
-									<li class="data-title"><a
-										href="object.${fedoraObject.URI}">${fedoraObject.title}</a></li>
+									<li class="data-title"><a href="object.${fedoraObject.URI}">${fedoraObject.title}</a></li>
 									<li class="data-update"><fmt:formatDate
 											pattern="MMM, dd, yyyy" value="${fedoraObject.lastModified}" /></li>
 									<li class="data-addby"><fmt:formatDate
 											pattern="MMM, dd, yyyy" value="${fedoraObject.createdOn}" /></li>
 								</ul>
+								
 							</div>
 						</td>
 					</tr>
