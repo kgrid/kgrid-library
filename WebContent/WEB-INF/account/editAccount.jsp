@@ -16,9 +16,9 @@
 <title><spring:message code="EDIT_ACCOUNT_TITLE"/> </title>
 </head>
 <body>
-	<%@ include file="../common/header.jsp"%>
+	<%-- <%@ include file="../common/header.jsp"%>
 	<%@ include file="../common/topMenu.jsp"%>
-	<%@ include file="../common/lhsMenu.jsp"%>
+	<%@ include file="../common/lhsMenu.jsp"%> --%>
 
 
 	<div class="content-right">
@@ -97,6 +97,6 @@
 		</sf:form>
 	</div>
 
-	<%@ include file="../common/footer.jsp"%>
+	<%-- <%@ include file="../common/footer.jsp"%> --%>
 </body>
 </html>
