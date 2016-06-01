@@ -5,7 +5,11 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.uofm.ot.exception.ObjectTellerException;
+import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.fedoraAccessLayer.FedoraObjectService;
+import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
+import org.uofm.ot.fedoraAccessLayer.PayloadDescriptor;
+import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.pythonAdapter.PythonAdapter;
 import org.uofm.ot.transferobjects.InputObject;
 import org.uofm.ot.transferobjects.Result;
@@ -16,6 +20,7 @@ import org.uofm.ot.transferobjects.DataType;
 import org.uofm.ot.transferobjects.EngineType;
 
 import com.google.gson.Gson;
+import com.sun.corba.se.spi.orbutil.fsm.Input;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,11 +34,22 @@ import org.springframework.http.MediaType;
 @RestController
 public class RestWSController {
 	
-	private FedoraObjectService fedoraObjectService;
+	private GetFedoraObjectService getFedoraObjectService;
+	
+	private FusekiService fusekiService;
 
-	public void setFedoraObjectService(FedoraObjectService fedoraObjectService) {
-		this.fedoraObjectService = fedoraObjectService;
+
+	public void setGetFedoraObjectService(GetFedoraObjectService getFedoraObjectService) {
+		this.getFedoraObjectService = getFedoraObjectService;
 	}
+
+
+
+	public void setFusekiService(FusekiService fusekiService) {
+		this.fusekiService = fusekiService;
+	}
+
+
 
 	@RequestMapping(value = "/rest/getResult", method = RequestMethod.POST,
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -50,26 +66,29 @@ public class RestWSController {
 		
 		
 		if(io.getObjectName() != null && io.getParams() != null && !io.getObjectName().isEmpty() && io.getParams().size() > 0){
-			objectExists= fedoraObjectService.checkIfObjectExists(io.getObjectName());
+			objectExists= getFedoraObjectService.checkIfObjectExists(io.getObjectName());
 			if ( objectExists ) {
 				
-				CodeMetadata metadata = fedoraObjectService.getCodemetadataFromXML(io.getObjectName(), "Metadata");
+				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(io.getObjectName());
 
 				if(metadata != null){
 					errormessage = verifyInput(metadata, io);
 					if(errormessage == null){
-						String chunk = fedoraObjectService.getObjectContent(io.getObjectName(), "Payload");
+						String chunk = getFedoraObjectService.getObjectContent(io.getObjectName(), ChildType.PAYLOAD.getChildType());
 					
+						PayloadDescriptor descriptor = fusekiService.getPayloadProperties(io.getObjectName());
+						
+						
 						if( chunk != null) {
-							if(metadata.getEngineType() == EngineType.PYTHON){
+							if( EngineType.PYTHON.toString().equalsIgnoreCase(descriptor.getEngineType())){
 								PythonAdapter adapter = new PythonAdapter();
-								result = adapter.executeString(chunk, metadata.getFunctionName(),io.getParams(),metadata.getReturntype());
+								result = adapter.executeString(chunk, descriptor.getFunctionName(),io.getParams(),metadata.getReturntype());
 							}
 						} else 
-							errormessage = "Unable to retrieve content of object "+io.getObjectName()+"/Payload";
+							errormessage = "Unable to retrieve content of object "+io.getObjectName();
 					}
 				} else 
-					errormessage = "Unable to convert RDF metadata for object "+io.getObjectName()+" and Datastreem RDFMetadata";
+					errormessage = "Unable to convert RDF metadata for object "+io.getObjectName();
 			} else 
 				errormessage = "Object with name "+io.getObjectName()+" does not exist";
 		} else
