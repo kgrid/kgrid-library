@@ -12,9 +12,9 @@
 <title><spring:message code="VIEW_ACCOUNT_TITLE"/></title>
 </head>
 <body>
-<%@ include file="../common/header.jsp" %>
+<%-- <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/topMenu.jsp" %>
-<%@ include file="../common/lhsMenu.jsp" %>
+<%@ include file="../common/lhsMenu.jsp" %> --%>
 	
 <div class="content-right">
   <p>&nbsp;</p>
@@ -30,6 +30,6 @@
   	<div class="FIBleftside">${DBUser.role}</div></div></h2>
      
   </div>
-  <%@ include file="../common/footer.jsp" %>
+ <%--  <%@ include file="../common/footer.jsp" %> --%>
 </body>
 </html>

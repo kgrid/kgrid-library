@@ -62,6 +62,9 @@ value="org.springframework.web.servlet.view.JstlView" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 	
+	<bean id="objectIDDao" class="org.uofm.ot.dao.impl.ObjectIDDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
 		
 	<bean id="sysConfDao" class="org.uofm.ot.dao.impl.SystemConfigurationDAOImpl">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
@@ -71,6 +74,18 @@ value="org.springframework.web.servlet.view.JstlView" />
 		<property name="sysConfDao" ref="sysConfDao" />
 	</bean>
 	
+	<bean id="editfedoraObjectService" parent="fedoraObjectService" 
+	    class="org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService">
+	</bean>
+	
+	<bean id="getfedoraObjectService" parent="fedoraObjectService" 
+	    class="org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService">
+	</bean>
+	
+	<bean id="createfedoraObjectService" parent="fedoraObjectService" 
+	    class="org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService">
+	    <property name="objectIDDAO" ref="objectIDDao" />
+	</bean>
 	
 	<bean id="fusekiService" class="org.uofm.ot.fusekiAccessLayer.FusekiService">
 		<property name="sysConfDao" ref="sysConfDao" />
@@ -87,7 +102,10 @@ value="org.springframework.web.servlet.view.JstlView" />
 	</bean>
 		
 	<bean id="objectController" class="org.uofm.ot.controller.ObjectController">
-		<property name="fedoraObjectService" ref="fedoraObjectService" />
+		<property name="editFedoraObjectService" ref="editfedoraObjectService" />
+		<property name="fusekiService" ref="fusekiService" />
+		<property name="createFedoraObjectService" ref="createfedoraObjectService" />
+		<property name="getFedoraObjectService" ref="getfedoraObjectService" />
 	</bean>
 	
 	<bean id="systemConfController" class="org.uofm.ot.controller.SystemConfController">
@@ -95,7 +113,8 @@ value="org.springframework.web.servlet.view.JstlView" />
 	</bean>
 	
 	<bean id="restWSController" class="org.uofm.ot.controller.RestWSController">
-		<property name="fedoraObjectService" ref="fedoraObjectService" />
+		<property name="getFedoraObjectService" ref="getfedoraObjectService" />
+		<property name="fusekiService" ref="fusekiService" />
 	</bean>
 	
 	<bean id="multipartResolver"    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
