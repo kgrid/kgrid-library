@@ -10,20 +10,26 @@
     display:none;
 }
 
-.settingoverlay {position:relative; max-width: 60%; height:80%; margin: 100px auto;     background-color:transparent;
-   align-items: right;}
+.settingoverlay {/* position:relative; max-width: 60%; height:80%; margin: 100px auto;     background-color:transparent;
+   align-items: right; */
+   background-color:#fff;
+   position: relative;
+   width: 1030px;
+   height: 660px;
+   margin: 0 auto;
+   top: 150px;
+ }
 
 .settingcontent {
-    position:relative;
-    width: 96%; 
-    height:80%; 
-    background-color:white; 
-    margin:0 auto;
-    align-items: right;
-    top: 3%;z-index:3;
-
+     width: 1010px;
+    height: 660px;
+    margin: 0 auto;
+    padding:10px;
 }
 
+form#libsetting{
+	height:80%;
+}
 
 .settingcontent table{
     text-align: left; width: 100%;border-collapse:separate;border-spacing:6px 6px;margin:0 auto; padding:10px;display:block;
@@ -149,18 +155,6 @@ input[type=password],select{
 
 .savebutton:hover { background:lightblue; }
 
-
-.greenroundbutton {
-    width:36px;
-    height:36px;
-    border-radius: 100%;
-    color:white;
-    background-color:green;
-    border:none;
-    font-size:20px;
-    padding:8px 10px;
-}
-
 .greenroundbutton:hover{
     background-color: lightgreen;
     
@@ -182,20 +176,9 @@ input[type=password],select{
     background-color: lightgreen;
     
 }
-
-.greenroundbutton#closebutton{
-    position:relative;
-    float:right;
-    z-index: 4;
- 
-}
 .greenroundbutton#closebutton, select{
 outline:none;}
-.greenroundbutton#backtotop{
-        position:absolute;
-    top:65px;
-    left: 1200px;
-}
+
 .greenroundbutton#newobject{
         position:absolute;
     top:65px;

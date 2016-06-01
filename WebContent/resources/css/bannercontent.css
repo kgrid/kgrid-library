@@ -1,34 +1,135 @@
 .banner-content {
   position:relative;
-  width: 80%;  
-  max-width:960px;
+  width: 1024px;;  
   margin: 0 auto; 
   margin-top:60px;
   overflow: hidden;
-  height:335px;}
-
-.banner-content h1{
-    font-family: 'Open Sans', sans-serif;
-    margin-top: 15px;
-    padding-top: 50px;
+ }
+    
+.banner-content#landing{
+/*     background-image:url("../images/bannerBackground.png");
+    background-repeat: no-repeat;
+    background-position: center center; */
+    background-color:transparent;
+     height:335px;
 }
 
-.banner-content h1 small{
-    margin-top: 10px;
+.banner-content#home_banner{
+  width: 1160px;
+  margin: 0 auto;
+  margin-top: 75px;
+  overflow: hidden;
+  height: 250px;
+}
+.banner-content table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0px;
+  padding: 2px;
+}
+.banner-content td {
+  vertical-align: middle;
+  background-color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+  padding: 4px;
+  font-size: 14px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: semibold;
+  color: dimgrey;
+  line-height: 16px;
+}
+.banner-content#landing h1 {
+font-family: 'Open Sans', sans-serif;
+font-size:35px;
+  font-weight: semibold;
+  margin-top: 75px;
+  text-align:center;
+  margin-bottom: 20px;
+  color: dimgrey;
+  margin: 0 auto;
+  line-height: 2em;
+  padding-top:90px;
+   background:transparent;
+}
+.banner-content#landing h1 small {
+  font-family: 'Open Sans', sans-serif;
+	font-zise:28px;
+  line-height: 1.5em;
+  /*font-weight: 100;*/
+  display: block;
+}
+#bannerbk{
+	/* background-color:pink; */
+	position:fixed;
+	top:85px;
+	left:50%;
+	margin-left:-110px;
+}
+.banner-content#home_banner h1 {
+font-family: 'Open Sans', sans-serif;
+font-size:35px;
+  font-weight: semibold;
+  text-align:center;
+  margin-bottom: 20px;
+  color: dimgrey;
+  margin: 0 auto;
+  line-height: 2em;
+  padding-top:15px;
+   background:transparent;
+}
+.banner-content#home_banner h1 small {
+  font-family: 'Open Sans', sans-serif;
+	font-zise:28px;
+  line-height: 1.5em;
+  /*font-weight: 100;*/
+  display: block;
+}
+.banner-content table td #h5 {
+  font: 'Open Sans', sans-serif;
+  font-weight: 300;
+  margin-top: 10px;
+  margin-bottom: 20px;
+   font-size:21px;
+  text-align: left;
+  color: dimgrey;
+}
+h5 {
+  font: 'Open Sans', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 18px;
+  margin-top: 100px;
+  margin-bottom: 10px;
+  text-align: left;
+  color: dimgrey;
+}
+.banner-content h6 {
+  font: 1.5em Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  padding: 12px;
+  margin-top: 100px;
+  margin-bottom: 10px;
+  letter-spacing: 0.08em;
+  text-align: left;
+  color: dimgrey;
+
 }
 
-.banner-content#bannercontent{
+.banner-content #bannercontent{
     position:relative;
     width:80%;
     height:100%;
     float:left;
 }
 
-.banner-content#bannericons{
-      position:relative;
-  width:20%%;
-        height:100%;
-    float:right;
+.banner-content #bannericons{
+      position: absolute;
+  width:20%;
+        height:40px;
+ bottom:50px;
+ right:50px;
 }
 
 #bannericonrow {
