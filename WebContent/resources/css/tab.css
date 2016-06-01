@@ -1,0 +1,227 @@
+.tabs {
+    width:100%;
+    max-width: 960px;
+    float: none;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+/*    border-bottom: 2px solid #ccc;*/
+}
+input[type=radio] {
+    display:none;
+}
+.tabs label {
+    display: block;
+    float: left;
+    width: 16.6%;
+    color: grey;
+    font-size: 16px;
+    font-weight: normal;
+    text-decoration: none;
+    text-align: center;
+    line-height: 2;
+    cursor: pointer;
+    border-bottom: 2px solid #fff;
+/*    box-shadow: inset 0 4px #ccc;
+    border-bottom: 2px solid #ccc;
+    -webkit-transition: all 0.5s; /* Safari 3.1 to 6.0 */
+/*    transition: all 0.5s;
+*/}
+.tabs label#label6{
+    cursor: default;
+    float:right;
+    height:34px;
+}
+
+.tabs label span {
+    display: none;
+}
+.tabs label i {
+    padding: 5px 5px;
+    margin-right: 0;
+}
+.tabs label:hover {
+/*    box-shadow: inset 0 4px #3498db;
+  */  border-bottom: 2px solid #39b54a;
+}
+
+.tabs label#label6:hover {
+/*    box-shadow: inset 0 4px #3498db;
+  */  border-bottom: 2px solid #fff;
+}
+.tab-content {
+    width: 100%;
+    float: left;
+    min-height:800px;
+    margin-top:22px;
+    padding: 0px;
+    box-sizing: border-box;
+    background-color:#ffffff;
+}
+
+.tabs [id^="tab"]:checked + label {
+    background: #FFF;
+    /*box-shadow: inset 0 4px #3498db;*/
+    border-bottom: 2px solid green;
+    color: #3498db;
+}
+
+[id^="tab"]:checked + [id^="label"]  {
+    background: #08C;
+    color: white;
+}
+
+[id^="label"]:focused {
+        background-color: beige;  
+    border-bottom: 5px solid #39b54a;
+    
+}
+#tab1:checked + #label1,
+#tab2:checked ~ #label2,
+#tab3:checked ~ #label3,
+#tab4:checked ~ #label4,
+#tab5:checked ~ #label5
+{
+    background-color: beige;  
+    border-bottom: 5px solid #39b54a;
+}
+
+#tab1:checked + #tab-content1,
+#tab2:checked + #tab-content2,
+#tab3:checked ~ #tab-content3,
+#tab4:checked ~ #tab-content4,
+#tab5:checked ~ #tab-content5  {
+    display: block;
+}
+
+.editwrapper{
+    position:relative;
+    width:70%;;
+    background-color: #fff;    
+}
+.metaEdit {
+    background-color: #fff;
+    padding-left:2px;
+    	color: #666666;
+	font-weight: 300;
+	font-size: 16px;
+    border-radius:5px;
+}
+
+input[type=text]:enabled {
+    width:100%;
+    margin:0 auto;
+    border:1px solid #39b54a;
+    outline:none;
+    	color: #666666;
+	font-weight: 300;
+	font-size: 14px;
+}
+input[type=text]:focus {
+    width:100%;
+        margin:0 auto;
+    border:1px solid #39b54a;
+    outline:none;
+}
+input[type=text]:disabled {
+    width:100%;
+        margin:0 auto;
+    border:1px solid #fff;
+    background-color: #fff;
+        	color: #666666;
+	font-weight: 300;
+	font-size: 14px;
+}
+
+.headercol {
+    text-align: left;
+    width: 81%;
+    border-collapse:collapse;
+    margin:0 auto;
+    display:table;
+    margin-top: 5px;
+    margin-bottom:0px;
+	max-width:960px;
+} 
+.done{
+    color:#fff;
+    background-color: #39b54a;
+}
+
+#checkbox {
+  display: none;
+}
+
+.square {
+  background-color: transparent;
+  transition: all 0.75s 0.25s;
+  transform: rotate(180deg);
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+
+.display-content {
+    
+    padding:15px;
+}
+
+.AccessNeeded{
+    display:none;
+}
+
+ul#tabs {
+  list-style-type: none;
+  margin: 0 0 30px 0;
+  padding: 0;
+  text-align: center; }
+  ul#tabs li {
+    display: inline-block;
+    display: block;
+    float: left;
+    width: 16.6%;
+    color: grey;
+    font-size: 16px;
+    font-weight: normal;
+    text-decoration: none;
+    text-align: center;
+    line-height: 2;
+      margin-top:20px;
+      margin-bottom:0px;
+    cursor: pointer;
+    border-bottom: 2px solid #fff;
+    }
+    ul#tabs li:hover {
+      background-color: #fff; }
+    ul#tabs li.active {
+       border-bottom: 2px solid #39b54a; }
+
+ul#tab {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+  ul#tab li {
+    display: none;
+    width: 100%;
+    float: left;
+    min-height:800px;
+    margin-top:22px;
+    padding: 0px;
+    box-sizing: border-box;
+    background-color:#ffffff; }
+    ul#tab li.active {
+      display: block; }
+    ul#tab li h2 {
+      font-weight: 400;
+      margin-bottom: 30px;
+      padding-bottom: 5px;
+      border-bottom: solid 5px #32c896; }
+.inputfile{
+    display:block;
+    margin:0 auto;
+}
+label{
+    cursor:pointer;
+}

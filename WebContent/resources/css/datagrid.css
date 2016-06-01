@@ -1,50 +1,60 @@
 .main-content {
   width: 98%;
-  height: 80%;
+  min-height: 600px;
   background: #e6e6e6;
   margin: 0 auto;
-  overflow: hidden;
+  z-index:100;
 }
 .datagrid {
-  width: 80%;
+/* 	background-color:pink; */
+	position:relative;
+  width: 1028px;
   font-family: 'Open Sans', sans-serif;
   margin: 0 auto;
   overflow: hidden;
-	max-width:960px;
+	max-width:1028px;
 }
 .datagrid table {
   text-align: left; 
-  width: 100%;
+  width: 1028px;
   border-collapse:separate;
   border-spacing:0px 22px;
 } 
 .datagrid table tr {
   background:#fff;
   margin:10px;
-  border:none;
-  outline:2px solid white;
+  border:/* none;
+  outline: */1px solid white;
 }
 .datagrid table tr:hover {
-    outline:2px solid green;
+   /*  outline:1px solid #39b54a; */
+   border:1px solid #39b54a;
+}
+.header{
+	z-index:125;
 }
 .headercontainer {
     width:98%; 
-    height:50px; 
+    height:60px; 
     background:white;
     margin: 0 auto; 
     overflow: hidden;
     border:1px solid lightgrey;	
     box-shadow:0 2px 2px rgba(0, 0, 0, 0.35);
+    z-index:125;
 }
 .headercol {
+    position:relative;
     text-align: left; 
-    width: 81%;
+    width: 1028px;
+    height:50px;
     border-collapse:collapse;
     margin:0 auto;
     display:table;
     margin-top: 5px;
     margin-bottom:5px;
-	max-width:960px;
+	max-width:1028px;
+    z-index:125;
 } 
 .headercol ul {
     display:table-row;
@@ -54,68 +64,363 @@
     vertical-align:middle;
     display:table-cell;
     background-color:white; 
-    color:green; 
+    color:#009245; 
     font-size: 14px;
     margin-top: 15px;
     margin-bottom:15px
 } 
+
+.obj-col > li {
+  color: dimgrey !important;
+  font-size: 16px !important;
+  width: 145px;
+}
 .col-type {
-    width:10%; 
-    height:40px; 
-    background:white;
-    margin: 0 auto; 
-    overflow: hidden;
-    border:1px solid lightgrey;
-    border-top:none;
-    border-bottom:none;
+  width: 6%;
+  height: 40px;
+  background: white;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid lightgrey;
+  border-top: none;
+  border-bottom: none;
 }
 .col-title {
-    width:50%; 
-    height:40px; 
-    background:white;
-    margin: 0 auto; 
-    overflow: hidden;
-    border:1px solid lightgrey;
-    border-top:none;
-    border-bottom:none;
+  width: 54%;
+  height: 40px;
+  background: white;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid lightgrey;
+  border-top: none;
+  border-bottom: none;
 }
 .col-update {
-    width:20%; 
-    height:40px; 
-    background:white;
-    margin: 0 auto; 
-    overflow: hidden;
-    border:1px solid lightgrey;
-    border-top:none;
-    border-bottom:none;
+  width: 20%;
+  height: 40px;
+  background: white;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid lightgrey;
+  border-top: none;
+  border-bottom: none;
 }
 .col-addby {
-    width: 20%; 
-    height: 40px; 
-    background: white;
-    margin: 0 auto;
-    overflow: hidden;
-    border: 1px solid lightgrey;
-    border-top: none;
-    border-bottom: none;
+  width: 20%;
+  height: 40px;
+  background: white;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid lightgrey;
+  border-top: none;
+  border-bottom: none;
 }
-.rowcontainer {
-    text-align: left; 
-    width: 99%;
-    border-collapse:collapse;
-    display:table;
-    margin-top: 5px;
-    margin-bottom:5px;
-} 
-.rowcontainer tr {
+table.rowcontainer {
+  text-align: left;
+  width: 1024px;
+  display: table;
+  margin-top: 5px;
+  margin-bottom: 5px;
+      margin-left:2px;
+  margin-right:2px;
+}
+table.rowcontainer tr {
+	position: relative;
     outline:2px solid white;
+      margin-left:10px;
+  margin-right:10px;
 }
-.rowcontainer tr td {border:none; padding: 12px 0px;} 
-.rowcontainer tr:hover {outline:1px solid green;}
-.backrow {text-align: left; width: 100%;border-collapse:collapse;margin:0 auto;;display:table;margin-top: 5px;margin-bottom:5px;} 
-.backrow ul {display:table-row;} 
-.backrow ul li{vertical-align:middle;display:table-cell;background-color:white; color:black; font-size: 16px;margin-top: 15px;margin-bottom:15px; } 
-.data-type {width:10%; height:40px;text-align:center; background:white;margin: 0 auto; overflow: hidden;border:1px solid lightgrey;border-top:none;border-bottom:none;border-left:none;}
-.data-title {width:50%; height:40px; text-align:left;background:white;margin: 0 auto; overflow: hidden;margin-left:4px;border:1px solid lightgrey;border-top:none;border-bottom:none;padding-left:7px;}
-.data-update {width:20%; height:40px;text-align:center; background:white;margin: 0 auto; overflow: hidden;border:1px solid lightgrey;border-top:none;border-bottom:none;}
-.data-addby {width:20%; height:40px; text-align:center;background:white;margin: 0 auto; overflow: hidden;border:1px solid lightgrey;border-top:none;border-bottom:none;border-right:none;}
+.backrow .clickable a { 
+	position:absolute;
+	width:100%; 
+	height:100%;
+	top:0; 
+	cursor:pointer;
+	left:0; 
+	text-decoration:none; /* Makes sure the link   doesn't get underlined */
+	z-index:10; /* raises anchor tag above everything else in div */ 
+	background-color:white; /*workaround to make clickable in IE */ 
+	opacity: 0; /*workaround to make clickable in IE */ 
+	filter: alpha(opacity=1); /*workaround to make clickable in IE */
+}
+.rowcontainer tr td {
+	border:none;
+	padding: 12px 0px;
+} 
+.rowcontainer tr:hover {
+	cursor:pointer;
+	outline:1px solid  #39b54a;
+}
+.backrow {
+  text-align: left;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  ;
+  display: table;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.backrow ul {
+  display: table-row;
+}
+.backrow ul li {
+  vertical-align: middle;
+  display: table-cell;
+  background-color: white;
+  color: dimgrey;
+  font-size: 16px;
+  margin:5px 15px;
+}
+.data-type {
+  width: 6%;
+  height: 40px;
+  text-align: center;
+  background: white;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid lightgrey;
+  border-top: none;
+  border-bottom: none;
+  border-left: none;
+}
+.data-title {
+  width: 54%;
+  height: 40px;
+  text-align: left;
+  background: white;
+  margin: 0 auto;
+  overflow: hidden;
+  margin-left: 4px;
+  border: 1px solid lightgrey;
+  border-top: none;
+  border-bottom: none;
+  padding-left:15px;
+}
+.data-update {
+  width: 20%;
+  height: 40px;
+  text-align: center;
+  background: white;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid lightgrey;
+  border-top: none;
+  border-bottom: none;
+}
+.data-addby {
+  width: 20%;
+  height: 40px;
+  text-align: center;
+  background: white;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid lightgrey;
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+}
+.view-obj {
+    padding: 0px;
+}
+.view-obj p, h4{
+	color: #666666;
+	font-weight: 300;
+	font-size: 16px;
+}
+.view-obj div{
+	margin:15px 5px;
+}
+.view-obj td:hover {
+  outline: 1px solid white;
+}
+
+h3 {
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.fieldName{
+  width:auto;
+  border-right: 1px solid #666666;
+  padding-left: 15px;
+  color: dimgrey;
+  padding-right: 15px;
+}
+
+.display-content{
+  padding-left: 30px;
+  padding-top: 20px;
+}
+
+.inline {
+  display: inline-block;
+    margin:15px;
+}
+
+.edit {
+    background-color: #fff;
+  color: #39b54a;
+  font-size: 21px;
+  font-weight: 300;
+  padding-left: 10px;
+    border:none;
+    outline:none;
+    cursor:pointer;
+}
+
+.done {
+        background-color: #fff;
+  color: #39b54a;
+  font-size: 21px;
+  font-weight: 300;
+  padding-left: 10px;
+    border:1px solid #39b54a;
+    outline:none;
+    border-radius: 5px;
+    cursor:pointer;
+}
+
+.date{
+  padding: 22px;
+  color: dimgrey;
+  display: inline-block;
+  margin-right: 10%;
+}
+.date1{
+  border-right: 1px solid #666666;
+}
+
+.date2{
+   padding-left: 25px;
+}
+.date div{
+  display: inline-block;
+  width: 150px;
+}
+.date-title{
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.date-data{
+  font-weight: 300;
+  font-size: 18px;
+}
+
+.display-banner{
+  height:220px;
+	padding-top:20px;
+}
+.type-status{
+  display: inline-block;
+  height:10px;
+  width:10px;
+  background: #009245 10px 10px;
+  border-radius: 50%;
+  margin-top:10px;
+  margin-bottom: 5px;
+}
+.display-banner h3{
+  margin-top: 20px;
+  display: inline-block;
+  font-size:14pt;
+}
+.display-banner h1{
+  margin-top: 10px;
+  display: block;
+  font-size:28pt;
+}
+.display-banner h1 small{
+  display: inline-block;
+}
+.pri-pub {
+  color: dimgrey;
+  display: inline-block;
+position:relative;
+float:right;
+  line-height: 32px;
+    cursor:pointer;
+    padding-left:10px;
+    padding-right:10px;
+    font-size:10pt;
+    
+}
+.pri-pub2, .pri-pub1{
+        padding-left:10px;
+    padding-right:10px;
+  margin-left: 20px;
+}
+
+#goback{
+	  display: inline-block;
+    font-size:10pt;
+    color:#666666;
+    margin:0px;
+    	  
+}
+    #leadarrow {
+	top: 0;
+	left: 100px;;
+	width: 10px;
+	height: 10px;
+	margin-left:2px; ;
+    display:inline-block;
+	border-left: 1px solid #666666;
+	border-top: 1px solid #666666;
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+	-webkit-animation: sdb04 2s infinite;
+	animation: sdb04 2s infinite;
+	box-sizing: border-box;
+}
+#backButton {
+	background-color:#fff;
+	border:none;
+}
+.pri-pub div {
+  display: inline-block;
+}
+
+
+.current-tab{
+  border-bottom: 2px solid  #39b54a;
+}
+
+.minitype-status{
+  display: inline-block;
+  height:8px;
+  width:8px;
+  background: #009245 8px 8px;
+  border-radius: 50%;
+  margin-top:10px;
+  margin-right: 5px;
+}
+.userbutton{
+	position:relative;
+  float:right;
+  display: inline-block;
+  height:35px;
+  padding:0px 20px;
+}
+.display-payload{
+  border-radius: 10px;
+  margin:20px 15px;
+  overflow: scroll and auto;
+}
+.data_edit{
+    color: #666666;
+	font-weight: 300;
+	font-size: 16px;
+}
+
+textarea{
+	width:100%;
+    min-height:380px;
+margin:0px;
+
+padding:5px;
+border: 1px solid #39b54a;
+border-radius: 10px;}
+
+}
