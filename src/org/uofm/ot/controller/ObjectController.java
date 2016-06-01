@@ -1,227 +1,240 @@
 package org.uofm.ot.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.uofm.ot.exception.ObjectTellerException;
+import org.uofm.ot.fedoraAccessLayer.ChildType;
+import org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService;
+import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
 import org.uofm.ot.fedoraAccessLayer.FedoraObject;
-import org.uofm.ot.fedoraAccessLayer.FedoraObjectService;
+import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
+import org.uofm.ot.fedoraAccessLayer.PayloadDescriptor;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.model.User;
-import org.uofm.ot.ui.util.Menu;
-import org.apache.http.entity.mime.content.ContentBody; 
-import org.apache.http.entity.mime.content.StringBody; 
+
+import com.google.gson.Gson; 
 
 @Controller
 public class ObjectController {
 
-	private FedoraObjectService fedoraObjectService;
-	
+	private EditFedoraObjectService editFedoraObjectService;
+
 	private FusekiService fusekiService;
 
-	public void setFedoraObjectService(FedoraObjectService fedoraObjectService) {
-		this.fedoraObjectService = fedoraObjectService;
+	private CreateFedoraObjectService createFedoraObjectService;
+
+	private GetFedoraObjectService getFedoraObjectService;
+
+	private static final Logger logger = Logger.getLogger(ObjectController.class);
+
+
+	public void setEditFedoraObjectService(EditFedoraObjectService editFedoraObjectService) {
+		this.editFedoraObjectService = editFedoraObjectService;
 	}
-	
-	
+
+
+	public void setGetFedoraObjectService(GetFedoraObjectService getFedoraObjectService) {
+		this.getFedoraObjectService = getFedoraObjectService;
+	}
+
 
 	public void setFusekiService(FusekiService fusekiService) {
 		this.fusekiService = fusekiService;
 	}
 
 
+	public void setCreateFedoraObjectService(CreateFedoraObjectService createFedoraObjectService) {
+		this.createFedoraObjectService = createFedoraObjectService;
+	}
+
 
 	@RequestMapping(value = "/object.{objectURI}", method = RequestMethod.GET)
-	public String getObject( @PathVariable String objectURI, ModelMap model) {
+	public String getObject( @PathVariable String objectURI, ModelMap model, FedoraObject fedoraObject) {
 		String view = "objects/ObjectView";
-	//	FedoraObject object = fedoraObjectService.getObject(objectURI);
 
+		try {
+			getObject(objectURI, model);
+			model.addAttribute("ActiveTab", "METADATA");
+		} catch (ObjectTellerException e) { 
+			logger.error("Unable to retrieve the object  "+objectURI+ ". Exception occured "+ e.getErrormessage()); 
+			model.addAttribute("ErrorMeassage","Unable to retrieve the object  "+objectURI+ ". Exception occured "+ e.getErrormessage());
+		}
+		return view;
+	}
+
+	@RequestMapping(value="/editMetadata", method=RequestMethod.POST)
+	public String editObjectHEMetadata(ModelMap model, FedoraObject fedoraObject) {
+		try {
+			editFedoraObjectService.editObjectMetadata(fedoraObject);
+			try {
+				Thread.sleep(1000);                 
+			} catch(InterruptedException ex) {
+				Thread.currentThread().interrupt(); 
+			}
+			getObject(fedoraObject.getURI(), model);
+			model.addAttribute("ActiveTab", "METADATA");
+
+
+		} catch (ObjectTellerException e) {
+			logger.error("Unable to edit human entered metadata for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage()); 
+			model.addAttribute("ErrorMeassage","Unable to edit human entered metadata for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage());
+		}
+
+		return "objects/ObjectView";
+	}
+
+	@RequestMapping(value="/publishObject.{objectURI}/{param}", method=RequestMethod.GET)
+	public ResponseEntity<String> publishObject(ModelMap model, @PathVariable String objectURI, @PathVariable String param, FedoraObject fedoraObject) {
+
+		try {
+			editFedoraObjectService.toggleObject(objectURI, param);
+			getObject(objectURI, model);
+			model.addAttribute("ActiveTab", "METADATA");
+
+		} catch (ObjectTellerException e) {
+			logger.error("Unable to edit published property of the object "+ objectURI);
+			return new ResponseEntity<String>( "Unable to edit published property of the object "+ objectURI, HttpStatus.INTERNAL_SERVER_ERROR) ;
+		}
+
+		return new ResponseEntity<String>(  HttpStatus.OK) ;
+	}
+
+	private void getObject(String objectURI,ModelMap model) throws ObjectTellerException {
 		FedoraObject object = new FedoraObject();
 		object.setURI(objectURI);
 
+		object = fusekiService.getObjectProperties(object);
+
+		PayloadDescriptor payloadD = fusekiService.getPayloadProperties(objectURI);
+
+		object.setPayloadDescriptor(payloadD);
+
+		String provDataPart1 = fusekiService.getObjectProvProperties(objectURI);
+
+		String provDataPart2 = fusekiService.getObjectProvProperties(objectURI+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType());
+
+		object.setLogData(provDataPart1+provDataPart2);
+
+		object.setPayload(getFedoraObjectService.getObjectContent(objectURI, ChildType.PAYLOAD.getChildType()));
+
+		object.setInputMessage(getFedoraObjectService.getObjectContent(objectURI, ChildType.INPUT.getChildType()));
+
+		object.setOutputMessage(getFedoraObjectService.getObjectContent(objectURI, ChildType.OUTPUT.getChildType()));
+
+		model.addAttribute("fedoraObject",object);
+
+		String inputMessage = object.getInputMessage();
+		model.addAttribute("processedStringInput",addEscapeCharsInXML(inputMessage));
+
+		String outputMessage = object.getOutputMessage();
+		model.addAttribute("processedStringOutput",addEscapeCharsInXML(outputMessage));
+
+		String logData = object.getLogData();
+		model.addAttribute("processedLogData",addEscapeCharsInXML(logData));
+
+	}
+
+	private String addEscapeCharsInXML(String input) {
+		if(input != null) {
+			input = input.replaceAll( "<", "&lt;");       
+			input = input.replaceAll(">", "&gt;");
+			input = input.replaceAll("\n", "<br>");
+			return input;
+		} else 
+			return null;
+	}
+
+	@RequestMapping(value="/editPayload", method=RequestMethod.POST)
+	public String editPayload(ModelMap model, FedoraObject fedoraObject) {
 		try {
-			object = fusekiService.getObjectProperties(object);
 
-			System.out.println("----------------------");
-			System.out.println(object);
-			System.out.println("----------------------");
-			
-			
-			object.setPayload(fedoraObjectService.getObjectContent(objectURI, "Payload"));
+			editFedoraObjectService.putBinary(fedoraObject.getPayload(), fedoraObject.getURI(), ChildType.PAYLOAD.getChildType());
+			editFedoraObjectService.editPayloadMetadata(fedoraObject);
+			try {
+				Thread.sleep(1000);                 
+			} catch(InterruptedException ex) {
+				Thread.currentThread().interrupt();
+				// TODO Throw exception here  
+			}
+			getObject(fedoraObject.getURI(), model );
+			model.addAttribute("ActiveTab", "PAYLOAD");
 
-			object.setFunctionDescriptor(fedoraObjectService.getObjectContent(objectURI, "Metadata"));
-
-			System.out.println("----------------------");
-			System.out.println(object);
-			System.out.println("----------------------");
-
-			
-			model.addAttribute("fedoraObject",object);
-		
 		} catch (ObjectTellerException e) {
-			// #TODO : Add Error Message here
-			System.out.println("********************************************** Inside exception "+ e);
-			e.printStackTrace();
+			logger.error("Unable to edit payload for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage()); 
+			model.addAttribute("ErrorMeassage","Unable to edit payload for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage());
 		}
-		return view;
+
+		return "objects/ObjectView";
 	}
 
-	@RequestMapping(value = "/selectObjectType", method = RequestMethod.GET)
-	public String newObjectStepOne(  FedoraObject fedoraObject, BindingResult bindingResult , HttpSession session,  ModelMap model) {
-		String view = "objects/selectObjectType";
+	@RequestMapping(value="/editInputMessage", method=RequestMethod.POST)
+	public String editInputMessage(ModelMap model, FedoraObject fedoraObject) {
+		try {
 
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.OBJECTS.getName());
-		model.addAttribute("PageType", "SelectObjectType");
-		model.addAttribute("fedoraObject", new FedoraObject());
-		return view;
+			editFedoraObjectService.putBinary(fedoraObject.getInputMessage(), fedoraObject.getURI(), ChildType.INPUT.getChildType());
+
+			getObject(fedoraObject.getURI(), model );
+			model.addAttribute("ActiveTab", "INPUT");
+
+
+		} catch (ObjectTellerException e) {
+			logger.error("Unable to edit Input Message for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage()); 
+			model.addAttribute("ErrorMeassage","Unable to edit Input Message for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage());
+		}
+
+		return "objects/ObjectView";
 	}
 
-	@RequestMapping(value = "/loadPayload", method = RequestMethod.POST)
-	public String newObjectStepTwo(  FedoraObject fedoraObject, BindingResult bindingResult, HttpSession session, ModelMap model) {
-		String view = "objects/loadPayload";
+	@RequestMapping(value="/editOutputMessage", method=RequestMethod.POST)
+	public String editOutputMessage(ModelMap model, FedoraObject fedoraObject) {
+
+		try {
+
+			editFedoraObjectService.putBinary(fedoraObject.getOutputMessage(), fedoraObject.getURI(), ChildType.OUTPUT.getChildType());
+
+			getObject(fedoraObject.getURI(),model);
+			model.addAttribute("ActiveTab", "OUTPUT");
+
+		} catch (ObjectTellerException e) {
+			logger.error("Unable to edit Output Message for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage()); 
+			model.addAttribute("ErrorMeassage","Unable to edit Output Message for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage());
+		}
+
+		return "objects/ObjectView";
+	}
+
+	@RequestMapping(value="/createNewObjectTest", method=RequestMethod.POST , consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<String> createNewObject(@RequestBody String string, HttpSession httpSession ) {		
 		
-		session.setAttribute("SessionParameterFedoraObject", fedoraObject);
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.OBJECTS.getName());
-		model.addAttribute("PageType", "LoadPayload");
-		return view;
-	}
 
-	@RequestMapping(value = "/loadAPI", method = RequestMethod.POST)
-	public String newObjectStepThree(FedoraObject fedoraObject, BindingResult bindingResult,   HttpSession session, ModelMap model) {
-		String view = "objects/loadAPI";
-		
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.OBJECTS.getName());
-		model.addAttribute("PageType", "LoadAPI");
-		return view;
-	}
+		String result ;
 
-	@RequestMapping(value = "/linkNewObject", method = RequestMethod.GET)
-	public String newObjectStepFour(  ModelMap model) {
-		String view = "objects/linkNewObject";
+		Gson gson = new Gson();
+		FedoraObject fedoraObject = gson.fromJson(string, FedoraObject.class);
 
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.OBJECTS.getName());
-		model.addAttribute("PageType", "LinkNewObject");
-		return view;
-	}
+		try {
+			User loggedInUser = (User) httpSession.getAttribute("DBUser");
+			FedoraObject newObject = createFedoraObjectService.createObject(fedoraObject,loggedInUser);
 
-	@RequestMapping(value="/uploadPayload", method=RequestMethod.POST)
-	public  String handleUploadPayload(
-			@RequestParam("file") MultipartFile file, ModelMap model, HttpSession session) {		
-		FedoraObject fedoraObject = null;
-		if (!file.isEmpty()) {
-			byte[] bytes;
-			try {
-				bytes = file.getBytes();
+			result =  "{  \"uri\": \""+newObject.getURI()+"\"  }";
 
-				String str = new String(bytes);
-				fedoraObject = (FedoraObject)session.getAttribute("SessionParameterFedoraObject");
-				fedoraObject.setPayload(str);
-				session.setAttribute("SessionParameterFedoraObject", fedoraObject);
-			} catch (IOException e) {
-			//	ObjectTellerException exception = new ObjectTellerException(e);
-			//	exception.setErrormessage("Unable to upload Payload file for object "+fedoraObject.getTitle());
-			//	throw exception;
-				e.printStackTrace();
-			}
-
-		} else {
-		//	ObjectTellerException exception = new ObjectTellerException();
-		//	exception.setErrormessage("You failed to upload  because the file was empty."+fedoraObject.getTitle());
-		//	throw exception;
-			System.out.println("You failed to upload  because the file was empty."+fedoraObject.getTitle());
+		} catch (ObjectTellerException e) {
+			logger.error("An exception occured while creating new object "+e.getMessage()+" caused by "+e.getCause());
+			return new ResponseEntity<String>("An exception occured while creating new object "+e.getMessage()+" caused by "+e.getCause() , HttpStatus.INTERNAL_SERVER_ERROR) ; 
 		}
-		model.addAttribute("fedoraObject", fedoraObject);
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.OBJECTS.getName());
-		model.addAttribute("PageType", "LoadPayload");
-		return "objects/loadPayload";
-	}
 
-	@RequestMapping(value="/uploadFunctionDescriptor", method=RequestMethod.POST)
-	public  String handleUploadFunctionDescriptor(
-			@RequestParam("file") MultipartFile file, ModelMap model, HttpSession session)  {		
-		FedoraObject fedoraObject = null;
-		if (!file.isEmpty()) {
-			byte[] bytes;
-			try {
-				bytes = file.getBytes();
-
-				String str = new String(bytes);
-				fedoraObject = (FedoraObject)session.getAttribute("SessionParameterFedoraObject");
-				fedoraObject.setFunctionDescriptor(str);
-				session.setAttribute("SessionParameterFedoraObject", fedoraObject);
-			} catch (IOException e) {
-				/*ObjectTellerException exception = new ObjectTellerException(e);
-				exception.setErrormessage("Unable to upload Function Descriptor file for object "+fedoraObject.getTitle());
-				throw exception;*/
-				
-				e.printStackTrace();
-			}
-
-		} else {
-			/*ObjectTellerException exception = new ObjectTellerException();
-			exception.setErrormessage("You failed to upload  because the file was empty."+fedoraObject.getTitle());
-			throw exception;*/
-			
-			System.out.println("You failed to upload  because the file was empty."+fedoraObject.getTitle());
-		}
-		model.addAttribute("fedoraObject", fedoraObject);
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.OBJECTS.getName());
-		model.addAttribute("PageType", "LoadAPI");
-		return "objects/loadAPI";
-	}
-
-	@RequestMapping(value="/finalize", method=RequestMethod.POST)
-	public  String createObject( ModelMap model, HttpSession session) throws ObjectTellerException{		
-		FedoraObject fedoraObject = null;
-		fedoraObject = (FedoraObject)session.getAttribute("SessionParameterFedoraObject");
-
-		fedoraObjectService.createObject(fedoraObject);
-
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.OBJECTS.getName());
-		model.addAttribute("PageType", "List");
-
-		ArrayList<FedoraObject> queryObjects = fedoraObjectService.getQueryObjects();
-		model.addAttribute("QueryObjects", queryObjects.size());
-
-		ArrayList<FedoraObject> resultObjects = fedoraObjectService.getResultObjects();	
-		model.addAttribute("ResultObjects", resultObjects.size());
-
-		ArrayList<FedoraObject> knowledgeObjects = fedoraObjectService.getKnowledgeObjects();	
-		model.addAttribute("KnowledgeObjects", knowledgeObjects.size());
-
-		ArrayList<FedoraObject> tailoringObjects = fedoraObjectService.getTailoringObjects();	
-		model.addAttribute("TailoringObjects", tailoringObjects.size());
-
-		ArrayList<FedoraObject> objects = new ArrayList<FedoraObject>();
-		objects.addAll(queryObjects); 
-		objects.addAll(resultObjects);
-		objects.addAll(knowledgeObjects);
-		objects.addAll(tailoringObjects);
-
-		model.addAttribute("objects",objects);
-		model.addAttribute("TotalObjects", objects.size());
-
-		return "login/home";
+		return new ResponseEntity<String>( result, HttpStatus.CREATED) ; 
 
 	}
 }
