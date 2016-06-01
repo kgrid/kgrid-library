@@ -26,40 +26,14 @@ public class FedoraObject {
 
 	private String payload;
 	
-	private String functionDescriptor;
+	private String inputMessage;
 	
+	private String outputMessage;
 	
+	private PayloadDescriptor payloadDescriptor;
 	
+	private String logData; 
 	
-/*	public FedoraObject(String title, boolean published, String URI, int bins, String objectType) {
-		super();
-		this.title = title;
-		this.published = published;
-		this.URI = URI;
-		this.bins = bins;
-		this.objectType = objectType;
-	}
-	
-	
-	
-	
-	public FedoraObject(String title, String subject, String description, String contributors, String keywords,
-			boolean published, String URI, int bins, String objectType) {
-		super();
-		this.title = title;
-		this.owner = subject;
-		this.description = description;
-		this.contributors = contributors;
-		this.keywords = keywords;
-		this.published = published;
-		this.URI = URI;
-		this.bins = bins;
-		this.objectType = objectType;
-	}*/
-
-
-
-
 	public FedoraObject(){}
 	
 	public String getTitle() {
@@ -95,11 +69,6 @@ public class FedoraObject {
 		this.objectType = objectType;
 	}
 
-
-
-
-	
-
 	public String getOwner() {
 		return owner;
 	}
@@ -108,9 +77,6 @@ public class FedoraObject {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-
-
-
 
 	public String getDescription() {
 		return description;
@@ -145,17 +111,6 @@ public class FedoraObject {
 	}
 
 
-	public String getFunctionDescriptor() {
-		return functionDescriptor;
-	}
-
-	public void setFunctionDescriptor(String functionDescriptor) {
-		this.functionDescriptor = functionDescriptor;
-	}
-
-
-	
-	
 	public Date getLastModified() {
 		return lastModified;
 	}
@@ -172,14 +127,49 @@ public class FedoraObject {
 		this.createdOn = createdOn;
 	}
 
+	public PayloadDescriptor getPayloadDescriptor() {
+		return payloadDescriptor;
+	}
+
+	public void setPayloadDescriptor(PayloadDescriptor payloadDescriptor) {
+		this.payloadDescriptor = payloadDescriptor;
+	}
+
+	public String getInputMessage() {
+		return inputMessage;
+	}
+
+	public void setInputMessage(String inputMessage) {
+		this.inputMessage = inputMessage;
+	}
+
+	public String getOutputMessage() {
+		return outputMessage;
+	}
+
+	public void setOutputMessage(String outputMessage) {
+		this.outputMessage = outputMessage;
+	}
+	
+
+	public String getLogData() {
+		return logData;
+	}
+
+	public void setLogData(String logData) {
+		this.logData = logData;
+	}
+
 	@Override
 	public String toString() {
 		return "FedoraObject [title=" + title + ", owner=" + owner + ", description=" + description + ", contributors="
 				+ contributors + ", keywords=" + keywords + ", published=" + published + ", URI=" + URI
 				+ ", lastModified=" + lastModified + ", createdOn=" + createdOn + ", objectType=" + objectType
-				+ ", payload=" + payload + ", functionDescriptor=" + functionDescriptor + "]";
+				+ ", payload=" + payload + ", inputMessage=" + inputMessage + ", outputMessage=" + outputMessage
+				+ ", payloadDescriptor=" + payloadDescriptor + ", logData=" + logData + "]";
 	}
 
 	
+
 
 }
