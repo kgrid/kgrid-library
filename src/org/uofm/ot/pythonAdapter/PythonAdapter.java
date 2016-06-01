@@ -2,10 +2,12 @@ package org.uofm.ot.pythonAdapter;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.python.core.PyDictionary;
 import org.python.core.PyException;
 import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
+import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.transferobjects.DataType;
 import org.uofm.ot.transferobjects.Result;
 
@@ -13,7 +15,9 @@ import org.uofm.ot.transferobjects.Result;
 
 public class PythonAdapter {
 
-	public Result executeString(String chunk,String functionName,Map<String,Object> params, DataType returntype){
+	private static final Logger logger = Logger.getLogger(PythonAdapter.class);
+	
+	public Result executeString(String chunk,String functionName,Map<String,Object> params, DataType returntype) throws ObjectTellerException {
 		PythonInterpreter interpreter = new PythonInterpreter();
 
 		Result resObj = new Result();
@@ -23,30 +27,36 @@ public class PythonAdapter {
 		dictionary.putAll(params);		
 		interpreter.exec(chunk);
 
-		PyObject someFunc = interpreter.get(functionName);
+		
 
 		try {
-			PyObject result = someFunc.__call__(dictionary);
+			PyObject someFunc = interpreter.get(functionName);
+			if(someFunc != null) {
+				PyObject result = someFunc.__call__(dictionary);
 
-			if(DataType.FLOAT == returntype){
-				Float realResult = (Float) result.__tojava__(float.class);
-
-				resObj.setErrorMessage("-");
-				resObj.setSuccess(1);
-				resObj.setResult(String.valueOf(realResult));
-			} else {
-				if(DataType.INT == returntype){
-					int realResult = (int) result.__tojava__(int.class);
-					System.out.println(realResult);
+				if(DataType.FLOAT == returntype){
+					Float realResult = (Float) result.__tojava__(float.class);
 
 					resObj.setErrorMessage("-");
 					resObj.setSuccess(1);
 					resObj.setResult(String.valueOf(realResult));
+				} else {
+					if(DataType.INT == returntype){
+						int realResult = (int) result.__tojava__(int.class);
+
+						resObj.setErrorMessage("-");
+						resObj.setSuccess(1);
+						resObj.setResult(String.valueOf(realResult));
+					}
 				}
+			} else {
+				logger.error(functionName + " function not found in object payload ");
+				ObjectTellerException exception = new ObjectTellerException(functionName + " function not found in object payload ");
+				throw exception;
 			}
 
 		} catch(PyException ex){
-
+			logger.error("Exception occured while executing python code "+ex.getMessage());
 			resObj.setErrorMessage(ex.getMessage());
 			resObj.setSuccess(0);
 		}
