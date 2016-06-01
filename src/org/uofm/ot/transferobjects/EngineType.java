@@ -2,7 +2,7 @@ package org.uofm.ot.transferobjects;
 
 public enum EngineType {
 	
-	PYTHON,
+	PYTHON ,
 	R;
 
 }
