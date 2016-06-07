@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -177,35 +178,69 @@ public class FusekiService {
 		QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
 		ResultSet resultSet = execution.execSelect();
 
+		HashMap<String, Map<String,Object>> objectMap = new HashMap<String, Map<String,Object>> ();
+		
+		Map<String, Object> objectProperties ;
 		while (resultSet.hasNext()) {
 			QuerySolution binding = resultSet.nextSolution();
 
-			FedoraObject fedoraObject = new FedoraObject();
+
 			String uri = binding.get("s").toString();
 			int startIndex = uri.lastIndexOf("/");
 			uri = uri.substring(startIndex+1);
-			fedoraObject.setURI(uri);
-			
-			
+
+			if(!objectMap.containsKey(uri)){
+				objectProperties = new HashMap<String, Object>();
+				objectMap.put(uri, objectProperties);
+			} else
+				objectProperties = objectMap.get(uri);
+
+
 			if(binding.get("published") != null) {
-				if("YES".equals(binding.get("published").toString().toUpperCase()))
-					fedoraObject.setPublished(true);
+				if(objectProperties.containsKey("published"))
+					objectProperties.replace("published", binding.get("published"));
 				else
-					fedoraObject.setPublished(false);
+					objectProperties.put("published",  binding.get("published"));
+
 			} else {
 				if(isPublicOnly){
-					fedoraObject.setPublished(true);
+					objectProperties.put("published", "YES");
 				}
 			}
-			
-			fedoraObject.setTitle(binding.get("title").toString());
-			Date createdOn = convertRDFNodetoDate(binding.get("created"));
-			Date lastModified = convertRDFNodetoDate(binding.get("lastUpdated"));
-			fedoraObject.setLastModified(lastModified);
-			fedoraObject.setCreatedOn(createdOn);
+
+			if(objectProperties.containsKey("title"))
+				objectProperties.replace("title", binding.get("title"));
+			else
+				objectProperties.put("title",  binding.get("title"));
+
+			if(objectProperties.containsKey("created"))
+				objectProperties.replace("created", binding.get("created"));
+			else
+				objectProperties.put("created",  binding.get("created"));
+
+			if(objectProperties.containsKey("lastUpdated"))
+				objectProperties.replace("lastUpdated", binding.get("lastUpdated"));
+			else
+				objectProperties.put("lastUpdated",  binding.get("lastUpdated"));
+
+		}
+
+
+		for (String fedoraObjectURI : objectMap.keySet()) {
+			FedoraObject fedoraObject = new FedoraObject();
+			fedoraObject.setURI(fedoraObjectURI);
+
+			Map<String,Object> keyValue = objectMap.get(fedoraObjectURI);
+			fedoraObject.setTitle(keyValue.get("title").toString());
+			if("YES".equals(keyValue.get("published").toString().toUpperCase()))
+				fedoraObject.setPublished(true);
+			else
+				fedoraObject.setPublished(false);
+			fedoraObject.setLastModified(convertRDFNodetoDate((RDFNode)keyValue.get("lastUpdated")));
+			fedoraObject.setCreatedOn(convertRDFNodetoDate((RDFNode)keyValue.get("created")));
+
 
 			list.add(fedoraObject);
-
 		}
 
 		return list;
@@ -308,9 +343,9 @@ public class FusekiService {
 						else {
 							keyValue.replace(actualPredicate, binding.get("o"));
 						}
-						if("title".equals(actualPredicate)){
+					/*	if("title".equals(actualPredicate)){
 							fedoraObject.setTitle(binding.get("o").toString());
-						}
+						}*/
 					} else {
 						if(predicate.contains(FusekiConstants.FEDORA_NAMESPACE) == true){
 							String actualPredicate = predicate.substring(FusekiConstants.FEDORA_NAMESPACE.length());
@@ -319,11 +354,11 @@ public class FusekiService {
 							else {
 								keyValue.replace(actualPredicate, binding.get("o"));
 							}
-							if("lastModified".equals(actualPredicate)  )
+							/*if("lastModified".equals(actualPredicate)  )
 								fedoraObject.setLastModified(convertRDFNodetoDate(binding.get("o")));
 
 							if( "created".equals(actualPredicate))
-								fedoraObject.setCreatedOn(convertRDFNodetoDate(binding.get("o")));
+								fedoraObject.setCreatedOn(convertRDFNodetoDate(binding.get("o")));*/
 
 						} else {
 							if(predicate.contains(FusekiConstants.OT_NAMESPACE) == true) {
@@ -333,7 +368,7 @@ public class FusekiService {
 								else {
 									keyValue.replace(actualPredicate, binding.get("o"));
 								}
-								if("keywords".equals(actualPredicate) )
+								/*if("keywords".equals(actualPredicate) )
 									fedoraObject.setKeywords(binding.get("o").toString());
 
 								if( "owner".equals(actualPredicate)) 
@@ -350,7 +385,7 @@ public class FusekiService {
 										fedoraObject.setPublished(true);
 									else
 										fedoraObject.setPublished(false);
-								}
+								}*/
 							}
 						}
 					}
@@ -362,7 +397,7 @@ public class FusekiService {
 			throw exception;
 		} 
 		
-		/*fedoraObject.setTitle(keyValue.get("title").toString());
+		fedoraObject.setTitle(keyValue.get("title").toString());
 		fedoraObject.setLastModified(convertRDFNodetoDate((RDFNode)keyValue.get("lastModified")));
 		fedoraObject.setCreatedOn(convertRDFNodetoDate((RDFNode)keyValue.get("created")));
 		fedoraObject.setKeywords(keyValue.get("keywords").toString());
@@ -372,7 +407,7 @@ public class FusekiService {
 		if("YES".equals(keyValue.get("published").toString().toUpperCase()))
 			fedoraObject.setPublished(true);
 		else
-			fedoraObject.setPublished(false);*/
+			fedoraObject.setPublished(false);
 		
 		return fedoraObject;
 	} 
