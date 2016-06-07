@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic);
 
-body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, input, textarea, blockquote {
+body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, input, textarea, blockquote, button {
   margin: 0;
   padding: 0;
   border: 0;
@@ -16,7 +16,7 @@ body {
 
 a { 
 	text-decoration:none; 
-
+	color: #666666;
 }
 
 
@@ -150,7 +150,9 @@ a#signin-link strong {
   padding-bottom: 8px;
   padding-right: 40px;
   cursor: pointer;
-  		  background: #39b54a;
+  background: #39b54a;
+	font-size: 14px;
+	font-weight: bold;
 }
 a#user-link strong {
   color: #fff;
@@ -195,11 +197,11 @@ a#signin-link:hover strong {
 #logoutsession ul li#icon {
   width: 28px;
   display: table-cell;
-	vertical-align:middle;
+	padding-bottom:10px;
 }
 
 img#iconimg{
-	vertical-align:text-bottom;
+	vertical-align:middle;
 }
 
 #logoutsession ul li#icon img#iconimg.up {
@@ -308,8 +310,7 @@ form.signin .remb .remember {
   background: -o-linear-gradient(top, #f3f3f3, #dddddd);
   background: #39b54a;
   filter: progid: DXImageTransform.Microsoft.gradient(startColorStr='#f3f3f3', EndColorStr='#dddddd');
-  border-color: white;
-  border-width: 2px;
+  border: 2px solid #fff;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   color: white;
