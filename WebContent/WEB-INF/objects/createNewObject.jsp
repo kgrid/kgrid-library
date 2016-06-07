@@ -8,10 +8,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href="<c:url value="/resources/css/box.css" />"
-	type="text/css" />
 <link rel="stylesheet"
-	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" /> 
+	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" />
 
 <link rel="shortcut icon"
 	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" /> " />
@@ -86,7 +84,7 @@
 
 	function addNewObject() {
 		//alert("Inside the object ");
-		
+
 		var fedoraObject = new Object();
 
 		fedoraObject.title = document.getElementById("title_data").value;
@@ -100,15 +98,19 @@
 
 		var payloadDescriptor = new Object();
 
-		payloadDescriptor.functionName = document.getElementById("functionName").value;
+		payloadDescriptor.functionName = document
+				.getElementById("functionName").value;
 		payloadDescriptor.engineType = document.getElementById("engineType").value;
-	
+
 		fedoraObject.payloadDescriptor = payloadDescriptor;
 
 		var text = JSON.stringify(fedoraObject);
 		//alert(text);
+		$("#entry_form").hide();
+		$("#end_page").show();
 
-		$.ajax({
+		$
+				.ajax({
 					beforeSend : function(xhrObj) {
 						xhrObj.setRequestHeader("Content-Type",
 								"application/json");
@@ -120,36 +122,38 @@
 					dataType : "json",
 
 					success : function(response) {
-						//alert("inside the success ")
-						 if(response!='empty') {
-							  var test = JSON.stringify(response);
-						      var obj = JSON.parse(test);
-						     // alert(obj.uri);
-						      document.getElementById("successResult").innerHTML  = " Your New Object Has Been Added To Your Library!<br> To make changes click on the edit button in each section.<br> Object ID: "+obj.uri;
-						    }
-					} ,
-					
+					//	alert("inside the success ");
+						if (response != 'empty') {
+							var test = JSON.stringify(response);
+							var obj = JSON.parse(test);
+							// alert(obj.uri);
+							document.getElementById("successResult").innerHTML = " Your New Object Has Been Added To Your Library!<br> To make changes click on the edit button in each section.<br> Object ID: "
+									+ obj.uri;
+						}
+					},
+
 					error : function(response) {
 						document.getElementById("successResult").value = "ERROR";
 					}
 				});
 
-		
 	}
 </script>
 </head>
 </head>
 <body>
 	<div class="board" id="addObj">
-		<div id="entryform" style="padding: 0px;">
+		<div class="entryform" id="entry_form">
 			<h3>Add Knowledge Object</h3>
-			<button class="greenroundbutton" id="closebutton">
+			<button class="greenroundbutton" id="closebutton"
+				onclick="closeAddObjOverlay()">
 				<img src="<c:url value="/resources/images/Close_Icon.png" />">
 			</button>
-			<div style="padding: 0px;">
+			<div style="height:98%;">
 				<sf:form name="addObj_f" class="Add-content" id="addObj_f"
 					method="POST" modelAttribute="fedoraObject" action="addNewObject">
-					<ul id="progressbar">
+					<div id="barcontainer">
+						<ul id="progressbar">
 						<li class="current-tab"><img
 							src="<c:url value="/resources/images/checkmark.png" />"
 							width="20px" style="display: none;"><spring:message code="METADATA_TAB"/></li>
@@ -163,8 +167,8 @@
 							src="<c:url value="/resources/images/checkmark.png"/>"
 							width="20px" style="display: none;"><spring:message code="OUTPUT_MESSAGE"/></li>
 					</ul>
-
-					<fieldset id="first">
+					</div>
+					<fieldset class="fieldcontainer" id="first">
 						<div>
 							<h4><spring:message code="OBJECT_TITLE" /></h4>
 							<div class="addtext">
@@ -228,12 +232,17 @@
 					<fieldset>
 						<h4><spring:message code="PAYLOAD_FUNCTION" /> <spring:message code="REQUIRED_FIELD" /></h4>
 
-						<input class="textbox" type="text" placeholder="one instance only"
-							maxlength="140" id="functionName">
+						<div class="addtext">
+							<input class="textbox" type="text" id="functionName" placeholder="one instance only" maxlength="140"
+								><span>140/140</span>
+						</div>
+						<div class="addtext">
+
 						<h4><spring:message code="PAYLOAD_TYPE" /> <spring:message code="REQUIRED_TO_SELECT"/></h4>
-						<select required class="options" id="engineType">
-							<option value="Python">PYTHON</option>
-						</select> <br>
+							<select required class="options" id="engineType">
+								<option value="Python">PYTHON</option>
+							</select> <br>
+						</div>
 						<div id="payloadDropFile" class="dropfile">
 
 							<div class="upload-direction">
@@ -265,7 +274,7 @@
 
 
 					</fieldset>
-					<fieldset>
+					<fieldset class="fieldcontainer">
 						<div id="inputDropFile" class="dropfile">
 
 							<div class="upload-direction">
@@ -295,7 +304,7 @@
 							type="button" value="Next">
 
 					</fieldset>
-					<fieldset>
+					<fieldset class="fieldcontainer">
 						<div id="outputDropFile" class="dropfile">
 
 							<div class="upload-direction">

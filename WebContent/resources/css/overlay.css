@@ -2,25 +2,60 @@
    position:fixed;
    top:0;
    left:0;
-   right:0;
-   bottom:0;
+   width:100%;
+   height:100%;
    background-color:rgba(102, 102, 102, 0.6);
    z-index:999;
    color:dimgrey;
    font-family:'Open Sans', sans-serif;
-   display:none;
- }
+   overflow: auto;
+}
+
+.noscroll { overflow: hidden; }
+
+
+[aria-hidden="true"] { display: none; }
+[aria-hidden="false"] { display: block; }
+
 
 .board{
   position:absolute;
-  top:100px;
-  left:100px;
-  right:100px;
-  bottom:100px;
   background: white;
-  padding:30px;
+    width: 1030px;
+    height: 870px;
+    top: 50%;
+    margin-top:-435px;
+    left: 50%;
+    margin-left:-515px;
+    padding: 0px;
+}
+@media (max-height: 960px){
+	.board{
+		height: 700px;
+    	top:35px;
+    	margin-top:0px;
+	}
+	
 }
 
+@media (max-width: 1120px){
+	.board{
+    	left:35px;
+    	margin-left:0px;
+	}
+	
+}
+
+
+.entryform{
+	height:80%;
+	padding:20px;
+}
+
+
+.entryform h3{
+	padding:0px 10px;
+}
 .board > h3{
   font-weight: 300;
   font-size: 28px;
@@ -38,7 +73,7 @@
   margin-left: -30px;
 }
 .Add-content{
-  padding: 10px 20px;
+  padding: 10px;
 }
 .Add-content > textarea{
   margin: 15px 0;
