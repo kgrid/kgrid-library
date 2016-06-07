@@ -1,14 +1,19 @@
-
 /* Above line is to import google font style */
-.board#addObj{
-    width: 1030px;
-    height: 640px;
-    margin: 0 auto;
-       top: 50%;
-    margin-top:-320px;
-    padding: 20px;
- 
+
+::-webkit-scrollbar {
+    width: 12px;
 }
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+/*     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);  */
+}
+
 #form_addObj{
     padding: 10px;
     height:100%;
@@ -19,12 +24,23 @@
     height:70%;
     margin:0 auto;
 }
+
+#addObj_f{
+	height:96%;
+}
+#barcontainer{
+border-bottom: 1px solid #e6e6e6;	
+}
+
+.fieldcontainer{
+	height:95%;
+	overflow:auto;
+}
 #progressbar{
 margin: 0;
 padding: 0px;  
     color: #666666;
-  font-size: 16px;
-      text-align: center;
+     text-align: center;
   vertical-align: middle;
   display: table-cell;
     background-image: none;
@@ -33,23 +49,28 @@ padding: 0px;
   margin-bottom: 15px;
     list-style-type: none;
 }
+
 #progressbar li{
-display:inline;
-padding-left:15px;
-    padding-right:15px;
-    margin-left:5px;
-    margin-right:5px;
+display:inline-block;
+width:135px;
+padding:5px 5px;
+  font-size: 14px;
+margin-right: 20px;
 }
 
 fieldset{
 display:none;
-width: 100%;
-    height:530px;
-    padding:20px;
+padding:15px;
 margin: 0 auto;
 margin-top:5px;
 border-radius:5px;
 overflow:auto;
+}
+fieldset h4{
+display:inline-block;
+padding:5px 5px;
+  font-size: 14px;
+margin-right: 20px;
 }
 #first{
 display:block;
@@ -57,17 +78,46 @@ display:block;
 .form_area{
     height:80%;
 }
+
 input[type=text],
-input[type=password],
-select{
-  width:100%;
+input[type=password]{
+  width:900px;
   height: 38px;
   padding: 5px;
-  border: 1px solid #39b54a;
+  border: 1px solid #e6e6e6;
   border-radius: 10px;
   margin:2px 0;
-  font-size: 16px;
+  font-size: 14px;
+  color:#666666;
 }
+
+select{
+   background: transparent;
+	background-image: url("../images/dropdown_chevron.png");
+   background-repeat: no-repeat;
+	background-position: 98%;
+  line-height: 1;
+  -webkit-appearance: none;
+  -moz-appearance:none;
+  width:912px;
+  height: 50px;
+  padding: 5px;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  margin:2px 0;
+  font-size: 14px;
+  color:#666666;
+  
+}
+
+option{
+	color:#666666;
+}
+option:hover
+{
+	background-color:lightgreen;
+}
+
 .springInput{
 	  width:100%;
   height: 38px;
@@ -75,16 +125,16 @@ select{
   border: 1px solid #39b54a;
   border-radius: 10px;
   margin:2px 0;
-  font-size: 16px;
+  font-size: 14px;
 }
 #description_data{
     display:block;
-      width:100%;
+      width:900px;
   padding: 5px;
-  border: 1px solid #39b54a;
+  border: 1px solid #e6e6e6;
   border-radius: 10px;
   margin:2px 0;
-  font-size: 16px;
+  font-size: 14px;
     height:80px;
         min-height:80px;
 }
@@ -93,12 +143,11 @@ select{
     font-weight: 300;
 }
 .dropfile{
-    margin:0 auto;
   margin-top: 10px;
     margin-bottom: 10px;
-  border: 2px dashed #39b54a;
+  border: 2px dashed #e6e6e6;
   /*border-width:1px;*/
-  width:100%;
+  width:910px;
   height: 140px;
   border-radius: 10px;
   text-align: center;
@@ -107,11 +156,9 @@ select{
   padding:10px 0;
 }
 textarea{
-width:100%;
-    height:180px;
-    min-height:180px;
+width:98%;
 margin:0px;
-
+resize:none;
 padding:5px;
 border: 1px solid #39b54a;
 border-radius: 10px;
@@ -119,12 +166,17 @@ border-radius: 10px;
 .display-payload, .display-input, .display-output{
 	display:none;
     min-height:50px;
-    max-height:300px;
 	width:100%;
   border:none;
   border-radius: 8px;
   margin:0 auto;
   overflow: auto;
+}
+@media (max-height: 960px){
+#payloadTextArea {
+	min-height:280px;
+	max-height:280px;
+}
 }
 input[type=submit],
 input[type=button]{
@@ -141,12 +193,12 @@ input[type=button]{
 .next_btn, #addObjButton{
     position:absolute;
     right:50px;
-    bottom:20px;
+    bottom:40px;
 }
 .pre_btn{
      position:absolute;
      left:50px;
-    bottom:20px;
+    bottom:40px;
 }
 
 
@@ -168,22 +220,24 @@ input[type=button]{
 }
 .addtext{
   position:relative;
+  width:100%;
     padding:0;
-    margin-bottom:10px;
+    margin:5px 0px 15px 0px;
     color:#666666;
 }
 
 .addtext span{
   position:absolute;
-  right:30px;
+  right:50px;
   bottom:-20px;
   color:lightgreen;
+  font-size:12px;
 }
 
 #newkeyword, #newowner, #newcontri{
     position:absolute;
     bottom:-11px;
-    right:-13px;
+    left:896px;
     width:28px;
     height:28px;
     padding:0px;
@@ -237,4 +291,20 @@ input[type=button]{
     position:relative;
    float:right;
     display:block;
+}
+
+@media (max-height: 960px){
+	fieldset h4{
+		padding:1px;
+	}
+input[type=text],
+input[type=password]{
+  padding: 3px 5px;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  margin:0px;
+  font-size: 14px;
+  color:#666666;
+}
+	
 }

@@ -289,13 +289,14 @@
 	}
 	
 	function userLogout(){
+		alert("Inside the function ");
 	
 		$.ajax({
 			type : 'POST',
 			url : "logout" ,
 
 			success : function(response) {
-
+				alert("Inside success ");
 				 window.location = "/ObjectTeller/login";
 			}
 		});
@@ -305,9 +306,6 @@
 	    window.history.back();
 	}
 </script>
-<script type="text/javascript"></script>
-<script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript"
 	src="/ObjectTeller/resources/js/dropdown.js"></script>
 <script src="/ObjectTeller/resources/js/scroll.js"></script>
@@ -602,7 +600,7 @@
 											src="<c:url value="/resources/images/Upload_Icon.png" />" />
 											<br>
 											<p class="green">
-												<label for="file_payload"><spring:message code="CHOOSE_FILE" />
+												<label for="file_payload"><spring:message code="CHOOSE_FILE" /></label>
 											</p> <br>
 											<p><spring:message code="FILE_TYPE" /></p>
 
@@ -675,7 +673,7 @@
 										style="display: none;" /> <label for="file_input"> <img
 										src="<c:url value="/resources/images/Upload_Icon.png"/> " />
 										<br>
-										<p class="green"><label for="file_payload"><spring:message code="CHOOSE_FILE" /></p> <br>
+										<p class="green"><label for="file_payload"><spring:message code="CHOOSE_FILE" /></label></p> <br>
 										<p><spring:message code="FILE_TYPE" /></p>
 									</label>
 								</div>
@@ -722,7 +720,7 @@
 										for="file_output"> <img
 										src="<c:url value="/resources/images/Upload_Icon.png"/> " />
 										<br>
-										<p class="green"><label for="file_payload"><spring:message code="CHOOSE_FILE" /></p> <br>
+										<p class="green"><label for="file_payload"><spring:message code="CHOOSE_FILE" /></label></p> <br>
 										<p><spring:message code="FILE_TYPE" /></p>
 									</label>
 								</div>

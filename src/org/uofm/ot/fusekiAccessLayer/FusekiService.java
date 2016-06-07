@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import org.apache.http.HttpResponse;
@@ -28,6 +29,7 @@ import org.uofm.ot.fedoraAccessLayer.FedoraObject;
 import org.uofm.ot.fedoraAccessLayer.PayloadDescriptor;
 import org.uofm.ot.model.Server_details;
 
+
 public class FusekiService {
 	
 	private SystemConfigurationDAO sysConfDao;
@@ -37,6 +39,8 @@ public class FusekiService {
 	private String fedoraServerURL; 
 	
 	private static final Logger logger = Logger.getLogger(FusekiService.class);
+	
+	private String fusekiSubjectBaseURI = "http://localhost:8080/fcrepo/rest/";
 		
 	public void setSysConfDao(SystemConfigurationDAO sysConfDao) {
 		this.sysConfDao = sysConfDao;
@@ -65,16 +69,17 @@ public class FusekiService {
 							FusekiConstants.PREFIX_FEDORA+ "\n"+
 							FusekiConstants.PREFIX_OT+"\n"+
 
-					"SELECT  ?x ?title ?published ?lastModified ?created \n"+
+					"SELECT  ?s ?title ?published ?created (MAX(?lastModified) AS ?lastUpdated) \n"+
 
 					"WHERE \n"+
 					"{ \n"+ 
-					"?x  dc:title  ?title. \n"+
-					"?x  ot:published \"yes\". \n"+
-					"?x  fedora:lastModified  ?lastModified. \n"+
-					"?x  fedora:created ?created. \n"+
+					"?s  dc:title  ?title. \n"+
+					"?s  ot:published \"yes\". \n"+
+					"?s  fedora:lastModified  ?lastModified. \n"+
+					"?s  fedora:created ?created. \n"+
 
-					"} \n";
+					"} \n"+
+					"GROUP BY ?s ?title ?published ?created";
 
 
 					list = getFedoraObjects(queryString,true);
@@ -104,16 +109,17 @@ public class FusekiService {
 							FusekiConstants.PREFIX_FEDORA+ "\n"+
 							FusekiConstants.PREFIX_OT+"\n"+
 
-					"SELECT  ?x ?title ?published ?lastModified ?created \n"+
+					"SELECT  ?s ?title ?published ?created (MAX(?lastModified) AS ?lastUpdated) \n"+
 
 					"WHERE \n"+
 					"{ \n"+ 
-					"?x  dc:title  ?title. \n"+
-					"?x  ot:published ?published. \n"+
-					"?x  fedora:lastModified  ?lastModified. \n"+
-					"?x  fedora:created ?created. \n"+
+					"?s  dc:title  ?title. \n"+
+					"?s  ot:published ?published. \n"+
+					"?s  fedora:lastModified  ?lastModified. \n"+
+					"?s  fedora:created ?created. \n"+
 
-					"} \n";
+					"} \n"+
+					"GROUP BY ?s ?title ?published ?created";
 
 
 					list = getFedoraObjects(queryString,false);
@@ -175,8 +181,9 @@ public class FusekiService {
 			QuerySolution binding = resultSet.nextSolution();
 
 			FedoraObject fedoraObject = new FedoraObject();
-			String uri = binding.get("x").toString();
-			uri = uri.substring(fedoraServerURL.length());
+			String uri = binding.get("s").toString();
+			int startIndex = uri.lastIndexOf("/");
+			uri = uri.substring(startIndex+1);
 			fedoraObject.setURI(uri);
 			
 			
@@ -193,7 +200,7 @@ public class FusekiService {
 			
 			fedoraObject.setTitle(binding.get("title").toString());
 			Date createdOn = convertRDFNodetoDate(binding.get("created"));
-			Date lastModified = convertRDFNodetoDate(binding.get("lastModified"));
+			Date lastModified = convertRDFNodetoDate(binding.get("lastUpdated"));
 			fedoraObject.setLastModified(lastModified);
 			fedoraObject.setCreatedOn(createdOn);
 
@@ -209,7 +216,7 @@ public class FusekiService {
 
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
-			String queryString = FusekiConstants.PREFIX_OT+"\n"+
+				String queryString = FusekiConstants.PREFIX_OT+"\n"+
 
 			 "SELECT  (COUNT(DISTINCT ?x) AS ?count) \n"+
 
@@ -217,20 +224,20 @@ public class FusekiService {
 			 "?x  ot:published \"yes\".\n"+ 
 			 "} \n" ;
 
-			Query query = QueryFactory.create(queryString) ;
-			QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
-			ResultSet resultSet = execution.execSelect();
+				Query query = QueryFactory.create(queryString) ;
+				QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
+				ResultSet resultSet = execution.execSelect();
 
-			if (resultSet.hasNext()) {
-				QuerySolution binding = resultSet.nextSolution();
-				String countString = binding.get("count").toString();
+				if (resultSet.hasNext()) {
+					QuerySolution binding = resultSet.nextSolution();
+					String countString = binding.get("count").toString();
 
 
-				String[] array =  countString.split("\\^\\^");
-				if(array.length > 0) {
-					count = Integer.valueOf(array[0]);
+					String[] array =  countString.split("\\^\\^");
+					if(array.length > 0) {
+						count = Integer.valueOf(array[0]);
+					}
 				}
-			}
 			}
 		} else {
 			logger.error("Fuseki Server URL is not configured");
@@ -272,10 +279,11 @@ public class FusekiService {
 	}
 	
 	public FedoraObject getObjectProperties(FedoraObject fedoraObject) throws ObjectTellerException {
+		HashMap<String, Object> keyValue = new HashMap<String, Object>();
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
-				String uri = fedoraServerURL+fedoraObject.getURI();
+				String uri = fusekiSubjectBaseURI+fedoraObject.getURI();
 				String queryString = FusekiConstants.PREFIX_OT+"\n"+
 
 				 "SELECT  ?p ?o \n"+
@@ -288,17 +296,29 @@ public class FusekiService {
 				QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
 				ResultSet resultSet = execution.execSelect();
 
+				
+				
 				while (resultSet.hasNext()) {
 					QuerySolution binding = resultSet.nextSolution();
 					String predicate = binding.get("p").toString();
 					if(predicate.contains(FusekiConstants.DC_NAMESPACE) == true) {
 						String actualPredicate = predicate.substring(FusekiConstants.DC_NAMESPACE.length());
+						if(!keyValue.containsKey(actualPredicate))
+							keyValue.put(actualPredicate, binding.get("o"));
+						else {
+							keyValue.replace(actualPredicate, binding.get("o"));
+						}
 						if("title".equals(actualPredicate)){
 							fedoraObject.setTitle(binding.get("o").toString());
 						}
 					} else {
 						if(predicate.contains(FusekiConstants.FEDORA_NAMESPACE) == true){
 							String actualPredicate = predicate.substring(FusekiConstants.FEDORA_NAMESPACE.length());
+							if(!keyValue.containsKey(actualPredicate))
+								keyValue.put(actualPredicate, binding.get("o"));
+							else {
+								keyValue.replace(actualPredicate, binding.get("o"));
+							}
 							if("lastModified".equals(actualPredicate)  )
 								fedoraObject.setLastModified(convertRDFNodetoDate(binding.get("o")));
 
@@ -308,6 +328,11 @@ public class FusekiService {
 						} else {
 							if(predicate.contains(FusekiConstants.OT_NAMESPACE) == true) {
 								String actualPredicate = predicate.substring(FusekiConstants.OT_NAMESPACE.length());
+								if(!keyValue.containsKey(actualPredicate))
+									keyValue.put(actualPredicate, binding.get("o"));
+								else {
+									keyValue.replace(actualPredicate, binding.get("o"));
+								}
 								if("keywords".equals(actualPredicate) )
 									fedoraObject.setKeywords(binding.get("o").toString());
 
@@ -336,6 +361,19 @@ public class FusekiService {
 			ObjectTellerException exception = new ObjectTellerException("Fuseki Server URL is not configured");
 			throw exception;
 		} 
+		
+		/*fedoraObject.setTitle(keyValue.get("title").toString());
+		fedoraObject.setLastModified(convertRDFNodetoDate((RDFNode)keyValue.get("lastModified")));
+		fedoraObject.setCreatedOn(convertRDFNodetoDate((RDFNode)keyValue.get("created")));
+		fedoraObject.setKeywords(keyValue.get("keywords").toString());
+		fedoraObject.setOwner(keyValue.get("owner").toString());
+		fedoraObject.setContributors(keyValue.get("contributors").toString());
+		fedoraObject.setDescription(keyValue.get("description").toString());
+		if("YES".equals(keyValue.get("published").toString().toUpperCase()))
+			fedoraObject.setPublished(true);
+		else
+			fedoraObject.setPublished(false);*/
+		
 		return fedoraObject;
 	} 
 	
@@ -359,7 +397,7 @@ public class FusekiService {
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
-				String uri = fedoraServerURL+objectURI+"/"+ChildType.PAYLOAD.getChildType();
+				String uri = fusekiSubjectBaseURI+objectURI+"/"+ChildType.PAYLOAD.getChildType();
 				String queryString = FusekiConstants.PREFIX_OT+"\n"+
 
 				 "SELECT  ?p ?o \n"+
@@ -400,7 +438,7 @@ public class FusekiService {
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
-				String uri = fedoraServerURL+objectURI;
+				String uri = fusekiSubjectBaseURI+objectURI;
 				String queryString = FusekiConstants.PREFIX_OT+"\n"+
 
 				 "SELECT  ?p ?o \n"+

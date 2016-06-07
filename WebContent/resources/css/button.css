@@ -21,7 +21,6 @@
 
 .roundbutton:hover{
     background-color: #8FCB95;
-
 }
 
 #settinglink{
@@ -93,3 +92,16 @@ img#dropdown{
             display:none;
             z-index:500;
         }
+
+#newuser{
+	width:16px;
+	height:16px;
+        position:absolute;
+    bottom:-5px;
+    right:45px;
+    padding:0;
+}
+
+#newuser:hover{
+	background-color:#39b54a;
+}

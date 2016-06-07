@@ -6,7 +6,7 @@
   background: #39b54a;
   filter: progid: DXImageTransform.Microsoft.gradient(startColorStr='#333333', EndColorStr='#111111');
 /*   box-shadow: 0 1px 2px #666666; */
-  -webkit-box-shadow: 0 1px 2px #666666;
+/*   -webkit-box-shadow: 0 1px 2px #666666; */
   z-index:1;
 }
 

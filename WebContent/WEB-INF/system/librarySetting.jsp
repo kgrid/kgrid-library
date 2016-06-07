@@ -202,13 +202,12 @@
 	<body onload="getData()" >
  
 	
-     <div class="settingoverlay">
-             
-            <div class="settingcontent">
+     <div class="board" id="libsetting">
+            <div class="entryform">
              <button class="greenroundbutton" id="closebutton" onclick="closeNav()">
     <img src="<c:url value="/resources/images/Close_Icon.png"/>" />
     </button>
-        <h1 style="text-align:center;"> Library Settings </h1>
+        <h3 style="text-align:center;"> Library Settings </h3>
                 <form id="libsetting"  >
            <table id="libsettable">
             <tr>
@@ -219,24 +218,25 @@
                </tr>
                 <tr>
                  <td class="rheader"><spring:message code="FIELD_IDENTIFIER"/> </td>
-                <td> <input type="text" placeholder="URL " id="URL_Fedora" name="URL_Fedora" ></td>
-                <td>  <input type="text" placeholder="URL " id="URL_Fuseki" name="URL_Fuseki" ></td>
-                <td> <input type="text" placeholder="Name " id="Name_SMTP" name="Name_SMTP" ></td>
+                <td> <input type="text" placeholder="URL " class="libset" id="URL_Fedora" name="URL_Fedora" ></td>
+                
+                <td>  <input type="text" placeholder="URL " class="libset" id="URL_Fuseki" name="URL_Fuseki" ></td>
+                <td> <input type="text" placeholder="Name " class="libset" id="Name_SMTP" name="Name_SMTP" ></td>
                 </tr>            <tr>
              <td class="rheader"><spring:message code="IP_ADDRESS"/></td>
-                <td> <input type="text" placeholder="XX.XX.XX.XX " id="IP_Fedora" name="IP_Fedora" > </td>
-                <td> <input type="text" id="IP_Fuseki" name="IP_Fuseki">  </td>
-                <td> <input type="text" placeholder="XX.XX.XX.XX " id="IP_SMTP" name="IP_SMTP" > </td>
+                <td> <input type="text" placeholder="XX.XX.XX.XX " class="libset" id="IP_Fedora" name="IP_Fedora" > </td>
+                <td> <input type="text" class="libset" id="IP_Fuseki" name="IP_Fuseki">  </td>
+                <td> <input type="text" placeholder="XX.XX.XX.XX " class="libset" id="IP_SMTP" name="IP_SMTP" > </td>
                     </tr>            <tr>
              <td class="rheader"><spring:message code="FIELD_LOGIN" /></td>
-                <td> <input type="text" placeholder="Login ID " id="Login_Fedora" name="Login_Fedora" >  </td>
-                <td> <input type="text" id="Login_Fuseki" name="Login_Fuseki">   </td>
-                <td>  <input type="text" placeholder="Login ID " id="Login_SMTP" name="Login_SMTP" >  </td>
+                <td> <input type="text" placeholder="Login ID " class="libset" id="Login_Fedora" name="Login_Fedora" >  </td>
+                <td> <input type="text" id="Login_Fuseki" class="libset" name="Login_Fuseki">   </td>
+                <td>  <input type="text" placeholder="Login ID " class="libset" id="Login_SMTP" name="Login_SMTP" >  </td>
                </tr>            <tr>
                 <td class="rheader"><spring:message code="PASSWORD"/></td>
-                <td>  <input type="password" placeholder="Password " id="Password_Fedora" name="Password_Fedora" >  </td>
-               <td>  <input type="password"  id="Password_Fuseki" name="Password_Fuseki">  </td> 
-               <td>  <input type="password" placeholder="Password " id="Password_SMTP" name="Password_SMTP" >  </td>
+                <td>  <input type="password" placeholder="Password " class="libset" id="Password_Fedora" name="Password_Fedora" >  </td>
+               <td>  <input type="password"  id="Password_Fuseki" class="libset" name="Password_Fuseki">  </td> 
+               <td>  <input type="password" placeholder="Password " class="libset" id="Password_SMTP" name="Password_SMTP" >  </td>
                 </tr>
                <tr>
                 <td class="cheader">   </td>

@@ -1,17 +1,15 @@
 .banner-content {
   position:relative;
   width: 1024px;;  
-  margin: 0 auto; 
+/*   margin: 0 auto;  */
   margin-top:60px;
   overflow: hidden;
- }
+}
     
 .banner-content#landing{
-/*     background-image:url("../images/bannerBackground.png");
-    background-repeat: no-repeat;
-    background-position: center center; */
     background-color:transparent;
-     height:335px;
+    height:335px;
+
 }
 
 .banner-content#home_banner{
@@ -34,7 +32,7 @@
   overflow: hidden;
   text-align: left;
   padding: 4px;
-  font-size: 14px;
+  font-size: 12px;
   font-family: 'Open Sans', sans-serif;
   font-weight: semibold;
   color: dimgrey;
@@ -63,9 +61,9 @@ font-size:35px;
 #bannerbk{
 	/* background-color:pink; */
 	position:fixed;
+	width:1024px;
 	top:85px;
-	left:50%;
-	margin-left:-110px;
+	text-align: center;
 }
 .banner-content#home_banner h1 {
 font-family: 'Open Sans', sans-serif;
@@ -79,19 +77,18 @@ font-size:35px;
   padding-top:15px;
    background:transparent;
 }
-.banner-content#home_banner h1 small {
+#home_banner >h1 small {
   font-family: 'Open Sans', sans-serif;
-	font-zise:28px;
+	font-zise:24px;
   line-height: 1.5em;
   /*font-weight: 100;*/
   display: block;
 }
 .banner-content table td #h5 {
-  font: 'Open Sans', sans-serif;
   font-weight: 300;
   margin-top: 10px;
-  margin-bottom: 20px;
-   font-size:21px;
+  margin-bottom: 10px;
+   font-size:18px;
   text-align: left;
   color: dimgrey;
 }
@@ -133,11 +130,14 @@ h5 {
 }
 
 #bannericonrow {
+	list-style:none;
     position:relative;
     display:table-row;
     float:right;
 }
-
+#bannericonrow li{
+    display:table-cell;
+}
 
 
 
