@@ -10,12 +10,14 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.model.Server_details;
@@ -40,9 +42,14 @@ public class FedoraObjectService {
 
 	
 
-	public void putBinary(String binary, String objIdentifier, String type) throws ObjectTellerException {
+	public void putBinary(String binary, String objIdentifier, String type, String transactionID) throws ObjectTellerException {
 
-		HttpPut httpPutRequestPayload = new HttpPut(baseURI + objIdentifier + "/" + type);
+		HttpPut httpPutRequestPayload ;
+		if(transactionID == null)
+			httpPutRequestPayload = new HttpPut(baseURI + objIdentifier + "/" + type);
+		else
+			httpPutRequestPayload = new HttpPut(baseURI + transactionID + "/"+ objIdentifier + "/" + type);
+			
 		httpPutRequestPayload.addHeader(BasicScheme.authenticate(
 				new UsernamePasswordCredentials(userName, password),
 				"UTF-8", false));
@@ -93,9 +100,14 @@ public class FedoraObjectService {
 	}
 
 
-	protected void sendPatchRequestForUpdatingTriples(String data, String ObjectURI) throws ObjectTellerException {
+	protected void sendPatchRequestForUpdatingTriples(String data, String ObjectURI, String transactionId) throws ObjectTellerException {
 
-		HttpPatch httpPatch = new HttpPatch(baseURI + ObjectURI );
+		HttpPatch httpPatch ;
+		if(transactionId == null)
+			httpPatch = new HttpPatch(baseURI + ObjectURI );
+		else
+			httpPatch = new HttpPatch(baseURI + transactionId+"/"+ObjectURI );
+		
 		httpPatch.addHeader(BasicScheme.authenticate(
 				new UsernamePasswordCredentials(userName, password),
 				"UTF-8", false));
@@ -129,10 +141,15 @@ public class FedoraObjectService {
 	}
 		
 
-	public void createContainer(String uri) throws ObjectTellerException {
+	public void createContainer(String uri, String transactionID) throws ObjectTellerException {
 		HttpClient httpClient = new DefaultHttpClient();
 
-		HttpPut httpPutRequest = new HttpPut(baseURI+uri);
+		HttpPut httpPutRequest = null;
+		if(transactionID == null) 
+			httpPutRequest = new HttpPut(baseURI+uri);
+		else 
+			httpPutRequest = new HttpPut(baseURI+transactionID+"/"+uri);
+		
 		httpPutRequest.addHeader(BasicScheme.authenticate(
 				new UsernamePasswordCredentials(userName, password),
 				"UTF-8", false));
@@ -152,5 +169,118 @@ public class FedoraObjectService {
 		}
 	}
 
+	public String createTransaction() throws ObjectTellerException {
+		String transactionId = null;
+		String transactionURL = baseURI+"fcr:tx";
+		
+		HttpPost httpPost = new HttpPost(transactionURL);
+		httpPost.addHeader(BasicScheme.authenticate(
+				new UsernamePasswordCredentials(userName, password),
+				"UTF-8", false));
 
+		HttpClient httpClient = new DefaultHttpClient();
+
+		HttpResponse response;
+		
+		try {
+			response = httpClient.execute(httpPost) ;
+			if(response.getStatusLine().getStatusCode() == HttpStatus.CREATED.value()) {
+				String location = response.getFirstHeader("Location").getValue();
+				if(location!= null ){
+					
+					transactionId = location.substring(baseURI.length());
+					logger.info("Transaction created with id "+transactionId);
+				} else {
+					ObjectTellerException exception = new ObjectTellerException("Transaction ID Not found. ");
+					logger.error("Transaction ID Not found. ");
+					throw exception;
+				}
+			} else {
+				ObjectTellerException exception = new ObjectTellerException("Unable to create transaction .");
+				logger.error("Unable to create transaction .");
+				throw exception;
+			}
+			
+		} catch (ClientProtocolException e) {
+			ObjectTellerException exception = new ObjectTellerException(e);
+			logger.error("Exception occured while creating transaction "+e.getMessage());
+			exception.setErrormessage("Exception occured while creating transaction "+e.getMessage());
+			throw exception;
+		} catch (IOException e) {
+			ObjectTellerException exception = new ObjectTellerException(e);
+			logger.error("Exception occured while creating transaction "+e.getMessage());
+			exception.setErrormessage("Exception occured while creating transaction "+e.getMessage());
+			throw exception;
+		}
+		
+		return transactionId;
+	}
+
+	public void commitTransaction(String transactionId) throws ObjectTellerException {
+		String transactionCommitURL = baseURI + transactionId + "/fcr:tx/fcr:commit";
+		HttpPost httpPost = new HttpPost(transactionCommitURL);
+		httpPost.addHeader(BasicScheme.authenticate(
+				new UsernamePasswordCredentials(userName, password),
+				"UTF-8", false));
+
+		HttpClient httpClient = new DefaultHttpClient();
+
+		HttpResponse response;
+		
+		try {
+			response = httpClient.execute(httpPost) ;
+			if(response.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value()) {
+				
+			} else {
+				ObjectTellerException exception = new ObjectTellerException("Unable to commit transaction with Id "+transactionId);
+				logger.error("Unable to commit transaction with Id "+transactionId);
+				throw exception;
+			}
+			
+		} catch (ClientProtocolException e) {
+			ObjectTellerException exception = new ObjectTellerException(e);
+			logger.error("Exception occured while committing the transaction with id "+transactionId+"."+e.getMessage());
+			exception.setErrormessage("Exception occured while committing the transaction with id "+transactionId+"."+e.getMessage());
+			throw exception;
+		} catch (IOException e) {
+			ObjectTellerException exception = new ObjectTellerException(e);
+			logger.error("Exception occured while committing the transaction with id "+transactionId+"."+e.getMessage());
+			exception.setErrormessage("Exception occured while committing the transaction with id "+transactionId+"."+e.getMessage());
+			throw exception;
+		}
+	}
+
+	public void rollbackTransaction(String transactionId) throws ObjectTellerException {
+		String transactionRollBackURL = baseURI + transactionId + "/fcr:tx/fcr:rollback";
+		HttpPost httpPost = new HttpPost(transactionRollBackURL);
+		httpPost.addHeader(BasicScheme.authenticate(
+				new UsernamePasswordCredentials(userName, password),
+				"UTF-8", false));
+
+		HttpClient httpClient = new DefaultHttpClient();
+
+		HttpResponse response;
+		
+		try {
+			response = httpClient.execute(httpPost) ;
+			if(response.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value()) {
+				
+			} else {
+				ObjectTellerException exception = new ObjectTellerException("Unable to roll back transaction with Id "+transactionId);
+				logger.error("Unable to roll back transaction with Id "+transactionId);
+				throw exception;
+			}
+			
+		} catch (ClientProtocolException e) {
+			ObjectTellerException exception = new ObjectTellerException(e);
+			logger.error("Exception occured while rolling back the transaction with id "+transactionId+"."+e.getMessage());
+			exception.setErrormessage("Exception occured while rolling back the transaction with id "+transactionId+"."+e.getMessage());
+			throw exception;
+		} catch (IOException e) {
+			ObjectTellerException exception = new ObjectTellerException(e);
+			logger.error("Exception occured while rolling back the transaction with id "+transactionId+"."+e.getMessage());
+			exception.setErrormessage("Exception occured while rolling back the transaction with id "+transactionId+"."+e.getMessage());
+			throw exception;
+		}
+	}
 }

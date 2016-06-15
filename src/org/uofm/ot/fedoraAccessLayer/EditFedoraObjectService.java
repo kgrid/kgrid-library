@@ -34,7 +34,7 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			"	 <"+super.baseURI+fedoraObject.getURI()+"> 	 ot:keywords ?o4 . \n"+
 			"	} ";
 		
-		super.sendPatchRequestForUpdatingTriples(data, fedoraObject.getURI()); 
+		super.sendPatchRequestForUpdatingTriples(data, fedoraObject.getURI(),null); 
 	} 
 	
 	public void toggleObject(String objectURI, String param) throws ObjectTellerException {
@@ -54,7 +54,7 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			"	 <"+super.baseURI+objectURI+"> 	 ot:published ?o . \n"+
 			"	} ";
 	
-		super.sendPatchRequestForUpdatingTriples(data, objectURI); 
+		super.sendPatchRequestForUpdatingTriples(data, objectURI, null); 
 	} 
 	
 	public void editPayloadMetadata(FedoraObject fedoraObject) throws ObjectTellerException{
@@ -78,7 +78,7 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			"	} ";
 		
 		
-		super.sendPatchRequestForUpdatingTriples(data, fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+"/fcr:metadata");
+		super.sendPatchRequestForUpdatingTriples(data, fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+"/fcr:metadata", null);
 		 
 	} 
 	
