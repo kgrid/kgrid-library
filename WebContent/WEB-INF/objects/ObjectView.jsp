@@ -289,14 +289,14 @@
 	}
 	
 	function userLogout(){
-		alert("Inside the function ");
+		
 	
 		$.ajax({
 			type : 'POST',
 			url : "logout" ,
 
 			success : function(response) {
-				alert("Inside success ");
+				
 				 window.location = "/ObjectTeller/login";
 			}
 		});
