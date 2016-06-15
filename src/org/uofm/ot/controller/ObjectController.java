@@ -159,7 +159,9 @@ public class ObjectController {
 	public String editPayload(ModelMap model, FedoraObject fedoraObject) {
 		try {
 
-			editFedoraObjectService.putBinary(fedoraObject.getPayload(), fedoraObject.getURI(), ChildType.PAYLOAD.getChildType());
+			String transactionId = null;
+			
+			editFedoraObjectService.putBinary(fedoraObject.getPayload(), fedoraObject.getURI(), ChildType.PAYLOAD.getChildType(),transactionId);
 			editFedoraObjectService.editPayloadMetadata(fedoraObject);
 			try {
 				Thread.sleep(1000);                 
@@ -182,7 +184,9 @@ public class ObjectController {
 	public String editInputMessage(ModelMap model, FedoraObject fedoraObject) {
 		try {
 
-			editFedoraObjectService.putBinary(fedoraObject.getInputMessage(), fedoraObject.getURI(), ChildType.INPUT.getChildType());
+			String transactionId = null;
+			
+			editFedoraObjectService.putBinary(fedoraObject.getInputMessage(), fedoraObject.getURI(), ChildType.INPUT.getChildType(),transactionId);
 
 			getObject(fedoraObject.getURI(), model );
 			model.addAttribute("ActiveTab", "INPUT");
@@ -200,8 +204,8 @@ public class ObjectController {
 	public String editOutputMessage(ModelMap model, FedoraObject fedoraObject) {
 
 		try {
-
-			editFedoraObjectService.putBinary(fedoraObject.getOutputMessage(), fedoraObject.getURI(), ChildType.OUTPUT.getChildType());
+			String transactionId = null;
+			editFedoraObjectService.putBinary(fedoraObject.getOutputMessage(), fedoraObject.getURI(), ChildType.OUTPUT.getChildType(), transactionId);
 
 			getObject(fedoraObject.getURI(),model);
 			model.addAttribute("ActiveTab", "OUTPUT");
