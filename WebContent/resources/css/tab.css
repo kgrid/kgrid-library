@@ -133,15 +133,23 @@ input[type=text]:disabled {
 	font-size: 14px;
 }
 
+.objectcontainer {
+    width:98%; 
+    height:60px; 
+    background:white;
+    margin: 0 auto; 
+    overflow: hidden;
+    z-index:125;
+}
 .headercol {
     text-align: left;
     width: 81%;
     border-collapse:collapse;
-    margin:0 auto;
     display:table;
     margin-top: 5px;
     margin-bottom:0px;
 	max-width:960px;
+	vertical-align: bottom;
 } 
 .done{
     color:#fff;
@@ -191,7 +199,7 @@ ul#tabs {
       margin-top:20px;
       margin-bottom:0px;
     cursor: pointer;
-    border-bottom: 2px solid #fff;
+    vertical-align: bottom;
     }
     ul#tabs li:hover {
       background-color: #fff; }

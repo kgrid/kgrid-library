@@ -12,17 +12,17 @@
 
 }
 
-.banner-content#home_banner{
-  width: 1160px;
-  margin: 0 auto;
+.banner-content#homebanner{
+	width:1024px;
   margin-top: 75px;
   overflow: hidden;
-  height: 250px;
+  height: 220px;
 }
 .banner-content table {
   border-collapse: collapse;
   border-spacing: 0;
   margin: 0px;
+  margin-left:15px;
   padding: 2px;
 }
 .banner-content td {
@@ -65,19 +65,20 @@ font-size:35px;
 	top:85px;
 	text-align: center;
 }
-.banner-content#home_banner h1 {
+.banner-content#homebanner h1 {
 font-family: 'Open Sans', sans-serif;
 font-size:35px;
   font-weight: semibold;
-  text-align:center;
+  text-align:left;
   margin-bottom: 20px;
   color: dimgrey;
   margin: 0 auto;
   line-height: 2em;
+  padding-left:15px;
   padding-top:15px;
    background:transparent;
 }
-#home_banner >h1 small {
+#homebanner >h1 small {
   font-family: 'Open Sans', sans-serif;
 	font-zise:24px;
   line-height: 1.5em;

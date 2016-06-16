@@ -1,7 +1,7 @@
 .main-content {
   width: 98%;
 
-  min-height: 600px;
+  min-height: 700px;
   background: #e6e6e6;
   margin: 0 auto;
   z-index:100;
@@ -54,7 +54,7 @@
     width: 1024px;
     height:30px;
     border-collapse:collapse;
-    margin:0 auto;
+/*     margin:0 auto; */
     display:table;
     margin-top: 15px;
     margin-bottom:15px;

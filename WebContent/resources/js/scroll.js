@@ -1,10 +1,10 @@
 /*jslint browser: true*/
 /*global $, jQuery, alert*/
 jQuery(document).ready(function () {
-
+	var padLeft = 280;
     var navOffset = jQuery(".header").offset().top;
     jQuery(".header").wrap('<div class="theadwrapper"></div>');
-	jQuery(".theadwrapper").height(jQuery(".header").outerHeight());
+	jQuery(".theadwrapper").height(jQuery(".header").outerHeight(false));
 
     jQuery(window).scroll(function () {
     	var supportPageOffset = window.pageXOffset !== undefined;
@@ -39,6 +39,7 @@ jQuery(document).ready(function () {
     }
     
   	function setIconPos(){
+  			
 			var css_right_doc=getCSSright($(document));
 			var css_right_window=getCSSright($(window));
 			$("#backtotop").css("right",css_right_window);
@@ -47,17 +48,21 @@ jQuery(document).ready(function () {
 			
 			var vp_width=$(window).width();
 			var left_value_offset=(vp_width-1024)/2;
-			if(left_value_offset<=240){
-				$("#bannerbk").css("left",240);
-				$("#landing").css("left",240);
-				$(".banner-content").css("left",240);
-				
-				$(".datagrid").css("left",240);
+			var datagrid_offset=($('.maincontentwrapper').width() - $('.main-content').width())/2+2;
+			if(left_value_offset<=padLeft){
+				$("#bannerbk").css("left",padLeft);
+				$("#landing").css("left",padLeft);
+				$(".banner-content").css("left",padLeft);
+				$(".headercol").css("left",padLeft-datagrid_offset);			
+				$(".datagrid").css("left",padLeft-datagrid_offset);
+/*				$(".objectcontainer.headercol").css("left",padLeft);		*/	
 			}else{
 				$("#bannerbk").css("left",left_value_offset);
 				$("#landing").css("left",left_value_offset);
 				$(".banner-content").css("left",left_value_offset);
-				$(".datagrid").css("left",left_value_offset);
+				$(".datagrid").css("left",left_value_offset-datagrid_offset);
+				$(".headercol").css("left",left_value_offset-datagrid_offset);
+/*				$(".objectcontainer.headercol").css("left",left_value_offset);	*/
 			}
 			
 			

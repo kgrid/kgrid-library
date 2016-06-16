@@ -118,7 +118,7 @@
 		<div id="logout-dropdown" class="dropdown">
 			<sf:form method="POST" class="signin" action="">
 				<fieldset class="links">
-					<button id="settings" type="button" class="open-overlay" onclick="openNav()">
+					<button id="settings" type="button" class="open-overlay button" onclick="openNav()">
 						<spring:message code="SETTINGS" />
 					</button>
 				</fieldset>
