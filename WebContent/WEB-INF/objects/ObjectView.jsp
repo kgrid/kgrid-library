@@ -473,7 +473,7 @@
 			</div>
 		</div>
 	</div>
-
+	<div class="maincontentwrapper">
 	<div class="main-content">
 		<div class="datagrid">
 			<ul id="tab">
@@ -766,6 +766,7 @@
 				</li>
 			</ul>
 		</div>
+	</div>
 	</div>
 </body>
 </html>
