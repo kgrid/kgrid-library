@@ -100,7 +100,7 @@ $(document)
 								}
 							});
 					$("#addObjButton").click(function() {
-						$("#entryform").css("display", "none");
+						$("#entry_form").css("display", "none");
 						$("#end_page").css("display", "block");
 
 					});
