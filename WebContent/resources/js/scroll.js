@@ -45,10 +45,10 @@ jQuery(document).ready(function () {
 			$("#backtotop").css("right",css_right_window);
 			$("#infoicon").css("right",css_right_doc);
 			$("#addObjbutton").css("right",css_right_doc);
-			
 			var vp_width=$(window).width();
 			var left_value_offset=(vp_width-1024)/2;
 			var datagrid_offset=($('.maincontentwrapper').width() - $('.main-content').width())/2+2;
+
 			if(left_value_offset<=padLeft){
 				$("#bannerbk").css("left",padLeft);
 				$("#landing").css("left",padLeft);

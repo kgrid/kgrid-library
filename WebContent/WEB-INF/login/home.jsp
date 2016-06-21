@@ -45,6 +45,22 @@
 		document.body.classList.toggle('noscroll', false);
 
 	}
+	
+	function overlayToggle(overlayID, open){
+		var olElement = document.getElementById(overlayID);
+		if(open){
+			olElement.style.display="block";
+			olElement.style.width="100%";
+		}else{
+			olElement.style.display="none";
+			olElement.style.width="0%";
+		}
+		    document.body.classList.toggle('noscroll', open);
+		if(overlayID=="addObject"){
+			resetInputText();
+		}
+		
+	}
 
 	function resetInputText() {
 		$('#payloadTextArea').val("");
@@ -92,49 +108,18 @@
 	<div id="addObject" class="overlay" aria-hidden="true">
 		<%@ include file="../objects/createNewObject.jsp"%>
 	</div>
+	<div id="libraryuser"  class="overlay" aria-hidden="true">
+     	<%@ include file="../account/libraryUser.jsp" %>
+	 </div>
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
-	<div id="logo">
-		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
-			height="auto">
+	<div id="topfixed">
+			<%@ include file="../common/banner.jsp"%>
 	</div>
 	<div id="top-stuff">
 		<%@ include file="../common/navbar.jsp"%>
 	</div>
-
-	<div class="active-links">
-		<div id="logoutsession" class="logout-link">
-			<ul>
-				<li id="user"><a id="user-link" href="#"> <strong><spring:message
-								code="HELLO_MESSAGE" /> ${DBUser.first_name} </strong>
-				</a></li>
-				<li id="icon" class="down"><img id="iconimg" class="down"
-					src="<c:url value="/resources/images/Chevron_Icon.png"/>" /></li>
-			</ul>
-		</div>
-
-
-		<div id="logout-dropdown" class="dropdown">
-			<sf:form method="POST" class="signin" action="">
-				<fieldset class="links">
-					<button id="settings" type="button" class="open-overlay button" onclick="openNav()">
-						<spring:message code="SETTINGS" />
-					</button>
-				</fieldset>
-			</sf:form>
-			<sf:form method="POST" class="signin" action="logout">
-				<fieldset class="links">
-					<button id="logout" class="submit button" type="submit">
-						<spring:message code="LOGOUT" />
-					</button>
-				</fieldset>
-			</sf:form>
-
-		</div>
-	</div>
-
-
 
 	<div id="homebanner" class="banner-content">
 		<div id="bannercontent">
@@ -159,7 +144,7 @@
 		</div>
 		<div id="bannericons">
 			<ul id="bannericonrow">
-				<li><button class="roundbutton" id="userlink">
+				<li><button class="roundbutton" id="userlink" onclick="overlayToggle('libraryuser',true)">
 						<img src="<c:url value="/resources/images/Person_Icon.png"/> " />
 					</button>
 					<button class="greenroundbutton" id="newuser">
@@ -167,7 +152,7 @@
 							width="10px">
 					</button></li>
 				<li>
-					<button class="roundbutton open-overlay"  type="button" id="settinglink" onclick="openNav()">
+					<button class="roundbutton open-overlay"  type="button" id="settinglink" onclick="overlayToggle('libsettings',true)">
 						<img src="<c:url value="/resources/images/Gear_Icon.png"/> " />
 					</button>
 			</ul>
@@ -175,7 +160,7 @@
 	</div>
 	<div class="header">
 		<button class="greenroundbutton open-overlay"  type="button" id="addObjbutton"
-			onclick="openAddObjOverlay()">
+			 onclick="overlayToggle('addObject',true)">
 			<img src="<c:url value="/resources/images/Plus_Icon.png"/>" />
 		</button>
 		<div class="headercontainer">
