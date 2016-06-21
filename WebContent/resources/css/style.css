@@ -226,7 +226,7 @@ img#iconimg{
   box-shadow: 0 1px 2px #666666;
   -webkit-box-shadow: 0 1px 2px #666666;
   height: 200px;
-  min-width: 160px;
+  min-width: 140px;
   position: absolute;
   top: 60px;
   right: 30px;;
@@ -243,10 +243,10 @@ img#iconimg{
   padding: 10px;
   text-align: left;
 }
-#signin-dropdown .textbox span {
+#signin-dropdown .signin-textbox span {
   color: white;
 }
-#signin-dropdown .textbox input {
+#signin-dropdown .signin-textbox input {
 	border:1px solid #fff;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -259,16 +259,16 @@ img#iconimg{
 }
 fieldset.links{
 	display:block;
-	height:30px;
+	height:36px;
   border: none;
   padding:0;
   margin:0;
 }
-form.signin .textbox label {
+form.signin .signin-textbox label {
   display: block;
   padding-bottom: 7px;
 }
-form.signin .textbox span {
+form.signin .signin-textbox span {
   display: block;
   color: white;
 }
@@ -328,7 +328,7 @@ form.signin .remb .remember {
     border:none;
     float:left;
     font-size:12pt;
-    margin:5px;
+    margin:2px 2px 2px 10px;
     
 }
 button#settings {

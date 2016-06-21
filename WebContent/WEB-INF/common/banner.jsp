@@ -15,25 +15,20 @@
 
 $(document).ready(function(){
 	
-		alert("inside banner test");
+/* 		alert("inside banner test"); */
 		var userObj = "<%=session.getAttribute("DBUser")%>";
-		alert(userObj);
 		if ('null' != userObj) {
-			alert("inside user logged in if");
 			$("#session").hide();
 			$("#logoutsession").show();
-			$("#user-link").val("Hello "+userObj.first_name);
+			$("#user-link").val("Hello, "+userObj.first_name);
 		} else {
-			alert("inside user not logged in ");
 			$("#session").show();
 			$("#logoutsession").hide();
 		}
-	
-	
 
 		$("#login").click( function login() {
 	
-		alert("inside login fuction ");
+/* 		alert("inside login fuction "); */
 		
 		var user = new Object();
 
@@ -42,7 +37,7 @@ $(document).ready(function(){
 
 		var text = JSON.stringify(user);
 
-		alert(text);
+/* 		alert(text); */
 		$.ajax({
 					beforeSend : function(xhrObj) {
 						xhrObj.setRequestHeader("Content-Type",
@@ -55,12 +50,11 @@ $(document).ready(function(){
 					dataType : "json",
 
 					success : function(response) {
-						alert("Success !! Data saved successfully." +response);
-						 if(response!='empty') {
+/* 						alert("Success !! Data saved successfully." +response);
+ */						 if(response!='empty') {
 							  var test = JSON.stringify(response);
 						      var obj = JSON.parse(test);
 						      
-						      alert(obj);
 								location.reload();
 						    }
 					} ,
@@ -70,22 +64,15 @@ $(document).ready(function(){
 						
 					}
 				});
-		});
+		}); 
 
 	});
 </script>
 </head>
 <body>
-	<div id="top-bar-out">
-		<div id="topnav">
-			<div id="nav">
-				<ul>
-					<li><a href="#"><spring:message code="BANNER_ABOUT" /></a></li>
-					<li><a href="#"><spring:message code="BANNER_FAQ" /></a></li>
-					<li><a href="#"><spring:message code="BANNER_CONTACT_US" /></a></li>
-				</ul>
-			</div>
-	</div>
+	<div id="logo">
+		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
+			height="auto">
 	</div>
 			<div class="active-links">
 				
@@ -94,10 +81,11 @@ $(document).ready(function(){
 									code="LOG_IN_BUTTON" /></strong>
 						</a>
 					</div>
-					<div id="signin-dropdown" class="login-link">
+					<div id="signin-dropdown" class="dropdown">
 
-						<form class="signin" id="loginForm">
-							<fieldset class="textbox">
+	<sf:form method="POST" modelAttribute="user" class="signin"
+				action="home">
+							<fieldset class="signin-textbox">
 								<input name="username" type="text" id="username"
 									autocomplete="on" placeholder="Username"></input>
 								<input type="password"  placeholder="Password" id="passwd"
@@ -108,7 +96,7 @@ $(document).ready(function(){
 									value="1" name="remember_me" /> <span><spring:message
 											code="REMEMBER_ME_BUTTON" /></span>
 								</label>
-								<button id="login" class="submit button" type="button">
+								<button id="login" class="submit button" type="subumit">
 									<spring:message code="LOG_IN_BUTTON" />
 								</button>
 							</fieldset>
@@ -116,24 +104,24 @@ $(document).ready(function(){
 								<a href="retrievepw.html"> <spring:message
 										code="PASSWORD_RESET" /></a>
 							</p>
-						</form>
+						</sf:form>
 					</div>
 					
 				<!-- 
 					<div id="logout"> -->
 					<div id="logoutsession" class="logout-link">
 						<ul>
-							<li id="user"><a id="user-link" href="#"> <strong><spring:message
-											code="HELLO_MESSAGE" /> </strong>
-							</a></li><li>Hello</li>
-							<li id="icon" class="down"><img
+<li id="user"><a id="user-link" href="#"> <strong><spring:message
+								code="HELLO_MESSAGE" /> ${DBUser.first_name} </strong>
+				</a></li>
+							<li id="icon" class="down"><img id="iconimg" class="down"
 								src="<c:url value="/resources/images/Chevron_Icon.png"/>" /></li>
 						</ul>
 					</div>
-					<div id="logout-dropdown" class="logout-link">
+					<div id="logout-dropdown" class="dropdown">
 						<form method="POST" class="signin" action="">
 							<fieldset class="links">
-								<button id="settings" onclick="openNav()">
+								<button id="settings" type="button" class="open-overlay button" onclick="openNav()">
 									<spring:message code="SETTINGS" />
 								</button>
 							</fieldset>

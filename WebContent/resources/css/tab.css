@@ -146,7 +146,7 @@ input[type=text]:disabled {
     width: 81%;
     border-collapse:collapse;
     display:table;
-    margin-top: 5px;
+    margin-top: 6px;
     margin-bottom:0px;
 	max-width:960px;
 	vertical-align: bottom;
