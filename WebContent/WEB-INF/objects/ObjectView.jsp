@@ -303,7 +303,26 @@
 	}
 	
 	function goBack() {
-	    window.history.back();
+		var userObj ="<%=session.getAttribute("DBUser")%>";
+		if (userObj == "null") {
+			$.ajax({
+				type : 'GET',
+				url : "login",
+
+				success : function(response) {
+					 window.location = "/ObjectTeller/login";
+				}
+			});
+		} else {
+			$.ajax({
+				type : 'GET',
+				url : "objects",
+
+				success : function(response) {
+					 window.location = "/ObjectTeller/objects";
+				}
+			});
+		}
 	}
 </script>
 <script type="text/javascript"
