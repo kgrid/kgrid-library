@@ -3,5 +3,6 @@ package org.uofm.ot.transferobjects;
 public enum DataType {
 
 	INT,
-	FLOAT;
+	FLOAT,
+	STRING;
 }
