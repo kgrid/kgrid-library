@@ -1,11 +1,17 @@
 package org.uofm.ot.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.uofm.ot.dao.UserDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.model.User;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 public class UserDAOImpl implements UserDAO {
 	
@@ -17,11 +23,23 @@ public class UserDAOImpl implements UserDAO {
 	
 	private final String ROLE_COLUMN= "ROLE";
 	
+	private final String FIRST_NAME_COLUMN = "FIRST_NAME";
+	
+	private final String LAST_NAME_COLUMN = "LAST_NAME";
+	
+	private final String ID_COLUMN = "ID";
+	
 	private final String SELECT_USER_BY_USERNAME_PASSWORD = "SELECT * FROM "+TABLE_NAME+" WHERE "+USERNAME_COLUMN+" = ? AND "+PASSWD_COLUMN+" = ?" ;
 	
-	private final String UPDATE_USER_PASSWORD = "UPDATE "+TABLE_NAME+" SET "+PASSWD_COLUMN+" = ? WHERE "+USERNAME_COLUMN+" = ?" ;
+	private final String UPDATE_USER = "UPDATE "+TABLE_NAME+" SET "+PASSWD_COLUMN+" = ? , "+ FIRST_NAME_COLUMN + " = ? , "+ LAST_NAME_COLUMN + " = ? WHERE "+USERNAME_COLUMN+" = ?" ;
 	
 	private final String SELECT_USER_BY_USERNAME= "SELECT * FROM "+TABLE_NAME+" WHERE "+USERNAME_COLUMN+" = ? " ;
+	
+	private final String SELECT_ALL_USER = "SELECT * FROM "+TABLE_NAME ;
+	
+	private final String ADD_NEW_USER = "INSERT INTO "+TABLE_NAME+" ( "+ USERNAME_COLUMN + " , " + PASSWD_COLUMN + " , "+ ROLE_COLUMN + " , " + FIRST_NAME_COLUMN +" , " + LAST_NAME_COLUMN + " ) values (?, ?, ?, ?, ?); ";
+
+	private final String DELETE_USER_BY_ID = "DELETE FROM "+TABLE_NAME+" WHERE "+ID_COLUMN+" = ? ";
 	
 	private JdbcTemplate jdbcTemplate;  
 
@@ -45,14 +63,61 @@ public class UserDAOImpl implements UserDAO {
 
 
 	@Override
-	public User updatePassword(String userName, String password)  {
+	public User updateUser(User user)  {
 		User dbUser = null;
-		int result = jdbcTemplate.update(UPDATE_USER_PASSWORD, password,userName);
+		int result = jdbcTemplate.update(UPDATE_USER, user.getPasswd(),user.getFirst_name(),user.getLast_name(), user.getUsername());
 		if(result > 0 ) {
 			dbUser =  jdbcTemplate.queryForObject(SELECT_USER_BY_USERNAME,
-					new Object[] {userName},new BeanPropertyRowMapper<>(User.class));
+					new Object[] {user.getUsername()},new BeanPropertyRowMapper<>(User.class));
 		}
 		return dbUser;
+	}
+
+
+	@Override
+	public List<User> getAllUsers() {
+		List<User> users = new ArrayList<User> ();
+		List<Map<String,Object>> rows =  jdbcTemplate.queryForList(SELECT_ALL_USER );
+		for (Map row : rows) {
+			User user = new User();
+			user.setFirst_name((String)row.get("first_name"));
+			user.setLast_name((String)row.get("last_name"));
+			user.setId((Integer)row.get("id"));
+			user.setPasswd((String)row.get("passwd"));
+			user.setRole((String)row.get("role"));
+			user.setUsername((String)row.get("username"));
+			users.add(user);
+		}
+		return users;
+	}
+
+
+	@Override
+	public User addNewUser(User user) throws ObjectTellerException, MySQLIntegrityConstraintViolationException {
+		User dbUser = null; 
+		int success = jdbcTemplate.update(ADD_NEW_USER, new Object[] { user.getUsername(), user.getPasswd() , user.getRole() , user.getFirst_name() , user.getLast_name()
+		});
+
+		if(success == 0)
+			throw new ObjectTellerException("Unable to add user "+user);
+
+		if(success > 0 ) {
+			dbUser =  jdbcTemplate.queryForObject(SELECT_USER_BY_USERNAME,
+					new Object[] {user.getUsername()},new BeanPropertyRowMapper<>(User.class));
+		}
+		
+		return dbUser ; 
+	}
+
+
+	@Override
+	public void deleteUser(int userId) throws ObjectTellerException {
+		int success = jdbcTemplate.update(DELETE_USER_BY_ID, userId);
+		
+		if(success == 0 || success < 0 ) {
+			throw new ObjectTellerException("Unable to delete user with id: "+userId);
+		
+		}
 	}
 	
 }

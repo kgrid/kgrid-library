@@ -47,6 +47,15 @@ public class PythonAdapter {
 						resObj.setErrorMessage("-");
 						resObj.setSuccess(1);
 						resObj.setResult(String.valueOf(realResult));
+					} else {
+						if(DataType.STRING == returntype){
+							String realResult = (String) result.__tojava__(String.class);
+							System.out.println("REAL RESULT IS $$$$$$$$$$$$$$$$ "+realResult);
+							resObj.setErrorMessage("-");
+							resObj.setSuccess(1);
+							resObj.setResult(realResult);
+							
+						}
 					}
 				}
 			} else {
