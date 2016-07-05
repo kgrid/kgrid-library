@@ -181,23 +181,30 @@ ul#tabs {
     display: inline-block;
     display: block;
     float: left;
-    width: 16.6%;
+/*     width: 140px; */
     color: grey;
-    font-size: 16px;
-    font-weight: normal;
+    font-size: 18px;
+    font-weight: 300;
     text-decoration: none;
     text-align: center;
     line-height: 2;
-      margin-top:20px;
+      margin-top:6px;
       margin-bottom:0px;
+      margin-left:40px;
+      margin-right:40px;
     cursor: pointer;
     border-bottom: 2px solid #fff;
+    padding:0px;
     }
     ul#tabs li:hover {
-      background-color: #fff; }
+      background-color: #fff; 
+      color:#4d4d4d;
+      }
     ul#tabs li.active {
        border-bottom: 2px solid #39b54a; }
-
+ul#tab:hover{
+	color:#b3b3b3;
+}
 ul#tab {
   list-style-type: none;
   margin: 0;

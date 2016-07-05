@@ -104,6 +104,14 @@ $(document)
 						$("#end_page").css("display", "block");
 
 					});
+					$("#engineType").click(function(){
+						
+					    if($(this).hasClass("up")){
+					    	$(this).removeClass("up");
+					    } else {
+					    	$(this).addClass("up");
+					    }
+					});
 					$('.addtext>input').keyup(updateCount);
 					$('.addtext>input').keydown(updateCount);
 					$('#description_data').keyup(updateCount);

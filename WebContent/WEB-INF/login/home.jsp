@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
@@ -15,12 +16,15 @@
 	type="text/css" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/datagrid.css" />" type="text/css" />
+
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/button.css" />" type="text/css" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/overlay.css" />" type="text/css" />
 <link rel="shortcut icon"
 	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" />" />
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/navigation.css" />" 	type="text/css" />
 <title><spring:message code="LOGIN_TITLE" /></title>
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -34,7 +38,7 @@
 		document.getElementById("addObject").style.width = "100%";
 		resetInputText();
 	    document.body.classList.toggle('noscroll', true);
-
+		
 	}
 
 	function closeAddObjOverlay() {
@@ -53,22 +57,31 @@
 			olElement.style.display="none";
 			olElement.style.width="0%";
 		}
-		    document.body.classList.toggle('noscroll', open);
+	    document.body.classList.toggle('noscroll', open);
 		if(overlayID=="addObject"){
 			resetInputText();
+		}
+		if(overlayID=="libraryuser"){
+			resetUserInfoText();
 		}
 		
 	}
 
+	function resetUserInfoText(){
+		$( "input[id$='_data']" ).val( "" );
+	}
+	
+	
 	function resetInputText() {
 		$('#payloadTextArea').val("");
 		$('#inputTextArea').val("");
 		$('#outputTextArea').val("");
-		$('#description_data').val("");
+		$( "input[id$='_data']" ).val( "" );
+/* 		$('#description_data').val("");
 		$('#title_data').val("");
 		$('#keyword_data').val("");
 		$('#owner_data').val("");
-		$('#contri_data').val("");
+		$('#contri_data').val(""); */
 	}
 
 	function openNav() {
@@ -92,8 +105,7 @@
            }, 600);
            return false;
        });
-       
-    });
+   });
 </script> 
 </head>
 <body>
@@ -107,52 +119,18 @@
 	<div id="addObject" class="overlay" aria-hidden="true">
 		<%@ include file="../objects/createNewObject.jsp"%>
 	</div>
-	<%--  <div id="libraryuser"  class="overlay" aria-hidden="true">
+	<div id="libraryuser"  class="overlay" aria-hidden="true">
      	<%@ include file="../account/libraryUser.jsp" %>
-	 </div>  --%>
+	 </div> 
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
-	<div id="logo">
-		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
-			height="auto">
+	<div id="topfixed">
+			<%@ include file="../common/banner.jsp"%>
 	</div>
 	<div id="top-stuff">
 		<%@ include file="../common/navbar.jsp"%>
 	</div>
-
-	<div class="active-links">
-		<div id="logoutsession" class="logout-link">
-			<ul>
-				<li id="user"><a id="user-link" href="#"> <strong><spring:message
-								code="HELLO_MESSAGE" /> ${DBUser.first_name} </strong>
-				</a></li>
-				<li id="icon" class="down"><img id="iconimg" class="down"
-					src="<c:url value="/resources/images/Chevron_Icon.png"/>" /></li>
-			</ul>
-		</div>
-
-
-		<div id="logout-dropdown" class="dropdown">
-			<sf:form method="POST" class="signin" action="">
-				<fieldset class="links">
-					<button id="settings" type="button" class="open-overlay" onclick="openNav()">
-						<spring:message code="SETTINGS" />
-					</button>
-				</fieldset>
-			</sf:form>
-			<sf:form method="POST" class="signin" action="logout">
-				<fieldset class="links">
-					<button id="logout" class="submit button" type="submit">
-						<spring:message code="LOGOUT" />
-					</button>
-				</fieldset>
-			</sf:form>
-
-		</div>
-	</div>
-
-
 
 	<div id="homebanner" class="banner-content">
 		<div id="bannercontent">
@@ -177,13 +155,13 @@
 		</div>
 		<div id="bannericons">
 			<ul id="bannericonrow">
-				<li><button class="roundbutton" id="userlink" onclick="overlayToggle('libraryuser',true)">
+				<li><div style="position:relative"><button class="roundbutton" id="userlink" onclick="overlayToggle('libraryuser',true)">
 						<img src="<c:url value="/resources/images/Person_Icon.png"/> " />
 					</button>
 					<button class="greenroundbutton" id="newuser">
 						<img src="<c:url value="/resources/images/Plus_Icon.png" />"
 							width="10px">
-					</button></li>
+					</button></div></li>
 				<li>
 					<button class="roundbutton open-overlay"  type="button" id="settinglink" onclick="overlayToggle('libsettings',true)">
 						<img src="<c:url value="/resources/images/Gear_Icon.png"/> " />

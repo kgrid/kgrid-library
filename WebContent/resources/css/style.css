@@ -85,7 +85,7 @@ h2 {
   height:60px;
   right: 0px;
   top: 0px;
-  z-index:500;
+  z-index:100;
 }
 #container {
   width: 780px;
@@ -174,11 +174,6 @@ a#signin-link:hover strong {
   display: block;
 }
 #logoutsession ul {
-  /*background: #efefef;
-  background: linear-gradient(top, #efefef 0%, #bbbbbb 100%);
-  background: -moz-linear-gradient(top, #efefef 0%, #bbbbbb 100%);
-  background: -webkit-linear-gradient(top, #efefef 0%, #bbbbbb 100%);
-  background: #39b54a;*/
   padding: 0px 0px;
   border-radius: 0px;
   list-style: none;
@@ -224,7 +219,6 @@ img#iconimg{
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   box-shadow: 0 1px 2px #666666;
-  -webkit-box-shadow: 0 1px 2px #666666;
   height: 200px;
   min-width: 160px;
   position: absolute;
@@ -249,7 +243,6 @@ img#iconimg{
 #signin-dropdown .textbox input {
 	border:1px solid #fff;
   -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
   	border-radius:3px;		
 	width: 200px;
 	font-size:12pt;
@@ -312,7 +305,7 @@ form.signin .remb .remember {
   filter: progid: DXImageTransform.Microsoft.gradient(startColorStr='#f3f3f3', EndColorStr='#dddddd');
   border: 2px solid #fff;
   -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+	border-radius: 4px;
   color: white;
   cursor: pointer;
   display: inline-block;
@@ -340,7 +333,7 @@ button#settings {
   border:none;
   border-width: 2px;
   -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+border-radius: 4px;
   color: white;
   cursor: pointer;
   display: inline-block;
@@ -348,4 +341,7 @@ button#settings {
 }
 button#settings:hover {
   background: #8fcb95;
+}
+*:focus {
+    outline: none;
 }

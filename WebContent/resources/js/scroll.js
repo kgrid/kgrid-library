@@ -1,17 +1,17 @@
 /*jslint browser: true*/
-/*global $, jQuery, alert*/
-jQuery(document).ready(function () {
+/*global $, $, alert*/
+$(document).ready(function () {
 
-    var navOffset = jQuery(".header").offset().top;
-    jQuery(".header").wrap('<div class="theadwrapper"></div>');
-	jQuery(".theadwrapper").height(jQuery(".header").outerHeight());
+    var navOffset = $(".header").offset().top;
+    $(".header").wrap('<div class="theadwrapper"></div>');
+	$(".theadwrapper").height($(".header").outerHeight(false));
 
-    jQuery(window).scroll(function () {
+    $(window).scroll(function () {
     	var supportPageOffset = window.pageXOffset !== undefined;
     	var isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
  	    var x = supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
     	var y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
-            var scrollPos = jQuery(window).scrollTop();
+            var scrollPos = $(window).scrollTop();
         if(scrollPos>60){
         	$("#backtotop").fadeIn('slow');
         }else{
@@ -19,11 +19,11 @@ jQuery(document).ready(function () {
       	
         }
        if (scrollPos >= navOffset) {
-            jQuery(".header").addClass("fixed");
+            $(".header").addClass("fixed");
         } else {
-            jQuery(".header").removeClass("fixed");
+            $(".header").removeClass("fixed");
         }
-       jQuery(".fixed").css("left",-x+"px");
+       $(".fixed").css("left",-x+"px");
     });
     
     function getCSSright(parent){
