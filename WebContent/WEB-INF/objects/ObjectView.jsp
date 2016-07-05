@@ -9,10 +9,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href="<c:url value="/resources/css/w3.css" />"
-	type="text/css" />
-<link rel="stylesheet" href="<c:url value="/resources/css/box.css"/>"
-	type="text/css" />
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>"
 	type="text/css" />
 <link rel="stylesheet"
@@ -289,14 +285,13 @@
 	}
 	
 	function userLogout(){
-		
 	
 		$.ajax({
 			type : 'POST',
 			url : "logout" ,
 
 			success : function(response) {
-				
+
 				 window.location = "/ObjectTeller/login";
 			}
 		});
@@ -333,76 +328,12 @@
 <title><c:out value="${fedoraObject.title}" /></title>
 </head>
 <body>
-	<div id="logo">
-		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
-			height="auto">
+	<div id="topfixed">
+			<%@ include file="../common/banner.jsp"%>
 	</div>
-
 	<div id="top-stuff">
 		<%@ include file="../common/navbar.jsp"%>
 	</div>
-	<div class="active-links">
-
-		<div id="session" class="login-link">
-			<a id="signin-link" href="#"> <strong><spring:message
-						code="LOG_IN_BUTTON" /></strong>
-			</a>
-		</div>
-		<div id="signin-dropdown" class="login-link">
-
-			<form class="signin" id="loginForm">
-				<fieldset class="textbox">
-					<input name="username" type="text" id="username" autocomplete="on"
-						placeholder="Username"></input> <input type="password"
-						placeholder="Password" id="passwd" name="passwd"
-						autocomplete="off"></input>
-				</fieldset>
-				<fieldset class="remb">
-					<label class="remember"> <input type="checkbox" value="1"
-						name="remember_me" /> <span><spring:message
-								code="REMEMBER_ME_BUTTON" /></span>
-					</label>
-					<button id="login" class="submit button" type="button">
-						<spring:message code="LOG_IN_BUTTON" />
-					</button>
-				</fieldset>
-				<p>
-					<a href="retrievepw.html"> <spring:message
-							code="PASSWORD_RESET" /></a>
-				</p>
-			</form>
-		</div>
-
-
-		<div id="logoutsession" class="logout-link">
-			<ul>
-				<li id="user"><a id="user-link" href="#"> <strong><spring:message
-								code="HELLO_MESSAGE" /> </strong>
-				</a></li>
-				<li id="icon" class="down"><img
-					src="<c:url value="/resources/images/Chevron_Icon.png"/>" /></li>
-			</ul>
-		</div>
-		<div id="logout-dropdown" class="logout-link">
-			<form class="signin" >
-				<fieldset class="links">
-					<button id="settings" onclick="openNav()">
-						<spring:message code="SETTINGS" />
-					</button>
-				</fieldset>
-			</form>
-			<sf:form method="POST" class="signin" action="logout" id="logoutForm">
-				<fieldset class="links">
-					<button id="logout" class="submit button" type="submit" onclick="userLogout()"><spring:message code="LOGOUT" />
-					</button>
-				</fieldset>
-			</sf:form>
-		</div>
-
-	</div>
-
-
-
 	<div class="banner-content display-banner">
 		<div id="goback">
 			 <div id="leadarrow">
@@ -498,7 +429,7 @@
 			</div>
 		</div>
 	</div>
-
+	<div class="maincontentwrapper">
 	<div class="main-content">
 		<div class="datagrid">
 			<ul id="tab">
@@ -791,6 +722,7 @@
 				</li>
 			</ul>
 		</div>
+	</div>
 	</div>
 </body>
 </html>
