@@ -7,6 +7,7 @@ $(document).ready(function() {
 		} else {
 			/*           $('#signin-dropdown').slideDown(5000);*/
 			$('#signin-dropdown').show();
+			$('#username').focus();
 			$('#session').addClass('active');
 		}
 		return false;
