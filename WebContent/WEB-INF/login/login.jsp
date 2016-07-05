@@ -39,15 +39,6 @@
 			}, 600);
 			return false;
 		});
-		var user = "";
-		if (user == "") {
-			$(".login-link").show();
-			$(".logout-link").hide();
-		} else {
-			$(".login-link").hide();
-			$(".logout-link").show();
-		}
-
 	});
 </script>
 <title><spring:message code="LOGIN_TITLE" /></title>
@@ -60,71 +51,14 @@
 	<div id="bannerbk">
 		<img src="<c:url value="/resources/images/bannerBackground.png"/>">
 	</div>
-	<div id="logo">
-		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
-			height="auto">
-	</div>
 
+	<div id="topfixed">
+			<%@ include file="../common/banner.jsp"%>
+	</div>
 	<div id="top-stuff">
 		<%@ include file="../common/navbar.jsp"%>
 	</div>
 
-	<div class="active-links">
-		<div id="session" class="login-link">
-			<a id="signin-link" href="#"> <strong><spring:message
-						code="LOG_IN_BUTTON" /></strong>
-			</a>
-		</div>
-		<div id="signin-dropdown" class="dropdown">
-			<sf:form method="POST" modelAttribute="user" class="signin"
-				action="home">
-				<fieldset class="textbox">
-					<sf:input name="username" path="username" type="text"
-						autocomplete="on" placeholder="Username"></sf:input>
-					<sf:input type="password" path="passwd" placeholder="Password"
-						name="passwd" autocomplete="off"></sf:input>
-				</fieldset>
-				<fieldset class="remb">
-					<label class="remember"> <input type="checkbox" value="1"
-						name="remember_me" /> <span><spring:message
-								code="REMEMBER_ME_BUTTON" /></span>
-					</label>
-					<button id="login" class="submit button" type="submit">
-						<spring:message code="LOG_IN_BUTTON" />
-					</button>
-				</fieldset>
-				<p>
-					<a href="retrievepw.html"> <spring:message
-							code="PASSWORD_RESET" /></a>
-				</p>
-			</sf:form>
-		</div>
-		<%-- <div id="logoutsession" class="logout-link">
-					<ul>
-						<li id="user">
-						<a id="user-link" href="#"> <strong><spring:message code="HELLO_MESSAGE" />
-								${DBUser.first_name} </strong>
-						</a></li>
-						<li id="icon" class="down"><img src="<c:url value="/resources/images/Chevron_Icon.png"/>" />
-						</li>
-						</ul>
-					</div>
-
-
-					<div id="logout-dropdown" class="dropdown">
-						<sf:form method="POST" class="signin" action="" >
-							<fieldset class="links">
-								<button id="settings" onclick="openNav()"><spring:message code="SETTINGS" /></button>
-							</fieldset>
-						</sf:form>
-						<sf:form method="POST" class="signin" action="logout" >
-							<fieldset class="links">
-								<button id="logout" class="submit button" type="submit"><spring:message code="LOGOUT"/></button>
-							</fieldset>
-						</sf:form>
-
-					</div> --%>
-	</div>
 
 
 	<div class="banner-content" id="landing">
