@@ -98,8 +98,9 @@ img#dropdown{
 	height:16px;
         position:absolute;
     bottom:-5px;
-    right:45px;
+    right:-5px;
     padding:0;
+    z-index:12;
 }
 
 #newuser:hover{

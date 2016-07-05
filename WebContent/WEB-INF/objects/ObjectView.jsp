@@ -22,7 +22,7 @@
 	href="<c:url value="/resources/css/datagrid.css"/>" type="text/css" />
 <link rel="stylesheet" href="<c:url value="/resources/css/button.css"/>"
 	type="text/css" />
-
+<link rel="stylesheet" href="<c:url value="/resources/css/navigation.css"/>" type="text/css" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/overlay.css"/>" type="text/css" />
 <link rel="stylesheet" href="<c:url value="/resources/css/tab.css"/>"
@@ -439,7 +439,7 @@
 			</c:otherwise>
 		</c:choose>
 		<h1>
-			<div style="width: 10px; display: inline-block;">
+			<div style="width: 10px; display: inline-block; margin-left:22px;">
 				<c:if test="${fedoraObject.published}">
 					<div class="type-status"></div>
 				</c:if>
@@ -465,14 +465,20 @@
 
 		</div>
 		<div class="userbutton accessLevelOne">
-			<button class="roundbutton" style="z-index: 10" id="userlink">
+						<ul id="bannericonrow">
+				<li>
+				<div style="position:relative"><button class="roundbutton" style="z-index: 10" id="userlink">
 				<img src="<c:url value="/resources/images/Person_Icon.png"/> " />
 			</button>
-			<button class="roundbutton" style="z-index: 9">JR</button>
-			<button class="roundbutton" style="z-index: 8">AF</button>
-			<button class="roundbutton" style="z-index: 7" id="settinglink">
+			<button class="greenroundbutton" id="newuser">
+						<img src="<c:url value="/resources/images/Plus_Icon.png" />"
+							width="10px">
+					</button></div></li>
+			<li><button class="roundbutton" style="z-index: 9">JR</button></li>
+			<li><button class="roundbutton" style="z-index: 8">AF</button></li>
+			<li><button class="roundbutton" style="z-index: 7" id="settinglink">
 				<img src="<c:url value="/resources/images/Gear_Icon.png"/> " />
-			</button>
+			</button></li></ul>
 		</div>
 	</div>
 	

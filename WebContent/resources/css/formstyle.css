@@ -110,6 +110,10 @@ select{
   
 }
 
+select.up{
+		background-image: url("../images/dropdown_chevron-1.png");
+}
+
 option{
 	color:#666666;
 }
