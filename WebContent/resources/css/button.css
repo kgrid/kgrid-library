@@ -5,7 +5,7 @@
     border-radius: 100%;
     color:dimgrey;
     background-color:white;
-    border:1px solid dimgrey;
+    border:1px solid #666666;
     font-size:12pt;
     font-weight: 300;
     margin:0 -5px;
@@ -20,10 +20,12 @@
 }
 
 .roundbutton:hover{
-    background-color: #8FCB95;
+    border:1px solid #39b45a;
+    color:#39b45a;
+    font-weight:400;
 }
 
-#settinglink{
+#settinglink, #objsettinglink{
   margin-left: 20px;
 }
 
@@ -48,7 +50,7 @@
     background-color:#39b54a;
     border:none;
     font-size:20px;
-    padding:8px 10px;
+    padding:8px 10px 8px 8px;
 }
 #closebutton {
   position: absolute;
