@@ -112,7 +112,7 @@ $(document).ready(function(){
 								code="HELLO_MESSAGE" /> ${DBUser.first_name} </strong>
 				</a></li>
 							<li id="icon" class="down"><img id="iconimg" class="down"
-								src="<c:url value="/resources/images/Chevron_Icon.png"/>" /></li>
+								src="<c:url value="/resources/images/Chevron_Icon.png"/>" width="12px" /></li>
 						</ul>
 					</div>
 					<div id="logout-dropdown" class="dropdown">

@@ -170,22 +170,6 @@ bottom:50px;
     
 }
 
-.roundbutton {
-    width:36px;
-    height:36px;
-    border-radius: 100%;
-    color:green;
-    background-color:transparent;
-    border:1px solid green;
-    font-size:20px;
-    padding:4px 4px;
- 
-    
-}
-.roundbutton:hover{
-    background-color: lightgreen;
-    
-}
 .greenroundbutton#closebutton, select{
 outline:none;}
 
