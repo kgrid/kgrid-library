@@ -25,28 +25,19 @@
 	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" />" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/navigation.css" />" 	type="text/css" />
+	<link rel="stylesheet"
+	href="<c:url value="/resources/css/librarysetting.css" />"	type="text/css" />
+	<link rel="stylesheet"
+	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" />
 <title><spring:message code="LOGIN_TITLE" /></title>
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript"
 	src="/ObjectTeller/resources/js/dropdown.js"></script>
 <script src="/ObjectTeller/resources/js/scroll.js"></script>
+<script src="/ObjectTeller/resources/js/iconbutton.js"></script>
 
 <script>
-	function openAddObjOverlay() {
-		document.getElementById("addObject").style.display = "block";
-		document.getElementById("addObject").style.width = "100%";
-		resetInputText();
-	    document.body.classList.toggle('noscroll', true);
-		
-	}
-
-	function closeAddObjOverlay() {
-		document.getElementById("addObject").style.display = "none";
-		document.getElementById("addObject").style.width = "0%";
-		document.body.classList.toggle('noscroll', false);
-
-	}
 	
 	function overlayToggle(overlayID, open){
 		var olElement = document.getElementById(overlayID);
@@ -77,41 +68,13 @@
 		$('#inputTextArea').val("");
 		$('#outputTextArea').val("");
 		$( "input[id$='_data']" ).val( "" );
-/* 		$('#description_data').val("");
-		$('#title_data').val("");
-		$('#keyword_data').val("");
-		$('#owner_data').val("");
-		$('#contri_data').val(""); */
+
 	}
 
-	function openNav() {
-		document.getElementById("libsettings").style.display = "block";
-		document.getElementById("libsettings").style.width = "100%";
-	    document.body.classList.toggle('noscroll', true);
-	}
-
-	function closeNav() {
-		document.getElementById("libsettings").style.display = "none";
-		document.getElementById("libsettings").style.width = "0%";
-		document.body.classList.toggle('noscroll', false);
-	}
 </script>
-<script>
-   $(document).ready(function () {
-  
-       $('#backtotop').click(function () {
-           $("html, body").animate({
-               scrollTop: 0
-           }, 600);
-           return false;
-       });
-   });
-</script> 
 </head>
 <body>
 
-
-	
 	<div id="libsettings"  class="overlay" aria-hidden="true">
      	<%@ include file="../system/librarySetting.jsp" %>
 	 </div>
@@ -142,32 +105,33 @@
 				<tr>
 					<td><spring:message code="SERVER_URL" />
 						<div id="h5">${ServerURL}</div></td>
-					<td><spring:message code="IP_ADDRESS" />
-						<div id="h5">${FedoraIpAddress}</div></td>
 				</tr>
+				</table>
+				<table>
 				<tr>
-					<td><spring:message code="PANEL_FIELD_NO_OF_OBJECTS" />
-						<div id="h5">${TotalObjects}</div></td>
-					<td><spring:message code="PANEL_FIELD_NO_OF_PUBLISHED_OBJECTS" />
-						<div id="h5">${PublishedObjects}</div></td>
+					<td class="align-type"><spring:message code="PANEL_FIELD_NO_OF_OBJECTS" /><div id="h5">${TotalObjects}</div></td>
+					<td class="align-title"><spring:message code="PANEL_FIELD_NO_OF_PUBLISHED_OBJECTS" /><div id="h5">${PublishedObjects}</div></td>
+						<td class="aign-update"><spring:message code="IP_ADDRESS" /><div id="h5">${FedoraIpAddress}</div></td>
 				</tr>
 			</table>
 		</div>
 		<div id="bannericons">
 			<ul id="bannericonrow">
-				<li><div style="position:relative"><button class="roundbutton" id="userlink" onclick="overlayToggle('libraryuser',true)">
+				<li><div style="position:relative"><button class="roundbutton iconBtn" id="userlink" onclick="overlayToggle('libraryuser',true)">
 						<img src="<c:url value="/resources/images/Person_Icon.png"/> " />
 					</button>
-					<button class="greenroundbutton" id="newuser">
+					<button class="greenroundbutton iconBtn" id="newuser">
 						<img src="<c:url value="/resources/images/Plus_Icon.png" />"
 							width="10px">
 					</button></div></li>
 				<li>
-					<button class="roundbutton open-overlay"  type="button" id="settinglink" onclick="overlayToggle('libsettings',true)">
+					<button class="roundbutton open-overlay iconBtn"  type="button" id="settinglink" onclick="overlayToggle('libsettings',true)">
 						<img src="<c:url value="/resources/images/Gear_Icon.png"/> " />
 					</button>
 			</ul>
+		<div class="floatingInfo" id="homeIcons"><span></span></div>			
 		</div>
+
 	</div>
 	<div class="header">
 		<button class="greenroundbutton open-overlay"  type="button" id="addObjbutton"

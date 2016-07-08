@@ -7,10 +7,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet"
-	href="<c:url value="/resources/css/librarysetting.css" />" type="text/css" />
-	<link rel="stylesheet"
-	href="<c:url value="/resources/css/button.css" />" type="text/css" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript">
 	
@@ -204,7 +200,7 @@
 	
      <div class="board" id="libsetting">
             <div class="entryform">
-             <button class="greenroundbutton" id="closebutton" onclick="closeNav()">
+             <button class="greenroundbutton" id="closebutton"  onclick="overlayToggle('libsettings',false)">
     <img src="<c:url value="/resources/images/Close_Icon.png"/>" />
     </button>
         <h3 style="text-align:center;"> Library Settings </h3>

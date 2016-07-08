@@ -308,7 +308,7 @@ input.userEdit {
     padding:15px 10px 10px 55px;
 }
 
-.listContainer {
+.listContainer, #tabs-1, #tabs-2 {
     position:relative;
     overflow-x:hidden;
     overflow-y:auto;
@@ -318,11 +318,6 @@ input.userEdit {
             z-index: 290;
 }
 
-.listContainer ul{
-   overflow-x:hidden;
-    overflow-y:auto;
-
-}
 .objTitle {
     width: 100%;
     height:30px;
@@ -350,3 +345,29 @@ input.userEdit {
     height: 95%;
         background-color:pink;
 }
+
+#objaccess_tabs {
+   width:490px;
+}
+
+.secTitle ul{
+    width:490px;
+    list-style: none;
+    display:table-row;
+}
+
+.secTitle ul li{
+    list-style: none;
+    display:table-cell;
+    text-align:center;
+    width:245px;
+}
+
+.secTitle ul li a{
+    width:245px;
+}
+#objaccess_tabs #tabs-1, #tabs-2 {
+    width:408px;
+    margin:10px auto;
+}
+

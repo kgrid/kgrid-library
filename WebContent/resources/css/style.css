@@ -3,7 +3,7 @@
 body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, input, textarea, blockquote, button {
   margin: 0;
   padding: 0;
-  border: 0;
+  border: 0; 
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -219,8 +219,8 @@ img#iconimg{
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   box-shadow: 0 1px 2px #666666;
-  height: 200px;
-  min-width: 160px;
+  height: 218px;
+  min-width: 140px;
   position: absolute;
   top: 60px;
   right: 30px;;
@@ -237,31 +237,33 @@ img#iconimg{
   padding: 10px;
   text-align: left;
 }
-#signin-dropdown .textbox span {
+#signin-dropdown .signin-textbox span {
   color: white;
 }
-#signin-dropdown .textbox input {
+#signin-dropdown .signin-textbox input {
 	border:1px solid #fff;
   -moz-border-radius: 2px;
   	border-radius:3px;		
 	width: 200px;
+	height:38px;
 	font-size:12pt;
 	color:#666666;
 	margin: 10px 0px 10px 0px;
 	  padding: 6px 6px 4px;
 }
+
 fieldset.links{
 	display:block;
-	height:30px;
+	height:36px;
   border: none;
   padding:0;
   margin:0;
 }
-form.signin .textbox label {
+form.signin .signin-textbox label {
   display: block;
   padding-bottom: 7px;
 }
-form.signin .textbox span {
+form.signin .signin-textbox span {
   display: block;
   color: white;
 }
@@ -321,7 +323,7 @@ form.signin .remb .remember {
     border:none;
     float:left;
     font-size:12pt;
-    margin:5px;
+    margin:2px 2px 2px 10px;
     
 }
 button#settings {

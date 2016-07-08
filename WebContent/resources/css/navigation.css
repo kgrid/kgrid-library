@@ -18,10 +18,10 @@
     position:relative;
 	text-align: center;
     display:table;
-    width:70%;
+    width:900px;
     height:100%;
     max-height:60px;
-    padding-left:280px;
+    padding-left:255px;
 }
 
 #nav ul {
