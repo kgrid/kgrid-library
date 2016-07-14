@@ -347,3 +347,12 @@ button#settings:hover {
 *:focus {
     outline: none;
 }
+
+#signin-dropdown .signin-textbox {
+  display:block;
+}
+
+#signin-dropdown .remb {
+  display:block;
+}
+
