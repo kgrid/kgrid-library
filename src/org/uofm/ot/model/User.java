@@ -16,9 +16,10 @@ public class User {
 	
 	private String last_name;
 	
-	private String role;
+	private UserRoles role;
 
-	public User(String username, String passwd, int id, String first_name, String last_name, String role) {
+
+	public User(String username, String passwd, int id, String first_name, String last_name, UserRoles role) {
 		super();
 		this.username = username;
 		this.passwd = passwd;
@@ -27,7 +28,6 @@ public class User {
 		this.last_name = last_name;
 		this.role = role;
 	}
-
 
 	public User(){}
 
@@ -47,14 +47,13 @@ public class User {
 		this.passwd = passwd;
 	}
 
-	public String getRole() {
+	public UserRoles getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(UserRoles role) {
 		this.role = role;
 	}
-
 
 	public int getId() {
 		return id;
@@ -86,7 +85,5 @@ public class User {
 				+ ", last_name=" + last_name + ", role=" + role + "]";
 	}
 
-	
-	
 	
 }

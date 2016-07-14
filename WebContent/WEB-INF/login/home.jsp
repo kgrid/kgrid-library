@@ -35,7 +35,6 @@
 <script type="text/javascript"
 	src="/ObjectTeller/resources/js/dropdown.js"></script>
 <script src="/ObjectTeller/resources/js/scroll.js"></script>
-<script src="/ObjectTeller/resources/js/iconbutton.js"></script>
 
 <script>
 	
@@ -71,9 +70,11 @@
 
 	}
 
+
 </script>
 </head>
 <body>
+
 
 	<div id="libsettings"  class="overlay" aria-hidden="true">
      	<%@ include file="../system/librarySetting.jsp" %>
@@ -88,6 +89,7 @@
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
+
 	<div id="topfixed">
 			<%@ include file="../common/banner.jsp"%>
 	</div>
@@ -95,44 +97,72 @@
 		<%@ include file="../common/navbar.jsp"%>
 	</div>
 
-	<div id="homebanner" class="banner-content">
-		<div id="bannercontent">
-			<h1>
-				<small>${LibraryName} <spring:message
-						code="TOP_MENU_LIBRARY" /></small>
-			</h1>
-			<table>
-				<tr>
-					<td><spring:message code="SERVER_URL" />
-						<div id="h5">${ServerURL}</div></td>
-				</tr>
-				</table>
-				<table>
-				<tr>
-					<td class="align-type"><spring:message code="PANEL_FIELD_NO_OF_OBJECTS" /><div id="h5">${TotalObjects}</div></td>
-					<td class="align-title"><spring:message code="PANEL_FIELD_NO_OF_PUBLISHED_OBJECTS" /><div id="h5">${PublishedObjects}</div></td>
-						<td class="aign-update"><spring:message code="IP_ADDRESS" /><div id="h5">${FedoraIpAddress}</div></td>
-				</tr>
-			</table>
-		</div>
-		<div id="bannericons">
-			<ul id="bannericonrow">
-				<li><div style="position:relative"><button class="roundbutton iconBtn" id="userlink" onclick="overlayToggle('libraryuser',true)">
-						<img src="<c:url value="/resources/images/Person_Icon.png"/> " />
-					</button>
-					<button class="greenroundbutton iconBtn" id="newuser">
-						<img src="<c:url value="/resources/images/Plus_Icon.png" />"
-							width="10px">
-					</button></div></li>
-				<li>
-					<button class="roundbutton open-overlay iconBtn"  type="button" id="settinglink" onclick="overlayToggle('libsettings',true)">
-						<img src="<c:url value="/resources/images/Gear_Icon.png"/> " />
-					</button>
-			</ul>
-		<div class="floatingInfo" id="homeIcons"><span></span></div>			
-		</div>
+	<c:choose>
+		<c:when test="${ empty loggedInUser }">
+			<div id="bannerbk">
+ 				<img src="<c:url value="/resources/images/bannerBackground.png"/>"> 
+			</div>
 
-	</div>
+			<div class="banner-content" id="landing">
+				<h1>
+					<spring:message code="PRODUCT_NAME" />
+					<small><spring:message code="PRODUCT_NAME_DESCRIPTION" /></small>
+				</h1>
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div id="homebanner" class="banner-content">
+				<div id="bannercontent">
+					<h1>
+						<small>${LibraryName} <spring:message
+								code="TOP_MENU_LIBRARY" /></small>
+					</h1>
+					<table>
+						<tr>
+							<td><spring:message code="SERVER_URL" />
+								<div id="h5">${ServerURL}</div></td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<td class="align-type"><spring:message
+									code="PANEL_FIELD_NO_OF_OBJECTS" />
+								<div id="h5">${TotalObjects}</div></td>
+							<td class="align-title"><spring:message
+									code="PANEL_FIELD_NO_OF_PUBLISHED_OBJECTS" />
+								<div id="h5">${PublishedObjects}</div></td>
+							<td class="aign-update"><spring:message code="IP_ADDRESS" />
+								<div id="h5">${FedoraIpAddress}</div></td>
+						</tr>
+					</table>
+				</div>
+				<div id="bannericons">
+					<ul id="bannericonrow">
+						<li><div style="position: relative">
+								<button class="roundbutton iconBtn" id="userlink"
+									onclick="overlayToggle('libraryuser',true)">
+									<img src="<c:url value="/resources/images/Person_Icon.png"/> " />
+								</button>
+								<button class="greenroundbutton iconBtn" id="newuser">
+									<img src="<c:url value="/resources/images/Plus_Icon.png" />"
+										width="10px">
+								</button>
+							</div></li>
+						<li>
+							<button class="roundbutton open-overlay iconBtn" type="button"
+								id="settinglink" onclick="overlayToggle('libsettings',true)">
+								<img src="<c:url value="/resources/images/Gear_Icon.png"/> " />
+							</button>
+					</ul>
+					<div class="floatingInfo" id="homeIcons">
+						<span></span>
+					</div>
+				</div>
+
+			</div>
+		</c:otherwise>
+	</c:choose>
+
 	<div class="header">
 		<button class="greenroundbutton open-overlay"  type="button" id="addObjbutton"
 			 onclick="overlayToggle('addObject',true)">
