@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.uofm.ot.dao.UserDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.model.User;
+import org.uofm.ot.model.UserRoles;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
@@ -31,7 +32,7 @@ public class UserDAOImpl implements UserDAO {
 	
 	private final String SELECT_USER_BY_USERNAME_PASSWORD = "SELECT * FROM "+TABLE_NAME+" WHERE "+USERNAME_COLUMN+" = ? AND "+PASSWD_COLUMN+" = ?" ;
 	
-	private final String UPDATE_USER = "UPDATE "+TABLE_NAME+" SET "+PASSWD_COLUMN+" = ? , "+ FIRST_NAME_COLUMN + " = ? , "+ LAST_NAME_COLUMN + " = ? WHERE "+USERNAME_COLUMN+" = ?" ;
+	private final String UPDATE_USER = "UPDATE "+TABLE_NAME+" SET "+ USERNAME_COLUMN+" = ? , " + FIRST_NAME_COLUMN + " = ? , "+ LAST_NAME_COLUMN + " = ? ," + ROLE_COLUMN + " = ? WHERE "+ID_COLUMN+" = ? " ;
 	
 	private final String SELECT_USER_BY_USERNAME= "SELECT * FROM "+TABLE_NAME+" WHERE "+USERNAME_COLUMN+" = ? " ;
 	
@@ -65,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User updateUser(User user)  {
 		User dbUser = null;
-		int result = jdbcTemplate.update(UPDATE_USER, user.getPasswd(),user.getFirst_name(),user.getLast_name(), user.getUsername());
+		int result = jdbcTemplate.update(UPDATE_USER,user.getUsername(),user.getFirst_name(),user.getLast_name(),user.getRole().toString() ,user.getId());
 		if(result > 0 ) {
 			dbUser =  jdbcTemplate.queryForObject(SELECT_USER_BY_USERNAME,
 					new Object[] {user.getUsername()},new BeanPropertyRowMapper<>(User.class));
@@ -84,7 +85,8 @@ public class UserDAOImpl implements UserDAO {
 			user.setLast_name((String)row.get("last_name"));
 			user.setId((Integer)row.get("id"));
 			user.setPasswd((String)row.get("passwd"));
-			user.setRole((String)row.get("role"));
+			String role = (String)row.get("role");
+			user.setRole(UserRoles.valueOf(role));
 			user.setUsername((String)row.get("username"));
 			users.add(user);
 		}
@@ -95,7 +97,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User addNewUser(User user) throws ObjectTellerException, MySQLIntegrityConstraintViolationException {
 		User dbUser = null; 
-		int success = jdbcTemplate.update(ADD_NEW_USER, new Object[] { user.getUsername(), user.getPasswd() , user.getRole() , user.getFirst_name() , user.getLast_name()
+		int success = jdbcTemplate.update(ADD_NEW_USER, new Object[] { user.getUsername(), user.getPasswd() , user.getRole().toString() , user.getFirst_name() , user.getLast_name()
 		});
 
 		if(success == 0)

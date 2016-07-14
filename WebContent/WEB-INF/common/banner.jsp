@@ -33,8 +33,6 @@ $(document).ready(function(){
 		user.passwd = document.getElementById("passwd").value;
 
 		var text = JSON.stringify(user);
- 		/* alert(text); 
- */
  		$.ajax({
 					beforeSend : function(xhrObj) {
 						xhrObj.setRequestHeader("Content-Type",
@@ -42,26 +40,36 @@ $(document).ready(function(){
 						xhrObj.setRequestHeader("Accept", "application/json");
 					},
 					type : 'POST',
-					url : "Onlylogin",
+					url : "/ObjectTeller/login",
 					data : text,
 					dataType : "json",
 
 					success : function(response) {
-/* 						alert("Success !! Data saved successfully." +response);
- */						 if(response!='empty') {
+					 if(response!='empty') {
 							  var test = JSON.stringify(response);
 						      var obj = JSON.parse(test);
-						      
-/* 								location.reload();
- */						    }
+						      location.reload();
+					    }
 					} ,
 					
 					error : function(response) {
-						alert("failure " +response.status);
-						
+						// TODO: Handle Error Message
+						alert(response);
 					}
 				});
 		}); 
+		
+		
+		$("#logout").click(function userLogout(){
+			$.ajax({
+				type : 'POST',
+				url : "logout" ,
+
+				success : function(response) {
+					location.reload();
+				}
+			});
+		});
 
 	});
 </script>
@@ -80,8 +88,7 @@ $(document).ready(function(){
 					</div>
 					<div id="signin-dropdown" class="dropdown">
 
-	<sf:form method="POST" modelAttribute="user" class="signin"
-				action="home">
+					<form  class="signin">
 							<fieldset class="signin-textbox">
 								<input name="username" type="text" id="username"
 									autocomplete="on" placeholder="Username"></input>
@@ -93,7 +100,7 @@ $(document).ready(function(){
 									value="1" name="remember_me" /> <span><spring:message
 											code="REMEMBER_ME_BUTTON" /></span>
 								</label>
-								<button id="login" class="submit button" type="subumit">
+								<button id="login" class="submit button" type="button">
 									<spring:message code="LOG_IN_BUTTON" />
 								</button>
 							</fieldset>
@@ -101,7 +108,7 @@ $(document).ready(function(){
 								<a href="retrievepw.html"> <spring:message
 										code="PASSWORD_RESET" /></a>
 							</p>
-						</sf:form>
+						</form>
 					</div>
 					
 				<!-- 
@@ -123,13 +130,13 @@ $(document).ready(function(){
 								</button>
 							</fieldset>
 						</form>
-						<sf:form method="POST" class="signin" action="logout">
+						<form class="signin">
 							<fieldset class="links">
-								<button id="logout" class="submit button" type="submit">
+								<button id="logout" class="submit button" type="button">
 									<spring:message code="LOGOUT" />
 								</button>
 							</fieldset>
-						</sf:form>
+						</form>
 						</div>
 					<!-- </div> -->
 				

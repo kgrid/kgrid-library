@@ -47,49 +47,9 @@ public class LoginController {
 	public void setFusekiService(FusekiService fusekiService) {
 		this.fusekiService = fusekiService;
 	}
-	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(  ModelMap model) {
-		model.addAttribute("user",new User());
-		
-		try {
-			ArrayList<FedoraObject> list = fusekiService.getPublicFedoraObjects();
-			model.addAttribute("objects", list);
-		} catch(ObjectTellerException ex){
-			logger.error("Exception occured while retrieving objects "+ex.getCause());
-			model.addAttribute("ErrorMessage","Exception occured while retrieving objects "+ex.getCause());
-		}
-		return "login/login";
-	}
 
-	
 
-	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String verifyLogin(@Valid User user, BindingResult bindingResult , HttpSession session, ModelMap model) throws ObjectTellerException {
-		String view = null;
-
-		if(bindingResult.hasErrors()){
-			view = "login/login";
-		} else{
-			User resUser = userDao.getUserByUsernameAndPassword(user.getUsername(), user.getPasswd());
-			if(resUser == null) {
-				model.addAttribute("IncorrectLoginErrorMessage", "Incorrect Username or Password. Please try again.");
-				ArrayList<FedoraObject> list = fusekiService.getPublicFedoraObjects();
-				model.addAttribute("objects", list);
-				view = "login/login";
-			}
-			else {
-				session.setAttribute("DBUser", resUser);
-				getObjectPage(model);
-				view = "login/home";
-			}
-		}
-
-		return view;
-	}
-
-	@RequestMapping(value = "/objects", method = RequestMethod.GET)
-	public String getObjectPage( ModelMap model) {		
+	private String getObjectPage( ModelMap model) {		
 		try {
 			ArrayList<FedoraObject> list = fusekiService.getAllFedoraObjects();
 			Integer publishedObjects = fusekiService.getNumberOfPublishedObjects();
@@ -120,11 +80,13 @@ public class LoginController {
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public String logout( ModelMap model, HttpSession session ){
 		session.removeAttribute("DBUser");
-		return login(model) ; 
+		return newLogin(model,session) ; 
 	}
 	
-	@RequestMapping(value="/Onlylogin", method=RequestMethod.POST , consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
+	@RequestMapping(value="/login", method=RequestMethod.POST , consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> onlyLogin(@RequestBody String string, HttpSession httpSession) {		
+		System.out.println("Inside only log in ");
+		
 		
 		Gson gson = new Gson();
 		User userObject = gson.fromJson(string, User.class);
@@ -137,4 +99,30 @@ public class LoginController {
 		return new ResponseEntity<String>( result, HttpStatus.OK) ; 
 
 	}
+	
+	@RequestMapping(value="/home")
+	public String newLogin(ModelMap model,  HttpSession httpSession) {		
+
+		if(httpSession.getAttribute("DBUser") == null){
+
+			ArrayList<FedoraObject> list;
+			try {
+				list = fusekiService.getPublicFedoraObjects();
+				model.addAttribute("objects", list);
+			} catch (ObjectTellerException ex) {
+				logger.error("Exception occured while retrieving objects "+ex.getCause());
+				model.addAttribute("ErrorMessage","Exception occured while retrieving objects "+ex.getCause());
+			}
+			model.addAttribute("loggedInUser", null);
+
+		} else {
+			getObjectPage(model);
+			model.addAttribute("loggedInUser", (User) httpSession.getAttribute("DBUser"));
+			
+		}
+
+		return "login/home" ;			
+	}
+	
+	
 }
