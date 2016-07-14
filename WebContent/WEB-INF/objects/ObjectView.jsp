@@ -66,13 +66,7 @@
 				}else{
 					$("#session").hide();
 					$("#logoutsession").show();
-					var key = "first_name=";
-					var n = userObj.indexOf(key);
-				    var newStr = userObj.substring(n+key.length, userObj.length);
-				    var commaIndex = newStr.indexOf(",");
-				    var name = newStr.substring(0,commaIndex);
-				
-					$("#user").append(name);
+					
 					switch(accessLevel){
 
 					default:
@@ -183,41 +177,7 @@
 
 					}
 				});
-				$("#login").click( function login() {
-					
-					
-					var user = new Object();
-
-					user.username = document.getElementById("username").value;
-					user.passwd = document.getElementById("passwd").value;
-
-					var text = JSON.stringify(user);
-
-					$.ajax({
-								beforeSend : function(xhrObj) {
-									xhrObj.setRequestHeader("Content-Type",
-											"application/json");
-									xhrObj.setRequestHeader("Accept", "application/json");
-								},
-								type : 'POST',
-								url : "Onlylogin",
-								data : text,
-								dataType : "json",
-
-								success : function(response) {
-									 if(response!='empty') {
-										  var test = JSON.stringify(response);
-									      var obj = JSON.parse(test);
-									      
-											location.reload();
-									    }
-								} ,
-								
-								error : function(response) {
-									alert("failure " +response.status);
-								}
-							});
-					});
+	
 
 				document.getElementById('file_payload').addEventListener(
 						'change', readMultipleFiles, false);
@@ -293,41 +253,6 @@
 		}
 	}
 	
-	function userLogout(){
-	
-		$.ajax({
-			type : 'POST',
-			url : "logout" ,
-
-			success : function(response) {
-
-				 window.location = "/ObjectTeller/login";
-			}
-		});
-	}
-	
-	function goBack() {
-		var userObj ="<%=session.getAttribute("DBUser")%>";
-		if (userObj == "null") {
-			$.ajax({
-				type : 'GET',
-				url : "login",
-
-				success : function(response) {
-					window.location = "/ObjectTeller/login";
-				}
-			});
-		} else {
-			$.ajax({
-				type : 'GET',
-				url : "objects",
-
-				success : function(response) {
-					window.location = "/ObjectTeller/objects";
-				}
-			});
-		}
-	}
 </script>
 <script type="text/javascript"
 	src="/ObjectTeller/resources/js/dropdown.js"></script>
@@ -350,9 +275,9 @@
 		<div id="goback">
 			<div id="leadarrow"></div>
 
-			<button onclick="goBack()" id="backButton">
+			<a href="/ObjectTeller/home" id="backButton">
 				<spring:message code="BACK_RESULTS" />
-			</button>
+			</a>
 		</div>
 
 		<c:choose>
