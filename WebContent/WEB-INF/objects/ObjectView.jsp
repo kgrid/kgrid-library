@@ -129,10 +129,14 @@
 				});
 				$("#editPayloadButton").click(function() {
 					var buttonText = $("#editPayloadButton").text();
+					var data_p = $("#payloadTextArea-v").val();
 					if (buttonText == "EDIT") {
 						$("#displayPayload").hide();
-					/* 	$("#payloadTextArea").hide(); */
+						$("#payloadTextArea").val(data_p); 
 						$("#payloadEdit").show();
+						$("#payloadTextArea").show();
+						$("#payloadTextAreaDisplay").show();
+						$("#payloadDropFile").hide();
 						$("#editPayloadButton").text("CANCEL");
 						$("#editPayloadButton").css("left", "640px");
 					} else {
@@ -147,10 +151,14 @@
 				});
 				$("#editInputButton").click(function() {
 					var buttonText = $("#editInputButton").text();
+					var data_p = $("#inputTextArea-v").val();
 					if (buttonText == "EDIT") {
 						$("#displayInput").hide();
-						/* $("#inputTextArea").hide(); */
+						$("#inputTextArea").val(data_p); 
 						$("#inputEdit").show();
+						$("#inputTextArea").show();
+						$("#inputTextAreaDisplay").show();
+						$("#inputDropFile").hide();
 						$("#editInputButton").text("CANCEL");
 						$("#editInputButton").css("left", "580px");
 					} else {
@@ -163,10 +171,14 @@
 				});
 				$("#editOutputButton").click(function() {
 					var buttonText = $("#editOutputButton").text();
+					var data_p = $("#outputTextArea-v").val();
 					if (buttonText == "EDIT") {
 						$("#displayOutput").hide();
-						/* $("#outputTextArea").hide(); */
+						$("#outputTextArea").val(data_p);
 						$("#outputEdit").show();
+						$("#outputTextArea").show();
+						$("#outputTextAreaDisplay").show();
+						$("#outputDropFile").hide();
 						$("#editOutputButton").text("CANCEL");
 						$("#editOutputButton").css("left", "580px");
 					} else {

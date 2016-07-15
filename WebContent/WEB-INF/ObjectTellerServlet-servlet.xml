@@ -44,6 +44,7 @@ value="org.springframework.web.servlet.view.JstlView" />
       <property name="suffix" value=".jsp" />
    </bean>
 
+
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 
@@ -123,6 +124,10 @@ value="org.springframework.web.servlet.view.JstlView" />
 		   
 	<mvc:annotation-driven />
 	
+	<mvc:view-controller path="/about" view-name="about/about"/>
+	<mvc:view-controller path="/faq" view-name="about/faq"/>
+	<mvc:view-controller path="/contactus" view-name="about/contactus"/>
+			
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
 </beans>
