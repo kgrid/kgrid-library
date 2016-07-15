@@ -17,14 +17,14 @@
 	rel="stylesheet">
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="/ObjectTeller/resources/js/jquery-ui.js"></script>
+<script type="text/javascript"
+	src="/ObjectTeller/resources/js/jquery-ui.js"></script>
 <script type="text/javascript">
+	var newUserId = 0;
+	var users;
+	var selectedCard = -1;
 
-    var newUserId = 0 ;
-    var users;
-    var selectedCard=-1;
-    
-    function createUserCard(userID, user_fname, user_lname, user_title,cardId) {
+	function createUserCard(userID, user_fname, user_lname, user_title, cardId) {
 		var userInitial = user_fname.substring(0, 1) + user_lname.substr(0, 1);
 		var cardTag = '<div class="userCard" tabIndex="-1" name="'+userID+'" id="'+cardId+'">';
 		var initialDiv = '<div class="userInitial">' + userInitial + '</div>';
@@ -32,36 +32,36 @@
 				+ user_lname + ' | ' + user_title + '</div>'
 		var userIDDiv = '<div class="userid">' + userID + '</div>';
 		var deleteButton = '<button class="edit deleteButton">Delete</button>';
-		var viewButton =  '<button class="viewButton"><i class="material-icons md-18">visibility</i></button>';
-		var editButton =  '<button class="changeButton"> <i class="material-icons md-18">create</i> </button>';
+		var viewButton = '<button class="viewButton"><i class="material-icons md-18">visibility</i></button>';
+		var editButton = '<button class="changeButton"> <i class="material-icons md-18">create</i> </button>';
 		var divEndTag = "</div>"
 
 		var userCard = cardTag + initialDiv + userNameRow + userIDDiv
-				+ deleteButton +divEndTag;
+				+ deleteButton + divEndTag;
 
 		return userCard;
 	}
-    
-    function updateUserCard(userID, user_fname, user_lname, user_title, cardId) {
+
+	function updateUserCard(userID, user_fname, user_lname, user_title, cardId) {
 		var userInitial = user_fname.substring(0, 1) + user_lname.substr(0, 1);
 		var cardTag = '<div class="userCard" tabIndex="-1" name="'+userID+'" id="'+cardId+'">';
-		var initialDiv = '<div class="userInitial">' + userInitial + '</div>';
+		var initialDiv = '<div class="userInitial">'
+				+ userInitial.toUpperCase() + '</div>';
 		var userNameRow = '<div class="userInfoRow">' + user_fname + ' '
 				+ user_lname + ' | ' + user_title + '</div>'
 		var userIDDiv = '<div class="userid">' + userID + '</div>';
 		var deleteButton = '<button class="edit deleteButton">Delete</button>';
-		var viewButton =  '<button class="viewButton"><i class="material-icons md-18">visibility</i></button>';
-		var editButton =  '<button class="changeButton"> <i class="material-icons md-18">create</i> </button>';
+		var viewButton = '<button class="viewButton"><i class="material-icons md-18">visibility</i></button>';
+		var editButton = '<button class="changeButton"> <i class="material-icons md-18">create</i> </button>';
 		var divEndTag = "</div>"
 
 		var newUserCard = cardTag + initialDiv + userNameRow + userIDDiv
-				+ deleteButton +divEndTag;
-		
+				+ deleteButton + divEndTag;
+
 		var thisCard = document.getElementById(cardId);
 		$(thisCard).replaceWith(newUserCard);
 		return true;
 	}
-        
 
 	function createEmptySlot(addUser) {
 		var addSlot = '<div class="emptySlot" id="grantAccess" tabINdex="-1"><p> Drag over a <br> user in your library to give them access</p></div>';
@@ -94,234 +94,291 @@
 	}
 
 	function removeUsercard(cardId) {
-        var card = document.getElementById(cardId);
-        if (card != null) {
-            card.remove();
-        }
+		var card = document.getElementById(cardId);
+		if (card != null) {
+			card.remove();
+		}
 	}
 
-
 	
-	function addEventListenerToCard(divID){
-	//	var divID = userID.replace("@","\@");
-		console.log("Selected Card:"+divID);
-	    $("#"+divID).focus(function(e){
-            selectedCard=$(this).data('number');
-            console.log(selectedCard);
-            document.getElementById("addUserButton").style.display="block";
-            $("#addUserButton").text("UPDATE");
-            document.getElementById("cancelButton").style.display="block";
-            $("#role_data").val(users[selectedCard].role);
-            $("#fname_data").val(users[selectedCard].first_name);
-            $("#lname_data").val(users[selectedCard].last_name);
-            $("#email_data").val(users[selectedCard].username);
-            $("#pwd_data").prop('disabled', true);
- 	    });
+	function addEventListenerToCard(divID) {
+		console.log("Selected Card:" + divID);
+		$("#" + divID)
+				.focus(
+						function(e) {
+							var id = divID.substring(4);
+							selectedCard = getUserIndexForId(id);
 
-	    $("#"+divID +" > .deleteButton").click(function() {
+							if (selectedCard != -1) {
+								console.log(selectedCard);
+								document.getElementById("addUserButton").style.display = "block";
+								$("#addUserButton").text("UPDATE");
+								document.getElementById("cancelButton").style.display = "block";
+								$("#role_data").val(users[selectedCard].role);
+								$("#fname_data").val(
+										users[selectedCard].first_name);
+								$("#lname_data").val(
+										users[selectedCard].last_name);
+								$("#email_data").val(
+										users[selectedCard].username);
+								$("#pwd_data").prop('disabled', true);
+							}
+						});
+
+		$("#" + divID + " > .deleteButton").click(function() {
 			var id = divID.substring(4);
-			 $.ajax({
+			var selectedUser = getUserIndexForId(id);
+			$.ajax({
 				type : 'DELETE',
-				url : "deleteUser/"+users[id].id,
-				
+				url : "deleteUser/" + users[selectedUser].id,
+
 				success : function(response) {
-				    removeUsercard(divID);
-				    users.splice(id,1);
+					removeUsercard(divID);
+					users.splice(id, 1);
+
 				},
-			 
-				error: function(response) {
-					alert(response.status);
+
+				error : function(response) {
+					
+					var test = JSON.stringify(response);
+					var obj = JSON.parse(test);
+					alert(obj.responseText);
 				}
-			 
-				}); 
+
+			});
 
 		});
-	
-	
+
+	}
+
+	function getUserIndexForId(id) {
+		for (var i = 0; i < users.length; ++i) {
+			if (id == users[i].id) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	
- 	function getUserData(){
+	function addUserValidation() {
+		var success = false ;
+		if ( $("#role_data").val() != '' && $("#email_data").val() != '' && $("#pwd_data").val() != '' ) {
+			success = true;
+		} 
+		return success;
+	}
+
+	function updateUserValidation() {
+		var success = false ;
+		if ( $("#role_data").val() != '' && $("#email_data").val() != ''  ) {
+			success = true;
+		} 
+		return success;		
+	}
+	
+	function getUserData() {
 		var usercard;
-		
-		$.ajax({
-			type : 'GET',
-			url : "getAllUsers",
-			
-			success : function(response) {
-			    if(response!='empty') {
-				  var test = JSON.stringify(response);
-			      var obj = JSON.parse(test);
-			      users = obj;
-			      newUserId = obj.length ;
-			      for (index = 0; index < obj.length; ++index) {
-			    	    usercard = createUserCard(obj[index].username, obj[index].first_name, obj[index].last_name,
-			    	    		obj[index].role, "card"+index);
-						$(usercard).data('number', index).appendTo('#sort1'); 
-						addEventListenerToCard("card"+index);
-			      }
-			      
-			      var eSlot = createEmptySlot(2);
-			        $(eSlot).appendTo('#sort1');
 
-			        $('.emptySlot').focus(function(e){
-				    	console.log(e.target.parentElement.nodeName);
-				    	$("#pwd_data").prop('disabled', false);
-				    	 $("#addUserButton").text("ADD USER");
-			            document.getElementById("addUserButton").style.display="block";
-			            document.getElementById("cancelButton").style.display="block";
-				    });
-	
-			        
-			        
-			      
-			    }
-			}
-			});
-	}
-	 
+		$
+				.ajax({
+					type : 'GET',
+					url : "getAllUsers",
 
-	$(document).ready(function() {
-       
-	getUserData();	
-       
-	$("#cancelButton").click(function() {
-			$("#role_data").text(function(i, origText) {
-				return origText;
-			});
-			$("#fname_data").text(function(i, origText) {
-				return origText;
-			});
-			$("#lname_data").text(function(i, origText) {
-				return origText;
-			});
-			$("#email_data").text(function(i, origText) {
-				return origText;
-			});
-			$("#pwd_data").text(function(i, origText) {
-				return origText;
-			});
-
-		});
-
-		$("#addUserButton").click(function() {
-			var act = $("#addUserButton").text();
-			console.log(act);
-			
-			/* Code to add user to database*/
-			/* Call createUserCard */
-			/* delete emptySlot */
-			/* appendto #slot1 */
-			/* createEmptySlot and append to sort1 */
-
-			var userObject = new Object();
-
-			userObject.role = document.getElementById("role_data").value;			
-			userObject.first_name = document.getElementById("fname_data").value;
-			userObject.last_name = document.getElementById("lname_data").value;
-			userObject.username = document.getElementById("email_data").value;
-
-			
-		
-			if(act=="ADD USER"){
-				userObject.passwd = document.getElementById("pwd_data").value;
-				var text = JSON.stringify(userObject);
-				
-				
-				
-				$
-					.ajax({
-						beforeSend : function(xhrObj) {
-							xhrObj.setRequestHeader("Content-Type",
-									"application/json");
-							xhrObj.setRequestHeader("Accept", "application/json");
-						},
-						type : 'POST',
-						url : "addUser",
-						data : text,
-						dataType : "json",
-
-						success : function(response) {
-							if (response != 'empty') {
-								var test = JSON.stringify(response);
-								var obj = JSON.parse(test);
-								removeEmptySlot();
-								usercard = createUserCard(obj.username, obj.first_name, obj.last_name,obj.role,"card"+newUserId);
-								$(usercard).data('number', newUserId).appendTo('#sort1'); 
-
-								users[newUserId] = obj ;
-								
-								addEventListenerToCard("card"+newUserId);
-								newUserId = newUserId + 1;
-
-							    var eSlot = createEmptySlot(2);
-							    $(eSlot).appendTo('#sort1');
-							    $("#role_data").val("");
-					            $("#fname_data").val("");
-					            $("#lname_data").val("");
-					            $("#email_data").val("");
-					            $("#pwd_data").val("");
-								
-							}
-						},
-
-						error : function(response) {
-							document.getElementById("successResult").value = "ERROR";
-						}
-					}); 
-			
-			}
-			if(act=="UPDATE"){
-				userObject.id = users[selectedCard].id ;
-				var text = JSON.stringify(userObject);
-				
-				
-					$
-					.ajax({
-						beforeSend : function(xhrObj) {
-							xhrObj.setRequestHeader("Content-Type",
-									"application/json");
-							xhrObj.setRequestHeader("Accept", "application/json");
-						},
-						type : 'POST',
-						url : "saveUser",
-						data : text,
-						dataType : "json",
-
-						success : function(response) {
-							if (response != 'empty') {
-								var test = JSON.stringify(response);
-								var obj = JSON.parse(test);
-							    users[selectedCard].role = obj.role;
-							    users[selectedCard].first_name= obj.first_name;
-							    users[selectedCard].last_name= obj.last_name;
-					            users[selectedCard].username= obj.username;
-					            updateUserCard(obj.username, obj.first_name, obj.last_name, obj.role, "card"+selectedCard);
-					            			            
-							    $("#role_data").val("");
-					            $("#fname_data").val("");
-					            $("#lname_data").val("");
-					            $("#email_data").val("");
-					            $("#pwd_data").val("");
-							}
-						},
-
-						error : function(response) {
-							alert("Error ! "+response.status);
+					success : function(response) {
+						if (response != 'empty') {
 							var test = JSON.stringify(response);
+							var obj = JSON.parse(test);
+							users = obj;
+							newUserId = obj.length;
+							for (index = 0; index < obj.length; ++index) {
+								usercard = createUserCard(obj[index].username,
+										obj[index].first_name,
+										obj[index].last_name, obj[index].role,
+										"card" + obj[index].id);
+								$(usercard).appendTo('#sort1');
+								addEventListenerToCard("card" + obj[index].id);
+							}
+
+							var eSlot = createEmptySlot(2);
+							$(eSlot).appendTo('#sort1');
+							emptySlotClick();
 							
+
 						}
+					}
+				});
+	}
+
+	function emptySlotClick(){
+		$('.emptySlot').focus(
+				function(e) {
+					console.log(e.target.parentElement.nodeName);
+					$("#pwd_data").prop('disabled',false);
+					$("#addUserButton").text("ADD USER");
+					document.getElementById("addUserButton").style.display = "block";
+					document.getElementById("cancelButton").style.display = "block";
+				});
+	}
+	
+	$(document)
+			.ready(
+					function() {
+
+						getUserData();
+
+						$("#cancelButton").click(function() {
+							$("#role_data").text(function(i, origText) {
+								return origText;
+							});
+							$("#fname_data").text(function(i, origText) {
+								return origText;
+							});
+							$("#lname_data").text(function(i, origText) {
+								return origText;
+							});
+							$("#email_data").text(function(i, origText) {
+								return origText;
+							});
+							$("#pwd_data").text(function(i, origText) {
+								return origText;
+							});
+
+						});
+
+						$("#addUserButton").click(function() {
+											var act = $("#addUserButton").text();
+											console.log(act);
+
+											/* Code to add user to database*/
+											/* Call createUserCard */
+											/* delete emptySlot */
+											/* appendto #slot1 */
+											/* createEmptySlot and append to sort1 */
+											
+											var userObject = new Object();
+
+											userObject.role = document.getElementById("role_data").value;
+											userObject.first_name = document.getElementById("fname_data").value;
+											userObject.last_name = document.getElementById("lname_data").value;
+											userObject.username = document.getElementById("email_data").value;
+
+											if (act == "ADD USER") {
+												if(addUserValidation()) {
+												userObject.passwd = document.getElementById("pwd_data").value;
+												var text = JSON.stringify(userObject);
+
+												$.ajax({
+															beforeSend : function(xhrObj) {
+																xhrObj.setRequestHeader("Content-Type","application/json");
+																xhrObj.setRequestHeader("Accept","application/json");
+															},
+															type : 'POST',
+															url : "addUser",
+															data : text,
+															dataType : "json",
+
+															success : function(response) {
+																if (response != 'empty') {
+																	var test = JSON.stringify(response);
+																	var obj = JSON.parse(test);
+																	removeEmptySlot();
+																	usercard = createUserCard(
+																			obj.username,
+																			obj.first_name,
+																			obj.last_name,
+																			obj.role,
+																			"card"+ obj.id);
+																	$(usercard).appendTo('#sort1');
+
+																	users[newUserId] = obj;
+
+																	addEventListenerToCard("card"+ obj.id);
+																	newUserId = newUserId + 1;
+
+																	var eSlot = createEmptySlot(2);
+																	$(eSlot).appendTo('#sort1');
+																	emptySlotClick();
+																	$("#role_data").val("");
+																	$("#fname_data").val("");
+																	$("#lname_data").val("");
+																	$("#email_data").val("");
+																	$("#pwd_data").val("");
+
+																}
+															},
+
+															error : function(response) {
+																alert(response.responseText);
+															}
+														});
+												} else {
+													alert("Please provide Role, Email Address and Password");
+												}
+											}
+											if (act == "UPDATE") {
+												if(updateUserValidation()) {
+												userObject.id = users[selectedCard].id;
+												var text = JSON.stringify(userObject);
+
+												$
+														.ajax({
+															beforeSend : function(
+																	xhrObj) {
+																xhrObj
+																		.setRequestHeader(
+																				"Content-Type",
+																				"application/json");
+																xhrObj
+																		.setRequestHeader(
+																				"Accept",
+																				"application/json");
+															},
+															type : 'POST',
+															url : "saveUser",
+															data : text,
+															dataType : "json",
+
+															success : function(
+																	response) {
+																if (response != 'empty') {
+																	var test = JSON
+																			.stringify(response);
+																	var obj = JSON
+																			.parse(test);
+																	users[selectedCard].role = obj.role;
+																	users[selectedCard].first_name = obj.first_name;
+																	users[selectedCard].last_name = obj.last_name;
+																	users[selectedCard].username = obj.username;
+																	updateUserCard(
+																			obj.username,
+																			obj.first_name,
+																			obj.last_name,
+																			obj.role,
+																			"card"+ obj.id);
+																	addEventListenerToCard("card"+ obj.id);
+
+																	$("#role_data").val("");
+																	$("#fname_data").val("");
+																	$("#lname_data").val("");
+																	$("#email_data").val("");
+																	$("#pwd_data").val("");
+																}
+															},
+
+															error : function(response) {
+																alert("Error ! "+ response.status);
+																var test = JSON.stringify(response);
+
+															}
+														});
+												}  else {
+													alert("Please provide Role and  Email Address.");
+												}
+											}
+											
+										});
+
 					});
-
-					
-					
-				
-			}
-			
-		});
-
-
-
-	});
 </script>
 
 </head>
@@ -350,10 +407,14 @@
 						<p class="secTitle">
 							<spring:message code="BASIC_INFO" />
 						</p>
-						<form class="display-content"  id="user_edit">
+						<form class="display-content" id="user_edit">
 
-							<button class="saveChange" id="addUserButton" type="button"><spring:message code="ADD_USER_BTN" /></button>
-							<button class="edit" id="cancelButton"><spring:message code="CANCEL_BTN" /></button>
+							<button class="saveChange" id="addUserButton" type="button">
+								<spring:message code="ADD_USER_BTN" />
+							</button>
+							<button class="edit" id="cancelButton">
+								<spring:message code="CANCEL_BTN" />
+							</button>
 
 
 							<div>
@@ -364,7 +425,7 @@
 									<option value="ADMIN">ADMIN</option>
 									<option value="USER">USER</option>
 									<option value="INFORMATICIAN">INFORMATICIAN</option>
-								</select> 
+								</select>
 							</div>
 
 							<div>
