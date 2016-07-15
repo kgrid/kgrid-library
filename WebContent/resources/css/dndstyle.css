@@ -302,6 +302,12 @@ input.userEdit {
     padding:3px 15px;
 }
 
+select.userEdit {
+    width: 400px;
+    margin:0 auto;
+    padding:3px 15px; 
+}
+
 #user_edit h4 {
     text-align: left;
     font-size:14px;
