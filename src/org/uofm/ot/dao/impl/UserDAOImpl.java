@@ -42,6 +42,10 @@ public class UserDAOImpl implements UserDAO {
 
 	private final String DELETE_USER_BY_ID = "DELETE FROM "+TABLE_NAME+" WHERE "+ID_COLUMN+" = ? ";
 	
+	private final String SELECT_USER_BY_ID = "SELECT * FROM "+TABLE_NAME+" WHERE "+ID_COLUMN+" = ? ";
+	
+	private final String COUNT_USERS_BY_ROLES = "SELECT count(*) FROM "+TABLE_NAME+" WHERE " + ROLE_COLUMN +" = ?";
+	
 	private JdbcTemplate jdbcTemplate;  
 
 
@@ -95,7 +99,7 @@ public class UserDAOImpl implements UserDAO {
 
 
 	@Override
-	public User addNewUser(User user) throws ObjectTellerException, MySQLIntegrityConstraintViolationException {
+	public User addNewUser(User user) throws ObjectTellerException {
 		User dbUser = null; 
 		int success = jdbcTemplate.update(ADD_NEW_USER, new Object[] { user.getUsername(), user.getPasswd() , user.getRole().toString() , user.getFirst_name() , user.getLast_name()
 		});
@@ -114,12 +118,27 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public void deleteUser(int userId) throws ObjectTellerException {
-		int success = jdbcTemplate.update(DELETE_USER_BY_ID, userId);
-		
-		if(success == 0 || success < 0 ) {
-			throw new ObjectTellerException("Unable to delete user with id: "+userId);
-		
+
+		User toBeDeleted =  jdbcTemplate.queryForObject(SELECT_USER_BY_ID,
+				new Object[] {userId},new BeanPropertyRowMapper<>(User.class));
+
+		if(toBeDeleted != null && toBeDeleted.getRole() == UserRoles.ADMIN ) {
+			
+			int admins = jdbcTemplate.queryForObject(COUNT_USERS_BY_ROLES, new Object[] { UserRoles.ADMIN.toString() },Integer.class);
+			
+			if(admins > 1) {
+
+				int success = jdbcTemplate.update(DELETE_USER_BY_ID, userId);
+
+				if(success == 0 || success < 0 ) {
+					throw new ObjectTellerException("Unable to delete user with id: "+userId);
+
+				}
+			} else {
+				throw new ObjectTellerException("This is the last Admin user. You need to create a new Admin user to delete this user .");
+			}
 		}
 	}
+	
 	
 }

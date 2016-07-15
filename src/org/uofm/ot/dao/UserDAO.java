@@ -15,7 +15,7 @@ public interface UserDAO {
 	
 	public List<User> getAllUsers();
 	
-	public User addNewUser(User user) throws ObjectTellerException,  MySQLIntegrityConstraintViolationException;
+	public User addNewUser(User user) throws ObjectTellerException;
 	
 	public void deleteUser(int userID) throws ObjectTellerException;
 }
