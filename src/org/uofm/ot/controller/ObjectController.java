@@ -68,7 +68,7 @@ public class ObjectController {
 			model.addAttribute("ActiveTab", "METADATA");
 		} catch (ObjectTellerException e) { 
 			logger.error("Unable to retrieve the object  "+objectURI+ ". Exception occured "+ e.getErrormessage()); 
-			model.addAttribute("ErrorMeassage","Unable to retrieve the object  "+objectURI+ ". Exception occured "+ e.getErrormessage());
+			model.addAttribute("ErrorMessage","Unable to retrieve the object  "+objectURI+ ". Exception occured "+ e.getErrormessage());
 		}
 		return view;
 	}
@@ -88,7 +88,7 @@ public class ObjectController {
 
 		} catch (ObjectTellerException e) {
 			logger.error("Unable to edit human entered metadata for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage()); 
-			model.addAttribute("ErrorMeassage","Unable to edit human entered metadata for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage());
+			model.addAttribute("ErrorMessage","Unable to edit human entered metadata for the object "+ fedoraObject + ". Exception occured "+ e.getErrormessage());
 		}
 
 		return "objects/ObjectView";
