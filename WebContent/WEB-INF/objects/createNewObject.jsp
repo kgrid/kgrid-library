@@ -100,7 +100,7 @@
 		fedoraObject.payloadDescriptor = payloadDescriptor;
 
 		var text = JSON.stringify(fedoraObject);
-		//alert(text);
+
 		$("#entry_form").hide();
 		$("#end_page").show();
 
@@ -117,11 +117,11 @@
 					dataType : "json",
 
 					success : function(response) {
-					//	alert("inside the success ");
+
 						if (response != 'empty') {
 							var test = JSON.stringify(response);
 							var obj = JSON.parse(test);
-							// alert(obj.uri);
+
 							document.getElementById("successResult").innerHTML = " Your New Object Has Been Added To Your Library!<br> To make changes click on the edit button in each section.<br> Object ID: "
 									+ obj.uri;
 						}
