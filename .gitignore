@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+.DS_Store
+.gitignore
+.idea/
+DB_create.sql
+DLOL1.iml
+WebContent/WEB-INF/lib/javax.websocket-api-1.1.jar
+build/
+dist/
+out/
