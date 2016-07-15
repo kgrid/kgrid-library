@@ -97,6 +97,7 @@
 		<%@ include file="../common/navbar.jsp"%>
 	</div>
 
+
 	<c:choose>
 		<c:when test="${ empty loggedInUser }">
 			<div id="bannerbk">
@@ -162,6 +163,7 @@
 			</div>
 		</c:otherwise>
 	</c:choose>
+	<h1>HAHAHAHAHAHAH!!!!</h1>
 
 	<div class="header">
 		<button class="greenroundbutton open-overlay"  type="button" id="addObjbutton"
