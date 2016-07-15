@@ -9,6 +9,7 @@ $(document).ready(function() {
 			$("ul#tab li.active").removeClass("active");
 			$("ul#tab li:nth-child(" + nthChild + ")").addClass("active");
 		}
+		$('.autosize').each(autoresize);
 	});
 	$("ul#tabs li.active").addClass("greenBar");
 	$("ul#tabs li").hover(
@@ -28,4 +29,15 @@ $(document).ready(function() {
 		}
 	
 	);
+	
+	function autoresize() {
+		var eid= $(this).attr("id");
+		console.log(eid);
+		var sh = $(this)[0].scrollHeight;
+		$(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
+		$(this).css('height',sh+ 'px');    //Set new height
+	}
+
+
+	
 });
