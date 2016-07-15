@@ -1,18 +1,13 @@
 package org.uofm.ot.controller;
 
 import java.util.List;
+
 import org.apache.log4j.Logger;
-
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-
+import  org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.uofm.ot.dao.UserDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.model.User;
-import org.uofm.ot.ui.util.Menu;
 
 import com.google.gson.Gson;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 
 
@@ -39,25 +32,6 @@ public class AccountController {
 	
 	private static final Logger logger = Logger.getLogger(AccountController.class);
 	
-	/*@RequestMapping(value = "/viewAccount", method = RequestMethod.GET)
-	public String view(  ModelMap model) {	
-	
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.ACCOUNT.getName());
-		model.addAttribute("ActiveSubTab", Menu.LHAccountMenuOptions.VIEW.getName());
-		
-		return "account/viewAccount";
-	}
-	
-	@RequestMapping(value = "/editAccount", method = RequestMethod.GET)
-	public String editAccount( @Valid User user, BindingResult bindingResult ,HttpSession session,ModelMap model ) {	
-		
-		model.addAttribute("ActiveTab", Menu.TopMenuOptions.ACCOUNT.getName());
-		model.addAttribute("ActiveSubTab", Menu.LHAccountMenuOptions.EDIT.getName());
-		User dBUser = (User) session.getAttribute("DBUser");
-		model.addAttribute("user",dBUser);
-		
-		return "account/editAccount";
-	}*/
 	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST,consumes ={MediaType.APPLICATION_JSON_VALUE}, produces= {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> saveUser( @RequestBody String string ) {	
@@ -86,7 +60,6 @@ public class AccountController {
 	
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST, consumes ={MediaType.APPLICATION_JSON_VALUE}, produces= {MediaType.APPLICATION_JSON_VALUE})
 	public  ResponseEntity<String>  addUser(@RequestBody String string) {
-		System.out.println("Inside add user "+string);
 		Gson gson = new Gson();
 		User user = gson.fromJson(string, User.class);
 		
@@ -97,7 +70,7 @@ public class AccountController {
 		} catch(ObjectTellerException ex){
 			logger.error(ex.getMessage());
 			return new ResponseEntity<String>(  ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR) ;
-		} catch (MySQLIntegrityConstraintViolationException ex) {
+		} catch ( DataAccessException ex) {
 			logger.error(ex.getMessage());
 			return new ResponseEntity<String>(  ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR) ;
 		}
@@ -105,8 +78,6 @@ public class AccountController {
 	
 	@RequestMapping(value = "/deleteUser/{userID}", method = RequestMethod.DELETE )
 	public  ResponseEntity<String>  deleteUser( @PathVariable int userID) {
-		System.out.println("Inside delete user "+userID);
-		
 		
 		try {
 			 userDao.deleteUser(userID);
