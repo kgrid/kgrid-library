@@ -148,6 +148,7 @@ h5 {
     display:table-row;
     float:right;
 }
+
 #bannericonrow li{
     display:table-cell;
 }
@@ -160,6 +161,9 @@ h5 {
 	display:none;
 	overflow:visible;
 	white-space: nowrap;
+	padding:2px;
+	border-radius:5px;
+/* 	border:1px solid #666666; */
 }
 
 #homeIcons {
