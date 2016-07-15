@@ -75,9 +75,9 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	<div id="logo">
+	<div id="logo"><a href="home">
 		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
-			height="auto">
+			height="auto"></a>
 	</div>
 			<div class="active-links">
 				

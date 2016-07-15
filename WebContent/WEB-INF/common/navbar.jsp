@@ -6,18 +6,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type="text/javascript" src="/ObjectTeller/resources/js/nav.js"></script>
 </head>
 <body>
-	<div id="top-bar-out">
-		<div id="topnav">
-			<div id="nav">
-				<ul>
-					<li><a href="#"><spring:message code="BANNER_ABOUT" /></a></li>
-					<li><a href="#"><spring:message code="BANNER_FAQ" /></a></li>
-					<li><a href="#"><spring:message code="BANNER_CONTACT_US" /></a></li>
-				</ul>
+		<div id="top-bar-out">
+			<div id="topnav">
+				<div id="nav">
+					<ul>
+						<li class=""><a href=<%= "about" %>><spring:message code="BANNER_ABOUT" /></a></li>
+						<li><a href="faq"><spring:message code="BANNER_FAQ" /></a></li>
+						<li><a href="contactus"><spring:message code="BANNER_CONTACT_US" /></a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
-	</div>
+
 </body>
 </html>

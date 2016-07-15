@@ -14,7 +14,6 @@
 }
 
 #nav {
-    align-content:normal;
     position:relative;
 	text-align: center;
     display:table;
@@ -39,20 +38,32 @@
   display: block;
 }
 #nav ul li {
-  width: 125px;;
+  width: 100px;;
   display: table-cell;
   float: left;
-}
+  padding: 5px 5px;
+  margin:15px 15px;  
+	font-size:14px;
+  }
 #nav ul li:hover {
-  background: #8fcb95;
+  /* background: #8fcb95; */
+  		border-bottom: 2px solid #fff;
 }
-
+#nav ul li.active{
+			font-size:16px;
+}
+#nav ul li.whiteBar {
+		border-bottom: 2px solid #fff;
+		font-size:16px;
+}
+#nav ul li.greenBar {
+		border-bottom: 2px solid #39b45a;
+}
 #nav ul li a {
-  display: block;
-  padding: 20px 20px;
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 0.05em;
   color: white;
+
   text-decoration: none;
 }
