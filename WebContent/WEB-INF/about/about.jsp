@@ -22,7 +22,7 @@
 	$(document)
 			.ready(
 					function() {
-						
+						var navItemID ="#about";
 						var title = [ "Who We Are", "Open Source" ];
 						var description = [
 								"",
@@ -34,6 +34,7 @@
 						$(window).resize(function(){setIconPos()});
 						setIconPos();
 						loadContent(blockNumber, title,description,info);
+						setActiveNavItem(navItemID);
 					});
 </script>
 <title>Object Teller - About</title>
