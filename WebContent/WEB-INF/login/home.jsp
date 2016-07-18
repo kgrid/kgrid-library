@@ -60,6 +60,11 @@
 
 	function resetUserInfoText(){
 		$( "input[id$='_data']" ).val( "" );
+		$("#role_data").val('');
+		$("#pwd_data").prop('disabled',false);
+		$("#addUserButton").text("ADD USER");
+		document.getElementById("addUserButton").style.display = "block";
+		document.getElementById("cancelButton").style.display = "block";
 	}
 	
 	
@@ -68,7 +73,7 @@
 		$('#inputTextArea').val("");
 		$('#outputTextArea').val("");
 		$( "input[id$='_data']" ).val( "" );
-
+		
 	}
 
 
@@ -166,10 +171,12 @@
 	</c:choose>
 
 	<div class="header">
-		<button class="greenroundbutton open-overlay"  type="button" id="addObjbutton"
-			 onclick="overlayToggle('addObject',true)">
-			<img src="<c:url value="/resources/images/Plus_Icon.png"/>" />
-		</button>
+		<c:if test="${not empty loggedInUser }">
+			<button class="greenroundbutton open-overlay" type="button"
+				id="addObjbutton" onclick="overlayToggle('addObject',true)">
+				<img src="<c:url value="/resources/images/Plus_Icon.png"/>" />
+			</button>
+		</c:if>
 		<div class="headercontainer">
 			<div class="headercol">
 
