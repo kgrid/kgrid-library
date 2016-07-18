@@ -164,7 +164,6 @@
 			</div>
 		</c:otherwise>
 	</c:choose>
-	<h1>HAHAHAHAHAHAH!!!!</h1>
 
 	<div class="header">
 		<button class="greenroundbutton open-overlay"  type="button" id="addObjbutton"
