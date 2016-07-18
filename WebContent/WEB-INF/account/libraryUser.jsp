@@ -27,7 +27,7 @@
 	function createUserCard(userID, user_fname, user_lname, user_title, cardId) {
 		var userInitial = user_fname.substring(0, 1) + user_lname.substr(0, 1);
 		var cardTag = '<div class="userCard" tabIndex="-1" name="'+userID+'" id="'+cardId+'">';
-		var initialDiv = '<div class="userInitial">' + userInitial + '</div>';
+		var initialDiv = '<div class="userInitial">' + userInitial.toUpperCase() + '</div>';
 		var userNameRow = '<div class="userInfoRow">' + user_fname + ' '
 				+ user_lname + ' | ' + user_title + '</div>'
 		var userIDDiv = '<div class="userid">' + userID + '</div>';
@@ -209,21 +209,31 @@
 				});
 	}
 
+	function prepareFormForAddUser(){
+		$("#addUserButton").text("ADD USER");
+		document.getElementById("addUserButton").style.display = "block";
+		document.getElementById("cancelButton").style.display = "block";
+		$("#role_data").val('');
+		$("#fname_data").val('');					
+		$("#lname_data").val('');
+		$("#email_data").val('');
+		$("#pwd_data").val('');
+		$("#pwd_data").prop('disabled',false);
+	}
+	
 	function emptySlotClick(){
 		$('.emptySlot').focus(
 				function(e) {
 					console.log(e.target.parentElement.nodeName);
-					$("#pwd_data").prop('disabled',false);
-					$("#addUserButton").text("ADD USER");
-					document.getElementById("addUserButton").style.display = "block";
-					document.getElementById("cancelButton").style.display = "block";
+					prepareFormForAddUser();
 				});
 	}
 	
 	$(document)
-			.ready(
-					function() {
+			.ready(function() {
 
+						prepareFormForAddUser();
+				
 						getUserData();
 
 						$("#cancelButton").click(function() {
@@ -246,139 +256,148 @@
 						});
 
 						$("#addUserButton").click(function() {
-											var act = $("#addUserButton").text();
-											console.log(act);
-
-											/* Code to add user to database*/
-											/* Call createUserCard */
-											/* delete emptySlot */
-											/* appendto #slot1 */
-											/* createEmptySlot and append to sort1 */
-											
-											var userObject = new Object();
-
-											userObject.role = document.getElementById("role_data").value;
-											userObject.first_name = document.getElementById("fname_data").value;
-											userObject.last_name = document.getElementById("lname_data").value;
-											userObject.username = document.getElementById("email_data").value;
-
-											if (act == "ADD USER") {
-												if(addUserValidation()) {
-												userObject.passwd = document.getElementById("pwd_data").value;
-												var text = JSON.stringify(userObject);
-
-												$.ajax({
-															beforeSend : function(xhrObj) {
-																xhrObj.setRequestHeader("Content-Type","application/json");
-																xhrObj.setRequestHeader("Accept","application/json");
-															},
-															type : 'POST',
-															url : "addUser",
-															data : text,
-															dataType : "json",
-
-															success : function(response) {
-																if (response != 'empty') {
-																	var test = JSON.stringify(response);
-																	var obj = JSON.parse(test);
-																	removeEmptySlot();
-																	usercard = createUserCard(
-																			obj.username,
-																			obj.first_name,
-																			obj.last_name,
-																			obj.role,
-																			"card"+ obj.id);
-																	$(usercard).appendTo('#sort1');
-
-																	users[newUserId] = obj;
-
-																	addEventListenerToCard("card"+ obj.id);
-																	newUserId = newUserId + 1;
-
-																	var eSlot = createEmptySlot(2);
-																	$(eSlot).appendTo('#sort1');
-																	emptySlotClick();
-																	$("#role_data").val("");
-																	$("#fname_data").val("");
-																	$("#lname_data").val("");
-																	$("#email_data").val("");
-																	$("#pwd_data").val("");
-
-																}
-															},
-
-															error : function(response) {
-																alert(response.responseText);
-															}
-														});
-												} else {
-													alert("Please provide Role, Email Address and Password");
-												}
-											}
-											if (act == "UPDATE") {
-												if(updateUserValidation()) {
-												userObject.id = users[selectedCard].id;
-												var text = JSON.stringify(userObject);
-
-												$
-														.ajax({
-															beforeSend : function(
-																	xhrObj) {
-																xhrObj
-																		.setRequestHeader(
-																				"Content-Type",
-																				"application/json");
-																xhrObj
-																		.setRequestHeader(
-																				"Accept",
-																				"application/json");
-															},
-															type : 'POST',
-															url : "saveUser",
-															data : text,
-															dataType : "json",
-
-															success : function(
-																	response) {
-																if (response != 'empty') {
-																	var test = JSON
-																			.stringify(response);
-																	var obj = JSON
-																			.parse(test);
-																	users[selectedCard].role = obj.role;
-																	users[selectedCard].first_name = obj.first_name;
-																	users[selectedCard].last_name = obj.last_name;
-																	users[selectedCard].username = obj.username;
-																	updateUserCard(
-																			obj.username,
-																			obj.first_name,
-																			obj.last_name,
-																			obj.role,
-																			"card"+ obj.id);
-																	addEventListenerToCard("card"+ obj.id);
-
-																	$("#role_data").val("");
-																	$("#fname_data").val("");
-																	$("#lname_data").val("");
-																	$("#email_data").val("");
-																	$("#pwd_data").val("");
-																}
-															},
-
-															error : function(response) {
-																alert("Error ! "+ response.status);
-																var test = JSON.stringify(response);
-
-															}
-														});
-												}  else {
-													alert("Please provide Role and  Email Address.");
-												}
-											}
-											
-										});
+							addOrUpdateUser();		
+						});
+						
 
 					});
+	
+function addOrUpdateUser(){
+	var act = $("#addUserButton").text();
+	console.log(act);
+
+	/* Code to add user to database*/
+	/* Call createUserCard */
+	/* delete emptySlot */
+	/* appendto #slot1 */
+	/* createEmptySlot and append to sort1 */
+	
+	var userObject = new Object();
+
+	userObject.role = document.getElementById("role_data").value;
+	userObject.first_name = document.getElementById("fname_data").value;
+	userObject.last_name = document.getElementById("lname_data").value;
+	userObject.username = document.getElementById("email_data").value;
+
+	if (act == "ADD USER") {
+		if(addUserValidation()) {
+		userObject.passwd = document.getElementById("pwd_data").value;
+		var text = JSON.stringify(userObject);
+		
+		$.ajax({
+					beforeSend : function(xhrObj) {
+						xhrObj.setRequestHeader("Content-Type","application/json");
+						xhrObj.setRequestHeader("Accept","application/json");
+					},
+					type : 'POST',
+					url : "addUser",
+					data : text,
+					dataType : "json",
+
+					success : function(response) {
+						if (response != 'empty') {
+							var test = JSON.stringify(response);
+							var obj = JSON.parse(test);
+							removeEmptySlot();
+							usercard = createUserCard(
+									obj.username,
+									obj.first_name,
+									obj.last_name,
+									obj.role,
+									"card"+ obj.id);
+							$(usercard).appendTo('#sort1');
+
+							users[newUserId] = obj;
+
+							addEventListenerToCard("card"+ obj.id);
+							newUserId = newUserId + 1;
+
+							var eSlot = createEmptySlot(2);
+							$(eSlot).appendTo('#sort1');
+							emptySlotClick();
+							$("#role_data").val("");
+							$("#fname_data").val("");
+							$("#lname_data").val("");
+							$("#email_data").val("");
+							$("#pwd_data").val("");
+
+						}
+					},
+
+					error : function(response) {
+						alert("Error "+response.responseText);
+					}
+				});
+		} else {
+			alert("Please provide Role, Email Address and Password");
+		}
+	}
+	if (act == "UPDATE") {
+		if(updateUserValidation()) {
+		userObject.id = users[selectedCard].id;
+		var text = JSON.stringify(userObject);
+
+		$
+				.ajax({
+					beforeSend : function(
+							xhrObj) {
+						xhrObj
+								.setRequestHeader(
+										"Content-Type",
+										"application/json");
+						xhrObj
+								.setRequestHeader(
+										"Accept",
+										"application/json");
+					},
+					type : 'POST',
+					url : "saveUser",
+					data : text,
+					dataType : "json",
+
+					success : function(
+							response) {
+						if (response != 'empty') {
+							var test = JSON
+									.stringify(response);
+							var obj = JSON
+									.parse(test);
+							users[selectedCard].role = obj.role;
+							users[selectedCard].first_name = obj.first_name;
+							users[selectedCard].last_name = obj.last_name;
+							users[selectedCard].username = obj.username;
+							updateUserCard(
+									obj.username,
+									obj.first_name,
+									obj.last_name,
+									obj.role,
+									"card"+ obj.id);
+							addEventListenerToCard("card"+ obj.id);
+
+							$("#role_data").val("");
+							$("#fname_data").val("");
+							$("#lname_data").val("");
+							$("#email_data").val("");
+							$("#pwd_data").val("");
+						}
+					},
+
+					error : function(response) {
+						alert("Error "+response.responseText);
+					}
+				});
+		}  else {
+			alert("Please provide Role and  Email Address.");
+		}
+	}
+}
+
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+    	addOrUpdateUser();
+    	return false;
+    }
+});
 </script>
 
 </head>
