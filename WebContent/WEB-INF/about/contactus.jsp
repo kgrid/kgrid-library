@@ -23,12 +23,12 @@
 	<script>
 		$(document).ready(function() {
 			var padLeft = 280;
-
+			var navItemID ="#contactus";
 			$(window).resize(function() {
 				setIconPos()
 			});
 			setIconPos();
-
+			setActiveNavItem(navItemID);
 		});
 	</script>
 		<div id="topfixed">
@@ -52,7 +52,7 @@
 							<hr>
 						</div>
 					</div>
-					<div class="block_info">
+					<div class="block_info" id="divisionname">
 						<span class="firstline">Department of Learning Health Sciences</span><br> Division of
 						Learning and Knowledge Systems<br> University of Michigan
 						Medical School<br> Ann Arbor, MI 48109<br>

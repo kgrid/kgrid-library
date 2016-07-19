@@ -36,3 +36,8 @@
 										left_value_offset - datagrid_offset);
 							}
 						}
+						
+						function setActiveNavItem(id){
+							$(id).addClass("active");
+							$(id).children().addClass("whiteBar");
+						}

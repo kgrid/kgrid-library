@@ -228,8 +228,8 @@ table.rowcontainer tr {
 
 .view-obj p, h4 {
 	color: #666666;
-	font-weight: 300;
-	font-size: 16px;
+	font-weight: 400;
+	font-size: 14px;
 	padding-left:16px;
 }
 
@@ -249,7 +249,7 @@ h3 {
 .fieldName {
 	width: auto;
 	margin:0px;
-	padding-left: 22px;
+	padding-left: 38px;
 	padding-right: 22px;
 	color: #666666;
 }
@@ -290,18 +290,18 @@ h3 {
 	cursor: pointer;
 	position: absolute;
 	right: 250px;
-	top: -42px;
+	top: -26px;
 }
 
 .date {
-	padding: 22px;
+	padding: 22px 38px;
 	color: dimgrey;
 	display: inline-block;
 	margin-right: 10%;
 }
 
 .date1 {
-	border-right: 1px solid #666666;
+	border-right: 1px solid #b3b3b3;
 }
 
 .date2 {
@@ -310,22 +310,25 @@ h3 {
 
 .date div {
 	display: inline-block;
-	width: 150px;
+	width: 130px;
 }
 
 .date-title {
 	font-size: 12px;
-	font-weight: 300;
+	font-weight: 400;
+	line-height: 1em;
+	padding-bottom:5px;
 }
 
 .date-data {
-	font-weight: 300;
+	font-weight: 400;
 	font-size: 18px;
+		line-height: 1em;
 }
 
 .display-banner {
-	height: 160px;
-	padding-top: 60px;
+	height: 175px;
+	padding-top: 45px;
 }
 
 .type-status {
@@ -348,10 +351,12 @@ h3 {
 	margin-top: 10px;
 	display: block;
 	font-size: 28pt;
+	margin-left:10px;
 }
 
 .display-banner h1 small {
 	display: inline-block;
+	padding-left:5px;
 }
 
 .pri-pub {
@@ -359,15 +364,15 @@ h3 {
 	display: inline-block;
 	position: relative;
 	float: right;
-	line-height: 32px;
+	line-height: 1.8em;
 	cursor: pointer;
 	padding-right: 22px;
 	font-size: 12px;
 }
 
 .pri-pub2, .pri-pub1 {
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: 8px;
+	padding-right: 8px;
 	margin-left: 20px;
 }
 
@@ -375,7 +380,7 @@ h3 {
 	display: inline-block;
 	font-size: 12px;
 	color: #666666;
-	margin-left: 2px;
+	margin-left: 12px;
 }
 
 #leadarrow {
@@ -398,7 +403,7 @@ h3 {
 	border: none;
 	color: #666666;
 	font-size: 12px;
-	padding-left: 10px;
+	padding-left:12px;
 }
 
 .pri-pub div {
@@ -422,7 +427,7 @@ h3 {
 .userbutton {
 	position: absolute;
 	right: 22px;
-	bottom: 22px;
+	bottom: 35px;
 }
 
 .data_edit {
