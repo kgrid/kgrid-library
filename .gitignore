@@ -8,3 +8,7 @@ WebContent/WEB-INF/lib/javax.websocket-api-1.1.jar
 build/
 dist/
 out/
+buildNew
+.settings
+/.classpath
+/.project
