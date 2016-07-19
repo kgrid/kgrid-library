@@ -81,10 +81,11 @@
 </head>
 <body>
 
-
-	<div id="libsettings"  class="overlay" aria-hidden="true">
-     	<%@ include file="../system/librarySetting.jsp" %>
-	 </div>
+	<c:if test="${loggedInUser.role == 'ADMIN' }">
+		<div id="libsettings" class="overlay" aria-hidden="true">
+			<%@ include file="../system/librarySetting.jsp"%>
+		</div>
+	</c:if>
 
 	<div id="addObject" class="overlay" aria-hidden="true">
 		<%@ include file="../objects/createNewObject.jsp"%>
@@ -145,6 +146,7 @@
 				</div>
 				<div id="bannericons">
 					<ul id="bannericonrow">
+						<c:if test="${loggedInUser.informatician  }">
 						<li><div style="position: relative">
 								<button class="roundbutton iconBtn" id="userlink"
 									onclick="overlayToggle('libraryuser',true)">
@@ -155,11 +157,15 @@
 										width="10px">
 								</button>
 							</div></li>
+						</c:if>
+						<c:if test="${loggedInUser.admin}">
 						<li>
 							<button class="roundbutton open-overlay iconBtn" type="button"
 								id="settinglink" onclick="overlayToggle('libsettings',true)">
 								<img src="<c:url value="/resources/images/Gear_Icon.png"/> " />
 							</button>
+						</li>
+						</c:if>
 					</ul>
 					<div class="floatingInfo" id="homeIcons">
 						<span></span>

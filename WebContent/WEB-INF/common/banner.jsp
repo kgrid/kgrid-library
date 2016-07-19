@@ -116,7 +116,7 @@ $(document).ready(function(){
 					<div id="logoutsession" class="logout-link">
 						<ul>
 <li id="user"><a id="user-link" href="#"> <strong><spring:message
-								code="HELLO_MESSAGE" /> ${DBUser.first_name} </strong>
+								code="HELLO_MESSAGE" /> ${loggedInUser.first_name} </strong>
 				</a></li>
 							<li id="icon" class="down"><img id="iconimg" class="down"
 								src="<c:url value="/resources/images/Chevron_Icon.png"/>" width="12px" /></li>
