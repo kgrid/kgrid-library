@@ -9,8 +9,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet"
-	href="<c:url value="/resources/css/navigation.css" />" 	type="text/css" />
 <script type="text/javascript">
 
 $(document).ready(function(){

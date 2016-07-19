@@ -392,8 +392,8 @@
 
 
 				</ul>
-				<li class="labels accessLevelOne"><img
-					src="<c:url value="/resources/images/more.png"/> " /></li>
+				<div id="ellipsis" class="labels accessLevelOne"><img
+					src="<c:url value="/resources/images/more.png"/> " /></div>
 			</div>
 		</div>
 	</div>

@@ -23,7 +23,7 @@
 	$(document)
 			.ready(
 					function() {
-
+						var navItemID ="#faq";
 
 						var title = [ "What is ObjectTeller?",
 								"Is ObjectTeller free?",
@@ -39,7 +39,7 @@
 						$(window).resize(function(){setIconPos()});
 						setIconPos();
 						loadContent(blockNumber, title, description, info);
-						
+						setActiveNavItem(navItemID);
 					
 					});
 </script>
