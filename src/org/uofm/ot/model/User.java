@@ -85,5 +85,11 @@ public class User {
 				+ ", last_name=" + last_name + ", role=" + role + "]";
 	}
 
+	public boolean isAdmin(){
+		return this.role == UserRoles.ADMIN ;
+	}
 	
+	public boolean isInformatician(){
+		return this.role == UserRoles.INFORMATICIAN ||  this.role == UserRoles.ADMIN  ;
+	}
 }

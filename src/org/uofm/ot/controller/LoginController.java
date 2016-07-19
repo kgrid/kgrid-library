@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -85,7 +86,6 @@ public class LoginController {
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST , consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> onlyLogin(@RequestBody String string, HttpSession httpSession) {		
-		System.out.println("Inside only log in ");
 		
 		
 		Gson gson = new Gson();
@@ -101,7 +101,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="/home")
-	public String newLogin(ModelMap model,  HttpSession httpSession) {		
+	public String newLogin(ModelMap model,  HttpSession httpSession ) {		
 
 		if(httpSession.getAttribute("DBUser") == null){
 
@@ -117,12 +117,12 @@ public class LoginController {
 
 		} else {
 			getObjectPage(model);
-			model.addAttribute("loggedInUser", (User) httpSession.getAttribute("DBUser"));
-			
 		}
 
 		return "login/home" ;			
 	}
+	
+	
 	
 	
 }

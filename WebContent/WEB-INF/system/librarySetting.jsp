@@ -38,8 +38,12 @@
 			      document.getElementById("Password_SMTP").value = obj.SMTPConfig.svr_passwd;
 			    }
 			    
+			} ,
+		
+			error : function (response) {
+				alert(response.responseText);		
 			}
-			});
+		});
 	}
 	
 	function saveData() {
@@ -203,7 +207,7 @@
              <button class="greenroundbutton" id="closebutton"  onclick="overlayToggle('libsettings',false)">
     <img src="<c:url value="/resources/images/Close_Icon.png"/>" />
     </button>
-        <h3 style="text-align:center;"> Library Settings </h3>
+        <h3 style="text-align:center;"> ${loggedInUser}</h3>
                 <form id="libsetting"  >
            <table id="libsettable">
             <tr>
