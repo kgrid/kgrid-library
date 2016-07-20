@@ -87,17 +87,22 @@ public class LoginController {
 	@RequestMapping(value="/login", method=RequestMethod.POST , consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> onlyLogin(@RequestBody String string, HttpSession httpSession) {		
 		
-		
+		ResponseEntity<String> resultEntity = null;
+
 		Gson gson = new Gson();
 		User userObject = gson.fromJson(string, User.class);
-		
-		User resUser = userDao.getUserByUsernameAndPassword(userObject.getUsername(), userObject.getPasswd());
-					
-		httpSession.setAttribute("DBUser", resUser);
-		String result = gson.toJson(resUser);
-		
-		return new ResponseEntity<String>( result, HttpStatus.OK) ; 
 
+		User resUser = userDao.getUserByUsernameAndPassword(userObject.getUsername(), userObject.getPasswd());
+		if(resUser != null) {
+			httpSession.setAttribute("DBUser", resUser);
+			String result = gson.toJson(resUser);
+
+			resultEntity =  new ResponseEntity<String>( result, HttpStatus.OK) ;
+		} else {
+			resultEntity =  new ResponseEntity<String>( "Unable to login. Please check username and password. ", HttpStatus.UNAUTHORIZED) ;
+		}
+		
+		return resultEntity ; 
 	}
 	
 	@RequestMapping(value="/home")

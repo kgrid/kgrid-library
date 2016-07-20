@@ -52,7 +52,7 @@ $(document).ready(function(){
 					
 					error : function(response) {
 						// TODO: Handle Error Message
-						alert(response);
+						alert(response.responseText);
 					}
 				});
 		}); 
