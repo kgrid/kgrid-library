@@ -112,7 +112,7 @@
 						xhrObj.setRequestHeader("Accept", "application/json");
 					},
 					type : 'POST',
-					url : "createNewObjectTest",
+					url : "createNewObject",
 					data : text,
 					dataType : "json",
 
