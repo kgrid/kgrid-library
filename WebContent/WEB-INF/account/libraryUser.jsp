@@ -394,7 +394,6 @@ function addOrUpdateUser(){
 
 $(document).keypress(function(e) {
     if(e.which == 13) {
-    	addOrUpdateUser();
     	return false;
     }
 });
