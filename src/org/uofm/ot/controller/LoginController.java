@@ -26,6 +26,10 @@ import org.uofm.ot.model.User;
 
 import com.google.gson.Gson;
 
+/**
+ * @author nbahulek
+ *
+ */
 @Controller
 public class LoginController {
 
@@ -105,6 +109,11 @@ public class LoginController {
 		return resultEntity ; 
 	}
 	
+	/**
+	 * @param model
+	 * @param httpSession
+	 * @return View to render home page
+	 */
 	@RequestMapping(value="/home")
 	public String newLogin(ModelMap model,  HttpSession httpSession ) {		
 
