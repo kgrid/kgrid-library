@@ -5,7 +5,8 @@ public enum ChildType {
 	INPUT ("Input"),
 	OUTPUT ("Output"),
 	LOG("Log"),
-	CREATEACTIVITY("CreateActivity");
+	CREATEACTIVITY("CreateActivity"),
+	CITATIONS("Citations");
 	
 	private String childType;
 
