@@ -78,15 +78,19 @@
 	}
 
 	function addNewObject() {
-		//alert("Inside the object ");
 
 		var fedoraObject = new Object();
 
-		fedoraObject.title = document.getElementById("title_data").value;
-		fedoraObject.owner = document.getElementById("owner_data").value;
-		fedoraObject.description = document.getElementById("description_data").value;
-		fedoraObject.contributors = document.getElementById("contri_data").value;
-		fedoraObject.keywords = document.getElementById("keyword_data").value;
+		var metadata = new Object();
+		
+		metadata.title = document.getElementById("title_data").value;
+		metadata.owner = document.getElementById("owner_data").value;
+		metadata.description = document.getElementById("description_data").value;
+		metadata.contributors = document.getElementById("contri_data").value;
+		metadata.keywords = document.getElementById("keyword_data").value;
+		
+		fedoraObject.metadata = metadata;
+		
 		fedoraObject.payload = document.getElementById("payloadTextArea").value;
 		fedoraObject.inputMessage = document.getElementById("inputTextArea").value;
 		fedoraObject.outputMessage = document.getElementById("outputTextArea").value;
@@ -167,7 +171,7 @@
 						<div>
 							<h4><spring:message code="OBJECT_TITLE" /></h4>
 							<div class="addtext">
-								<input type="text" id="title_data" maxlength="140" name="title" path="title"></input> <span>140/140</span>
+								<input type="text" id="title_data" maxlength="140" name="title" path="metadata.title"></input> <span>140/140</span>
 							</div>
 						</div>
 

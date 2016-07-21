@@ -271,7 +271,7 @@
 <script src="/ObjectTeller/resources/js/scroll.js"></script>
 <script src="/ObjectTeller/resources/js/tabs.js"></script>
 <script src="/ObjectTeller/resources/js/custom-file-input.js"></script>
-<title><c:out value="${fedoraObject.title}" /></title>
+<title><c:out value="${fedoraObject.metadata.title}" /></title>
 </head>
 <body>
 	<button class="greenroundbutton" id="backtotop">
@@ -293,7 +293,7 @@
 		</div>
 
 		<c:choose>
-			<c:when test="${fedoraObject.published}">
+			<c:when test="${fedoraObject.metadata.published}">
 				<div class="pri-pub accessLevelOne">
 					<div class="pri-pub1"
 						onclick="toggleObject('${fedoraObject.URI}','no')">
@@ -321,11 +321,11 @@
 		</c:choose>
 		<h1>
 			<div style="width: 10px; display: inline-block;">
-				<c:if test="${fedoraObject.published}">
+				<c:if test="${fedoraObject.metadata.published}">
 					<div class="type-status"></div>
 				</c:if>
 			</div>
-			<small><c:out value="${fedoraObject.title}"></c:out></small>
+			<small><c:out value="${fedoraObject.metadata.title}"></c:out></small>
 		</h1>
 
 		<div class="date">
@@ -335,7 +335,7 @@
 				</p>
 				<p class="date-data">
 					<fmt:formatDate pattern="MMM, dd, yyyy"
-						value="${fedoraObject.createdOn}" />
+						value="${fedoraObject.metadata.createdOn}" />
 				</p>
 			</div>
 			<div class="date2">
@@ -345,7 +345,7 @@
 				</p>
 				<p class="date-data">
 					<fmt:formatDate pattern="MMM, dd, yyyy"
-						value="${fedoraObject.lastModified}" />
+						value="${fedoraObject.metadata.lastModified}" />
 				</p>
 			</div>
 
@@ -417,14 +417,14 @@
 										<spring:message code="OBJECT_TITLE" />
 									</h4>
 									<input type="text" class="metaEdit" id="title_data_v" disabled
-										value="${fedoraObject.title}" />
+										value="${fedoraObject.metadata.title}" />
 								</div>
 
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_DESCRIPTION" />
 									</h4>
-									<textarea class="metaEdit" id="description_data_v" disabled>${fedoraObject.description}</textarea>
+									<textarea class="metaEdit" id="description_data_v" disabled>${fedoraObject.metadata.description}</textarea>
 								</div>
 
 								<div class="addtext">
@@ -432,7 +432,7 @@
 										<spring:message code="OBJECT_KEYWORD" />
 									</h4>
 									<input type="text" class="metaEdit" id="keyword_data_v"
-										disabled value="${fedoraObject.keywords}" />
+										disabled value="${fedoraObject.metadata.keywords}" />
 								</div>
 
 								<div class="addtext">
@@ -440,7 +440,7 @@
 										<spring:message code="OBJECT_OWNERS" />
 									</h4>
 									<input type="text" class="metaEdit" id="owner_data_v" disabled
-										value="${fedoraObject.owner}" />
+										value="${fedoraObject.metadata.owner}" />
 								</div>
 
 								<div class="addtext">
@@ -448,7 +448,7 @@
 										<spring:message code="OBJECT_CONTRIBUTORS" />
 									</h4>
 									<input type="text" class="metaEdit" id="contributor_data_v"
-										disabled value="${fedoraObject.contributors}" /> <input
+										disabled value="${fedoraObject.metadata.contributors}" /> <input
 										type="hidden" path="URI" value="${fedoraObject.URI}" />
 								</div>
 
@@ -467,7 +467,7 @@
 										<spring:message code="OBJECT_TITLE" />
 									</h4>
 									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="title_data" path="title" value="${fedoraObject.title}" />
+										id="title_data" path="metadata.title" value="${fedoraObject.metadata.title}" />
 									<span>140/140</span>
 								</div>
 
@@ -476,8 +476,8 @@
 										<spring:message code="OBJECT_DESCRIPTION" />
 									</h4>
 									<sf:textarea maxlength="500" class="metaEdit"
-										id="description_data" path="description"
-										value="${fedoraObject.description}" />
+										id="description_data" path="metadata.description"
+										value="${fedoraObject.metadata.description}" />
 									<span>500/500</span>
 								</div>
 
@@ -486,8 +486,8 @@
 										<spring:message code="OBJECT_KEYWORD" />
 									</h4>
 									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="keyword_data" path="keywords"
-										value="${fedoraObject.keywords}" />
+										id="keyword_data" path="metadata.keywords"
+										value="${fedoraObject.metadata.keywords}" />
 									<span>140/140</span>
 								</div>
 
@@ -496,7 +496,7 @@
 										<spring:message code="OBJECT_OWNERS" />
 									</h4>
 									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="owner_data" path="owner" value="${fedoraObject.owner}" />
+										id="owner_data" path="metadata.owner" value="${fedoraObject.metadata.owner}" />
 									<span>140/140</span>
 								</div>
 
@@ -505,8 +505,8 @@
 										<spring:message code="OBJECT_CONTRIBUTORS" />
 									</h4>
 									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="contributor_data" path="contributors"
-										value="${fedoraObject.contributors}" />
+										id="contributor_data" path="metadata.contributors"
+										value="${fedoraObject.metadata.contributors}" />
 									<span>140/140</span>
 									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
 								</div>

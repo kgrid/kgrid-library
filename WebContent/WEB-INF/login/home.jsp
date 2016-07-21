@@ -215,7 +215,7 @@
 									<a href="object.${fedoraObject.URI}">
 										<ul>
 											<li class="col-data col-type"><c:choose>
-													<c:when test="${not fedoraObject.published}">
+													<c:when test="${not fedoraObject.metadata.published}">
 
 													</c:when>
 													<c:otherwise>
@@ -224,12 +224,12 @@
 															width="10px" height="auto" />
 													</c:otherwise>
 												</c:choose></li>
-											<li class="col-data col-title">${fedoraObject.title}</li>
+											<li class="col-data col-title">${fedoraObject.metadata.title}</li>
 											<li class="col-data col-update"><fmt:formatDate
 													pattern="MMM, dd, yyyy"
-													value="${fedoraObject.lastModified}" /></li>
+													value="${fedoraObject.metadata.lastModified}" /></li>
 											<li class="col-data col-addby"><fmt:formatDate
-													pattern="MMM, dd, yyyy" value="${fedoraObject.createdOn}" /></li>
+													pattern="MMM, dd, yyyy" value="${fedoraObject.metadata.createdOn}" /></li>
 										</ul>
 									</a>
 								</div>
