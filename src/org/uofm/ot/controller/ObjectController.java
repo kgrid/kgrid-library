@@ -262,6 +262,7 @@ public class ObjectController {
 		if(validateUser(loggedInUser)) {
 			Gson gson = new Gson();
 			FedoraObject fedoraObject = gson.fromJson(string, FedoraObject.class);
+			
 			try {
 				FedoraObject newObject = createFedoraObjectService.createObject(fedoraObject,loggedInUser);
 				result =  "{  \"uri\": \""+newObject.getURI()+"\"  }";
@@ -288,7 +289,7 @@ public class ObjectController {
 
 		object = fusekiService.getObjectProperties(object);
 		
-		if(!object.isPublished() && loggedInUser == null)
+		if(!object.getMetadata().isPublished() && loggedInUser == null)
 			return false;
 		else
 			return true;

@@ -140,11 +140,11 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 		String properties = FusekiConstants.PREFIX_OT +"\n "+	
 				FusekiConstants.PREFIX_DC +"\n "+
 				"INSERT DATA \n"+
-				"{ 	<"+objectURI+"> ot:owner  \""+fedoraObject.getOwner()+"\" ; \n"+
-				" ot:description  \""+fedoraObject.getDescription()+"\" ; \n"+
-				" ot:contributors  \""+fedoraObject.getContributors()+"\" ; \n"+
-				" dc:title \""+fedoraObject.getTitle()+"\" ; \n"+
-				" ot:keywords  \""+fedoraObject.getKeywords()+"\" ; \n"+ 
+				"{ 	<"+objectURI+"> ot:owner  \""+fedoraObject.getMetadata().getOwner()+"\" ; \n"+
+				" ot:description  \""+fedoraObject.getMetadata().getDescription()+"\" ; \n"+
+				" ot:contributors  \""+fedoraObject.getMetadata().getContributors()+"\" ; \n"+
+				" dc:title \""+fedoraObject.getMetadata().getTitle()+"\" ; \n"+
+				" ot:keywords  \""+fedoraObject.getMetadata().getKeywords()+"\" ; \n"+ 
 				" ot:published  \"no\" . \n"+"} ";
 
 		sendPatchRequestForUpdatingTriples(properties, uri,transactionId);
