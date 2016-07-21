@@ -1,5 +1,7 @@
 package org.uofm.ot.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
+import org.uofm.ot.fedoraAccessLayer.Citation;
 import org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService;
 import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
 import org.uofm.ot.fedoraAccessLayer.FedoraObject;
@@ -262,6 +265,18 @@ public class ObjectController {
 		if(validateUser(loggedInUser)) {
 			Gson gson = new Gson();
 			FedoraObject fedoraObject = gson.fromJson(string, FedoraObject.class);
+			/*
+			 * This code is for adding citations.
+			 * TODO: Remove this code once citation front end is ready.  
+			 * 
+			Citation citation = new Citation();
+			citation.setCitation_at("6899");
+			citation.setCitation_title("Test");
+			
+			ArrayList<Citation> list = new ArrayList<Citation>();
+			list.add(citation);
+			
+			fedoraObject.getMetadata().setCitations(list);*/
 			
 			try {
 				FedoraObject newObject = createFedoraObjectService.createObject(fedoraObject,loggedInUser);

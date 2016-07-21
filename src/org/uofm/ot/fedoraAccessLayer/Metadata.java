@@ -1,6 +1,7 @@
 package org.uofm.ot.fedoraAccessLayer;
 
 import java.util.Date;
+import java.util.List;
 
 public class Metadata {
 
@@ -21,6 +22,9 @@ public class Metadata {
 	private Date createdOn;
 	
 	private String objectType;
+	
+	private List<Citation> citations;
+	
 
 	public String getTitle() {
 		return title;
@@ -94,12 +98,23 @@ public class Metadata {
 		this.objectType = objectType;
 	}
 
+	public List<Citation> getCitations() {
+		return citations;
+	}
+
+	public void setCitations(List<Citation> citations) {
+		this.citations = citations;
+	}
+
 	@Override
 	public String toString() {
 		return "Metadata [title=" + title + ", owner=" + owner + ", description=" + description + ", contributors="
 				+ contributors + ", keywords=" + keywords + ", published=" + published + ", lastModified="
-				+ lastModified + ", createdOn=" + createdOn + ", objectType=" + objectType + "]";
+				+ lastModified + ", createdOn=" + createdOn + ", objectType=" + objectType + ", citations=" + citations
+				+ "]";
 	}
+
+
 
 	
 	
