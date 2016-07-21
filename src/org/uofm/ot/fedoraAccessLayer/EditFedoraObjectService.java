@@ -19,11 +19,11 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			"	} \n"+
 			"	INSERT \n"+
 			"	{ \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   dc:title   \""+fedoraObject.getTitle()+"\"  .  \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:contributors  \""+fedoraObject.getContributors()+"\"  .  \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:description   \""+fedoraObject.getDescription()+"\"  . \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:owner    \""+fedoraObject.getOwner()+"\"  .  \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:keywords  \""+fedoraObject.getKeywords()+"\" . \n"+
+			"	  <"+super.baseURI+fedoraObject.getURI()+">   dc:title   \""+fedoraObject.getMetadata().getTitle()+"\"  .  \n"+
+			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:contributors  \""+fedoraObject.getMetadata().getContributors()+"\"  .  \n"+
+			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:description   \""+fedoraObject.getMetadata().getDescription()+"\"  . \n"+
+			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:owner    \""+fedoraObject.getMetadata().getOwner()+"\"  .  \n"+
+			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:keywords  \""+fedoraObject.getMetadata().getKeywords()+"\" . \n"+
 			"	} \n"+
 			"	WHERE \n"+
 			"	{  \n"+

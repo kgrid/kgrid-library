@@ -1,28 +1,10 @@
 package org.uofm.ot.fedoraAccessLayer;
 
-import java.util.Date;
-
 public class FedoraObject {
 
-	private String title;
-	
-	private String owner;
-	
-	private String description;
-	
-	private String contributors;
-	
-	private String keywords; 
-	
-	private boolean published;
+	private Metadata metadata ;
 	
 	private String URI;
-	
-	private Date lastModified;
-	
-	private Date createdOn;
-	
-	private String objectType;
 
 	private String payload;
 	
@@ -36,21 +18,6 @@ public class FedoraObject {
 	
 	public FedoraObject(){}
 	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public boolean isPublished() {
-		return published;
-	}
-
-	public void setPublished(boolean published) {
-		this.published = published;
-	}
 
 	public String getURI() {
 		return URI;
@@ -59,48 +26,6 @@ public class FedoraObject {
 	public void setURI(String uRI) {
 		URI = uRI;
 	}
-
-	
-	public String getObjectType() {
-		return objectType;
-	}
-
-	public void setObjectType(String objectType) {
-		this.objectType = objectType;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getContributors() {
-		return contributors;
-	}
-
-	public void setContributors(String contributors) {
-		this.contributors = contributors;
-	}
-
-	public String getKeywords() {
-		return keywords;
-	}
-
-	public void setKeywords(String keywords) {
-		this.keywords = keywords;
-	}
 	
 	public String getPayload() {
 		return payload;
@@ -108,23 +33,6 @@ public class FedoraObject {
 
 	public void setPayload(String payload) {
 		this.payload = payload;
-	}
-
-
-	public Date getLastModified() {
-		return lastModified;
-	}
-
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
-
-	public Date getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
 	}
 
 	public PayloadDescriptor getPayloadDescriptor() {
@@ -160,16 +68,21 @@ public class FedoraObject {
 		this.logData = logData;
 	}
 
-	@Override
-	public String toString() {
-		return "FedoraObject [title=" + title + ", owner=" + owner + ", description=" + description + ", contributors="
-				+ contributors + ", keywords=" + keywords + ", published=" + published + ", URI=" + URI
-				+ ", lastModified=" + lastModified + ", createdOn=" + createdOn + ", objectType=" + objectType
-				+ ", payload=" + payload + ", inputMessage=" + inputMessage + ", outputMessage=" + outputMessage
-				+ ", payloadDescriptor=" + payloadDescriptor + ", logData=" + logData + "]";
+
+	public Metadata getMetadata() {
+		return metadata;
 	}
 
-	
+	public void setMetadata(Metadata metadata) {
+		this.metadata = metadata;
+	}
 
+
+	@Override
+	public String toString() {
+		return "FedoraObject [metadata=" + metadata + ", URI=" + URI + ", payload=" + payload + ", inputMessage="
+				+ inputMessage + ", outputMessage=" + outputMessage + ", payloadDescriptor=" + payloadDescriptor
+				+ ", logData=" + logData + "]";
+	}
 
 }

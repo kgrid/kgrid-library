@@ -27,6 +27,7 @@ import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.fedoraAccessLayer.FedoraObject;
+import org.uofm.ot.fedoraAccessLayer.Metadata;
 import org.uofm.ot.fedoraAccessLayer.PayloadDescriptor;
 import org.uofm.ot.model.Server_details;
 
@@ -186,23 +187,26 @@ public class FusekiService {
 					uri = uri.substring(fedoraServerURL.length());
 					fedoraObject.setURI(uri);
 
+					Metadata metadata = new Metadata();
 
 					if(binding.get("published") != null) {
 						if("YES".equals(binding.get("published").toString().toUpperCase()))
-							fedoraObject.setPublished(true);
+							metadata.setPublished(true);
 						else
-							fedoraObject.setPublished(false);
+							metadata.setPublished(false);
 					} else {
 						if(isPublicOnly){
-							fedoraObject.setPublished(true);
+							metadata.setPublished(true);
 						}
 					}
 
-					fedoraObject.setTitle(binding.get("title").toString());
+					metadata.setTitle(binding.get("title").toString());
 					Date createdOn = convertRDFNodetoDate(binding.get("created"));
 					Date lastModified = convertRDFNodetoDate(binding.get("lastModified"));
-					fedoraObject.setLastModified(lastModified);
-					fedoraObject.setCreatedOn(createdOn);
+					metadata.setLastModified(lastModified);
+					metadata.setCreatedOn(createdOn);
+					
+					fedoraObject.setMetadata(metadata);
 
 					list.add(fedoraObject);
 
@@ -297,7 +301,7 @@ public class FusekiService {
 				QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
 				ResultSet resultSet = execution.execSelect();
 
-				
+				Metadata metadata = new Metadata();
 				
 				while (resultSet.hasNext()) {
 					QuerySolution binding = resultSet.nextSolution();
@@ -305,42 +309,44 @@ public class FusekiService {
 					if(predicate.contains(FusekiConstants.DC_NAMESPACE) == true) {
 						String actualPredicate = predicate.substring(FusekiConstants.DC_NAMESPACE.length());
 						if("title".equals(actualPredicate)){
-							fedoraObject.setTitle(binding.get("o").toString());
+							metadata.setTitle(binding.get("o").toString());
 						}
 					} else {
 						if(predicate.contains(FusekiConstants.FEDORA_NAMESPACE) == true){
 							String actualPredicate = predicate.substring(FusekiConstants.FEDORA_NAMESPACE.length());
 							if("lastModified".equals(actualPredicate)  )
-								fedoraObject.setLastModified(convertRDFNodetoDate(binding.get("o")));
+								metadata.setLastModified(convertRDFNodetoDate(binding.get("o")));
 
 							if( "created".equals(actualPredicate))
-								fedoraObject.setCreatedOn(convertRDFNodetoDate(binding.get("o")));
+								metadata.setCreatedOn(convertRDFNodetoDate(binding.get("o")));
 
 						} else {
 							if(predicate.contains(FusekiConstants.OT_NAMESPACE) == true) {
 								String actualPredicate = predicate.substring(FusekiConstants.OT_NAMESPACE.length());
 								if("keywords".equals(actualPredicate) )
-									fedoraObject.setKeywords(binding.get("o").toString());
+									metadata.setKeywords(binding.get("o").toString());
 
 								if( "owner".equals(actualPredicate)) 
-									fedoraObject.setOwner(binding.get("o").toString());
+									metadata.setOwner(binding.get("o").toString());
 
 								if( "contributors".equals(actualPredicate) )
-									fedoraObject.setContributors(binding.get("o").toString());
+									metadata.setContributors(binding.get("o").toString());
 
 								if( "description".equals(actualPredicate))
-									fedoraObject.setDescription(binding.get("o").toString());
+									metadata.setDescription(binding.get("o").toString());
 
 								if( "published".equals(actualPredicate)) {
 									if("YES".equals(binding.get("o").toString().toUpperCase()))
-										fedoraObject.setPublished(true);
+										metadata.setPublished(true);
 									else
-										fedoraObject.setPublished(false);
+										metadata.setPublished(false);
 								}
 							}
 						}
 					}
 				}
+				
+				fedoraObject.setMetadata(metadata);
 			}
 		} else {
 			logger.error("Fuseki Server URL is not configured");
