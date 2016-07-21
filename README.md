@@ -8,3 +8,6 @@ Another is to install a virtually machine preconfigured w/ MySQL, using VirtualB
 Object IDs:
 
 If you are running a local instance of the ObjectTeller and pointing to a remote instance of a (Fedora) library, you need to make sure you don't have object id collisions. There is an initial object id set at the end of the db create script that needs to be in a range outside of the library's current range. Since the library started low, I set mine to 10,000.
+
+
+
