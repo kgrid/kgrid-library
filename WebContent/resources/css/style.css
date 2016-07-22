@@ -234,7 +234,7 @@ img#iconimg{
 }
 #signin-dropdown form {
   cursor: pointer;
-  padding: 10px;
+  padding: 0px 22px;
   text-align: left;
 }
 #signin-dropdown .signin-textbox span {
@@ -245,7 +245,7 @@ img#iconimg{
   -moz-border-radius: 2px;
   	border-radius:3px;		
 	width: 200px;
-	height:38px;
+	height:1.5em;
 	font-size:12pt;
 	color:#666666;
 	margin: 10px 0px 10px 0px;
@@ -350,6 +350,8 @@ button#settings:hover {
 
 #signin-dropdown .signin-textbox {
   display:block;
+  margin-top:0px;
+  padding:10px 0px;
 }
 
 #signin-dropdown .remb {
