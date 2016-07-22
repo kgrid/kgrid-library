@@ -9,8 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><spring:message code="LIBRARY_LEVEL_USER_MNG" /></title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<link rel="stylesheet"
-	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" />
+<%-- <link rel="stylesheet"
+	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" /> --%>
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/resources/css/dndstyle.css" />">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -402,12 +402,16 @@ $(document).keypress(function(e) {
 </head>
 </head>
 <body>
-	<div class="board" id="addObj">
+		<div class="ol_pane">
+			<div class="sidebar_close">
+				<h3>CLOSE</h3>
+				<button class="greenroundbutton" id="close_overlay"
+					onclick="overlaySlide('libraryuser',false)">
+					<img src="<c:url value="/resources/images/Close_Icon.png" />">
+				</button>
+			</div>
+				<div class="board" id="addObj">
 		<div class="entryform">
-			<button class="greenroundbutton" id="closebutton"
-				onclick="overlayToggle('libraryuser',false)">
-				<img src="<c:url value="/resources/images/Close_Icon.png" />">
-			</button>
 			<div id="content">
 				<div class="objTitle">
 					<div id="title">
@@ -489,6 +493,7 @@ $(document).keypress(function(e) {
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

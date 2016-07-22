@@ -200,13 +200,18 @@
   	
 
 	<body onload="getData()" >
- 
+ 		<div class="ol_pane">
+			<div class="sidebar_close">
+				<h3>CLOSE</h3>
+				<button class="greenroundbutton" id="close_overlay"
+					onclick="overlaySlide('libsettings',false)">
+					<img src="<c:url value="/resources/images/Close_Icon.png" />">
+				</button>
+			</div>
 	
      <div class="board" id="libsetting">
             <div class="entryform">
-             <button class="greenroundbutton" id="closebutton"  onclick="overlayToggle('libsettings',false)">
-    <img src="<c:url value="/resources/images/Close_Icon.png"/>" />
-    </button>
+             
         <h3 style="text-align:center;"> ${loggedInUser}</h3>
                 <form id="libsetting"  >
            <table id="libsettable">
@@ -254,6 +259,6 @@
              <input type="button" id="saveaction" class="savebutton"  onclick="saveData()" value="Save Changes">   
             </form>
             </div> 
-</div>
+</div></div>
 </body>
 </html>
