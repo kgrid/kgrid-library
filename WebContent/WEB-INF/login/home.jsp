@@ -19,8 +19,10 @@
 
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/button.css" />" type="text/css" />
+<%-- <link rel="stylesheet"
+	href="<c:url value="/resources/css/overlay.css" />" type="text/css" /> --%>
 <link rel="stylesheet"
-	href="<c:url value="/resources/css/overlay.css" />" type="text/css" />
+	href="<c:url value="/resources/css/l_overlay.css" />" type="text/css" />
 <link rel="shortcut icon"
 	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" />" />
 <link rel="stylesheet"
@@ -58,6 +60,28 @@
 		
 	}
 
+	function overlaySlide(overlayID, open){
+		var overlayPane =$('#'+overlayID).find(".ol_pane");
+		if(open){
+	        $('#'+overlayID).fadeIn('fast',function(){
+	            overlayPane.animate({'left':'32%'},1000);
+	        });
+	    }else{
+	    
+	    	overlayPane.animate({'left':'100%'},1000,function(){
+	            $('#'+overlayID).fadeOut('fast');
+	        });
+	    }
+	    document.body.classList.toggle('noscroll', open);
+		if(overlayID=="addObject"){
+			resetInputText();
+		}
+		if(overlayID=="libraryuser"){
+			resetUserInfoText();
+		}
+		
+	}
+	
 	function resetUserInfoText(){
 		$( "input[id$='_data']" ).val( "" );
 		$("#role_data").val('');
@@ -82,17 +106,19 @@
 <body>
 
 	<c:if test="${loggedInUser.role == 'ADMIN' }">
-		<div id="libsettings" class="overlay" aria-hidden="true">
+		<div id="libsettings" class="layered_overlay" aria-hidden="true">
 			<%@ include file="../system/librarySetting.jsp"%>
 		</div>
 	</c:if>
 
-	<div id="addObject" class="overlay" aria-hidden="true">
+	<div id="addObject" class="layered_overlay" aria-hidden="true">
 		<%@ include file="../objects/createNewObject.jsp"%>
 	</div>
-	<div id="libraryuser"  class="overlay" aria-hidden="true">
+	
+	<div id="libraryuser"  class="layered_overlay" aria-hidden="true">
      	<%@ include file="../account/libraryUser.jsp" %>
 	 </div> 
+
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
@@ -149,7 +175,7 @@
 						<c:if test="${loggedInUser.informatician  }">
 						<li><div style="position: relative">
 								<button class="roundbutton iconBtn" id="userlink"
-									onclick="overlayToggle('libraryuser',true)">
+									onclick="overlaySlide('libraryuser',true)">
 									<img src="<c:url value="/resources/images/Person_Icon.png"/> " />
 								</button>
 								<button class="greenroundbutton iconBtn" id="newuser">
@@ -161,7 +187,7 @@
 						<c:if test="${loggedInUser.admin}">
 						<li>
 							<button class="roundbutton open-overlay iconBtn" type="button"
-								id="settinglink" onclick="overlayToggle('libsettings',true)">
+								id="settinglink" onclick="overlaySlide('libsettings',true)">
 								<img src="<c:url value="/resources/images/Gear_Icon.png"/> " />
 							</button>
 						</li>
@@ -179,7 +205,7 @@
 	<div class="header">
 		<c:if test="${not empty loggedInUser }">
 			<button class="greenroundbutton open-overlay" type="button"
-				id="addObjbutton" onclick="overlayToggle('addObject',true)">
+				id="addObjbutton" onclick="overlaySlide('addObject',true)">
 				<img src="<c:url value="/resources/images/Plus_Icon.png"/>" />
 			</button>
 		</c:if>

@@ -141,13 +141,17 @@
 </head>
 </head>
 <body>
+		<div class="ol_pane">
+			<div class="sidebar_close">
+				<h3>CLOSE</h3>
+				<button class="greenroundbutton" id="close_overlay"
+					onclick="overlaySlide('addObject',false)">
+					<img src="<c:url value="/resources/images/Close_Icon.png" />">
+				</button>
+			</div>
 	<div class="board" id="addObj">
 		<div class="entryform" id="entry_form">
 			<h3>Add Knowledge Object</h3>
-			<button class="greenroundbutton" id="closebutton"
-				onclick="overlayToggle('addObject',false)">
-				<img src="<c:url value="/resources/images/Close_Icon.png" />">
-			</button>
 			<div style="height:98%;">
 				<sf:form name="addObj_f" class="Add-content" id="addObj_f"
 					method="POST" modelAttribute="fedoraObject" action="addNewObject">
@@ -168,6 +172,8 @@
 					</ul>
 					</div>
 					<fieldset class="fieldcontainer" id="first">
+<div id="fields">
+							
 						<div>
 							<h4><spring:message code="OBJECT_TITLE" /></h4>
 							<div class="addtext">
@@ -226,9 +232,11 @@
 							</div>
 
 						</div>
+						</div>
 						<input class="next_btn" name="next" type="button" value="Next">
 					</fieldset>
 					<fieldset>
+					<div id="fields">
 						<h4><spring:message code="PAYLOAD_FUNCTION" /> <spring:message code="REQUIRED_FIELD" /></h4>
 
 						<div class="addtext">
@@ -267,6 +275,7 @@
 						<button id="clearPayloadButton"><spring:message code="REMOVE_BTN" /></button>
 							<textarea id="payloadTextArea"></textarea>
 						</div>
+						</div>
 						<input class="pre_btn" name="previous" type="button"
 							value="Previous"> <input class="next_btn" name="next"
 							type="button" value="Next">
@@ -274,6 +283,7 @@
 
 					</fieldset>
 					<fieldset class="fieldcontainer">
+					<div id="fields">
 						<div id="inputDropFile" class="dropfile">
 
 							<div class="upload-direction">
@@ -298,12 +308,14 @@
 						<button id="clearInputButton"><spring:message code="REMOVE_BTN" /></button>
 							<textarea id="inputTextArea"></textarea>
 						</div>
+						</div>
 						<input class="pre_btn" name="previous" type="button"
 							value="Previous"> <input class="next_btn" name="next"
 							type="button" value="Next">
 
 					</fieldset>
 					<fieldset class="fieldcontainer">
+						<div id="fields">
 						<div id="outputDropFile" class="dropfile">
 
 							<div class="upload-direction">
@@ -328,6 +340,7 @@
 						<div class="display-output" id="outputTextAreaDisplay">
 						<button id="clearOutputButton"><spring:message code="REMOVE_BTN" /></button>
 							<textarea id="outputTextArea"></textarea>
+						</div>
 						</div>
 						<input class="pre_btn" name="previous" type="button"
 							value="Previous"> <input id="addObjButton" type="button" onclick="addNewObject()"
@@ -360,6 +373,6 @@
 
 		</div>
 	</div>
-
+</div>
 </body>
 </html>

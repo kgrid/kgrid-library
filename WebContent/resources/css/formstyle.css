@@ -32,6 +32,11 @@
 border-bottom: 1px solid #e6e6e6;	
 }
 
+#fields {
+	overflow:auto;
+	height:95%;
+}
+
 .fieldcontainer{
 	height:95%;
 	overflow:auto;
@@ -52,23 +57,28 @@ padding: 0px;
 
 #progressbar li{
 display:inline-block;
-width:135px;
-padding:5px 5px;
+padding:3px 0px;
   font-size: 14px;
-margin-right: 20px;
+margin: 0px 50px 0px 16px;
+color:#b3b3b3;
 }
+
+#progressbar li.current-tab{
+	color:#666666;
+}
+
 
 fieldset{
 display:none;
-padding:15px;
+padding:15px 0px 0px 0px;
 margin: 0 auto;
 margin-top:5px;
 border-radius:5px;
-overflow:auto;
+/* overflow:auto; */
 }
 fieldset h4{
 display:inline-block;
-padding:5px 5px;
+padding:5px 16px;
   font-size: 14px;
 margin-right: 20px;
 }
@@ -81,9 +91,9 @@ display:block;
 
 input[type=text],
 input[type=password]{
-  width:900px;
+  width:878px;
   height: 38px;
-  padding: 5px;
+  padding: 0px 16px;
   border: 1px solid #e6e6e6;
   border-radius: 10px;
   margin:2px 0;
@@ -131,17 +141,23 @@ option:hover
   margin:2px 0;
   font-size: 14px;
 }
-#description_data{
+#description_data, #citation_detail, #license_detail {
     display:block;
-      width:900px;
-  padding: 5px;
+  padding: 5px 16px;
   border: 1px solid #e6e6e6;
   border-radius: 10px;
   margin:2px 0;
   font-size: 14px;
     height:80px;
         min-height:80px;
+        width:878px;
 }
+
+#citation_detail, #license_detail {
+	    height:380px;
+        min-height:380px;
+		width:878px;
+	}
 .board h3{
     color:#666666;
     font-weight: 300;
@@ -164,7 +180,7 @@ width:98%;
 margin:0px;
 resize:none;
 padding:5px;
-border: 1px solid #39b54a;
+border: 1px solid #e3e3e3;
 border-radius: 10px;
 color:#666666;
 }
@@ -177,12 +193,7 @@ color:#666666;
   margin:0 auto;
   overflow: auto;
 }
-@media (max-height: 960px){
-#payloadTextArea {
-	min-height:280px;
-	max-height:280px;
-}
-}
+
 input[type=submit],
 input[type=button]{
   height:40px;
@@ -195,7 +206,7 @@ input[type=button]{
   text-align: center;
   font-weight: 500;
 }
-.next_btn, #addObjButton{
+.next_btn, #addObjButton, .done_btn{
     position:absolute;
     right:50px;
     bottom:40px;
@@ -233,13 +244,13 @@ input[type=button]{
 
 .addtext span{
   position:absolute;
-  right:50px;
+  right:65px;
   bottom:-20px;
   color:lightgreen;
   font-size:12px;
 }
 
-#newkeyword, #newowner, #newcontri{
+.addtext .greenroundbutton{
     position:absolute;
     bottom:-11px;
     left:896px;
@@ -299,17 +310,25 @@ input[type=button]{
 }
 
 @media (max-height: 960px){
-	fieldset h4{
-		padding:1px;
-	}
+
 input[type=text],
 input[type=password]{
-  padding: 3px 5px;
   border: 1px solid #e6e6e6;
   border-radius: 10px;
   margin:0px;
   font-size: 14px;
   color:#666666;
+}
+#payloadTextArea {
+	min-height:200px;
+	max-height:240px;
+}
+#inputTextArea, #outputTextArea{
+	min-height:300px;
+	max-height:360px;
+}
+#fields {
+	height:75%;
 }
 	
 }
