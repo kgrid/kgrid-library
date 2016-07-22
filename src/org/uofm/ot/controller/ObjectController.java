@@ -1,6 +1,7 @@
 package org.uofm.ot.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -149,6 +150,10 @@ public class ObjectController {
 		String provDataPart2 = fusekiService.getObjectProvProperties(objectURI+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType());
 
 		object.setLogData(provDataPart1+provDataPart2);
+		
+		List<Citation> citations = fusekiService.getObjectCitations(objectURI);
+		
+		object.getMetadata().setCitations(citations);
 
 		object.setPayload(getFedoraObjectService.getObjectContent(objectURI, ChildType.PAYLOAD.getChildType()));
 
@@ -273,13 +278,20 @@ public class ObjectController {
 			citation.setCitation_at("6899");
 			citation.setCitation_title("Test");
 			
+			Citation citation1 = new Citation();
+			citation1.setCitation_at("New England Journal ");
+			citation1.setCitation_title("Lung Cancer Risk Calculator ");
+			
 			ArrayList<Citation> list = new ArrayList<Citation>();
 			list.add(citation);
+			list.add(citation1); 
 			
-			fedoraObject.getMetadata().setCitations(list);*/
+			
+			fedoraObject.getMetadata().setCitations(list); */
 			
 			try {
 				FedoraObject newObject = createFedoraObjectService.createObject(fedoraObject,loggedInUser);
+			
 				result =  "{  \"uri\": \""+newObject.getURI()+"\"  }";
 				resultEntity =  new ResponseEntity<String>( result, HttpStatus.CREATED) ; 
 			} catch (ObjectTellerException e) {

@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
+import org.uofm.ot.fedoraAccessLayer.Citation;
 import org.uofm.ot.fedoraAccessLayer.FedoraObject;
 import org.uofm.ot.fedoraAccessLayer.Metadata;
 import org.uofm.ot.fedoraAccessLayer.PayloadDescriptor;
@@ -448,4 +450,59 @@ public class FusekiService {
 		return logData;
 	}
 
+
+	public List<Citation> getObjectCitations(String objectURI) throws ObjectTellerException {
+		ArrayList<Citation> citations = new ArrayList<Citation>();
+		String uri = fedoraServerURL+objectURI+"/"+ChildType.CITATIONS.getChildType();
+		
+		if(fusekiServerURL != null ) {
+			if(testIfFusekiIsRunning()) {
+		
+				String queryString = FusekiConstants.PREFIX_FEDORA+"\n"+
+							"SELECT  ?x  \n"+ 
+							"WHERE { \n"+ 
+							"?x  fedora:hasParent  <"+uri+">. \n"+ 
+							"} \n";
+				Query query = QueryFactory.create(queryString) ;
+				QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
+				ResultSet resultSet = execution.execSelect();
+
+				while (resultSet.hasNext()) {
+					QuerySolution binding = resultSet.nextSolution();
+					String child = binding.get("x").toString();
+					Citation citation = new Citation();
+					getCitationProperties(citation,child);
+					String citationId = child.substring((uri+ "/").length());
+					citation.setCitation_id(citationId);
+					citations.add(citation);
+				}
+			}
+		} else {
+			logger.error("Fuseki Server URL is not configured");
+			ObjectTellerException exception = new ObjectTellerException("Fuseki Server URL is not configured");
+			throw exception;
+		} 
+		
+		return citations; 
+	}
+	
+	private void getCitationProperties(Citation citation, String uri){
+		String queryString = FusekiConstants.PREFIX_OT+"\n"+
+				"SELECT ?citationTitle  ?citationAt \n"+ 
+				"WHERE { \n"+ 
+				"<"+uri+">  ot:citationTitle ?citationTitle; \n"+ 
+				"	ot:citationAt ?citationAt. \n"+
+				"} \n";
+		Query query = QueryFactory.create(queryString) ;
+		QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
+		ResultSet resultSet = execution.execSelect();
+
+		if(resultSet.hasNext()){
+			QuerySolution binding = resultSet.nextSolution();
+			String citationTitle = binding.get("citationTitle").toString();
+			String citationAt = binding.get("citationAt").toString();
+			citation.setCitation_at(citationAt);
+			citation.setCitation_title(citationTitle);
+		}
+	}
 }
