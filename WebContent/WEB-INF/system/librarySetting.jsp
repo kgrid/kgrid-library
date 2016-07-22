@@ -202,7 +202,7 @@
 	<body onload="getData()" >
  		<div class="ol_pane">
 			<div class="sidebar_close">
-				<h3>CLOSE</h3>
+				<h3><spring:message code="CLOSE_BUTTON"/></h3>
 				<button class="greenroundbutton" id="close_overlay"
 					onclick="overlaySlide('libsettings',false)">
 					<img src="<c:url value="/resources/images/Close_Icon.png" />">
@@ -212,7 +212,7 @@
      <div class="board" id="libsetting">
             <div class="entryform">
              
-        <h3 style="text-align:center;"> ${loggedInUser}</h3>
+        <h3 style="text-align:center;"> <spring:message code="LIB_SETTING_TITLE"/></h3>
                 <form id="libsetting"  >
            <table id="libsettable">
             <tr>
