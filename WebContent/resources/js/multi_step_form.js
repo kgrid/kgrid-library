@@ -190,7 +190,7 @@ $(document)
 					function createInputTextarea(inputName, inputID, inputLabel, maxLength, placeholderText,isMultiple){
 						var beginTag= "<div>";
 						var inLabel = "<h4>"+inputLabel+"</h4>";
-						var entryArea = "<div class='entryArea' id='"+inputName+"'></div>";
+						var entryArea = "<div class='entryArea' id='"+inputName+"_entry'></div>";
 						var inField = '<div class="addtext"><textarea name="'+inputName+'" id="'+inputID+'" placeholder="'+placeholderText+'" maxlength='+maxLength+'></textarea>';
                         var charCounter = "<span>"+maxLength+"/"+maxLength+"</span>";
                         var addBtn ='<button class="greenroundbutton"><img src="images/Plus_Icon.png" width="12px">';
@@ -203,72 +203,15 @@ $(document)
                         }
 					}
 
-				   	function readMultipleFiles(evt) {
-						//Retrieve all the files from the FileList object
-						var files = evt.target.files;
-
-						if (files) {
-							for (var i = 0, f; f = files[i]; i++) {
-								var r = new FileReader();
-								r.onload = (function(f) {
-									return function(e) {
-										var contents = e.target.result;
-										$("#payloadDropFile").hide();
-										$("#payloadTextAreaDisplay").show();
-										$('#payloadTextArea').val(contents);
-									};
-								})(f);
-								r.readAsText(f);
-							}
-						} else {
-							alert("Failed to load files");
-						}
-					}
-				        	function readInputFiles(evt) {
-						//Retrieve all the files from the FileList object
-						var files = evt.target.files;
-
-						if (files) {
-							for (var i = 0, f; f = files[i]; i++) {
-								var r = new FileReader();
-								r.onload = (function(f) {
-									return function(e) {
-										var contents = e.target.result;
-										$("#inputDropFile").hide();
-										$("#inputTextAreaDisplay").show();
-										$('#inputTextArea').val(contents);
-									};
-								})(f);
-								r.readAsText(f);
-							}
-						} else {
-							alert("Failed to load files");
-						}
-					}
-				        	function readOutputFiles(evt) {
-						//Retrieve all the files from the FileList object
-						var files = evt.target.files;
-
-						if (files) {
-							for (var i = 0, f; f = files[i]; i++) {
-								var r = new FileReader();
-								r.onload = (function(f) {
-									return function(e) {
-										var contents = e.target.result;
-										$("#outputDropFile").hide();
-										$("#outputTextAreaDisplay").show();
-										$('#outputTextArea').val(contents);
-									};
-								})(f);
-								r.readAsText(f);
-							}
-						} else {
-							alert("Failed to load files");
-						}
-					}
-				        	
+			        	
 					var next = 1;
-				$("input").click(function(e){
+				$("input[id$='_data']").click(function(e){
+					e.preventDefault();
+				});
+				$("input[id$='_title']").click(function(e){
+					e.preventDefault();
+				});
+				$("input[id$='_link']").click(function(e){
 					e.preventDefault();
 				});
 				$("#citation_data").focus(function(e){
@@ -277,7 +220,7 @@ $(document)
 				});
 				$("#license_data").focus(function(e){
 					console.log("New license field in focus...");
-					//overlaySlide('license',true);
+					overlaySlide('license',true);
 				});
 				var citNumber = 0;
 				$("#addCitation").click(function(){
@@ -303,7 +246,8 @@ $(document)
                     var endTag="</div>";
                     var citationEntry = inField+delBtn+endTag;
                      $(citationEntry).appendTo(".entryArea#citation_data_entry");
-                     $("#idx").attr("url",urllink);
+                     $("#"+idx).attr("url",urllink);
+                     $("#"+idx).attr("title",cTitle);
                      $("#delete_btn").click(function(e){
      					var tgt =e.target;
      					console.log(tgt);
@@ -334,7 +278,22 @@ $(document)
 					//myWindow.close();
 					
 				});
-				
+				$("#license_preview_btn").click(function(e){
+					var urllink=$("#license_link").val();
+					console.log(urllink);
+					var myWindow = window.open(urllink, "myWindow", "width=400,height=700");   // Opens a new window
+					myWindow.focus();
+/*					var resp =myWindow.confirm("Is the displayed link correct?");
+					if(resp){
+						console.log("citation added.");
+						// Code to add citation
+					}else{
+						console.log("citation added.");
+						// Go back to citation overlay
+					}*/
+					//myWindow.close();
+					
+				});
 					$(".add-more1")
 							.click(
 									function(e) {
