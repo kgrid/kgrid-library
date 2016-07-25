@@ -92,13 +92,21 @@
 
 		var ctitle;
 		var clink;
-		$("#citation_data_entry").find('input').each(function( index, element ){
+		var citations = []; 
+		
+		$("#citation_data_entry").find('input').each(function( index, element ) {
+			var citation = new Object();
 			ctitle=$(element).attr("title");
 			clink = $(element).attr("url");
 			console.log(ctitle + " "+clink);
+			citation.citation_title = ctitle;
+			citation.citation_at = clink;
+			citations.push(citation);
 			});
  
+		metadata.citations = citations;
 		
+	
 		
 		fedoraObject.metadata = metadata;
 		
@@ -115,12 +123,11 @@
 		fedoraObject.payloadDescriptor = payloadDescriptor;
 
 		var text = JSON.stringify(fedoraObject);
-		var newTab = window.open("","_blank");
-		newTab.document.write(text);
+		
  		$("#entry_form").hide();
 		$("#end_page").show();
 		
-/*  			$
+ 			$
 				.ajax({
 					beforeSend : function(xhrObj) {
 						xhrObj.setRequestHeader("Content-Type",
@@ -146,7 +153,7 @@
 					error : function(response) {
 						document.getElementById("successResult").value = "ERROR";
 					}
-				}); */
+				}); 
  
 	}
 </script>

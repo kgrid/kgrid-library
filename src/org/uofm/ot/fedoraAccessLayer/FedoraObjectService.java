@@ -9,6 +9,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -329,5 +330,39 @@ public class FedoraObjectService {
 		}
 		 return location;
 		
+	}
+	
+	public void deleteFedoraResource(String uri) throws ObjectTellerException {
+		String deleteResourceURI = baseURI + "/" + uri ;
+		HttpDelete httpDelete = new HttpDelete(deleteResourceURI);
+		httpDelete.addHeader(BasicScheme.authenticate(
+				new UsernamePasswordCredentials(userName, password),
+				"UTF-8", false));
+
+		HttpClient httpClient = new DefaultHttpClient();
+
+		HttpResponse response;
+		
+		try {
+			response = httpClient.execute(httpDelete) ;
+			if(response.getStatusLine().getStatusCode() == HttpStatus.GONE.value()) {
+				
+			} else {
+				ObjectTellerException exception = new ObjectTellerException("Unable to delete fedora resource "+deleteResourceURI);
+				logger.error("Unable to delete fedora resource "+deleteResourceURI);
+				throw exception;
+			}
+			
+		} catch (ClientProtocolException e) {
+			ObjectTellerException exception = new ObjectTellerException(e);
+			logger.error("Exception occured while deleting fedora resource with URI "+deleteResourceURI+"."+e.getMessage());
+			exception.setErrormessage("Exception occured while deleting fedora resource with URI "+deleteResourceURI+"."+e.getMessage());
+			throw exception;
+		} catch (IOException e) {
+			ObjectTellerException exception = new ObjectTellerException(e);
+			logger.error("Exception occured while deleting fedora resource with URI "+deleteResourceURI+"."+e.getMessage());
+			exception.setErrormessage("Exception occured while deleting fedora resource with URI "+deleteResourceURI+"."+e.getMessage());
+			throw exception;
+		}
 	}
 }
