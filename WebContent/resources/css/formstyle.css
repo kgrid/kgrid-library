@@ -32,7 +32,7 @@
 border-bottom: 1px solid #e6e6e6;	
 }
 
-#fields {
+div[id$="_fields"] {
 	overflow:auto;
 	height:95%;
 }
@@ -257,6 +257,17 @@ input[type=button]{
     width:28px;
     height:28px;
     padding:0px;
+}
+
+.addtext .redroundbutton{
+    position:absolute;
+    bottom:-11px;
+    left:896px;
+    width:28px;
+    height:28px;
+    padding:0px;
+    background-color:#666666;
+        border-radius: 100%;
 }
 
 ::-webkit-scrollbar-track {
