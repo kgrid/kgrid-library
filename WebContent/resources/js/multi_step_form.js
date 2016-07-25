@@ -9,6 +9,35 @@ $(document)
 							'change', readInputFiles, false);
 					document.getElementById('file_output').addEventListener(
 							'change', readOutputFiles, false);
+					
+					
+					var inputLabels = ["TITLE","DESCRIPTION","KEYWORDS","OWNERS","CONTRIBUTORS","CITATIONS","LICENSE"];
+					var inputNames =  ["title","description_data","keyword_data","owner_data","contri_data","citation_data","license_data"];
+					var inputIDs =  ["title_data","description_data","keyword_data","owner_data","contri_data","citation_data","license_data"];
+					var maxLengths = [140,500,140,140,140,500,140];
+					var placeholderTexts=["A title, which is a formal name.",
+					                      "A text description of the object - akin to an abstract - maybe enetered for any object.",
+					                      "A list of up to 7 keywords may be entered for any object.",
+					                      "An entry making the resource available, often an organization, person, or service.",
+					                      "an unlimited number of contributors can be added. Contributors are persons, organiztions or services.",
+					                      "Click here to add citations",
+					                      "Click here to add License"];
+					var isMultiples = [false,false,true,true,true,true,false];
+					var numberofFields = inputLabels.length;
+					var inputField;
+					for(var i=0;i<numberofFields;i++){
+						console.log(isMultiples[i]);
+						if(i!=1){
+							inputField = createInputField(inputNames[i], inputIDs[i], inputLabels[i], maxLengths[i],placeholderTexts[i],isMultiples[i]);
+
+						}else{
+							inputField = createInputTextarea(inputNames[i], inputIDs[i], inputLabels[i], maxLengths[i],placeholderTexts[i],isMultiples[i]);
+						}
+						$(inputField).appendTo("#metadata_fields");
+					}
+					
+					
+					
 					/*
 					 * $("#addObj_f").validate({ errorPlacement: function(error,
 					 * element) { // Append error within linked label $( element )
@@ -64,6 +93,7 @@ $(document)
 						});
 						// Adding Class Active To Show Steps Forward;
 						$('.current-tab>img').css("display", "inline-block");
+						$('.current-tab>img').css("color", "#666666");
 						$('.current-tab').next().addClass('current-tab');
 						$('.current-tab').prev().removeClass('current-tab');
 						$('.current-tab').prev().addClass('checked');
@@ -99,11 +129,11 @@ $(document)
 									return true;
 								}
 							});
-					$("#addObjButton").click(function() {
+/*					$("#addObjButton").click(function() {
 						$("#entry_form").css("display", "none");
 						$("#end_page").css("display", "block");
 
-					});
+					});*/
 					$("#engineType").click(function(){
 						
 					    if($(this).hasClass("up")){
@@ -139,10 +169,172 @@ $(document)
 						$(this).parent().children("span").text(s);
 						$(this).parent().children("span")
 								.css("color", cs_color);
-
+					};
+					
+					function createInputField(inputName, inputID, inputLabel, maxLength, placeholderText,isMultiple){
+						var beginTag= "<div>";
+						var inLabel = "<h4>"+inputLabel+"</h4>";
+						var entryArea = "<div class='entryArea' id='"+inputName+"_entry'></div>";
+						var inField = '<div class="addtext"><input type="text" name="'+inputName+'" id="'+inputID+'" placeholder="'+placeholderText+'" maxlength='+maxLength+'>';
+                        var charCounter = "<span>"+maxLength+"/"+maxLength+"</span>";
+                        var addBtn ='<button class="greenroundbutton"><img src="/ObjectTeller/resources/images/Plus_Icon.png" width="12px">';
+                        var endTag="</div></div>";
+                        if(isMultiple){
+                        	return beginTag+inLabel+entryArea+inField+charCounter+addBtn+endTag;
+                        }else{
+                        	return beginTag+inLabel+inField+charCounter+endTag;
+                  	
+                        }
 					}
-					;
+					
+					function createInputTextarea(inputName, inputID, inputLabel, maxLength, placeholderText,isMultiple){
+						var beginTag= "<div>";
+						var inLabel = "<h4>"+inputLabel+"</h4>";
+						var entryArea = "<div class='entryArea' id='"+inputName+"'></div>";
+						var inField = '<div class="addtext"><textarea name="'+inputName+'" id="'+inputID+'" placeholder="'+placeholderText+'" maxlength='+maxLength+'></textarea>';
+                        var charCounter = "<span>"+maxLength+"/"+maxLength+"</span>";
+                        var addBtn ='<button class="greenroundbutton"><img src="images/Plus_Icon.png" width="12px">';
+                        var endTag="</div></div>";
+                        if(isMultiple){
+                        	return beginTag+inLabel+entryArea+inField+charCounter+addBtn+endTag;
+                        }else{
+                        	return beginTag+inLabel+inField+charCounter+endTag;
+                  	
+                        }
+					}
+
+				   	function readMultipleFiles(evt) {
+						//Retrieve all the files from the FileList object
+						var files = evt.target.files;
+
+						if (files) {
+							for (var i = 0, f; f = files[i]; i++) {
+								var r = new FileReader();
+								r.onload = (function(f) {
+									return function(e) {
+										var contents = e.target.result;
+										$("#payloadDropFile").hide();
+										$("#payloadTextAreaDisplay").show();
+										$('#payloadTextArea').val(contents);
+									};
+								})(f);
+								r.readAsText(f);
+							}
+						} else {
+							alert("Failed to load files");
+						}
+					}
+				        	function readInputFiles(evt) {
+						//Retrieve all the files from the FileList object
+						var files = evt.target.files;
+
+						if (files) {
+							for (var i = 0, f; f = files[i]; i++) {
+								var r = new FileReader();
+								r.onload = (function(f) {
+									return function(e) {
+										var contents = e.target.result;
+										$("#inputDropFile").hide();
+										$("#inputTextAreaDisplay").show();
+										$('#inputTextArea').val(contents);
+									};
+								})(f);
+								r.readAsText(f);
+							}
+						} else {
+							alert("Failed to load files");
+						}
+					}
+				        	function readOutputFiles(evt) {
+						//Retrieve all the files from the FileList object
+						var files = evt.target.files;
+
+						if (files) {
+							for (var i = 0, f; f = files[i]; i++) {
+								var r = new FileReader();
+								r.onload = (function(f) {
+									return function(e) {
+										var contents = e.target.result;
+										$("#outputDropFile").hide();
+										$("#outputTextAreaDisplay").show();
+										$('#outputTextArea').val(contents);
+									};
+								})(f);
+								r.readAsText(f);
+							}
+						} else {
+							alert("Failed to load files");
+						}
+					}
+				        	
 					var next = 1;
+				$("input").click(function(e){
+					e.preventDefault();
+				});
+				$("#citation_data").focus(function(e){
+					console.log("New citation field in focus...");
+					overlaySlide('citation',true);
+				});
+				$("#license_data").focus(function(e){
+					console.log("New license field in focus...");
+					//overlaySlide('license',true);
+				});
+				var citNumber = 0;
+				$("#addCitation").click(function(){
+					// Code to add citation to metadata form
+					var cTitle=$("#citation_title").val();
+					var urllink=$("#citation_link").val();
+					addCitationEntry(cTitle,urllink);
+					overlaySlide("citation", false);
+				});
+				$("#addLicense").click(function(){
+					// Code to add citation to metadata form
+					var lTitle=$("#license_title").val();
+					$("#license_data").val(lTitle);
+					overlaySlide("license", false);
+				});
+				function addCitationEntry(cTitle,urllink){
+					var idx = "citation"+citNumber;
+					citNumber++;
+					console.log(idx);
+					console.log(cTitle);
+					var inField = '<div class="addtext"><input type="text" id="'+idx+'" disabled placeholder="'+cTitle+'">';
+                    var delBtn ='<button class="redroundbutton" id="delete_btn"><img src="resources/images/Close_Icon.png" width="12px">';
+                    var endTag="</div>";
+                    var citationEntry = inField+delBtn+endTag;
+                     $(citationEntry).appendTo(".entryArea#citation_data_entry");
+                     $("#idx").attr("url",urllink);
+                     $("#delete_btn").click(function(e){
+     					var tgt =e.target;
+     					console.log(tgt);
+     					$(this).parent().remove();
+     				})
+				}
+
+				
+				
+				
+				$("button").click(function(e){
+					e.preventDefault();
+				});
+				$("#preview_btn").click(function(e){
+					var urllink=$("#citation_link").val();
+					console.log(urllink);
+					$("#citation_detail").attr('src',urllink);
+/*					var myWindow = window.open(urllink, "myWindow", "width=400,height=700");   // Opens a new window
+					myWindow.focus();*/
+/*					var resp =myWindow.confirm("Is the displayed link correct?");
+					if(resp){
+						console.log("citation added.");
+						// Code to add citation
+					}else{
+						console.log("citation added.");
+						// Go back to citation overlay
+					}*/
+					//myWindow.close();
+					
+				});
+				
 					$(".add-more1")
 							.click(
 									function(e) {

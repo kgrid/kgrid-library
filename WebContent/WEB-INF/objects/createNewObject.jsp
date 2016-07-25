@@ -104,11 +104,12 @@
 		fedoraObject.payloadDescriptor = payloadDescriptor;
 
 		var text = JSON.stringify(fedoraObject);
-
-		$("#entry_form").hide();
+		var newTab = window.open("","_blank");
+		newTab.document.write(text);
+ 		$("#entry_form").hide();
 		$("#end_page").show();
-
-		$
+		
+ 			$
 				.ajax({
 					beforeSend : function(xhrObj) {
 						xhrObj.setRequestHeader("Content-Type",
@@ -135,7 +136,7 @@
 						document.getElementById("successResult").value = "ERROR";
 					}
 				});
-
+ 
 	}
 </script>
 </head>
@@ -151,7 +152,7 @@
 			</div>
 	<div class="board" id="addObj">
 		<div class="entryform" id="entry_form">
-			<h3>Add Knowledge Object</h3>
+			<h3><spring:message code="ADD_OBJECT_TITLE"/></h3>
 			<div style="height:98%;">
 				<sf:form name="addObj_f" class="Add-content" id="addObj_f"
 					method="POST" modelAttribute="fedoraObject" action="addNewObject">
@@ -172,9 +173,9 @@
 					</ul>
 					</div>
 					<fieldset class="fieldcontainer" id="first">
-<div id="fields">
+<div id="metadata_fields">
 							
-						<div>
+<%-- 						<div>
 							<h4><spring:message code="OBJECT_TITLE" /></h4>
 							<div class="addtext">
 								<input type="text" id="title_data" maxlength="140" name="title" path="metadata.title"></input> <span>140/140</span>
@@ -231,7 +232,7 @@
 								</button>
 							</div>
 
-						</div>
+						</div> --%>
 						</div>
 						<input class="next_btn" name="next" type="button" value="Next">
 					</fieldset>
@@ -367,12 +368,102 @@
 				</p>
 			</div>
 
-			<input class="close_button" type="button" value="Close"
-				onclick="closeAddObjOverlay()">
-
-
 		</div>
 	</div>
 </div>
+	<div id="citation" class="layered_overlay">
+		<div id="citation_pane" class="ol_pane">
+			<div class="sidebar_close">
+				<h3>CLOSE</h3>
+				<button class="greenroundbutton" id="close_overlay"
+					onclick="overlaySlide('citation',false)">
+										<img src="<c:url value="/resources/images/Close_Icon.png" />">
+
+				</button>
+			</div>
+			<div class="board" id="addObj">
+				<div class="entryform" id="entry_form">
+					<h3>Add Citation</h3>
+
+					<div style="height: 80%;">
+						<form name="addObj_f" class="Add-content" id="addObj_f"
+							method="post">
+							<fieldset class="fieldcontainer" id="first">
+			<div><h4>TITLE, PMID or DOI</h4>
+								<div class="addtext">
+									<input class="textbox" name="citation_title" id="citation_title"
+										type="text" placeholder="Enter Article Title, PMID or DOI " maxlength="140"><span>140/140</span>
+								</div></div>
+											<div><h4>HYPERLINK</h4> <button class="inline edit" id="preview_btn">PREVIEW</button>
+								
+								<div class="addtext">
+									<input class="textbox" name="citation_link" id="citation_link"
+										type="text" placeholder="Please provide the URL for the article " maxlength="140"><span>140/140</span>
+								</div></div>
+											<div><h4>CITATION DETAIL</h4>
+								
+								<div class="addtext" >
+									<iframe id="citation_detail"></iframe>
+								</div>
+								
+		
+								<input class="done_btn" name="done" id="addCitation" type="button" value="Done">
+							</fieldset>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+	</div>
+		<div id="license" class="layered_overlay">
+		<div id="license_pane" class="ol_pane">
+			<div class="sidebar_close">
+				<h3>CLOSE</h3>
+				<button class="greenroundbutton" id="close_overlay"
+					onclick="overlaySlide('license',false)">
+										<img src="<c:url value="/resources/images/Close_Icon.png" />">
+
+				</button>
+			</div>
+			<div class="board" id="addObj">
+				<div class="entryform" id="entry_form">
+					<h3>Add License</h3>
+
+					<div style="height: 80%;">
+						<form name="addObj_f" class="Add-content" id="addObj_f"
+							method="post">
+							<fieldset class="fieldcontainer" id="first">
+
+<div class="addtext">
+
+						<h4>License <spring:message code="REQUIRED_TO_SELECT"/></h4>
+							<select required class="options" id="license_title">
+								<option value="MIT">MIT</option>
+								<option value="CC">Creative Commons</option>
+							</select> <br>
+						</div>
+
+							
+											<div><h4>LICENSE DETAIL</h4>
+								
+								<div class="addtext" >
+									<iframe id="citation_detail"></iframe>
+								</div>
+								
+		
+								<input class="done_btn" name="done" id="Licensedone" type="button" value="Done">
+							</fieldset>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+	</div>
 </body>
 </html>
