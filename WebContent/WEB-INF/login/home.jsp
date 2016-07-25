@@ -65,7 +65,7 @@
 		if(open){
 			$('#'+overlayID).css("display","block");
 	        $('#'+overlayID).fadeIn('fast',function(){
-	            overlayPane.animate({'left':'32%'},1000);
+	            overlayPane.animate({'left':'40%'},1000);
 	        });
 	    }else{
 			$('#'+overlayID).css("display","none");
@@ -104,10 +104,19 @@
 	
 	
 	function resetInputText() {
+		$(".current-tab").removeClass("current-tab");
+		$("#progressbar li:first-child").addClass("current-tab");
+		$('#progressbar li').children("img").css("display","none");
+		$('#addObj .fieldcontainer').css("display","none");
+		$('#first').css("display",	"block");
+		$("#entry_form").show();
+		$("#end_page").hide();		
 		$('#payloadTextArea').val("");
 		$('#inputTextArea').val("");
 		$('#outputTextArea').val("");
 		$( "input[id$='_data']" ).val( "" );
+		$("#description_data").val("");
+		$("div[id$='_entry']").children().remove();
 		
 	}
 

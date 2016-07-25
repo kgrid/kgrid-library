@@ -88,6 +88,17 @@
 		metadata.description = document.getElementById("description_data").value;
 		metadata.contributors = document.getElementById("contri_data").value;
 		metadata.keywords = document.getElementById("keyword_data").value;
+		metadata.license = document.getElementById("license_data").value;
+
+		var ctitle;
+		var clink;
+		$("#citation_data_entry").find('input').each(function( index, element ){
+			ctitle=$(element).attr("title");
+			clink = $(element).attr("url");
+			console.log(ctitle + " "+clink);
+			});
+ 
+		
 		
 		fedoraObject.metadata = metadata;
 		
@@ -109,7 +120,7 @@
  		$("#entry_form").hide();
 		$("#end_page").show();
 		
- 			$
+/*  			$
 				.ajax({
 					beforeSend : function(xhrObj) {
 						xhrObj.setRequestHeader("Content-Type",
@@ -135,7 +146,7 @@
 					error : function(response) {
 						document.getElementById("successResult").value = "ERROR";
 					}
-				});
+				}); */
  
 	}
 </script>
@@ -236,7 +247,7 @@
 						</div>
 						<input class="next_btn" name="next" type="button" value="Next">
 					</fieldset>
-					<fieldset>
+					<fieldset class="fieldcontainer">
 					<div id="fields">
 						<h4><spring:message code="PAYLOAD_FUNCTION" /> <spring:message code="REQUIRED_FIELD" /></h4>
 
@@ -381,7 +392,7 @@
 
 				</button>
 			</div>
-			<div class="board" id="addObj">
+			<div class="board" id="addCitationEntry">
 				<div class="entryform" id="entry_form">
 					<h3>Add Citation</h3>
 
@@ -407,7 +418,7 @@
 								</div>
 								
 		
-								<input class="done_btn" name="done" id="addCitation" type="button" value="Done">
+								<input class="done_btn" name="done" id="addCitation" type="button" value="ADD">
 							</fieldset>
 						</form>
 					</div>
@@ -428,7 +439,7 @@
 
 				</button>
 			</div>
-			<div class="board" id="addObj">
+			<div class="board" id="selectLicense">
 				<div class="entryform" id="entry_form">
 					<h3>Add License</h3>
 
@@ -445,16 +456,21 @@
 								<option value="CC">Creative Commons</option>
 							</select> <br>
 						</div>
-
+											<div><h4>HYPERLINK</h4> <button class="inline edit" id="license_preview_btn">PREVIEW</button>
+								
+								<div class="addtext">
+									<input class="textbox" name="license_link" id="license_link"
+										type="text" placeholder="Please provide the URL for the license " maxlength="140"><span>140/140</span>
+								</div></div>
 							
 											<div><h4>LICENSE DETAIL</h4>
 								
 								<div class="addtext" >
-									<iframe id="citation_detail"></iframe>
+									<iframe id="license_detail"></iframe>
 								</div>
 								
 		
-								<input class="done_btn" name="done" id="Licensedone" type="button" value="Done">
+								<input class="done_btn" name="done" id="addLicense" type="button" value="ADD">
 							</fieldset>
 						</form>
 					</div>
