@@ -83,6 +83,10 @@ value="org.springframework.web.servlet.view.JstlView" />
 	    class="org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService">
 	</bean>
 	
+	<bean id="deleteFedoraResourceService" parent="fedoraObjectService" 
+	    class="org.uofm.ot.fedoraAccessLayer.DeleteFedoraResourceService">
+	</bean>
+	
 	<bean id="createfedoraObjectService" parent="fedoraObjectService" 
 	    class="org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService">
 	    <property name="objectIDDAO" ref="objectIDDao" />
@@ -107,6 +111,7 @@ value="org.springframework.web.servlet.view.JstlView" />
 		<property name="fusekiService" ref="fusekiService" />
 		<property name="createFedoraObjectService" ref="createfedoraObjectService" />
 		<property name="getFedoraObjectService" ref="getfedoraObjectService" />
+		<property name="deleteFedoraResourceService" ref="deleteFedoraResourceService" />
 	</bean>
 	
 	<bean id="systemConfController" class="org.uofm.ot.controller.SystemConfController">
