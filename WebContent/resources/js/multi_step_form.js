@@ -17,10 +17,10 @@ $(document)
 					var maxLengths = [140,500,140,140,140,500,140];
 					var placeholderTexts=["A title, which is a formal name.",
 					                      "A text description of the object - akin to an abstract - maybe enetered for any object.",
-					                      "A list of up to 7 keywords may be entered for any object.",
-					                      "An entry making the resource available, often an organization, person, or service.",
-					                      "an unlimited number of contributors can be added. Contributors are persons, organiztions or services.",
-					                      "Click here to add citations",
+					                      "Click here to add Keywords.",
+					                      "Click here to add Owners.",
+					                      "Click here to add Contributors.",
+					                      "Click here to add Citations",
 					                      "Click here to add License"];
 					var isMultiples = [false,false,true,true,true,true,false];
 					var numberofFields = inputLabels.length;
@@ -180,7 +180,7 @@ $(document)
                         var addBtn ='<button class="greenroundbutton"><img src="/ObjectTeller/resources/images/Plus_Icon.png" width="12px">';
                         var endTag="</div></div>";
                         if(isMultiple){
-                        	return beginTag+inLabel+entryArea+inField+charCounter+addBtn+endTag;
+                        	return beginTag+inLabel+entryArea+inField+charCounter+endTag;
                         }else{
                         	return beginTag+inLabel+inField+charCounter+endTag;
                   	
@@ -196,7 +196,7 @@ $(document)
                         var addBtn ='<button class="greenroundbutton"><img src="images/Plus_Icon.png" width="12px">';
                         var endTag="</div></div>";
                         if(isMultiple){
-                        	return beginTag+inLabel+entryArea+inField+charCounter+addBtn+endTag;
+                        	return beginTag+inLabel+entryArea+inField+charCounter+endTag;
                         }else{
                         	return beginTag+inLabel+inField+charCounter+endTag;
                   	
