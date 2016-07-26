@@ -191,66 +191,7 @@
 					</ul>
 					</div>
 					<fieldset class="fieldcontainer" id="first">
-<div id="metadata_fields">
-							
-<%-- 						<div>
-							<h4><spring:message code="OBJECT_TITLE" /></h4>
-							<div class="addtext">
-								<input type="text" id="title_data" maxlength="140" name="title" path="metadata.title"></input> <span>140/140</span>
-							</div>
-						</div>
-
-						<div>
-							<h4><spring:message code="OBJECT_DESCRIPTION" /></h4>
-							<div class="addtext">
-								<textarea id="description_data" maxlength="500"
-									placeholder="A text description of the object - akin to an abstract - maybe enetered for any object."></textarea>
-								<span>500/500</span>
-							</div>
-						</div>
-
-
-						<div>
-							<h4><spring:message code="OBJECT_KEYWORD" /></h4>
-							<div class="addtext">
-								<input type="text" id="keyword_data" maxlength="140"
-									placeholder="A list of up to 7 keywords may be entered for any object.">
-								<span>140/140</span>
-								<button class="greenroundbutton" id="newkeyword">
-									<img src="<c:url value="/resources/images/Plus_Icon.png" />"
-										width="12px">
-								</button>
-							</div>
-
-						</div>
-
-						<div>
-							<h4><spring:message code="OBJECT_OWNERS" /></h4>
-							<div class="addtext">
-								<input type="text" id="owner_data" maxlength="140"
-									placeholder="An entry making the resource available, often an organization, person, or service.">
-								<span>140/140</span>
-								<button class="greenroundbutton" id="newowner">
-									<img src="<c:url value="/resources/images/Plus_Icon.png" />"
-										width="12px">
-								</button>
-							</div>
-
-						</div>
-
-						<div>
-							<h4><spring:message code="OBJECT_CONTRIBUTORS" /></h4>
-							<div class="addtext">
-								<input type="text" id="contri_data" maxlength="140"
-									placeholder="an unlimited number of contributors can be added. Contributors are persons, organiztions or services.">
-								<span id="contri_counter">140/140</span>
-								<button class="greenroundbutton" id="newcontri">
-									<img src="<c:url value="/resources/images/Plus_Icon.png" />"
-										width="12px">
-								</button>
-							</div>
-
-						</div> --%>
+						<div id="metadata_fields">
 						</div>
 						<input class="next_btn" name="next" type="button" value="Next">
 					</fieldset>
