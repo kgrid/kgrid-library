@@ -5,6 +5,41 @@ $(document)
 				function() {
 					document.getElementById('file_payload').addEventListener(
 							'change', readMultipleFiles, false);
+					var citNumber = $(".entryArea .addtext").length;
+					console.log("number of citations:"+citNumber);
+					
+					var inputLabels = ["TITLE","DESCRIPTION","KEYWORDS","OWNERS","CONTRIBUTORS","CITATIONS","LICENSE"];
+					var inputNames =  ["title","description_data","keyword_data","owner_data","contri_data","citation_data","license_data"];
+					var inputIDs =  ["title_data","description_data","keyword_data","owner_data","contri_data","citation_data","license_data"];
+					var maxLengths = [140,500,140,140,140,500,140];
+					var placeholderTexts=["A title, which is a formal name.",
+					                      "A text description of the object - akin to an abstract - maybe enetered for any object.",
+					                      "Click here to add Keywords.",
+					                      "Click here to add Owners.",
+					                      "Click here to add Contributors.",
+					                      "Click here to add Citations",
+					                      "Click here to add License"];
+					var values = ["${fedoraObject.metadata.title}","${fedoraObject.metadata.description}","${fedoraObject.metadata.keywords}",
+					              "${fedoraObject.metadata.owner}","${fedoraObject.metadata.contributors}","${fedoraObject.metadata.citations}","${fedoraObject.metadata.license}"];
+					
+					var isMultiples = [false,false,true,true,true,true,false];
+					var numberofFields = inputLabels.length;
+					var inputField;
+/*					for(var i=0;i<numberofFields;i++){
+						console.log(isMultiples[i]);
+						if(i!=1){
+							inputField = createViewField(inputNames[i], inputIDs[i], inputLabels[i], maxLengths[i],values[i],isMultiples[i]);
+
+						}else{
+							inputField = createViewTextarea(inputNames[i], inputIDs[i], inputLabels[i], maxLengths[i],values[i],isMultiples[i]);
+						}
+						$(inputField).appendTo("#metadata_view");
+					}
+					*/
+					
+					
+					
+					
 					var count = 0; // To Count Blank Fields
 					/*------------ Validation Function-----------------*/
 					$("#clearPayloadButton").click(function(event) {
@@ -130,7 +165,7 @@ $(document)
 						console.log("Height:"+h);
 						$("#inputTextArea-v").css("height", h + 'px');  
 					
-					var next = 1;
+/*					var next = 1;
 					$(".add-more1")
 							.click(
 									function(e) {
@@ -169,5 +204,140 @@ $(document)
 									});
 
 				});
+				
+				
+*/
+						$("#delete_btn").click(function(e){
+	     					var tgt =e.target;
+	     					console.log(tgt);
+	     					$(this).parent().remove();
+	     				});
+						
+						$("#citation_data").focus(function(e){
+							console.log("New citation field in focus...");
+							resetCitationText();
+							overlaySlide('citation',true);
+						});
+						
+					
+						$(".entryArea .addtext")
+							.focus(function(e){
+								var idx = $(this).attr("id");
+								var ctitle = $("#"+idx).val();
+								var clink = $(this).val();
+							console.log("Citation field in focus..."+idx);
+							initCitationText('citation',idx,ctitle,clink);
+							overlaySlide('citation',true);
+						});
+						$("#license_data").focus(function(e){
+							console.log("New license field in focus...");
+							overlaySlide('license',true);
+						});
 
+						$("#addCitation").click(function(){
+							// Code to add citation to metadata form
+							var cTitle=$("#citation_title").val();
+							var urllink=$("#citation_link").val();
+							var curCitation = $("#citation_idx").val();
+							var buttonText = $(this).val();
+							console.log(buttonText+" CC: "+curCitation+ " "+cTitle);
+							if (buttonText == "ADD") {
+								console.log("Adding CC: "+curCitation+ " "+cTitle);
 
+								addCitationEntry(cTitle,urllink);
+							}else{
+								console.log("Updating  CC: "+curCitation+ " "+cTitle);
+
+								$("#"+curCitation).val(cTitle);
+								$("#"+curCitation).text(cTitle);
+								
+								$("#"+curCitation+"_link").val(urllink);
+							}
+							overlaySlide("citation", false);
+						});
+						$("#addLicense").click(function(){
+							// Code to add citation to metadata form
+							var lTitle=$("#license_title").val();
+							$("#license_data").val(lTitle);
+							overlaySlide("license", false);
+						});
+						$("#preview_btn").click(function(e){
+							var urllink=$("#citation_link").val();
+							console.log(urllink);
+							$("#citation_detail").attr('src',urllink);
+		/*					var myWindow = window.open(urllink, "myWindow", "width=400,height=700");   // Opens a new window
+							myWindow.focus();*/
+		/*					var resp =myWindow.confirm("Is the displayed link correct?");
+							if(resp){
+								console.log("citation added.");
+								// Code to add citation
+							}else{
+								console.log("citation added.");
+								// Go back to citation overlay
+							}*/
+							//myWindow.close();
+							
+						});
+						
+						function addCitationEntry(cTitle,urllink){
+							var idx = "citation"+citNumber;
+
+							console.log(idx);
+							console.log(cTitle);
+							var springPath = "metadata.citations["+citNumber+"]";
+							citNumber++;
+							var inField = '<div class="addtext"><input type="text" id="'+idx+'" path="'+springPath+'.citation_title"  value="'+cTitle+'">'+'<input type="hidden" id="'+idx+'_link" path="'+springPath+'.citation_at" value="'+urllink+'">';
+		                    var delBtn ='<button class="redroundbutton" id="delete_btn"><img src="resources/images/Close_Icon.png" width="12px">';
+		                    var endTag="</div>";
+		                    var citationEntry = inField+delBtn+endTag;
+		                     $(citationEntry).appendTo(".entryArea#citation_data_entry");
+		                     $("#delete_btn").click(function(e){
+		     					var tgt =e.target;
+		     					console.log(tgt);
+		     					$(this).parent().remove();
+		     				})
+							$("#"+idx).focus(function(e){
+								var idx = $(this).attr("id");
+								var ctitle = $("#"+idx).val();
+								var clink = $("#"+idx+"_link").val();
+								
+							console.log("Citation field in focus..."+idx);
+							overlaySlide('citation',true);
+							initCitationText('citation',idx,ctitle,clink);
+						});
+						}
+						
+						function createViewField(inputName, inputID, inputLabel, maxLength, value,isMultiple){
+							var beginTag= "<div class='addtext'>";
+							var inLabel = "<h4>"+inputLabel+"</h4>";
+							var entryArea = "<div class='entryArea' id='"+inputName+"_entry'></div>";
+						     var charCounter = "<span>"+maxLength+"/"+maxLength+"</span>";
+							var inField = '<input type="text" class="metaEdit" name="'+inputName+'" id="'+inputID+'-v" value="'+value+'" maxlength='+maxLength+'>';
+	                        var endTag="</div>";
+	                        if(isMultiple){
+	                        	return beginTag+inLabel+entryArea+inField+endTag;
+	                        }else{
+	                        	return beginTag+inLabel+inField+endTag;
+	                  	
+	                        }
+						}
+						
+						function createViewTextarea(inputName, inputID, inputLabel, maxLength, value,isMultiple){
+							var beginTag= "<div class='addtext'>";
+							var inLabel = "<h4>"+inputLabel+"</h4>";
+							var entryArea = "<div class='entryArea' id='"+inputName+"_entry'></div>";
+							var inField = '<textarea name="'+inputName+'" id="'+inputID+'_v" value="'+value+'" maxlength='+maxLength+'></textarea>';
+	                        var charCounter = "<span>"+maxLength+"/"+maxLength+"</span>";
+	                        var addBtn ='<button class="greenroundbutton"><img src="images/Plus_Icon.png" width="12px">';
+	                        var endTag="</div></div>";
+	                        if(isMultiple){
+	                        	return beginTag+inLabel+entryArea+inField+charCounter+endTag;
+	                        }else{
+	                        	return beginTag+inLabel+inField+charCounter+endTag;
+	                  	
+	                        }
+						}
+			
+						
+						
+				});

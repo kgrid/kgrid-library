@@ -38,6 +38,7 @@ div[id$="_fields"] {
 }
 
 .fieldcontainer{
+	position:relative;
 	height:95%;
 	overflow:auto;
 }
@@ -154,8 +155,8 @@ option:hover
 }
 
 #citation_detail, #license_detail {
-	    height:380px;
-        min-height:380px;
+	    height:320px;
+        min-height:320px;
 		width:878px;
 	}
 .board h3{
@@ -209,7 +210,7 @@ input[type=button]{
 .next_btn, #addObjButton, .done_btn{
     position:absolute;
     right:50px;
-    bottom:40px;
+    bottom:0px;
 }
 .pre_btn{
      position:absolute;
