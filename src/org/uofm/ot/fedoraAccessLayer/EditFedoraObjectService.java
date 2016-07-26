@@ -1,5 +1,7 @@
 package org.uofm.ot.fedoraAccessLayer;
 
+import java.util.List;
+
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 
@@ -81,6 +83,35 @@ public class EditFedoraObjectService extends FedoraObjectService {
 		super.sendPatchRequestForUpdatingTriples(data, fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+"/fcr:metadata", null);
 		 
 	} 
+	
+	public void editCitations(String fedoraObjectURI , List<Citation> citations) throws ObjectTellerException{
+
+		
+		for (Citation citation : citations) {
+			if(citation.getCitation_id() != null) {
+				String citationObject = "<"+super.baseURI+fedoraObjectURI+"/"+ ChildType.CITATIONS.getChildType() +"/"+citation.getCitation_id()+">" ;
+				String data = 
+						FusekiConstants.PREFIX_OT +"\n "+		
+								"	DELETE \n" +
+								"	{ \n" +  
+								"	  "+citationObject+"  ot:citationAt  ?o0 . \n"+
+								"	  "+citationObject+"  ot:citationTitle  ?o1 . \n"+
+								"	} \n"+
+								"	INSERT \n"+
+								"	{ \n"+
+								"	  "+citationObject+"  ot:citationAt   \""+citation.getCitation_at()+"\"  .  \n"+
+								"	 "+citationObject+"   ot:citationTitle  \""+citation.getCitation_title()+"\"  .  \n"+
+								"	} \n"+
+								"	WHERE \n"+
+								"	{  \n"+
+								"	 "+citationObject+"   ot:citationAt  ?o0 . \n"+
+								"	 "+citationObject+"   ot:citationTitle  ?o1 .\n"+
+								"	} ";
+
+				super.sendPatchRequestForUpdatingTriples(data, fedoraObjectURI+"/"+ ChildType.CITATIONS.getChildType() +"/"+citation.getCitation_id(), null);
+			}
+		}
+	}
 	
 	
 }
