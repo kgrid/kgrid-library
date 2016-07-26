@@ -21,6 +21,7 @@ import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.fedoraAccessLayer.Citation;
 import org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService;
+import org.uofm.ot.fedoraAccessLayer.DeleteFedoraResourceService;
 import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
 import org.uofm.ot.fedoraAccessLayer.FedoraObject;
 import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
@@ -40,6 +41,8 @@ public class ObjectController {
 	private CreateFedoraObjectService createFedoraObjectService;
 
 	private GetFedoraObjectService getFedoraObjectService;
+	
+	private DeleteFedoraResourceService deleteFedoraResourceService;
 
 	private static final Logger logger = Logger.getLogger(ObjectController.class);
 
@@ -61,6 +64,11 @@ public class ObjectController {
 
 	public void setCreateFedoraObjectService(CreateFedoraObjectService createFedoraObjectService) {
 		this.createFedoraObjectService = createFedoraObjectService;
+	}
+
+
+	public void setDeleteFedoraResourceService(DeleteFedoraResourceService deleteFedoraResourceService) {
+		this.deleteFedoraResourceService = deleteFedoraResourceService;
 	}
 
 
@@ -269,25 +277,7 @@ public class ObjectController {
 		
 		if(validateUser(loggedInUser)) {
 			Gson gson = new Gson();
-			FedoraObject fedoraObject = gson.fromJson(string, FedoraObject.class);
-			/*
-			 * This code is for adding citations.
-			 * TODO: Remove this code once citation front end is ready.  
-			 * 
-			Citation citation = new Citation();
-			citation.setCitation_at("6899");
-			citation.setCitation_title("Test");
-			
-			Citation citation1 = new Citation();
-			citation1.setCitation_at("New England Journal ");
-			citation1.setCitation_title("Lung Cancer Risk Calculator ");
-			
-			ArrayList<Citation> list = new ArrayList<Citation>();
-			list.add(citation);
-			list.add(citation1); 
-			
-			
-			fedoraObject.getMetadata().setCitations(list); */
+			FedoraObject fedoraObject = gson.fromJson(string, FedoraObject.class);		
 			
 			try {
 				FedoraObject newObject = createFedoraObjectService.createObject(fedoraObject,loggedInUser);
@@ -321,4 +311,21 @@ public class ObjectController {
 		else
 			return true;
 	}
+	
+	/*@RequestMapping(value="/deleteCitation/{objectURI}/{citationID}", method=RequestMethod.DELETE)
+	public ResponseEntity<String> deleteCitation( @PathVariable String objectURI, @PathVariable String citationID, @ModelAttribute("loggedInUser") User loggedInUser) {
+		ResponseEntity<String> resultEntity = null; 
+		
+		if(validateUser(loggedInUser)) {
+			try {
+				deleteFedoraResourceService.deleteObjectCitation(objectURI, citationID);
+				resultEntity =  new ResponseEntity<String>( HttpStatus.GONE) ;
+			} catch (ObjectTellerException e) {
+				logger.error("An exception occured while deleting Object Citation for Object ID "+objectURI+ "Citation ID " +citationID + ". Caused by "+e.getMessage());
+				resultEntity =  new ResponseEntity<String>("An exception occured while creating new object "+e.getMessage()+". Caused by "+e.getCause() , HttpStatus.INTERNAL_SERVER_ERROR) ; 
+			}
+		}
+		return resultEntity ; 
+	}*/
+	
 }
