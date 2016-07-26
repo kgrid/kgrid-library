@@ -21,12 +21,11 @@
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/navigation.css"/>" type="text/css" />
 <link rel="stylesheet"
-	href="<c:url value="/resources/css/overlay.css"/>" type="text/css" />
+	href="<c:url value="/resources/css/l_overlay.css"/>" type="text/css" />
 <link rel="stylesheet" href="<c:url value="/resources/css/tab.css"/>"
 	type="text/css" />
-<%-- <link rel="stylesheet"
+	<link rel="stylesheet"
 	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" />
- --%>
 <link rel="shortcut icon"
 	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" /> " />
 <script
@@ -191,6 +190,7 @@
 				});
 	
 
+
 				document.getElementById('file_payload').addEventListener(
 						'change', readMultipleFiles, false);
 
@@ -205,15 +205,6 @@
 </script>
 <script type="text/javascript">
 
-/* 	function disablePayloadEdit() {
-		document.getElementById("editPayloadButton").style.display = "inline-block";
-		document.getElementById("savePayloadButton").style.display = "none";
-		document.getElementById("cancelPayloadButton").style.display = "none";
-		$("#payloadEdit").hide();
-		$("#displayPayload").show();
-	} */
-
-
 	function toggleObject(uri, param) {
 		$.ajax({
 			type : 'GET',
@@ -227,6 +218,47 @@
 
 	}
 
+	function overlaySlide(overlayID, open){
+		var overlayPane =$('#'+overlayID).find("> .ol_pane");
+		if(open){
+			$('#'+overlayID).css("display","block");
+	        $('#'+overlayID).fadeIn('fast',function(){
+	            overlayPane.animate({'left':'40%'},1000);
+	        });
+	    }else{
+			$('#'+overlayID).css("display","none");
+	    	overlayPane.animate({'left':'100%'},1000,function(){
+	            $('#'+overlayID).fadeOut('fast');
+	        });
+	    }
+		//$('#'+overlayID+" input").val("");
+	    document.body.classList.toggle('noscroll', open);
+		if(overlayID=="addObject"){
+			resetInputText();
+		}
+		if(overlayID=="libraryuser"){
+			resetUserInfoText();
+		}
+
+	}
+	
+	function resetCitationText(){
+		$( "#citation_title" ).val( "" );
+		$( "#citation_link" ).val( "" );
+		$("#citation_detail").attr("src","");
+		$("#citation_idx").val("");
+		$("#addCitation").val("ADD");
+	}
+	
+	function initCitationText(overlayID, cidx, ctitle, clink){
+		console.log("Citation Index:"+cidx+" Title:"+ctitle);
+		$( "#citation_title" ).val( ctitle );
+		$( "#citation_link" ).val( clink );
+		$("#citation_detail").attr("src","");
+		$("#addCitation").val("UPDATE");
+		$("#citation_idx").val(cidx);
+	}
+	
 	function readMultipleFiles(evt) {
 
 		var field_id = this.id;
@@ -277,6 +309,9 @@
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
+	<div id="overlay2">
+		<%@ include file="secondaryOverlay.jsp"%>
+	</div>
 	<div id="topfixed">
 		<%@ include file="../common/banner.jsp"%>
 	</div>
@@ -448,10 +483,36 @@
 										<spring:message code="OBJECT_CONTRIBUTORS" />
 									</h4>
 									<input type="text" class="metaEdit" id="contributor_data_v"
-										disabled value="${fedoraObject.metadata.contributors}" /> <input
-										type="hidden" path="URI" value="${fedoraObject.URI}" />
+										disabled value="${fedoraObject.metadata.contributors}" />
+										
+									
 								</div>
 
+								<div class="addtext">
+									<h4>
+										<spring:message code="OBJECT_CITATIONS" />
+									</h4>
+									<c:forEach var="citationEntry" items="${fedoraObject.metadata.citations}"
+																	varStatus="loopStatus">
+										<div><input type="text" class="metaEdit" disabled
+												value="${citationEntry.citation_title}" ><input type="hidden" class="metaEdit" 
+												value="${citationEntry.citation_at}" ></div>
+										</c:forEach>
+										<input type="text" class="metaEdit" id="citation_data_v"
+										disabled value="       " />
+								</div>
+								
+									<div class="addtext">
+									<h4>
+										<spring:message code="OBJECT_LICENSE" />
+									</h4>
+									
+									<input type="text" class="metaEdit" id="license_data_v"
+										disabled value="LICENSE" />
+								</div>
+
+
+								<input type="hidden" path="URI" value="${fedoraObject.URI}" />
 							</form>
 							<sf:form class="display-content" method="POST"
 								action="editMetadata" modelAttribute="fedoraObject"
@@ -510,6 +571,33 @@
 									<span>140/140</span>
 									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
 								</div>
+
+								<div class="addtext">
+									<h4>
+										<spring:message code="OBJECT_CITATIONS" />
+									</h4>
+									<div class='entryArea' id='citation_data_entry'>
+ 									<c:forEach var="citationEntry" items="${fedoraObject.metadata.citations}"
+																	varStatus="loopStatus">
+										<div class="addtext"><input type="text" class="metaEdit" 
+												value="${citationEntry.citation_title}" ><input type="hidden" class="metaEdit" 
+												value="${citationEntry.citation_at}" >
+												<button class="redroundbutton" id="delete_btn"><img src="resources/images/Close_Icon.png" width="12px"></div>
+										</c:forEach>
+ 										</div>
+										<input type="text" class="metaEdit" id="citation_data"
+										 placeholder="Click here to add citations.       " />
+								</div>
+								
+<%-- 									<div class="addtext">
+									<h4>
+										<spring:message code="OBJECT_LICENSE" />
+									</h4>
+									
+									<input type="text" class="metaEdit" id="license_data"
+										value="LICENSE" />
+								</div> --%>
+
 
 							</sf:form>
 						</div>
