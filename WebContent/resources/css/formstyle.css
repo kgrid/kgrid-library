@@ -235,6 +235,13 @@ input[type=button]{
     margin-top:70px;
     
 }
+
+.entryArea .addtext{
+	margin:15px 0px;
+}
+.addtext div {
+		margin:15px 0px;
+}
 .addtext{
   position:relative;
   width:100%;
