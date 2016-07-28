@@ -492,24 +492,25 @@
 									<h4>
 										<spring:message code="OBJECT_CITATIONS" />
 									</h4>
+									
 									<c:forEach var="citationEntry" items="${fedoraObject.metadata.citations}"
 																	varStatus="loopStatus">
 										<div><input type="text" class="metaEdit" disabled
 												value="${citationEntry.citation_title}" ><input type="hidden" class="metaEdit" 
 												value="${citationEntry.citation_at}" ></div>
 										</c:forEach>
-										<input type="text" class="metaEdit" id="citation_data_v"
-										disabled value="       " />
+										<!-- <input type="text" class="metaEdit" id="citation_data_v"
+										disabled value="       " /> -->
 								</div>
 								
-									<div class="addtext">
+									<%-- <div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_LICENSE" />
 									</h4>
 									
 									<input type="text" class="metaEdit" id="license_data_v"
-										disabled value="LICENSE" />
-								</div>
+										disabled value="--------" />
+								</div> --%>
 
 
 								<input type="hidden" path="URI" value="${fedoraObject.URI}" />
@@ -577,13 +578,17 @@
 										<spring:message code="OBJECT_CITATIONS" />
 									</h4>
 									<div class='entryArea' id='citation_data_entry'>
- 									<c:forEach var="citationEntry" items="${fedoraObject.metadata.citations}"
-																	varStatus="loopStatus">
-										<div class="addtext"><input type="text" class="metaEdit" 
-												value="${citationEntry.citation_title}" ><input type="hidden" class="metaEdit" 
-												value="${citationEntry.citation_at}" >
-												<button class="redroundbutton" id="delete_btn"><img src="resources/images/Close_Icon.png" width="12px"></div>
-										</c:forEach>
+									<c:forEach var="citationEntry" items="${fedoraObject.metadata.citations}"
+varStatus="loopStatus">
+       <div class="addtext"><sf:input type="text" class="metaEdit" id="citation${loopStatus.index}" value="${citationEntry.citation_title}" path="metadata.citations[${loopStatus.index}].citation_title" />
+              <sf:input type="hidden" id="citation${loopStatus.index}_link" class="metaEdit" path="metadata.citations[${loopStatus.index}].citation_at" value="${citationEntry.citation_at}" />
+              <sf:input type="hidden" path="metadata.citations[${loopStatus.index}].citation_id" value="${citationEntry.citation_id}" />
+              <button class="redroundbutton delete_btn" type="button"><img src="resources/images/Close_Icon.png" width="12px"></button></div>
+</c:forEach>
+ 
+									
+ 									
+ 									
  										</div>
 										<input type="text" class="metaEdit" id="citation_data"
 										 placeholder="Click here to add citations.       " />

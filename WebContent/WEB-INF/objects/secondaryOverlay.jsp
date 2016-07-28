@@ -41,7 +41,7 @@
 								</div>
 								<div>
 									<h4>HYPERLINK</h4>
-									<button class="inline edit" id="preview_btn">PREVIEW</button>
+									<button class="inline edit" type="button" id="preview_btn">PREVIEW</button>
 
 									<div class="addtext">
 										<input class="textbox" name="citation_link" id="citation_link"
