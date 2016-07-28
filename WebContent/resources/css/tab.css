@@ -318,7 +318,7 @@ select{
   margin:2px 0;
   font-size: 14px;
   color:#666666;
-  font-weight:300;
+  font-weight:400;
     font-family: 'Open Sans', sans-serif;
   
 }
@@ -385,7 +385,7 @@ option {
     resize:none;
    color:#666666;
    font-size:14px;
-   font-weight:300;
+   font-weight:400;
    margin-top:40px;
 }
 #payloadTextArea-v, #outputTextArea-v, #inputTextArea-v, #inputTextArea-clone  {
@@ -396,7 +396,7 @@ option {
    resize:none;
    color:#666666;
    font-size:14px;
-   font-weight:300;
+   font-weight:400;
    	border:none;
    	   margin-top:40px;
 }

@@ -149,9 +149,9 @@ $(document)
 
 					};
 					
-/*					function autoresize() {
-						var eid= $(this).Attr("id");
-						console.log(eid);
+/*					function autoresize(element) {
+						var eid= $(this).attr("id");
+						console.log("autoresize"+eid);
 					    $(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
 					    $(this).style.height = ($(this).scrollHeight+10) + 'px';    //Set new height
 					}
@@ -161,9 +161,9 @@ $(document)
 
 //					$("#payloadTextArea-v").css("height", sh + 'px');   
 
-						var h = $("#inputTextArea-clone").height();
+/*						var h = $("#inputTextArea-clone").height();
 						console.log("Height:"+h);
-						$("#inputTextArea-v").css("height", h + 'px');  
+						$("#inputTextArea-v").css("height", h + 'px');  */
 					
 /*					var next = 1;
 					$(".add-more1")
@@ -266,18 +266,8 @@ $(document)
 							var urllink=$("#citation_link").val();
 							console.log(urllink);
 							$("#citation_detail").attr('src',urllink);
-		/*					var myWindow = window.open(urllink, "myWindow", "width=400,height=700");   // Opens a new window
-							myWindow.focus();*/
-		/*					var resp =myWindow.confirm("Is the displayed link correct?");
-							if(resp){
-								console.log("citation added.");
-								// Code to add citation
-							}else{
-								console.log("citation added.");
-								// Go back to citation overlay
-							}*/
-							//myWindow.close();
-							
+							return false;
+					
 						});
 						
 						function addCitationEntry(cTitle,urllink){
