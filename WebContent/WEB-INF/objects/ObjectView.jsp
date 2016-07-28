@@ -499,18 +499,18 @@
 												value="${citationEntry.citation_title}" ><input type="hidden" class="metaEdit" 
 												value="${citationEntry.citation_at}" ></div>
 										</c:forEach>
-										<input type="text" class="metaEdit" id="citation_data_v"
-										disabled value="       " />
+										<!-- <input type="text" class="metaEdit" id="citation_data_v"
+										disabled value="       " /> -->
 								</div>
 								
-									<div class="addtext">
+									<%-- <div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_LICENSE" />
 									</h4>
 									
 									<input type="text" class="metaEdit" id="license_data_v"
 										disabled value="--------" />
-								</div>
+								</div> --%>
 
 
 								<input type="hidden" path="URI" value="${fedoraObject.URI}" />
