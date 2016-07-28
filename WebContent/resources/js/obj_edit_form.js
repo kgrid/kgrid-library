@@ -149,9 +149,9 @@ $(document)
 
 					};
 					
-/*					function autoresize() {
-						var eid= $(this).Attr("id");
-						console.log(eid);
+/*					function autoresize(element) {
+						var eid= $(this).attr("id");
+						console.log("autoresize"+eid);
 					    $(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
 					    $(this).style.height = ($(this).scrollHeight+10) + 'px';    //Set new height
 					}
@@ -161,9 +161,9 @@ $(document)
 
 //					$("#payloadTextArea-v").css("height", sh + 'px');   
 
-						var h = $("#inputTextArea-clone").height();
+/*						var h = $("#inputTextArea-clone").height();
 						console.log("Height:"+h);
-						$("#inputTextArea-v").css("height", h + 'px');  
+						$("#inputTextArea-v").css("height", h + 'px');  */
 					
 /*					var next = 1;
 					$(".add-more1")
@@ -207,10 +207,11 @@ $(document)
 				
 				
 */
-						$("#delete_btn").click(function(e){
-	     					var tgt =e.target;
+						$(".delete_btn").click(function(e){
+							var tgt =e.target;
 	     					console.log(tgt);
 	     					$(this).parent().remove();
+	     					return false;
 	     				});
 						
 						$("#citation_data").focus(function(e){
@@ -220,11 +221,11 @@ $(document)
 						});
 						
 					
-						$(".entryArea .addtext")
+						$(".entryArea input[id^='citation']")
 							.focus(function(e){
 								var idx = $(this).attr("id");
 								var ctitle = $("#"+idx).val();
-								var clink = $(this).val();
+								var clink = $("#"+idx+"_link").val();
 							console.log("Citation field in focus..."+idx);
 							initCitationText('citation',idx,ctitle,clink);
 							overlaySlide('citation',true);
@@ -265,36 +266,28 @@ $(document)
 							var urllink=$("#citation_link").val();
 							console.log(urllink);
 							$("#citation_detail").attr('src',urllink);
-		/*					var myWindow = window.open(urllink, "myWindow", "width=400,height=700");   // Opens a new window
-							myWindow.focus();*/
-		/*					var resp =myWindow.confirm("Is the displayed link correct?");
-							if(resp){
-								console.log("citation added.");
-								// Code to add citation
-							}else{
-								console.log("citation added.");
-								// Go back to citation overlay
-							}*/
-							//myWindow.close();
-							
+							return false;
+					
 						});
 						
 						function addCitationEntry(cTitle,urllink){
 							var idx = "citation"+citNumber;
-
+							var idxName = "metadata.citations["+citNumber+"]";
 							console.log(idx);
 							console.log(cTitle);
 							var springPath = "metadata.citations["+citNumber+"]";
 							citNumber++;
-							var inField = '<div class="addtext"><input type="text" id="'+idx+'" path="'+springPath+'.citation_title"  value="'+cTitle+'">'+'<input type="hidden" id="'+idx+'_link" path="'+springPath+'.citation_at" value="'+urllink+'">';
-		                    var delBtn ='<button class="redroundbutton" id="delete_btn"><img src="resources/images/Close_Icon.png" width="12px">';
+							var inField = '<div class="addtext"><input type="text" id="'+idx+'" name="'+idxName+'.citation_title" path="'+springPath+'.citation_title"  value="'+cTitle+'">';
+							var inField2 ='<input type="hidden" id="'+idx+'_link" name="'+idxName+'.citation_at"  path="'+springPath+'.citation_at" value="'+urllink+'">';
+		                    var delBtn ='<button class="redroundbutton delete_btn" type="button"><img src="resources/images/Close_Icon.png" width="12px"></button>';
 		                    var endTag="</div>";
-		                    var citationEntry = inField+delBtn+endTag;
+		                    var citationEntry = inField+inField2+delBtn+endTag;
 		                     $(citationEntry).appendTo(".entryArea#citation_data_entry");
-		                     $("#delete_btn").click(function(e){
-		     					var tgt =e.target;
+		                     $(".delete_btn").click(function(e){
+		                 		var tgt =e.target;
 		     					console.log(tgt);
 		     					$(this).parent().remove();
+		     					return false;
 		     				})
 							$("#"+idx).focus(function(e){
 								var idx = $(this).attr("id");
