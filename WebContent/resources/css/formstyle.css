@@ -82,7 +82,13 @@ display:inline-block;
 padding:5px 16px;
   font-size: 14px;
 margin-right: 20px;
+color:#666666;
 }
+
+fieldset h4.error{
+color:red;
+	}
+
 #first{
 display:block;
 }
@@ -102,6 +108,10 @@ input[type=password]{
   color:#666666;
 }
 
+input[type=text].error,
+input[type=password].error{
+	  border: 1px solid red;
+}
 select{
    background: transparent;
 	background-image: url("../images/dropdown_chevron.png");
@@ -185,8 +195,6 @@ border: 1px solid #e3e3e3;
 border-radius: 10px;
 color:#666666;
 }
-
-
 .display-payload, .display-input, .display-output{
 	display:none;
     min-height:50px;
@@ -252,16 +260,21 @@ input[type=button]{
   position:relative;
   width:100%;
     padding:0;
-    margin:5px 0px 15px 0px;
+    margin:5px 0px 5px 0px;
     color:#666666;
 }
 
-.addtext span{
+.addtext span:not(.error){
   position:absolute;
   right:65px;
   bottom:-20px;
   color:lightgreen;
   font-size:12px;
+}
+
+.citationField{
+	margin:5px 0px 15px 0px;	
+	height:100px;
 }
 
 .addtext .greenroundbutton{
@@ -318,6 +331,26 @@ input[type=button]{
     color: #666666;
 	font-weight: 300;
 	font-size: 16px;
+}
+
+.errorLabel{
+	position:absolute;
+  left:0px;
+  bottom:-20px;
+  color:lightgreen;
+  font-size:12px;
+	height:15px;
+}
+span[id$="error"]{
+	    display:inline-block;
+    color: red;
+    margin: 0px 0 0px 17px;
+    padding: 0;
+    text-align: left;
+    width: 350px;
+    background-image:none;
+    font-size: 12px;
+    font-style:italic;
 }
 
 #clearPayloadButton, #clearInputButton, #clearOutputButton{
