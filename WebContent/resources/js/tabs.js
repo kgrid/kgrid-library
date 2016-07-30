@@ -34,7 +34,6 @@ $(document).ready(function() {
 		var eid= $(this).attr("id");
 
 		var sh = $(this)[0].scrollHeight;
-		console.log("autoresizing "+eid+ " Height:"+sh);
 		$(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
 		$(this).css('height',sh+ 'px');    //Set new height
 	}
