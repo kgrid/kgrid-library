@@ -25,7 +25,7 @@ $(document)
 					var isMultiples = [false,false,true,true,true,true,false];
 					var numberofFields = inputLabels.length;
 					var inputField;
-					for(var i=0;i<numberofFields;i++){
+					for(var i=0;i<(numberofFields-1);i++){
 						console.log(isMultiples[i]);
 						if(i!=1){
 							inputField = createInputField(inputNames[i], inputIDs[i], inputLabels[i], maxLengths[i],placeholderTexts[i],isMultiples[i]);
