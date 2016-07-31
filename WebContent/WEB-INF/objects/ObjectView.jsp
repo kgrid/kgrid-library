@@ -33,6 +33,7 @@
 <script src="/ObjectTeller/resources/js/iconbutton.js"></script>
 <script src="/ObjectTeller/resources/js/scroll.js"></script>
 <script src="/ObjectTeller/resources/js/obj_edit_form.js"></script>
+<script src="/ObjectTeller/resources/js/jquery.validate.js"></script>
 <script>
 
 	$(document).ready(	
@@ -82,10 +83,7 @@
 					}
 				}				
 				
-				
-				
-				
-				$("#editButton").click(function() {
+			$("#editButton").click(function() {
 					console.log($(this).attr("id"));
 					var buttonText = $("#editButton").text();
 					console.log(buttonText);
@@ -230,34 +228,24 @@
 	    	overlayPane.animate({'left':'100%'},1000,function(){
 	            $('#'+overlayID).fadeOut('fast');
 	        });
+		    $("span.error").remove();
+		    $(".error").removeClass("error");
 	    }
 		//$('#'+overlayID+" input").val("");
 	    document.body.classList.toggle('noscroll', open);
+
 		if(overlayID=="addObject"){
 			resetInputText();
 		}
 		if(overlayID=="libraryuser"){
 			resetUserInfoText();
 		}
+		if(overlayID=="addCitationEntry"){
+			resetCitationText();
+		}
+	}
+	
 
-	}
-	
-	function resetCitationText(){
-		$( "#citation_title" ).val( "" );
-		$( "#citation_link" ).val( "" );
-		$("#citation_detail").attr("src","");
-		$("#citation_idx").val("");
-		$("#addCitation").val("ADD");
-	}
-	
-	function initCitationText(overlayID, cidx, ctitle, clink){
-		console.log("Citation Index:"+cidx+" Title:"+ctitle);
-		$( "#citation_title" ).val( ctitle );
-		$( "#citation_link" ).val( clink );
-		$("#citation_detail").attr("src","");
-		$("#addCitation").val("UPDATE");
-		$("#citation_idx").val(cidx);
-	}
 	
 	function readMultipleFiles(evt) {
 
@@ -385,7 +373,7 @@
 			</div>
 
 		</div>
-		<div class="userbutton accessLevelOne">
+<%-- 		<div class="userbutton accessLevelTwo" display="none">
 			<ul id="bannericonrow">
 				<li>
 					<div style="position: relative">
@@ -411,7 +399,7 @@
 			<div class="floatingInfo" id="objIcons">
 				<span></span>
 			</div>
-		</div>
+		</div> --%>
 	</div>
 
 	<div class="header">
