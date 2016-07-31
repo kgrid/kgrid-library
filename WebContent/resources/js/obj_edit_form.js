@@ -25,19 +25,6 @@ $(document)
 					var isMultiples = [false,false,true,true,true,true,false];
 					var numberofFields = inputLabels.length;
 					var inputField;
-/*					for(var i=0;i<numberofFields;i++){
-						console.log(isMultiples[i]);
-						if(i!=1){
-							inputField = createViewField(inputNames[i], inputIDs[i], inputLabels[i], maxLengths[i],values[i],isMultiples[i]);
-
-						}else{
-							inputField = createViewTextarea(inputNames[i], inputIDs[i], inputLabels[i], maxLengths[i],values[i],isMultiples[i]);
-						}
-						$(inputField).appendTo("#metadata_view");
-					}
-					*/
-					
-					
 					
 					
 					var count = 0; // To Count Blank Fields
@@ -121,10 +108,29 @@ $(document)
 					$('.addtext>input').keyup(updateCount);
 					$('.addtext>input').keydown(updateCount);
 					$('.addtext>input').each(updateCount);
+					$('.addtext>input').change(updateCount);
 					$('#description_data').keyup(updateCount);
 					$('#description_data').keydown(updateCount);
 					$("[id$='_data']").each(updateCount);
-
+					
+					function resetCitationText(){
+						$('.addtext>input').each(updateCount);
+						$( "#citation_title" ).val( "" );
+						$( "#citation_link" ).val( "" );
+						$("#citation_detail").attr("src","");
+						$("#citation_idx").val("");
+						$("#addCitation").val("ADD");
+					}
+					
+					function initCitationText(overlayID, cidx, ctitle, clink){
+						console.log("Citation Index:"+cidx+" Title:"+ctitle);
+						$( "#citation_title" ).val( ctitle );
+						$( "#citation_link" ).val( clink );
+						$("#citation_detail").attr("src","");
+						$("#addCitation").val("UPDATE");
+						$("#citation_idx").val(cidx);
+						$('.addtext>input').each(updateCount);
+					}
 					function updateCount() {
 						var cs = $(this).val().length;
 						var elementid = this.id;
@@ -149,73 +155,13 @@ $(document)
 
 					};
 					
-/*					function autoresize(element) {
-						var eid= $(this).attr("id");
-						console.log("autoresize"+eid);
-					    $(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
-					    $(this).style.height = ($(this).scrollHeight+10) + 'px';    //Set new height
-					}
-					
-					$('.autosize').each(autoresize());*/
-//					$("#payloadTextArea-v").css("height","0px"); 
-
-//					$("#payloadTextArea-v").css("height", sh + 'px');   
-
-/*						var h = $("#inputTextArea-clone").height();
-						console.log("Height:"+h);
-						$("#inputTextArea-v").css("height", h + 'px');  */
-					
-/*					var next = 1;
-					$(".add-more1")
-							.click(
-									function(e) {
-										e.preventDefault();
-										var addto = "#field" + next;
-										var addRemove = "#field" + (next);
-										next = next + 1;
-										var newIn = '<input type="text" name="keyword_data'
-												+ next
-												+ '" id="keyword_data'
-												+ next
-												+ '" placeholder="A list of up to 7 keywords may be entered for any object." maxlength=140><span>0/140</span>';
-										var newInput = $(newIn);
-										var removeBtn = '<button id="remove'
-												+ (next - 1)
-												+ '" class="greenbutton remove-me" style="background-color:orange;" >-</button></div><divclass="addtext">';
-										var removeButton = $(removeBtn);
-										$(addto).after(newInput);
-										$(addRemove).after(removeButton);
-										$("#keyword_data" + next).attr(
-												'data-source',
-												$(addto).attr('data-source'));
-										$("#count").val(next);
-
-										$('.remove-me')
-												.click(
-														function(e) {
-															e.preventDefault();
-															var fieldNum = this.id
-																	.charAt(this.id.length - 1);
-															var fieldID = "#keyword_data"
-																	+ fieldNum;
-															$(this).remove();
-															$(fieldID).remove();
-														});
-									});
-
-				});
-				
-				
-*/
 						$(".delete_btn").click(function(e){
 							var tgt =e.target;
-	     					console.log(tgt);
 	     					$(this).parent().remove();
 	     					return false;
 	     				});
 						
 						$("#citation_data").focus(function(e){
-							console.log("New citation field in focus...");
 							resetCitationText();
 							overlaySlide('citation',true);
 						});
@@ -226,35 +172,36 @@ $(document)
 								var idx = $(this).attr("id");
 								var ctitle = $("#"+idx).val();
 								var clink = $("#"+idx+"_link").val();
-							console.log("Citation field in focus..."+idx);
 							initCitationText('citation',idx,ctitle,clink);
 							overlaySlide('citation',true);
 						});
+
 						$("#license_data").focus(function(e){
-							console.log("New license field in focus...");
 							overlaySlide('license',true);
 						});
 
 						$("#addCitation").click(function(){
 							// Code to add citation to metadata form
+							var validForm=validator.form();
+							console.log("validation result: " );
+							if(validForm){
+								console.log("validation result: " +validForm);
 							var cTitle=$("#citation_title").val();
 							var urllink=$("#citation_link").val();
 							var curCitation = $("#citation_idx").val();
 							var buttonText = $(this).val();
-							console.log(buttonText+" CC: "+curCitation+ " "+cTitle);
 							if (buttonText == "ADD") {
-								console.log("Adding CC: "+curCitation+ " "+cTitle);
-
 								addCitationEntry(cTitle,urllink);
 							}else{
-								console.log("Updating  CC: "+curCitation+ " "+cTitle);
-
 								$("#"+curCitation).val(cTitle);
 								$("#"+curCitation).text(cTitle);
-								
 								$("#"+curCitation+"_link").val(urllink);
 							}
 							overlaySlide("citation", false);
+							}else{
+								console.log("validation result: " +validForm);
+
+							}
 						});
 						$("#addLicense").click(function(){
 							// Code to add citation to metadata form
@@ -264,10 +211,8 @@ $(document)
 						});
 						$("#preview_btn").click(function(e){
 							var urllink=$("#citation_link").val();
-							console.log(urllink);
 							$("#citation_detail").attr('src',urllink);
 							return false;
-					
 						});
 						
 						function addCitationEntry(cTitle,urllink){
@@ -332,5 +277,60 @@ $(document)
 						}
 			
 						
-						
+						var validator = $("#citation_f").validate({ 
+							 errorPlacement: function(error, element) { // Append error within linked label
+								 $( element ).closest( "form" ) .find( "label[for='" + element.attr("id" ) + "']" ) .after( error );
+								 }, 
+							errorElement: "span",
+							debug:true,
+							success:function(form) {
+								if(form.children(".error").length==0){
+							    $("#addCitation").removeAttr('disabled');
+							    $("#addCitation").css("background-color","#39b45a");
+								}
+							  },
+							//onkeyup:true,
+							//onfocusout: true,
+							highlight: function(element, errorClass, validClass) {
+							    $(element).addClass(errorClass).removeClass(validClass);
+							    $(element.form).find("h4[title=" + element.id + "]")
+							      .addClass(errorClass);
+							    $(element.form).find("input[id=" + element.id + "]")
+							      .addClass(errorClass);
+							  },
+							  unhighlight: function(element, errorClass, validClass) {
+							    $(element).removeClass(errorClass).addClass(validClass);
+							    $(element.form).find("h4[title=" + element.id + "]")
+							      .removeClass(errorClass);
+							    $(element.form).find("input[id=" + element.id + "]")
+							      .removeClass(errorClass);
+							  },
+							rules: { 
+								citation_title: {
+									required:true },
+								citation_link:  {
+									required:true,
+									url:true
+								}
+							},
+/*							submitHandler: function(form) {
+							    $("#addCitation").removeAttr('disabled');
+							    $("#addCitation").css("background-color","#39b45a");
+							  },
+							invalidHandler: function(event, validator) {
+								$("#addCitation").attr('disabled','disabled');
+								 $("#addCitation").css("background-color","#e6e6e6");
+							  },*/
+						   	messages: { 
+						   		citation_title: { 
+						   			required:"Please enter a title for this citation."}, 
+						   		citation_link: {
+						   			required:"A valid URL link for your citation is required.",
+						   			url:"Please enter a valid URL link for your citation."}
+						   		}
+							});
+/*						 
+						$("#addCitation").attr('disabled','disabled');
+						$("#addCitation").css("background-color", "#e6e6e6");
+						validator.form();*/
 				});
