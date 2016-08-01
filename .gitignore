@@ -3,7 +3,7 @@
 .gitignore
 .idea/
 DB_create.sql
-DLOL1.iml
+object-teller.iml
 WebContent/WEB-INF/lib/javax.websocket-api-1.1.jar
 build/
 dist/
