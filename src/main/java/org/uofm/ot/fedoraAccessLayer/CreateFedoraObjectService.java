@@ -1,15 +1,13 @@
 package org.uofm.ot.fedoraAccessLayer;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.jena.tdb.transaction.Transaction;
 import org.apache.log4j.Logger;
 import org.uofm.ot.dao.ObjectIDDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 import org.uofm.ot.model.ObjectId;
 import org.uofm.ot.model.User;
+
+import java.util.Date;
 
 public class CreateFedoraObjectService extends FedoraObjectService {
 
