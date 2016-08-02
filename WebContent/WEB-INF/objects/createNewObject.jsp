@@ -171,7 +171,7 @@
 	<div class="board" id="addObj">
 		<div class="entryform" id="entry_form">
 			<h3><spring:message code="ADD_OBJECT_TITLE"/></h3>
-			<div style="height:98%;">
+			<div>
 				<sf:form name="addObj_f" class="Add-content" id="addObj_f"
 					method="POST" modelAttribute="fedoraObject" action="addNewObject">
 					<div id="barcontainer">

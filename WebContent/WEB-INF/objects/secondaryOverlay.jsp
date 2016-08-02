@@ -20,13 +20,12 @@
 					<img src="<c:url value="/resources/images/Close_Icon.png" />">
 
 				</button>
-				<input type="hidden" id="citation_idx" >
+				<input type="hidden" id="citation_idx">
 			</div>
 			<div class="board" id="addCitationEntry">
 				<div class="entryform" id="entry_form">
 					<h3>Manage Citation</h3>
-
-					<div style="height: 80%;">
+					<div>
 						<form name="addObj_f" class="Add-content" id="citation_f"
 							method="post">
 							<fieldset class="fieldcontainer" id="first">
@@ -38,8 +37,8 @@
 											placeholder="Enter Article Title, PMID or DOI "
 											maxlength="140"><span>140/140</span>
 									</div>
-											<label class="errorLabel" for="citation_title"> </label>
-									
+									<label class="errorLabel" for="citation_title"> </label>
+
 								</div>
 								<div class="citationField">
 									<h4 title="citation_link">HYPERLINK</h4>
@@ -51,16 +50,14 @@
 											placeholder="Please provide the URL for the article "
 											maxlength="140"><span>140/140</span>
 									</div>
-											<label class="errorLabel" for="citation_link"> </label>
-									
+									<label class="errorLabel" for="citation_link"> </label>
+
 								</div>
 								<div>
 									<h4>CITATION DETAIL</h4>
-
 									<div class="addtext">
 										<iframe id="citation_detail"></iframe>
 									</div>
-
 								</div>
 								<input class="done_btn" name="done" id="addCitation"
 									type="button" value="ADD">
@@ -68,11 +65,8 @@
 						</form>
 					</div>
 				</div>
-
 			</div>
 		</div>
-
-
 	</div>
 	<div id="license" class="layered_overlay">
 		<div id="license_pane" class="ol_pane">
@@ -87,14 +81,11 @@
 			<div class="board" id="selectLicense">
 				<div class="entryform" id="entry_form">
 					<h3>Add License</h3>
-
-					<div style="height: 80%;">
+					<div>
 						<form name="addObj_f" class="Add-content" id="addObj_f"
 							method="post">
 							<fieldset class="fieldcontainer" id="first">
-
 								<div class="addtext">
-
 									<h4>
 										License
 										<spring:message code="REQUIRED_TO_SELECT" />
@@ -130,11 +121,8 @@
 						</form>
 					</div>
 				</div>
-
 			</div>
 		</div>
-
-
 	</div>
 </body>
 </html>
