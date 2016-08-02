@@ -32,9 +32,9 @@ import org.springframework.http.MediaType;
 
 @RestController
 public class RestWSController {
-	
+
 	private GetFedoraObjectService getFedoraObjectService;
-	
+
 	private FusekiService fusekiService;
 
 
@@ -54,30 +54,30 @@ public class RestWSController {
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> calculateRisk(@RequestBody String content) throws ObjectTellerException {
-		
+
 		Gson gson = new Gson();
 
 		Result result = null;
 		String errormessage = null;
 		boolean objectExists = false;
-		
+
 		InputObject io= gson.fromJson(content, InputObject.class);
-		
-		
+
+
 		if(io.getObjectName() != null && io.getParams() != null && !io.getObjectName().isEmpty() && io.getParams().size() > 0){
 			objectExists= getFedoraObjectService.checkIfObjectExists(io.getObjectName());
 			if ( objectExists ) {
-				
+
 				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(io.getObjectName());
 
 				if(metadata != null){
 					errormessage = verifyInput(metadata, io);
 					if(errormessage == null){
 						String chunk = getFedoraObjectService.getObjectContent(io.getObjectName(), ChildType.PAYLOAD.getChildType());
-					
+
 						PayloadDescriptor descriptor = fusekiService.getPayloadProperties(io.getObjectName());
-						
-						
+
+
 						if( chunk != null) {
 							if( EngineType.PYTHON.toString().equalsIgnoreCase(descriptor.getEngineType())){
 								PythonAdapter adapter = new PythonAdapter();
@@ -100,7 +100,7 @@ public class RestWSController {
 		}
 
 		String json = gson.toJson(result);
-		
+
 		return new ResponseEntity<String>(json, HttpStatus.OK);
 	}
 
@@ -122,7 +122,7 @@ public class RestWSController {
 
 		if(errorMessage == null)
 			errorMessage = verifyParameters(codeMetadata.getParams(),inputObject.getParams());
-			
+
 		return errorMessage;
 	}
 
@@ -175,11 +175,34 @@ public class RestWSController {
 						error = " Parameter "+paramDescription.getName()+" should be of type FLOAT";
 						break;
 					}
+				} else {
+					if(DataType.LONG == paramDescription.getDatatype()){
+						try {
+							Long value = Long.parseLong(obj.toString());
+							if(paramDescription.getMin() != null){
+								if( value < paramDescription.getMin()){
+									error = " Parameter "+paramDescription.getName()+" should be of minimum value "+paramDescription.getMin();
+									break;
+								}
+							}
+
+							if(paramDescription.getMax() != null){
+								if(value > paramDescription.getMax()){
+									error = " Parameter "+paramDescription.getName()+" should be less than maximum allowed value "+paramDescription.getMax();
+									break;
+								}
+							}
+						} catch (NumberFormatException e){
+							e.printStackTrace();
+							error = " Parameter "+paramDescription.getName()+" should be of type LONG";
+							break;
+						}
+					} 
 				} 
 			}
 		}
 		return error;
 	}
-	
-	
+
+
 }
