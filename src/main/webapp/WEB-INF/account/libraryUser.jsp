@@ -254,7 +254,14 @@
 							});
 
 						});
+						$("#role_data").click(function(){
 
+						    if($(this).hasClass("up")){
+						    	$(this).removeClass("up");
+						    } else {
+						    	$(this).addClass("up");
+						    }
+						});
 						$("#addUserButton").click(function() {
 							addOrUpdateUser();		
 						});
@@ -415,7 +422,7 @@ $(document).keypress(function(e) {
 			<div id="content">
 				<div class="objTitle">
 					<div id="title">
-						<h3>Library Title</h3>
+						<h4>Library</h4>
 					</div>
 					<div id="admin">
 						<h4>
@@ -425,7 +432,7 @@ $(document).keypress(function(e) {
 					</div>
 				</div>
 				<div class="userMngArea">
-					<div class="leftpane" id="userInfo">
+					<div class="rightpane" id="userInfo">
 						<p class="secTitle">
 							<spring:message code="BASIC_INFO" />
 						</p>
@@ -481,7 +488,7 @@ $(document).keypress(function(e) {
 
 						</form>
 					</div>
-					<div class="userlist rightpane" id="cardPile">
+					<div class="userlist leftpane" id="cardPile">
 						<p class="secTitle">
 							<spring:message code="LIBRARY_USER" />
 						</p>
