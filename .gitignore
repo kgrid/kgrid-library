@@ -4,8 +4,7 @@
 .idea/
 DB_create.sql
 object-teller.iml
-WebContent/WEB-INF/lib/javax.websocket-api-1.1.jar
-build/
+/target/
 dist/
 out/
 buildNew
