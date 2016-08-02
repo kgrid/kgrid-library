@@ -4,12 +4,10 @@
 .idea/
 DB_create.sql
 object-teller.iml
-DLOL1.iml
-build/
+/target/
 dist/
 out/
 buildNew
 .settings
 /.classpath
 /.project
-/target/
