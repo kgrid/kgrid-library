@@ -16,9 +16,9 @@
 	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" />" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-<script src="/ObjectTeller/resources/js/info.js"></script>
+<script src="<c:url value="/resources/js/info.js"/>"></script>
 <script type="text/javascript"
-	src="/ObjectTeller/resources/js/dropdown.js"></script>
+	src="<c:url value="/resources/js/dropdown.js"/>"></script>
 <script>
 	$(document)
 			.ready(

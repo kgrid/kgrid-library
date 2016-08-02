@@ -38,7 +38,7 @@ $(document).ready(function(){
 						xhrObj.setRequestHeader("Accept", "application/json");
 					},
 					type : 'POST',
-					url : "/ObjectTeller/login",
+					url : "login",
 					data : text,
 					dataType : "json",
 

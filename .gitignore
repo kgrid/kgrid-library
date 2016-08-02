@@ -3,8 +3,8 @@
 .gitignore
 .idea/
 DB_create.sql
+object-teller.iml
 DLOL1.iml
-webapp/WEB-INF/lib/javax.websocket-api-1.1.jar
 build/
 dist/
 out/
@@ -12,3 +12,4 @@ buildNew
 .settings
 /.classpath
 /.project
+/target/

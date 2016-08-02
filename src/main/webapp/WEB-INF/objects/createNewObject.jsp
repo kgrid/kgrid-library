@@ -10,7 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<script src="/ObjectTeller/resources/js/multi_step_form.js"></script>
+<script src="<c:url value="/resources/js/multi_step_form.js"/>"></script>
 <title>Add Object</title>
 <script>
 	function readMultipleFiles(evt) {
@@ -88,7 +88,7 @@
 		metadata.description = document.getElementById("description_data").value;
 		metadata.contributors = document.getElementById("contri_data").value;
 		metadata.keywords = document.getElementById("keyword_data").value;
-		metadata.license = document.getElementById("license_data").value;
+//		metadata.license = document.getElementById("license_data").value;
 
 		var ctitle;
 		var clink;

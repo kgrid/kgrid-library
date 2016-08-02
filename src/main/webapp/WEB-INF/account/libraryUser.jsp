@@ -18,7 +18,7 @@
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript"
-	src="/ObjectTeller/resources/js/jquery-ui.js"></script>
+	src="<c:url value="/resources/js/jquery-ui.js"/>"></script>
 <script type="text/javascript">
 	var newUserId = 0;
 	var users;
