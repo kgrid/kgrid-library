@@ -35,9 +35,9 @@
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript"
-	src="/ObjectTeller/resources/js/dropdown.js"></script>
-<script src="/ObjectTeller/resources/js/scroll.js"></script>
-<script src="/ObjectTeller/resources/js/iconbutton.js"></script>
+	src="<c:url value="/resources/js/dropdown.js"/>"></script>
+<script src="<c:url value="/resources/js/scroll.js"/>"></script>
+<script src="<c:url value="/resources/js/iconbutton.js"/>"></script>
 
 <script>
 	

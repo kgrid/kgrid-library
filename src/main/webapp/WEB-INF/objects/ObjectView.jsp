@@ -30,10 +30,10 @@
 	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" /> " />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-<script src="/ObjectTeller/resources/js/iconbutton.js"></script>
-<script src="/ObjectTeller/resources/js/scroll.js"></script>
-<script src="/ObjectTeller/resources/js/obj_edit_form.js"></script>
-<script src="/ObjectTeller/resources/js/jquery.validate.js"></script>
+<script src="<c:url value="/resources/js/iconbutton.js"/>"></script>
+<script src="<c:url value="/resources/js/scroll.js"/>"></script>
+<script src="<c:url value="/resources/js/obj_edit_form.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery.validate.js"/>"></script>
 <script>
 
 	$(document).ready(	
@@ -287,10 +287,10 @@
 	
 </script>
 <script type="text/javascript"
-	src="/ObjectTeller/resources/js/dropdown.js"></script>
-<script src="/ObjectTeller/resources/js/scroll.js"></script>
-<script src="/ObjectTeller/resources/js/tabs.js"></script>
-<script src="/ObjectTeller/resources/js/custom-file-input.js"></script>
+	src="<c:url value="/resources/js/dropdown.js"/>"></script>
+<script src="<c:url value="/resources/js/scroll.js"/>"></script>
+<script src="<c:url value="/resources/js/tabs.js"/>"></script>
+<script src="<c:url value="/resources/js/custom-file-input.js"/>"></script>
 <title><c:out value="${fedoraObject.metadata.title}" /></title>
 </head>
 <body>
@@ -310,7 +310,7 @@
 		<div id="goback">
 			<div id="leadarrow"></div>
 
-			<a href="/ObjectTeller/home" id="backButton">
+			<a href="<c:url value="/home"/>" id="backButton">
 				<spring:message code="BACK_RESULTS" />
 			</a>
 		</div>

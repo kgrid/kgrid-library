@@ -177,7 +177,7 @@ $(document)
 						var entryArea = "<div class='entryArea' id='"+inputName+"_entry'></div>";
 						var inField = '<div class="addtext"><input type="text" name="'+inputName+'" id="'+inputID+'" placeholder="'+placeholderText+'" maxlength='+maxLength+'>';
                         var charCounter = "<span>"+maxLength+"/"+maxLength+"</span>";
-                        var addBtn ='<button class="greenroundbutton"><img src="/ObjectTeller/resources/images/Plus_Icon.png" width="12px">';
+                        var addBtn ='<button class="greenroundbutton"><img src=<c:url value="/resources/images/Plus_Icon.png"/> width="12px">';
                         var endTag="</div></div>";
                         if(isMultiple){
                         	return beginTag+inLabel+entryArea+inField+charCounter+endTag;

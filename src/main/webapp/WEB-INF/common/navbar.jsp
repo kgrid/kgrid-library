@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script type="text/javascript" src="/ObjectTeller/resources/js/nav.js"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/nav.js"/>"></script>
 </head>
 <body>
 		<div id="top-bar-out">
