@@ -88,7 +88,7 @@
 		metadata.description = document.getElementById("description_data").value;
 		metadata.contributors = document.getElementById("contri_data").value;
 		metadata.keywords = document.getElementById("keyword_data").value;
-		metadata.license = document.getElementById("license_data").value;
+//		metadata.license = document.getElementById("license_data").value;
 
 		var ctitle;
 		var clink;
