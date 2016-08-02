@@ -25,8 +25,7 @@
 			<div class="board" id="addCitationEntry">
 				<div class="entryform" id="entry_form">
 					<h3>Manage Citation</h3>
-
-					<div style="height: 80%;">
+					<div>
 						<form name="addObj_f" class="Add-content" id="citation_f"
 							method="post">
 							<fieldset class="fieldcontainer" id="first">
@@ -87,8 +86,7 @@
 			<div class="board" id="selectLicense">
 				<div class="entryform" id="entry_form">
 					<h3>Add License</h3>
-
-					<div style="height: 80%;">
+					<div>
 						<form name="addObj_f" class="Add-content" id="addObj_f"
 							method="post">
 							<fieldset class="fieldcontainer" id="first">
