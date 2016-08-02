@@ -34,7 +34,7 @@ border-bottom: 1px solid #e6e6e6;
 
 div[id$="_fields"] {
 	overflow:auto;
-	height:95%;
+	height:88%;
 }
 
 .fieldcontainer{
@@ -98,7 +98,7 @@ display:block;
 
 input[type=text],
 input[type=password]{
-  width:878px;
+  width:820px;
   height: 38px;
   padding: 0px 16px;
   border: 1px solid #e6e6e6;
@@ -161,13 +161,13 @@ option:hover
   font-size: 14px;
     height:80px;
         min-height:80px;
-        width:878px;
+        width:820px;
 }
 
 #citation_detail, #license_detail {
 	    height:320px;
         min-height:320px;
-		width:878px;
+		width:820px;
 	}
 .board h3{
     color:#666666;
@@ -289,7 +289,7 @@ input[type=button]{
 .addtext .redroundbutton{
     position:absolute;
     bottom:-11px;
-    left:896px;
+    left:836px;
     width:28px;
     height:28px;
     padding:0px;
