@@ -28,7 +28,7 @@
 }
 
 form#libsetting{
-	padding:20px;
+	padding:0px;
 	height:80%;
 }
 
@@ -38,8 +38,9 @@ table#libsettable{
     border-collapse:separate;
     border-spacing:6px 20px;
     margin:0 auto; 
-    padding:10px;
+    padding:0px;
     display:block;
+    color:#666666;
 }
 .settingcontent table td{
    font-size:21px;
@@ -69,7 +70,7 @@ input[type=text], select {
 }
 
 input[type=text].libset, input[type=password].libset{
- width:260px;	
+ width:250px;	
  height:50px;
  
 }

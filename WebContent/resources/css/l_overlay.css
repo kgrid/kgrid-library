@@ -2,30 +2,19 @@
    position:fixed;
    top:0;
    left:0;
-   width:100%;
-   height:100%;
+   right:0;
+   bottom:0;
+/*    width:100%;
+   height:100%; */
    background-color:rgba(102, 102, 102, 0.5);
    z-index:900;
-   color:dimgrey;
+/*    color:dimgrey; */
    font-family:'Open Sans', sans-serif;
    overflow: auto;
    display:none;
 }
-.layered_overlay2 {
-   position:fixed;
-   top:0;
-   left:0;
-   width:100%;
-   height:100%;
-   background-color:rgba(102, 102, 102, 0.5);
-   z-index:999;
-   color:dimgrey;
-   font-family:'Open Sans', sans-serif;
-   overflow: auto;
-   display:none;
-}
-.noscroll { overflow: hidden; }
 
+.noscroll { overflow: hidden; }
 
 [aria-hidden="true"] { display: none; }
 [aria-hidden="false"] { display: block; }
@@ -33,15 +22,8 @@
 .ol_pane{
 	position:absolute;
 	left:100%;
-	width:60%;
-	background-color:#fff;
-	height:100%;
-}
-
-.layered_overlay2 .ol_pane{
-	position:absolute;
-	left:100%;
-	width:67%;
+	width:1100px;
+/* 	width:60%; */
 	background-color:#fff;
 	height:100%;
 }
@@ -51,7 +33,7 @@
 	position:absolute;
 	height: 100%;
 	width:60px;
-		text-align:center;
+	text-align:center;
 	border-right: 1px solid #e6e6e6;
 }
 
@@ -85,40 +67,6 @@ transform: rotate(270deg);
 	
 }
 
-/* .slideLeft{
-	animation-name: slideLeft;
-	-webkit-animation-name: slideLeft;	
-
-	animation-duration: 1s;	
-	-webkit-animation-duration: 1s;
-
-	animation-timing-function: ease-in-out;	
-	-webkit-animation-timing-function: ease-in-out;		
-
-	visibility: visible !important;	
-}
-
-@keyframes slideLeft {
-	0% {
-		transform: translateX(120%);
-	}
-
-	100% {
-		transform: translateX(0%);
-	}
-}
-
-@-webkit-keyframes slideLeft {
-	0% {
-		-webkit-transform: translateX(150%);
-	}
-
-	100% {
-		-webkit-transform: translateX(0%);
-	}
-}
- */
-
 .board{
   position:absolute;
   background: white;
@@ -127,16 +75,16 @@ transform: rotate(270deg);
     top: 0px;
   left: 60px;
 
-    padding: 0px 40px;
+    padding: 0px 0px;
     border-left: 1px solid #e6e6e6;
 }
 
 
 
 .entryform{
-	height:80%;
-	padding:20px;
-	margin-top:60px;
+/* 	height:80%; */
+	padding:50px;
+	margin-top:0px;
 }
 
 
@@ -211,9 +159,9 @@ select{
 @media (max-height: 960px){
 	
 .entryform{
-	height:80%;
-	padding:10px;
-	margin-top:30px;
+	/* height:80%; */
+	padding:30px 50px;
+	margin-top:0px;
 }
 	
 	
