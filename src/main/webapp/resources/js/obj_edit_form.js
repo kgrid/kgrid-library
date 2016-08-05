@@ -142,12 +142,7 @@ $(document)
 						var s = csl.toString().concat("/" + maxl_s);
 						var cs_color = "#39b45a";
 						if (csl < 10) {
-							cs_color = "yellow";
-							if (csl < 5) {
-								cs_color = "orange";
-								if (csl <= 0)
-									cs_color = "red";
-							}
+							cs_color = "red";
 						}
 						$(this).parent().children("span").text(s);
 						$(this).parent().children("span")

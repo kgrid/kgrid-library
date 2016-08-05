@@ -20,8 +20,13 @@ $(document).ready(function () {
     		var iconID = iconHovered.attr("id");
     		var right_offset=p.left+30;
     	   var idx=0;
+		   iconHovered.find("img.hover-in").css("display","block");
+		   iconHovered.find("img.hover-out").css("display","none");
      	   switch(iconID){
     	   case "userlink":
+    		   iconHovered.find("img.hover-in").css("display","block");
+    		   iconHovered.find("img.hover-out").css("display","none");
+
     		   idx=0;
     		   break;
     	   case "settinglink":
@@ -48,6 +53,18 @@ $(document).ready(function () {
     	
     	},
        function(){
+    		var iconHovered=$(this);
+    		var iconID = iconHovered.attr("id");
+    		var idx=0;
+    		   iconHovered.find("img.hover-out").css("display","block");
+    		   iconHovered.find("img.hover-in").css("display","none");
+
+     	   switch(iconID){
+    	   case "userlink":
+    		   iconHovered.find("img.hover-out").css("display","block");
+    		   iconHovered.find("img.hover-in").css("display","none");
+    		   break;
+     	   }
     	   console.log("Hover out");
        	   $(".floatingInfo").css("display","none");
        }

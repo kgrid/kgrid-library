@@ -159,12 +159,7 @@ $(document)
 						var s = csl.toString().concat("/" + maxl_s);
 						var cs_color = "lightgreen";
 						if (csl < 10) {
-							cs_color = "yellow";
-							if (csl < 5) {
-								cs_color = "orange";
-								if (csl <= 0)
-									cs_color = "red";
-							}
+							cs_color = "red";
 						}
 						$(this).parent().children("span").text(s);
 						$(this).parent().children("span")
@@ -177,7 +172,7 @@ $(document)
 						var entryArea = "<div class='entryArea' id='"+inputName+"_entry'></div>";
 						var inField = '<div class="addtext"><input type="text" name="'+inputName+'" id="'+inputID+'" placeholder="'+placeholderText+'" maxlength='+maxLength+'>';
                         var charCounter = "<span>"+maxLength+"/"+maxLength+"</span>";
-                        var addBtn ='<button class="greenroundbutton"><img src=<c:url value="/resources/images/Plus_Icon.png"/> width="12px">';
+                        var addBtn ='<button class="greenroundbutton"><img src="/ObjectTeller/resources/images/Plus_Icon.png" width="12px">';
                         var endTag="</div></div>";
                         if(isMultiple){
                         	return beginTag+inLabel+entryArea+inField+charCounter+endTag;

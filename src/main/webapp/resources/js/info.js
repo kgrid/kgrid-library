@@ -38,6 +38,7 @@
 						}
 						
 						function setActiveNavItem(id){
+							$(".middleout").removeClass("middelout");
 							$(id).addClass("active");
-							$(id).children().addClass("whiteBar");
+							$(id).children().addClass("middleout");
 						}

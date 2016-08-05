@@ -3,16 +3,18 @@ $(document).ready(function() {
 		if (!$(this).hasClass("active")) {
 			var tabNum = $(this).index();
 			var nthChild = tabNum + 1;
-			$("ul#tabs li.whiteBar").removeClass("whiteBar");
 			$("ul#tabs li.active").removeClass("active");
+			$("ul#tabs li.middleout").removeClass("middleout");
 			$(this).addClass("active");
+			$(this).addClass("middleout");
+			
 			$("ul#tab li.active").removeClass("active");
 			$("ul#tab li:nth-child(" + nthChild + ")").addClass("active");
 		}
 		$('.autosize').each(autoresize);
 	});
-	$("ul#tabs li.active").addClass("greenBar");
-	$("ul#tabs li").hover(
+	$("ul#tabs li.active").addClass("middleout");
+/*	$("ul#tabs li").hover(
 		function() {
 			console.log("Hovering list");
 			if (!$(this).hasClass("active")) {
@@ -28,7 +30,7 @@ $(document).ready(function() {
 			$("ul#tabs li.active").addClass("greenBar");
 		}
 	
-	);
+	);*/
 	
 	function autoresize() {
 		var eid= $(this).attr("id");
