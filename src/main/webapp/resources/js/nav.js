@@ -3,15 +3,15 @@ $(document).ready(function() {
 		if (!$(this).hasClass("active")) {
 			var tabNum = $(this).index();
 			var nthChild = tabNum + 1;
-			$("#nav ul li a.greenBar").removeClass("greenBar");
+			$("#nav ul li a.middleout").removeClass("middleout");
 			$("#nav ul li.active").removeClass("active");
 			$(this).addClass("active");
 		}
-		$(this).children().addClass("whiteBar");
+		$(this).children().addClass("middleout");
 
 	});
-	$("#nav ul li.active a").addClass("whiteBar");
-	$("#nav ul li").hover(
+	$("#nav ul li.active a").addClass("middleout");
+/*	$("#nav ul li").hover(
 			
 		function() {
 
@@ -32,6 +32,6 @@ $(document).ready(function() {
 			$(this).children().removeClass("whiteBar");
 		}}
 	
-	);
+	);*/
  	
 })

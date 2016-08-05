@@ -84,7 +84,7 @@ font-size:35px;
   margin: 0 auto;
   line-height: 2em;
   padding-left:21px;
-  padding-top:22px;
+  padding-top:26px;
    background:transparent;
 }
 #homebanner >h1 small {
@@ -132,7 +132,7 @@ h5 {
       position: absolute;
   width:20%;
         height:40px;
- bottom:35px;
+ bottom:31px;
  right:24px;
  	overflow:visible;
  

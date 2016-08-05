@@ -53,6 +53,17 @@
 				$("ul#tabs li:nth-child(" + nthChild + ")").addClass("active");
 				$("ul#tab li:nth-child(" + nthChild + ")").addClass("active");
 
+				var kotitle = $("#ko-title").find("small").text();
+				console.log(kotitle);
+				var title_length=kotitle.length;
+				console.log(title_length);
+				if (title_length>94) {
+					$("#ko-title").find("small").css("font-size","24px");
+				}else{
+					$("#ko-title").find("small").css("font-size","28px");
+					
+				}
+				
 				var accessLevel=1;
 				
 				if( userObj  == "null" ){
@@ -204,12 +215,14 @@
 <script type="text/javascript">
 
 	function toggleObject(uri, param) {
+		$(this).find("span").addClass("middleout");
+		$(".pri-pub .current-tab").find("span").removeClass("middleout");
+
 		$.ajax({
 			type : 'GET',
 			url : "publishObject." + uri + "/" + param,
 
 			success : function(response) {
-
 				location.reload();
 			}
 		});
@@ -218,18 +231,18 @@
 
 	function overlayHeightResize(overlayID, window_height){
 		var overlayPane =$('#'+overlayID).find("> .ol_pane");
-
+		
 		var entryform = overlayPane.find(".entryform");
 		var ol_pane_height =window_height;
 		var calcHeight = (window_height-120);
 		entryform.css("height",calcHeight+"px");
-
+		
 		var addContent = entryform.find(".Add-content");
 		addContent.css("height",(calcHeight-70)+"px");
 		return ol_pane_height;
 	}
-
-
+	
+	
 	function overlaySlide(overlayID, open){
 	    document.body.classList.toggle('noscroll', open);
 		var overlayPane =$('#'+overlayID).find("> .ol_pane");
@@ -237,14 +250,14 @@
 		var window_height = $(window).height();
 		var overlayPane_width=overlayPane.width();
 		var overlayPane_height=	overlayHeightResize(overlayID, window_height);
-
+	
 		console.log("Window Width="+ window_width+" Window Height="+window_height+" olPane Width="+overlayPane_width+" olPane Height="+overlayPane_height);
-
+				
 		var overlayPane_left = window_width-overlayPane_width;
 		if(overlayPane_left<=(window_width*0.27)){
 			overlayPane_left=(window_width*0.27);
 		}
-
+		
 		if(open){
 			$('#'+overlayID).css("display","block");
 	        $('#'+overlayID).fadeIn('fast',function(){
@@ -266,9 +279,14 @@
 		if(overlayID=="citation"){
 			resetCitationText();
 		}
+		
 	}
-	
 
+	function resetCitationText(){
+		$( "#citation_title" ).val( "" );
+		$( "#citation_link" ).val( "" );
+		$("#citation_detail").attr("src","");
+	}
 	
 	function readMultipleFiles(evt) {
 
@@ -343,36 +361,35 @@
 				<div class="pri-pub accessLevelOne">
 					<div class="pri-pub1"
 						onclick="toggleObject('${fedoraObject.URI}','no')">
-						<spring:message code="PRIVATE" />
+						<span><spring:message code="PRIVATE" /></span>
 					</div>
 					<div class="pri-pub2 current-tab">
 						<div class="minitype-status"></div>
-						<spring:message code="PUBLIC" />
+						<div><span class="middleout"><spring:message code="PUBLIC" /></span></div>
 					</div>
 				</div>
 			</c:when>
 			<c:otherwise>
 				<div class="pri-pub accessLevelOne">
 					<div class="pri-pub1 current-tab">
-
-						<spring:message code="PRIVATE" />
+						<span class="middleout"><spring:message code="PRIVATE" /></span>
 					</div>
 					<div class="pri-pub2 "
 						onclick="toggleObject('${fedoraObject.URI}','yes')">
 						<div class="minitype-status"></div>
-						<spring:message code="PUBLIC" />
+						<div><span><spring:message code="PUBLIC" /></span></div>
 					</div>
 				</div>
 			</c:otherwise>
 		</c:choose>
-		<h1>
-			<div style="width: 10px; display: inline-block;">
+		<div id="ko-title">
+			<div style="width: 10px; hieght:60px; display: inline-block;">
 				<c:if test="${fedoraObject.metadata.published}">
 					<div class="type-status"></div>
 				</c:if>
 			</div>
-			<small><c:out value="${fedoraObject.metadata.title}"></c:out></small>
-		</h1>
+			<h1><small><c:out value="${fedoraObject.metadata.title}"></c:out></small></h1>
+		</div>
 
 		<div class="date">
 			<div class="date1">
