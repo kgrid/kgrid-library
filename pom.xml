@@ -102,6 +102,16 @@
             <version>1.2.17</version>
         </dependency>
 
+		<dependency>
+			<groupId>com.github.ansell.pellet</groupId>
+			<artifactId>pellet-jena</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+		<dependency>
+        	<groupId>com.github.ansell.pellet</groupId>
+        	<artifactId>pellet-owlapiv3</artifactId>
+        	<version>2.3.2</version>
+        </dependency>
 
         <!-- Runtime dependencies, not needed to compile -->
         <dependency>
@@ -109,6 +119,11 @@
             <artifactId>commons-fileupload</artifactId>
             <version>1.3.2</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>slf4j-log4j12</artifactId>
+        	<version>1.7.21</version>
         </dependency>
     </dependencies>
 
