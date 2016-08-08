@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.uofm.ot.adapter.OWLAdapter;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.fedoraAccessLayer.FedoraObjectService;
@@ -20,8 +21,10 @@ import org.uofm.ot.transferobjects.DataType;
 import org.uofm.ot.transferobjects.EngineType;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.Adapter;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,11 +52,34 @@ public class RestWSController {
 	}
 
 
+	@RequestMapping(value = "/rest/{objectID}/result", method = RequestMethod.POST,
+			consumes = "application/owl+xml",
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<String> getOWLResult(@RequestBody String content, @PathVariable String objectID) throws ObjectTellerException {
+		
+		ResponseEntity<String> resultEntity = null; 
+		
+		Gson gson = new Gson();
+		
+		boolean objectExists = false;
+		
+		if(objectID != null ) {
+			objectExists= getFedoraObjectService.checkIfObjectExists(objectID);
+			if ( objectExists ) {
+				String payload = getFedoraObjectService.getObjectContent(objectID, ChildType.PAYLOAD.getChildType());
+				OWLAdapter adapter = new OWLAdapter();
+				Result result = adapter.execute(content, payload);
+				String json = gson.toJson(result);
+				resultEntity = new ResponseEntity<String> (json, HttpStatus.OK);
+			}
+		}
+		return resultEntity;
+	}
 
 	@RequestMapping(value = "/rest/getResult", method = RequestMethod.POST,
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> calculateRisk(@RequestBody String content) throws ObjectTellerException {
+	public ResponseEntity<String> getResult(@RequestBody String content) throws ObjectTellerException {
 
 		Gson gson = new Gson();
 
