@@ -4,7 +4,7 @@ public class Result {
 
 	private int success;
 	
-	private String result;
+	private Object result;
 	
 	private String errorMessage;
 	
@@ -17,11 +17,7 @@ public class Result {
 		this.errorMessage = errorMessage;
 	}
 
-	@Override
-	public String toString() {
-		return "Result [success=" + success + ", result=" + result + ", errorMessage=" + errorMessage + "]";
-	}
-
+	
 	public int getSuccess() {
 		return success;
 	}
@@ -30,11 +26,11 @@ public class Result {
 		this.success = success;
 	}
 
-	public String getResult() {
+	public Object getResult() {
 		return result;
 	}
 
-	public void setResult(String result) {
+	public void setResult(Object result) {
 		this.result = result;
 	}
 
@@ -44,6 +40,11 @@ public class Result {
 
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
+	}
+
+	@Override
+	public String toString() {
+		return "Result [success=" + success + ", result=" + result + ", errorMessage=" + errorMessage + "]";
 	}
 	
 	
