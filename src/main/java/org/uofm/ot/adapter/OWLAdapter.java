@@ -72,7 +72,7 @@ public class OWLAdapter {
 			pmWC.setDefaultPrefix(BASE_IND_NS + "#");
 			//get a given individual
 
-			String person = "Charles";
+			String person = "patient-0001";
 			OWLNamedIndividual personRDF = factoryWC.getOWLNamedIndividual(":"+person, pmWC);
 			
 			OWLReasonerFactory reasonerFactoryWC = PelletReasonerFactory.getInstance();
