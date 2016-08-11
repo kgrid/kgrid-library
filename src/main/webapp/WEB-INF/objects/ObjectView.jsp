@@ -208,6 +208,8 @@
 
 				document.getElementById('file_output').addEventListener(
 						'change', readMultipleFiles, false);
+				
+				
 			});
 	
 	
@@ -326,6 +328,25 @@
 		}
 	}
 	
+	
+	function deleteObject(uri) {
+	
+		var txt;
+		var r = confirm("Do you really want to delete the object ? ");
+
+		if (r == true) {
+
+			$.ajax({
+				type : 'DELETE',
+				url : "deleteObject." + uri,
+
+				success : function(response) {
+
+					window.location.href = "home" ;
+				}
+			});
+		}
+	}
 </script>
 <script type="text/javascript"
 	src="<c:url value="/resources/js/dropdown.js"/>"></script>
@@ -469,12 +490,17 @@
 							<h3 class="fieldName inline">
 								<spring:message code="METADATA_TAB" />
 							</h3>
+							<%-- <sf:form class="display-content" id="metadata_view" 
+								modelAttribute="fedoraObject" action="deleteObject" method="DELETE"> --%>
+								
 							<div class="inline editwrapper accessLevelOne">
 								<button class="inline edit" id="editButton"
 									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
+								<button class="inline edit" id="deleteButton"
+									style="position: relative; left: 90%" onclick="deleteObject('${fedoraObject.URI}')"><spring:message code="DELETE_OBJ_BUTTON" /></button>
 							</div>
 
-							<form class="display-content" id="metadata_view">
+							<form class="display-content" id="metadata_view" >
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_TITLE" />
@@ -542,7 +568,7 @@
 
 
 								<input type="hidden" path="URI" value="${fedoraObject.URI}" />
-							</form>
+							</form> 
 							<sf:form class="display-content" method="POST"
 								action="editMetadata" modelAttribute="fedoraObject"
 								style="display:none; position: relative;" id="metadata_edit">
