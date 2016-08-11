@@ -32,35 +32,7 @@ public class GetFedoraObjectService extends FedoraObjectService {
 	
 	private static final Logger logger = Logger.getLogger(GetFedoraObjectService.class);
 	
-	public boolean checkIfObjectExists(String objectId) throws ObjectTellerException{
-
-		boolean result = false;
-
-		HttpClient httpClient = new DefaultHttpClient();
-
-		HttpGet httpGetRequest = new HttpGet(baseURI+objectId+"/");
-		httpGetRequest.addHeader(BasicScheme.authenticate(
-				new UsernamePasswordCredentials(userName, password),
-				"UTF-8", false));
-
-		HttpResponse httpResponse;
-		try {
-			httpResponse = httpClient.execute(httpGetRequest);
-			if ( 200 == httpResponse.getStatusLine().getStatusCode())
-				result = true;
-		} catch (ClientProtocolException e) {
-			ObjectTellerException exception = new ObjectTellerException(e);
-			logger.error("Exception occured while verifying object id "+objectId +"."+ e.getMessage());
-			exception.setErrormessage("Exception occured while verifying object id "+objectId +"."+ e.getMessage());
-			throw exception;
-		} catch (IOException e) {
-			ObjectTellerException exception = new ObjectTellerException(e);
-			logger.error("Exception occured while verifying object id "+objectId+"."+e.getMessage());
-			exception.setErrormessage("Exception occured while verifying object id "+objectId+"."+e.getMessage());
-			throw exception;
-		}
-		return result;
-	}
+	
 	
 	public String getObjectContent(String objectId, String datastremId) throws ObjectTellerException  {
 

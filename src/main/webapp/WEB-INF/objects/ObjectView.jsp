@@ -105,6 +105,7 @@
 					var data_c = $("#contributor_data_v").val();
 					if (buttonText == "EDIT") {
 						$("#metadata_view").hide();
+						$("#deleteButton").hide();
 						$("#metadata_edit").show();
 						$("#editButton").text("CANCEL");
 						$("#editButton").css("left", "640px");
@@ -117,6 +118,7 @@
 						$("#metadata_view").show();
 						$("#metadata_edit").hide();
 						$("#editButton").text("EDIT");
+						$("#deleteButton").show();
 						$("#editButton").css("left", "0%");
 						$("#title_data").text(function(i, origText) {
 							return origText;
