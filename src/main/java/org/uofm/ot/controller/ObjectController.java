@@ -355,10 +355,10 @@ public class ObjectController {
 		if(validateUser(loggedInUser)) {
 			try {
 				deleteFedoraResourceService.deleteObjectCitation(objectURI, citationID);
-				resultEntity =  new ResponseEntity<String>( HttpStatus.GONE) ;
+				resultEntity =  new ResponseEntity<String>( HttpStatus.OK) ;
 			} catch (ObjectTellerException e) {
 				logger.error("An exception occured while deleting Object Citation for Object ID "+objectURI+ "Citation ID " +citationID + ". Caused by "+e.getMessage());
-				resultEntity =  new ResponseEntity<String>("An exception occured while creating new object "+e.getMessage()+". Caused by "+e.getCause() , HttpStatus.INTERNAL_SERVER_ERROR) ; 
+				resultEntity =  new ResponseEntity<String>("An exception occured while deleting Object Citation for Object ID "+objectURI+ "Citation ID " +citationID + ". Caused by "+e.getMessage() , HttpStatus.INTERNAL_SERVER_ERROR) ; 
 			}
 		} else {
 			resultEntity = new ResponseEntity<String>( "Please login to edit knowledge object", HttpStatus.UNAUTHORIZED) ;
@@ -366,5 +366,22 @@ public class ObjectController {
 		return resultEntity ; 
 	}
 	
-	
+	@RequestMapping(value="/deleteObject.{objectURI}", method=RequestMethod.DELETE)
+	public ResponseEntity<String> deleteObject( @PathVariable String objectURI,   @ModelAttribute("loggedInUser") User loggedInUser ) {
+		ResponseEntity<String> resultEntity = null; 
+		
+		
+		if(validateUser(loggedInUser)) {
+			try {
+				deleteFedoraResourceService.deleteObject(objectURI);
+				resultEntity =  new ResponseEntity<String>( HttpStatus.OK) ;
+			} catch (ObjectTellerException e) {
+				logger.error("An exception occured while deleting Object with Object ID "+objectURI+ ". Caused by "+e.getMessage());
+				resultEntity =  new ResponseEntity<String>("An exception occured while deleting Object with Object ID "+objectURI+ ". Caused by "+e.getMessage() , HttpStatus.INTERNAL_SERVER_ERROR) ; 
+			}
+		} else {
+			resultEntity = new ResponseEntity<String>( "Please login to edit knowledge object", HttpStatus.UNAUTHORIZED) ;
+		}	
+		return resultEntity ; 
+	}
 }

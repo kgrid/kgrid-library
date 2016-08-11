@@ -8,5 +8,9 @@ public class DeleteFedoraResourceService extends FedoraObjectService {
 		String uri = objectURI + "/" + ChildType.CITATIONS.getChildType() + "/" + citationID ; 
 		deleteFedoraResource(uri);
 	}
+	
+	public void deleteObject(String objectURI) throws ObjectTellerException {
+		deleteFedoraResource(objectURI);
+	}
 
 }
