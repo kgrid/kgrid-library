@@ -48,12 +48,19 @@ public class PythonAdapter {
 						resObj.setSuccess(1);
 						resObj.setResult(String.valueOf(realResult));
 					} else {
-						if(DataType.STRING == returntype){
+						if(DataType.STRING == returntype) {
 							String realResult = (String) result.__tojava__(String.class);
 							resObj.setErrorMessage("-");
 							resObj.setSuccess(1);
 							resObj.setResult(realResult);
 							
+						} else {
+							if(DataType.MAP == returntype) {
+								Map<String,Object> realMap = (Map<String,Object>) result.__tojava__(Map.class);
+								resObj.setErrorMessage((String)realMap.get("errorMessage"));
+								resObj.setSuccess((int)realMap.get("success"));
+								resObj.setResult(realMap.get("result"));
+							}
 						}
 					}
 				}
