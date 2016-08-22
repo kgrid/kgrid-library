@@ -218,12 +218,6 @@ public class ObjectController {
 
 		model.addAttribute("fedoraObject",object);
 
-		String inputMessage = object.getInputMessage();
-		model.addAttribute("processedStringInput",addEscapeCharsInXML(inputMessage));
-
-		String outputMessage = object.getOutputMessage();
-		model.addAttribute("processedStringOutput",addEscapeCharsInXML(outputMessage));
-
 		String logData = object.getLogData();
 		model.addAttribute("processedLogData",addEscapeCharsInXML(logData));
 

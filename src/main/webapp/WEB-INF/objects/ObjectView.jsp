@@ -779,7 +779,7 @@ varStatus="loopStatus">
 							<form class="display-content" id="displayInput">
 
 								<div class="display-payload">
-										<textarea class="autosize" id="inputTextArea-v">${processedStringInput}</textarea>
+										<textarea class="autosize" id="inputTextArea-v">${fedoraObject.inputMessage}</textarea>
 								</div>
 							</form>
 							<sf:form class="display-content" id="inputEdit" method="POST"
@@ -837,7 +837,7 @@ varStatus="loopStatus">
 							<form class="display-content" id="displayOutput">
 
 								<div class="display-payload">
-									<textarea class="autosize" id="outputTextArea-v">${processedStringOutput}</textarea>
+									<textarea class="autosize" id="outputTextArea-v">${fedoraObject.outputMessage}</textarea>
 								
 								</div>
 							</form>
