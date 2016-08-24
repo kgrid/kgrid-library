@@ -7,6 +7,8 @@ public class Result {
 	private Object result;
 	
 	private String errorMessage;
+
+	private String source;
 	
 	public Result(){}
 
@@ -42,10 +44,21 @@ public class Result {
 		this.errorMessage = errorMessage;
 	}
 
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
 	@Override
 	public String toString() {
-		return "Result [success=" + success + ", result=" + result + ", errorMessage=" + errorMessage + "]";
+		return "Result [success=" + success
+				+ ", result=" + result
+				+ ", errorMessage=" + errorMessage
+				+ ", source=" + source
+				+ "]";
 	}
-	
-	
+
 }

@@ -17,9 +17,13 @@ public class FedoraObject {
 	private String logData; 
 	
 	public FedoraObject(){}
-	
 
-	public String getURI() {
+    public FedoraObject(String URI) {
+    	this.URI = URI;
+    }
+
+
+    public String getURI() {
 		return URI;
 	}
 

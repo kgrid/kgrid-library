@@ -6,10 +6,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.RestController;
 import org.uofm.ot.adapter.OWLAdapter;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.ChildType;
-import org.uofm.ot.fedoraAccessLayer.FedoraObjectService;
-import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
-import org.uofm.ot.fedoraAccessLayer.PayloadDescriptor;
+import org.uofm.ot.fedoraAccessLayer.*;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.pythonAdapter.PythonAdapter;
 import org.uofm.ot.transferobjects.InputObject;
@@ -84,7 +81,8 @@ public class RestWSController {
 		Gson gson = new Gson();
 
 		Result result = null;
-		String errormessage = null;
+		String errormessage;
+		String title = null;
 		boolean objectExists = false;
 
 		InputObject io= gson.fromJson(content, InputObject.class);
@@ -93,6 +91,9 @@ public class RestWSController {
 		if(io.getObjectName() != null && io.getParams() != null && !io.getObjectName().isEmpty() && io.getParams().size() > 0){
 			objectExists= getFedoraObjectService.checkIfObjectExists(io.getObjectName());
 			if ( objectExists ) {
+
+				FedoraObject object = fusekiService.getObjectProperties(new FedoraObject(io.getObjectName()));
+				title = object.getMetadata().getTitle();
 
 				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(io.getObjectName());
 
@@ -119,12 +120,13 @@ public class RestWSController {
 		} else
 			errormessage = "Either object name or parameter map is missing";
 
-		if(errormessage != null){
+		if(errormessage != null || result == null){ // errormessaage has a value
 			result = new Result();
 			result.setErrorMessage(errormessage);
 			result.setSuccess(0);
 		}
 
+		result.setSource(title);
 		String json = gson.toJson(result);
 
 		return new ResponseEntity<String>(json, HttpStatus.OK);
