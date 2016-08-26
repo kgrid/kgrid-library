@@ -18,6 +18,10 @@ public class FedoraObject {
 	
 	public FedoraObject(){}
 	
+    public FedoraObject(String URI) {
+    	this.URI = URI;
+    }
+
 
 	public String getURI() {
 		return URI;

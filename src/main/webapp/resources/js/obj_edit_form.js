@@ -167,8 +167,9 @@ $(document)
 								var idx = $(this).attr("id");
 								var ctitle = $("#"+idx).val();
 								var clink = $("#"+idx+"_link").val();
-							initCitationText('citation',idx,ctitle,clink);
+								console.log(idx+" " +ctitle+" "+clink);
 							overlaySlide('citation',true);
+							initCitationText('citation',idx,ctitle,clink);
 						});
 
 						$("#license_data").focus(function(e){
