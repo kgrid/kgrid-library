@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
-import org.uofm.ot.fedoraAccessLayer.Citation;
 import org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService;
 import org.uofm.ot.fedoraAccessLayer.DeleteFedoraResourceService;
 import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
-import org.uofm.ot.fedoraAccessLayer.FedoraObject;
 import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
-import org.uofm.ot.fedoraAccessLayer.PayloadDescriptor;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
+import org.uofm.ot.knowledgeObject.Citation;
+import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.User;
 
 import com.google.gson.Gson; 
@@ -194,7 +194,7 @@ public class ObjectController {
 		FedoraObject object = new FedoraObject();
 		object.setURI(objectURI);
 
-		object = fusekiService.getObjectProperties(object);
+		object = fusekiService.getKnowledgeObject(object);
 
 		PayloadDescriptor payloadD = fusekiService.getPayloadProperties(objectURI);
 
@@ -345,7 +345,7 @@ public class ObjectController {
 		FedoraObject object = new FedoraObject();
 		object.setURI(objectURI);
 
-		object = fusekiService.getObjectProperties(object);
+		object = fusekiService.getKnowledgeObject(object);
 		
 		if(!object.getMetadata().isPublished() && loggedInUser == null)
 			return false;

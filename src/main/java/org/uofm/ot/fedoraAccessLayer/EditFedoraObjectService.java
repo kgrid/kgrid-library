@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
+import org.uofm.ot.knowledgeObject.Citation;
+import org.uofm.ot.knowledgeObject.FedoraObject;
 
 public class EditFedoraObjectService extends FedoraObjectService {
 

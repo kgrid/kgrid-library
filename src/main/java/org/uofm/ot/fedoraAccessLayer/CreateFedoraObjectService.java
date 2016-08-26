@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import org.uofm.ot.dao.ObjectIDDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
+import org.uofm.ot.knowledgeObject.Citation;
+import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.ObjectId;
 import org.uofm.ot.model.User;
 

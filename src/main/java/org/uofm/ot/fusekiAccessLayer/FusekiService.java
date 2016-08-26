@@ -27,10 +27,10 @@ import org.apache.log4j.Logger;
 import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
-import org.uofm.ot.fedoraAccessLayer.Citation;
-import org.uofm.ot.fedoraAccessLayer.FedoraObject;
-import org.uofm.ot.fedoraAccessLayer.Metadata;
-import org.uofm.ot.fedoraAccessLayer.PayloadDescriptor;
+import org.uofm.ot.knowledgeObject.Citation;
+import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.Metadata;
+import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.Server_details;
 
 
@@ -62,26 +62,12 @@ public class FusekiService {
 	}
 	
 
-	public ArrayList<FedoraObject> getPublicFedoraObjects() throws ObjectTellerException {
+	public ArrayList<FedoraObject> getFedoraObjects(boolean published) throws ObjectTellerException {
 		ArrayList< FedoraObject> list = new ArrayList<FedoraObject>();
 		try {
 			if(fusekiServerURL != null ) {
 				if(testIfFusekiIsRunning()) {
-					String queryString = FusekiConstants.PREFIX_DC + "\n"+
-							FusekiConstants.PREFIX_FEDORA+ "\n"+
-							FusekiConstants.PREFIX_OT+"\n"+
-
-					"SELECT  ?x ?title ?published ?lastModified ?created \n"+
-
-					"WHERE \n"+
-					"{ \n"+ 
-					"?x  dc:title  ?title. \n"+
-					"?x  ot:published \"yes\". \n"+
-					"?x  fedora:lastModified  ?lastModified. \n"+
-					"?x  fedora:created ?created. \n"+
-
-					"} \n";
-
+					String queryString = initQuery(false, null, published);
 
 					list = getFedoraObjects(queryString,true);
 				}
@@ -100,27 +86,13 @@ public class FusekiService {
 		return list;
 	}
 
-	public ArrayList<FedoraObject> getAllFedoraObjects() throws ObjectTellerException {
+/*	public ArrayList<FedoraObject> getAllFedoraObjects() throws ObjectTellerException {
 		ArrayList< FedoraObject> list = new ArrayList<FedoraObject>();
 
 		try{
 			if(fusekiServerURL != null ) {
 				if(testIfFusekiIsRunning()) {
-					String queryString = FusekiConstants.PREFIX_DC + "\n"+
-							FusekiConstants.PREFIX_FEDORA+ "\n"+
-							FusekiConstants.PREFIX_OT+"\n"+
-
-					"SELECT  ?x ?title ?published ?created ?lastModified  \n"+
-
-					"WHERE \n"+
-					"{ \n"+ 
-					"?x  dc:title  ?title. \n"+
-					"?x  ot:published ?published. \n"+
-					"?x  fedora:lastModified  ?lastModified. \n"+
-					"?x  fedora:created ?created. \n"+
-
-					"} \n";
-
+					String queryString = initQuery(false, null, false);
 
 					list = getFedoraObjects(queryString,false);
 
@@ -139,7 +111,7 @@ public class FusekiService {
 		return list;
 	}
 	
-	
+*/	
 	public String getLibraryName() throws ObjectTellerException {
 		String libraryName = null;
 
@@ -180,40 +152,8 @@ public class FusekiService {
 	
 		while (resultSet.hasNext()) {
 			QuerySolution binding = resultSet.nextSolution();
-
-
-			String uri = binding.get("x").toString();
-			if(uri.length() > fedoraServerURL.length()){
-				if(uri.contains(fedoraServerURL)) {
-					FedoraObject fedoraObject = new FedoraObject();
-					uri = uri.substring(fedoraServerURL.length());
-					fedoraObject.setURI(uri);
-
-					Metadata metadata = new Metadata();
-
-					if(binding.get("published") != null) {
-						if("YES".equals(binding.get("published").toString().toUpperCase()))
-							metadata.setPublished(true);
-						else
-							metadata.setPublished(false);
-					} else {
-						if(isPublicOnly){
-							metadata.setPublished(true);
-						}
-					}
-
-					metadata.setTitle(binding.get("title").toString());
-					Date createdOn = convertRDFNodetoDate(binding.get("created"));
-					Date lastModified = convertRDFNodetoDate(binding.get("lastModified"));
-					metadata.setLastModified(lastModified);
-					metadata.setCreatedOn(createdOn);
-					
-					fedoraObject.setMetadata(metadata);
-
-					list.add(fedoraObject);
-
-				} 
-			}
+			FedoraObject fedoraObject = mapQuerySolutionToFedoraObject(binding, false, null, isPublicOnly);
+			list.add(fedoraObject);
 		}
 
 		return list;
@@ -286,69 +226,22 @@ public class FusekiService {
 		return result;
 	}
 	
-	public FedoraObject getObjectProperties(FedoraObject fedoraObject) throws ObjectTellerException {
+	public FedoraObject getKnowledgeObject(FedoraObject fedoraObject) throws ObjectTellerException {
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
 				String uri = fedoraServerURL+fedoraObject.getURI();
-				String queryString = FusekiConstants.PREFIX_OT+"\n"+
-
-				 "SELECT  ?p ?o \n"+
-
-				 "WHERE {  \n"+
-				 "<"+uri+">  ?p ?o.\n"+ 
-				 "} \n" ;
+			
+				String queryString = initQuery(true, uri, false);
 
 				Query query = QueryFactory.create(queryString) ;
 				QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
 				ResultSet resultSet = execution.execSelect();
-
-				Metadata metadata = new Metadata();
 				
-				while (resultSet.hasNext()) {
-					QuerySolution binding = resultSet.nextSolution();
-					String predicate = binding.get("p").toString();
-					if(predicate.contains(FusekiConstants.DC_NAMESPACE) == true) {
-						String actualPredicate = predicate.substring(FusekiConstants.DC_NAMESPACE.length());
-						if("title".equals(actualPredicate)){
-							metadata.setTitle(binding.get("o").toString());
-						}
-					} else {
-						if(predicate.contains(FusekiConstants.FEDORA_NAMESPACE) == true){
-							String actualPredicate = predicate.substring(FusekiConstants.FEDORA_NAMESPACE.length());
-							if("lastModified".equals(actualPredicate)  )
-								metadata.setLastModified(convertRDFNodetoDate(binding.get("o")));
-
-							if( "created".equals(actualPredicate))
-								metadata.setCreatedOn(convertRDFNodetoDate(binding.get("o")));
-
-						} else {
-							if(predicate.contains(FusekiConstants.OT_NAMESPACE) == true) {
-								String actualPredicate = predicate.substring(FusekiConstants.OT_NAMESPACE.length());
-								if("keywords".equals(actualPredicate) )
-									metadata.setKeywords(binding.get("o").toString());
-
-								if( "owner".equals(actualPredicate)) 
-									metadata.setOwner(binding.get("o").toString());
-
-								if( "contributors".equals(actualPredicate) )
-									metadata.setContributors(binding.get("o").toString());
-
-								if( "description".equals(actualPredicate))
-									metadata.setDescription(binding.get("o").toString());
-
-								if( "published".equals(actualPredicate)) {
-									if("YES".equals(binding.get("o").toString().toUpperCase()))
-										metadata.setPublished(true);
-									else
-										metadata.setPublished(false);
-								}
-							}
-						}
-					}
+				while(resultSet.hasNext()) {
+					QuerySolution querySolution = resultSet.next();
+					fedoraObject = mapQuerySolutionToFedoraObject(querySolution,true,uri,false);
 				}
-				
-				fedoraObject.setMetadata(metadata);
 			}
 		} else {
 			logger.error("Fuseki Server URL is not configured");
@@ -504,5 +397,78 @@ public class FusekiService {
 			citation.setCitation_at(citationAt);
 			citation.setCitation_title(citationTitle);
 		}
+	}
+
+
+	
+	private String initQuery(boolean isSingleObject, String uri , boolean published ) {
+		String query = FusekiConstants.PREFIX_OT + "\n"+
+				FusekiConstants.PREFIX_DC + "\n"+
+				FusekiConstants.PREFIX_FEDORA + "\n" + 
+				"SELECT  * " + "\n" +
+				"WHERE { " + "\n" ; 
+
+		if(isSingleObject ) {
+			query =  query + "<"+uri+"> dc:title ?title ; "+ "\n" ; 
+		} else {
+			query =  query + "?x dc:title ?title ; "+ "\n" ;
+		}
+	
+		if(published)
+			query =  query + "ot:published \"yes\" ; " + "\n" ;
+		else
+			query =  query + "ot:published ?published ; " + "\n" ;
+    										  
+											  
+		query = query + " fedora:created ?created ; "+" \n "+
+     					" fedora:lastModified ?lastModified ; "+" \n "+
+     					" ot:keywords ?keywords ;"+" \n "+
+  						" ot:owner ?owner ;"+" \n "+
+    					" ot:contributors ?contributors ;"+" \n "+
+    					" ot:description ?description ;"+" \n "+
+    
+        "} ";
+		
+		return query ;
+	}
+	
+	private FedoraObject mapQuerySolutionToFedoraObject(QuerySolution querySolution,boolean isSingleObject,String existingUri, boolean published ) throws ObjectTellerException {
+
+		FedoraObject fedoraObject = new FedoraObject();
+		if(!isSingleObject){
+			String uri = querySolution.get("x").toString();
+			uri = uri.substring(fedoraServerURL.length());
+			fedoraObject.setURI(uri);
+		} else {
+			fedoraObject.setURI(existingUri);
+		}
+		
+			
+
+			Metadata metadata = new Metadata();
+
+			if(querySolution.get("published") != null) {
+				if("YES".equals(querySolution.get("published").toString().toUpperCase()))
+					metadata.setPublished(true);
+				else
+					metadata.setPublished(false);
+			} else {
+				if(published){
+					metadata.setPublished(true);
+				}
+			}
+
+			metadata.setTitle(querySolution.get("title").toString());
+			Date createdOn = convertRDFNodetoDate(querySolution.get("created"));
+			Date lastModified = convertRDFNodetoDate(querySolution.get("lastModified"));
+			metadata.setLastModified(lastModified);
+			metadata.setCreatedOn(createdOn);
+			metadata.setKeywords(querySolution.get("keywords").toString());
+			metadata.setOwner(querySolution.get("owner").toString());
+			metadata.setContributors(querySolution.get("contributors").toString());
+			metadata.setDescription(querySolution.get("description").toString());
+
+			fedoraObject.setMetadata(metadata);
+			return fedoraObject;
 	}
 }
