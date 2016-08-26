@@ -101,6 +101,7 @@
         <property name="sysConfDao" ref="sysConfDao"/>
         <property name="userDao" ref="userDao"/>
         <property name="fusekiService" ref="fusekiService"/>
+        <property name="objectService" ref="knowledgeObjectService"/>
     </bean>
 
     <bean id="accountController" class="org.uofm.ot.controller.AccountController">
@@ -114,6 +115,15 @@
         <property name="getFedoraObjectService" ref="getfedoraObjectService"/>
         <property name="deleteFedoraResourceService" ref="deleteFedoraResourceService"/>
     </bean>
+    
+    <bean id="knowledgeObjectService" class="org.uofm.ot.services.KnowledgeObjectService">
+    	<property name="fusekiService" ref="fusekiService"/>
+    </bean> 
+    
+    <bean id="knowledgeObjectController" class="org.uofm.ot.controller.KnowledgeObjectController">
+    	<property name="knowledgeObjectService" ref="knowledgeObjectService"/>
+    </bean>
+    
 
     <bean id="systemConfController" class="org.uofm.ot.controller.SystemConfController">
         <property name="sysConfDao" ref="sysConfDao"/>

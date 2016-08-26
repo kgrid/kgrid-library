@@ -8,6 +8,8 @@ public class Result {
 	
 	private String errorMessage;
 	
+	
+	
 	public Result(){}
 
 	public Result(int success, String result, String errorMessage) {

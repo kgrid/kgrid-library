@@ -1,9 +1,8 @@
 package org.uofm.ot.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -11,18 +10,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.dao.UserDAO;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.FedoraObject;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
+import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.model.Server_details;
 import org.uofm.ot.model.User;
+import org.uofm.ot.services.KnowledgeObjectService;
 
 import com.google.gson.Gson;
 
@@ -39,6 +37,8 @@ public class LoginController {
 	
 	private FusekiService fusekiService;
 	
+	private KnowledgeObjectService objectService;
+	
 	private SystemConfigurationDAO sysConfDao;
 	
 	public void setSysConfDao(SystemConfigurationDAO sysConfDao) {
@@ -53,10 +53,15 @@ public class LoginController {
 		this.fusekiService = fusekiService;
 	}
 
+	
+	
+	public void setObjectService(KnowledgeObjectService objectService) {
+		this.objectService = objectService;
+	}
 
 	private String getObjectPage( ModelMap model) {		
 		try {
-			ArrayList<FedoraObject> list = fusekiService.getAllFedoraObjects();
+			List<FedoraObject> list = objectService.getKnowledeObjects(false);
 			Integer publishedObjects = fusekiService.getNumberOfPublishedObjects();
 			model.addAttribute("objects", list);
 			model.addAttribute("TotalObjects", list.size());
@@ -119,9 +124,9 @@ public class LoginController {
 
 		if(httpSession.getAttribute("DBUser") == null){
 
-			ArrayList<FedoraObject> list;
+			List<FedoraObject> list;
 			try {
-				list = fusekiService.getPublicFedoraObjects();
+				list = objectService.getKnowledeObjects(true);
 				model.addAttribute("objects", list);
 			} catch (ObjectTellerException ex) {
 				logger.error("Exception occured while retrieving objects "+ex.getCause());
