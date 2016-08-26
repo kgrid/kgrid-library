@@ -8,9 +8,8 @@ public class Result {
 	
 	private String errorMessage;
 	
-	
-	
-	public Result(){}
+	private String source;
+		public Result(){}
 
 	public Result(int success, String result, String errorMessage) {
 		super();
@@ -44,10 +43,21 @@ public class Result {
 		this.errorMessage = errorMessage;
 	}
 
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
 	@Override
 	public String toString() {
-		return "Result [success=" + success + ", result=" + result + ", errorMessage=" + errorMessage + "]";
+		return "Result [success=" + success
+				+ ", result=" + result
+				+ ", errorMessage=" + errorMessage
+				+ ", source=" + source
+				+ "]";
 	}
-	
 	
 }
