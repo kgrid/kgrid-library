@@ -86,32 +86,7 @@ public class FusekiService {
 		return list;
 	}
 
-/*	public ArrayList<FedoraObject> getAllFedoraObjects() throws ObjectTellerException {
-		ArrayList< FedoraObject> list = new ArrayList<FedoraObject>();
 
-		try{
-			if(fusekiServerURL != null ) {
-				if(testIfFusekiIsRunning()) {
-					String queryString = initQuery(false, null, false);
-
-					list = getFedoraObjects(queryString,false);
-
-				}
-			} else {
-				logger.error("Fuseki Server URL is not configured");
-				ObjectTellerException exception = new ObjectTellerException("Fuseki Server URL is not configured");
-				throw exception;
-			}
-		} catch (ConnectException ex){
-			logger.error("Check if fuseki server up and running. ");
-			ObjectTellerException exception = new ObjectTellerException(ex);
-			throw exception;
-		}
-
-		return list;
-	}
-	
-*/	
 	public String getLibraryName() throws ObjectTellerException {
 		String libraryName = null;
 
@@ -153,7 +128,8 @@ public class FusekiService {
 		while (resultSet.hasNext()) {
 			QuerySolution binding = resultSet.nextSolution();
 			FedoraObject fedoraObject = mapQuerySolutionToFedoraObject(binding, false, null, isPublicOnly);
-			list.add(fedoraObject);
+			if(fedoraObject != null)
+				list.add(fedoraObject);
 		}
 
 		return list;
@@ -434,17 +410,23 @@ public class FusekiService {
 	
 	private FedoraObject mapQuerySolutionToFedoraObject(QuerySolution querySolution,boolean isSingleObject,String existingUri, boolean published ) throws ObjectTellerException {
 
-		FedoraObject fedoraObject = new FedoraObject();
+		FedoraObject fedoraObject =null;
 		if(!isSingleObject){
 			String uri = querySolution.get("x").toString();
-			uri = uri.substring(fedoraServerURL.length());
-			fedoraObject.setURI(uri);
+			if(uri.length() > fedoraServerURL.length()){
+				if(uri.contains(fedoraServerURL)) {
+					fedoraObject = new FedoraObject();
+					uri = uri.substring(fedoraServerURL.length());
+					fedoraObject.setURI(uri);
+				}
+			} 
 		} else {
+			fedoraObject = new FedoraObject();
 			fedoraObject.setURI(existingUri);
 		}
-		
-			
 
+
+		if(fedoraObject != null ) {
 			Metadata metadata = new Metadata();
 
 			if(querySolution.get("published") != null) {
@@ -469,6 +451,7 @@ public class FusekiService {
 			metadata.setDescription(querySolution.get("description").toString());
 
 			fedoraObject.setMetadata(metadata);
-			return fedoraObject;
+		}
+		return fedoraObject;
 	}
 }
