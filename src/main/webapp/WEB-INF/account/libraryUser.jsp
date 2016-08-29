@@ -15,8 +15,8 @@
 	href="<c:url value="/resources/css/dndstyle.css" />">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
-<script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- <script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
 <script type="text/javascript"
 	src="<c:url value="/resources/js/jquery-ui.js"/>"></script>
 <script type="text/javascript">
