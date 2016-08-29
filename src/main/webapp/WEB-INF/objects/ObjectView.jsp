@@ -24,7 +24,7 @@
 	href="<c:url value="/resources/css/l_overlay.css"/>" type="text/css" />
 <link rel="stylesheet" href="<c:url value="/resources/css/tab.css"/>"
 	type="text/css" />
-	<link rel="stylesheet"
+<link rel="stylesheet"
 	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" />
 <link rel="shortcut icon"
 	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" /> " />
@@ -38,9 +38,8 @@
 
 	$(document).ready(	
 			function() {
-				
+			
 				var userObj ="<%=session.getAttribute("DBUser")%>";
-				
 				var prefixhash = "#";
 				var activeTab = prefixhash.concat('${ActiveTab}');
 				var tabNum = $(activeTab.toLowerCase()).index();
@@ -48,55 +47,45 @@
 				if (tabNum >= 0) {
 					var nthChild = tabNum + 1;
 				}
-			
 				$("ul#tabs li.active").removeClass("active");
 				$("ul#tabs li:nth-child(" + nthChild + ")").addClass("active");
 				$("ul#tab li:nth-child(" + nthChild + ")").addClass("active");
-
 				var kotitle = $("#ko-title").find("small").text();
 				console.log(kotitle);
-				var title_length=kotitle.length;
+				var title_length = kotitle.length;
 				console.log(title_length);
-				if (title_length>94) {
-					$("#ko-title").find("small").css("font-size","24px");
-				}else{
-					$("#ko-title").find("small").css("font-size","28px");
-					
+				if (title_length > 94) {
+					$("#ko-title").find("small").css("font-size", "24px");
+				} else {
+					$("#ko-title").find("small").css("font-size", "28px");
+
 				}
-				
-				var accessLevel=1;
-				
-				if( userObj  == "null" ){
-					
+				var accessLevel = 1;
+				if (userObj == "null") {
 					$(".accessLevelOne").css({
-						"visibility":"hidden"
+						"visibility" : "hidden"
 					});
 					$("#session").show();
 					$("#logoutsession").hide();
-				
-				}else{
+				} else {
 					$("#session").hide();
 					$("#logoutsession").show();
-					
-					switch(accessLevel){
-
+					switch (accessLevel) {
 					default:
 						$(".accessLevelOne").css({
-							"visibility":"hidden"
+							"visibility" : "hidden"
 						});
 						break;
-					
 					case 1:
-					$(".accessLevelOne").css({
-						"visibility":"visible"
-					});
-					break;
+						$(".accessLevelOne").css({
+							"visibility" : "visible"
+						});
+						break;
 					}
-				}				
-				
-			$("#editButton").click(function() {
+				}
+				$("#metadataeditBtn").click(function() {
 					console.log($(this).attr("id"));
-					var buttonText = $("#editButton").text();
+					var buttonText = $("#metadataeditBtn").text();
 					console.log(buttonText);
 					var data_t = $("#title_data_v").val();
 					var data_d = $("#description_data_v").val();
@@ -107,8 +96,8 @@
 						$("#metadata_view").hide();
 						$("#deleteButton").hide();
 						$("#metadata_edit").show();
-						$("#editButton").text("CANCEL");
-						$("#editButton").css("left", "640px");
+						$("#metadataeditBtn").text("CANCEL");
+						$("#metadataeditBtn").css("left", "640px");
 						$("#title_data").val(data_t);
 						$("#description_data").val(data_d);
 						$("#keyword_data").val(data_k);
@@ -117,9 +106,9 @@
 					} else {
 						$("#metadata_view").show();
 						$("#metadata_edit").hide();
-						$("#editButton").text("EDIT");
+						$("#metadataeditBtn").text("EDIT");
 						$("#deleteButton").show();
-						$("#editButton").css("left", "0%");
+						$("#metadataeditBtn").css("left", "0%");
 						$("#title_data").text(function(i, origText) {
 							return origText;
 						});
@@ -137,161 +126,116 @@
 						});
 					}
 				});
-				$("#editPayloadButton").click(function() {
-					var buttonText = $("#editPayloadButton").text();
-					var data_p = $("#payloadTextArea-v").val();
+
+				$("[id$='EditBtn']").click(function() {
+					var btn_id = this.id;
+					var tArea_id = btn_id.replace("EditBtn", "TextArea");
+					var buttonText = $(this).text();
+					var display_form = btn_id.replace("EditBtn", "");
+					var edit_form = btn_id.replace("EditBtn", "Edit");
+					var dropfile = btn_id.replace("EditBtn", "DropFile");
+					var data_p = $("#" + tArea_id + "-v").val();
 					if (buttonText == "EDIT") {
-						$("#displayPayload").hide();
-						$("#payloadTextArea").val(data_p); 
-						$("#payloadEdit").show();
-						$("#payloadTextArea").show();
-						$("#payloadTextAreaDisplay").show();
-						$("#payloadDropFile").hide();
-						$("#editPayloadButton").text("CANCEL");
-						$("#editPayloadButton").css("left", "640px");
+						$("#display" + display_form).hide();
+						$("#" + tArea_id).val(data_p);
+						$("#" + edit_form).show();
+						$("#" + tArea_id).show();
+						$("#" + tArea_id + "Display").show();
+						$("#" + dropfile).hide();
+						$(this).text("CANCEL");
+						$(this).css("left", "580px");
 					} else {
-						$("#displayPayload").show();
-						$("#payloadEdit").hide();
-						$("#editPayloadButton").text("EDIT");
-						$("#editPayloadButton").css("left", "0%");
-						$("#payload_function_name").text(function(i, origText) {
-							return origText;
-						});
-					}
-				});
-				$("#editInputButton").click(function() {
-					var buttonText = $("#editInputButton").text();
-					var data_p = $("#inputTextArea-v").val();
-					if (buttonText == "EDIT") {
-						$("#displayInput").hide();
-						$("#inputTextArea").val(data_p); 
-						$("#inputEdit").show();
-						$("#inputTextArea").show();
-						$("#inputTextAreaDisplay").show();
-						$("#inputDropFile").hide();
-						$("#editInputButton").text("CANCEL");
-						$("#editInputButton").css("left", "580px");
-					} else {
-						$("#displayInput").show();
-						$("#inputEdit").hide();
-						$("#editInputButton").text("EDIT");
-						$("#editInputButton").css("left", "0%");
+						$("#display" + display_form).show();
+						$("#" + edit_form).hide();
+						$(this).text("EDIT");
+						$(this).css("left", "0%");
 
 					}
 				});
-				$("#editOutputButton").click(function() {
-					var buttonText = $("#editOutputButton").text();
-					var data_p = $("#outputTextArea-v").val();
-					if (buttonText == "EDIT") {
-						$("#displayOutput").hide();
-						$("#outputTextArea").val(data_p);
-						$("#outputEdit").show();
-						$("#outputTextArea").show();
-						$("#outputTextAreaDisplay").show();
-						$("#outputDropFile").hide();
-						$("#editOutputButton").text("CANCEL");
-						$("#editOutputButton").css("left", "580px");
-					} else {
-						$("#displayOutput").show();
-						$("#outputEdit").hide();
-						$("#editOutputButton").text("EDIT");
-						$("#editOutputButton").css("left", "0%");
-
-					}
-				});
-	
-
 
 				document.getElementById('file_payload').addEventListener(
 						'change', readMultipleFiles, false);
-
 				document.getElementById('file_input').addEventListener(
 						'change', readMultipleFiles, false);
-
 				document.getElementById('file_output').addEventListener(
 						'change', readMultipleFiles, false);
-				
-				
 			});
-	
-	
 </script>
 <script type="text/javascript">
-
 	function toggleObject(uri, param) {
 		$(this).find("span").addClass("middleout");
 		$(".pri-pub .current-tab").find("span").removeClass("middleout");
-
 		$.ajax({
 			type : 'GET',
 			url : "publishObject." + uri + "/" + param,
-
 			success : function(response) {
 				location.reload();
 			}
 		});
-
 	}
 
-	function overlayHeightResize(overlayID, window_height){
-		var overlayPane =$('#'+overlayID).find("> .ol_pane");
-		
+	function overlayHeightResize(overlayID, window_height) {
+		var overlayPane = $('#' + overlayID).find("> .ol_pane");
 		var entryform = overlayPane.find(".entryform");
-		var ol_pane_height =window_height;
-		var calcHeight = (window_height-120);
-		entryform.css("height",calcHeight+"px");
-		
+		var ol_pane_height = window_height;
+		var calcHeight = (window_height - 120);
+		entryform.css("height", calcHeight + "px");
 		var addContent = entryform.find(".Add-content");
-		addContent.css("height",(calcHeight-70)+"px");
+		addContent.css("height", (calcHeight - 70) + "px");
 		return ol_pane_height;
 	}
-	
-	
-	function overlaySlide(overlayID, open){
-	    document.body.classList.toggle('noscroll', open);
-		var overlayPane =$('#'+overlayID).find("> .ol_pane");
-		var window_width= $(window).width();
-		var window_height = $(window).height();
-		var overlayPane_width=overlayPane.width();
-		var overlayPane_height=	overlayHeightResize(overlayID, window_height);
-	
-		console.log("Window Width="+ window_width+" Window Height="+window_height+" olPane Width="+overlayPane_width+" olPane Height="+overlayPane_height);
-				
-		var overlayPane_left = window_width-overlayPane_width;
-		if(overlayPane_left<=(window_width*0.27)){
-			overlayPane_left=(window_width*0.27);
-		}
-		
-		if(open){
-			$('#'+overlayID).css("display","block");
-	        $('#'+overlayID).fadeIn('fast',function(){
-	            overlayPane.animate({'left':overlayPane_left+"px"},1000);
-	        });
-	    }else{
-			$('#'+overlayID).css("display","none");
-	    	overlayPane.animate({'left':'100%'},1000,function(){
-	            $('#'+overlayID).fadeOut('fast');
-	        });
-	    }
 
-		if(overlayID=="addObject"){
+	function overlaySlide(overlayID, open) {
+		document.body.classList.toggle('noscroll', open);
+		var overlayPane = $('#' + overlayID).find("> .ol_pane");
+		var window_width = $(window).width();
+		var window_height = $(window).height();
+		var overlayPane_width = overlayPane.width();
+		var overlayPane_height = overlayHeightResize(overlayID, window_height);
+
+		console.log("Window Width=" + window_width + " Window Height="
+				+ window_height + " olPane Width=" + overlayPane_width
+				+ " olPane Height=" + overlayPane_height);
+
+		var overlayPane_left = window_width - overlayPane_width;
+		if (overlayPane_left <= (window_width * 0.27)) {
+			overlayPane_left = (window_width * 0.27);
+		}
+
+		if (open) {
+			$('#' + overlayID).css("display", "block");
+			$('#' + overlayID).fadeIn('fast', function() {
+				overlayPane.animate({
+					'left' : overlayPane_left + "px"
+				}, 1000);
+			});
+		} else {
+			$('#' + overlayID).css("display", "none");
+			overlayPane.animate({
+				'left' : '100%'
+			}, 1000, function() {
+				$('#' + overlayID).fadeOut('fast');
+			});
+		}
+
+		if (overlayID == "addObject") {
 			resetInputText();
 		}
-		if(overlayID=="libraryuser"){
+		if (overlayID == "libraryuser") {
 			resetUserInfoText();
 		}
-		if(overlayID=="citation"){
+		if (overlayID == "citation") {
 			resetCitationText();
 		}
-		
+
 	}
 
-	function resetCitationText(){
-		$( "#citation_title" ).val( "" );
-		$( "#citation_link" ).val( "" );
-		$("#citation_detail").attr("src","");
+	function resetCitationText() {
+		$("#citation_title").val("");
+		$("#citation_link").val("");
+		$("#citation_detail").attr("src", "");
 	}
-	
+
 	function readMultipleFiles(evt) {
 
 		var field_id = this.id;
@@ -329,22 +273,16 @@
 			alert("Failed to load files");
 		}
 	}
-	
-	
+
 	function deleteObject(uri) {
-	
 		var txt;
 		var r = confirm("Do you really want to delete the object ? ");
-
 		if (r == true) {
-
 			$.ajax({
 				type : 'DELETE',
 				url : "deleteObject." + uri,
-
 				success : function(response) {
-
-					window.location.href = "home" ;
+					window.location.href = "home";
 				}
 			});
 		}
@@ -374,8 +312,8 @@
 		<div id="goback">
 			<div id="leadarrow"></div>
 
-			<a href="<c:url value="/home"/>" id="backButton">
-				<spring:message code="BACK_RESULTS" />
+			<a href="<c:url value="/home"/>" id="backButton"> <spring:message
+					code="BACK_RESULTS" />
 			</a>
 		</div>
 
@@ -388,7 +326,9 @@
 					</div>
 					<div class="pri-pub2 current-tab">
 						<div class="minitype-status"></div>
-						<div><span class="middleout"><spring:message code="PUBLIC" /></span></div>
+						<div>
+							<span class="middleout"><spring:message code="PUBLIC" /></span>
+						</div>
 					</div>
 				</div>
 			</c:when>
@@ -400,18 +340,22 @@
 					<div class="pri-pub2 "
 						onclick="toggleObject('${fedoraObject.URI}','yes')">
 						<div class="minitype-status"></div>
-						<div><span><spring:message code="PUBLIC" /></span></div>
+						<div>
+							<span><spring:message code="PUBLIC" /></span>
+						</div>
 					</div>
 				</div>
 			</c:otherwise>
 		</c:choose>
 		<div id="ko-title">
-			<div style="width: 10px; hieght:60px; display: inline-block;">
+			<div style="width: 10px; hieght: 60px; display: inline-block;">
 				<c:if test="${fedoraObject.metadata.published}">
 					<div class="type-status"></div>
 				</c:if>
 			</div>
-			<h1><small><c:out value="${fedoraObject.metadata.title}"></c:out></small></h1>
+			<h1>
+				<small><c:out value="${fedoraObject.metadata.title}"></c:out></small>
+			</h1>
 		</div>
 
 		<div class="date">
@@ -436,7 +380,7 @@
 			</div>
 
 		</div>
-<%-- 		<div class="userbutton accessLevelTwo" display="none">
+		<%-- 		<div class="userbutton accessLevelTwo" display="none">
 			<ul id="bannericonrow">
 				<li>
 					<div style="position: relative">
@@ -464,7 +408,6 @@
 			</div>
 		</div> --%>
 	</div>
-
 	<div class="header">
 		<div class="objectcontainer">
 			<div class="headercol">
@@ -478,8 +421,9 @@
 
 
 				</ul>
-				<div id="ellipsis" class="labels accessLevelOne"><img
-					src="<c:url value="/resources/images/more.png"/> " /></div>
+				<div id="ellipsis" class="labels accessLevelOne">
+					<img src="<c:url value="/resources/images/more.png"/> " />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -494,15 +438,18 @@
 							</h3>
 							<%-- <sf:form class="display-content" id="metadata_view" 
 								modelAttribute="fedoraObject" action="deleteObject" method="DELETE"> --%>
-								
 							<div class="inline editwrapper accessLevelOne">
-								<button class="inline edit" id="editButton"
-									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
+								<button class="inline edit" id="metadataeditBtn"
+									style="position: relative; left: 0%">
+									<spring:message code="EDIT_BTN" />
+								</button>
 								<button class="inline edit" id="deleteButton"
-									style="position: relative; left: 90%" onclick="deleteObject('${fedoraObject.URI}')"><spring:message code="DELETE_OBJ_BUTTON" /></button>
+									style="position: relative; left: 90%"
+									onclick="deleteObject('${fedoraObject.URI}')">
+									<spring:message code="DELETE_OBJ_BUTTON" />
+								</button>
 							</div>
-
-							<form class="display-content" id="metadata_view" >
+							<form class="display-content" id="metadata_view">
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_TITLE" />
@@ -510,14 +457,12 @@
 									<input type="text" class="metaEdit" id="title_data_v" disabled
 										value="${fedoraObject.metadata.title}" />
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_DESCRIPTION" />
 									</h4>
 									<textarea class="metaEdit" id="description_data_v" disabled>${fedoraObject.metadata.description}</textarea>
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_KEYWORD" />
@@ -525,7 +470,6 @@
 									<input type="text" class="metaEdit" id="keyword_data_v"
 										disabled value="${fedoraObject.metadata.keywords}" />
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_OWNERS" />
@@ -533,33 +477,30 @@
 									<input type="text" class="metaEdit" id="owner_data_v" disabled
 										value="${fedoraObject.metadata.owner}" />
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_CONTRIBUTORS" />
 									</h4>
 									<input type="text" class="metaEdit" id="contributor_data_v"
 										disabled value="${fedoraObject.metadata.contributors}" />
-										
-									
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_CITATIONS" />
 									</h4>
-									
-									<c:forEach var="citationEntry" items="${fedoraObject.metadata.citations}"
-																	varStatus="loopStatus">
-										<div><input type="text" class="metaEdit" disabled
-												value="${citationEntry.citation_title}" ><input type="hidden" class="metaEdit" 
-												value="${citationEntry.citation_at}" ></div>
-										</c:forEach>
-										<!-- <input type="text" class="metaEdit" id="citation_data_v"
-										disabled value="       " /> -->
+
+									<c:forEach var="citationEntry"
+										items="${fedoraObject.metadata.citations}"
+										varStatus="loopStatus">
+										<div>
+											<input type="text" class="metaEdit" disabled
+												value="${citationEntry.citation_title}"><input
+												type="hidden" class="metaEdit"
+												value="${citationEntry.citation_at}">
+										</div>
+									</c:forEach>
 								</div>
-								
-									<%-- <div class="addtext">
+								<%-- <div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_LICENSE" />
 									</h4>
@@ -567,10 +508,8 @@
 									<input type="text" class="metaEdit" id="license_data_v"
 										disabled value="--------" />
 								</div> --%>
-
-
 								<input type="hidden" path="URI" value="${fedoraObject.URI}" />
-							</form> 
+							</form>
 							<sf:form class="display-content" method="POST"
 								action="editMetadata" modelAttribute="fedoraObject"
 								style="display:none; position: relative;" id="metadata_edit">
@@ -578,17 +517,15 @@
 								<button class="done" id="saveButton" type="submit">
 									<spring:message code="SAVE_CHANGES_BTN" />
 								</button>
-
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_TITLE" />
 									</h4>
 									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="title_data" path="metadata.title" value="${fedoraObject.metadata.title}" />
+										id="title_data" path="metadata.title"
+										value="${fedoraObject.metadata.title}" />
 									<span>140/140</span>
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_DESCRIPTION" />
@@ -598,7 +535,6 @@
 										value="${fedoraObject.metadata.description}" />
 									<span>500/500</span>
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_KEYWORD" />
@@ -608,16 +544,15 @@
 										value="${fedoraObject.metadata.keywords}" />
 									<span>140/140</span>
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_OWNERS" />
 									</h4>
 									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="owner_data" path="metadata.owner" value="${fedoraObject.metadata.owner}" />
+										id="owner_data" path="metadata.owner"
+										value="${fedoraObject.metadata.owner}" />
 									<span>140/140</span>
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_CONTRIBUTORS" />
@@ -628,29 +563,36 @@
 									<span>140/140</span>
 									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
 								</div>
-
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_CITATIONS" />
 									</h4>
 									<div class='entryArea' id='citation_data_entry'>
-									<c:forEach var="citationEntry" items="${fedoraObject.metadata.citations}"
-varStatus="loopStatus">
-       <div class="addtext"><sf:input type="text" class="metaEdit" id="citation${loopStatus.index}" value="${citationEntry.citation_title}" path="metadata.citations[${loopStatus.index}].citation_title" />
-              <sf:input type="hidden" id="citation${loopStatus.index}_link" class="metaEdit" path="metadata.citations[${loopStatus.index}].citation_at" value="${citationEntry.citation_at}" />
-              <sf:input type="hidden" path="metadata.citations[${loopStatus.index}].citation_id" value="${citationEntry.citation_id}" />
-              <button class="redroundbutton delete_btn" type="button"><img src="resources/images/Close_Icon.png" width="12px"></button></div>
-</c:forEach>
- 
-									
- 									
- 									
- 										</div>
-										<input type="text" class="metaEdit" id="citation_data"
-										 placeholder="Click here to add citations.       " />
+										<c:forEach var="citationEntry"
+											items="${fedoraObject.metadata.citations}"
+											varStatus="loopStatus">
+											<div class="addtext">
+												<sf:input type="text" class="metaEdit"
+													id="citation${loopStatus.index}"
+													value="${citationEntry.citation_title}"
+													path="metadata.citations[${loopStatus.index}].citation_title" />
+												<sf:input type="hidden"
+													id="citation${loopStatus.index}_link" class="metaEdit"
+													path="metadata.citations[${loopStatus.index}].citation_at"
+													value="${citationEntry.citation_at}" />
+												<sf:input type="hidden"
+													path="metadata.citations[${loopStatus.index}].citation_id"
+													value="${citationEntry.citation_id}" />
+												<button class="redroundbutton delete_btn" type="button">
+													<img src="resources/images/Close_Icon.png" width="12px">
+												</button>
+											</div>
+										</c:forEach>
+									</div>
+									<input type="text" class="metaEdit" id="citation_data"
+										placeholder="Click here to add citations.       " />
 								</div>
-								
-<%-- 									<div class="addtext">
+								<%-- 									<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_LICENSE" />
 									</h4>
@@ -658,8 +600,6 @@ varStatus="loopStatus">
 									<input type="text" class="metaEdit" id="license_data"
 										value="LICENSE" />
 								</div> --%>
-
-
 							</sf:form>
 						</div>
 					</li>
@@ -669,10 +609,11 @@ varStatus="loopStatus">
 								<spring:message code="PAYLOAD_TAB" />
 							</h3>
 							<div class="inline editwrapper accessLevelOne">
-								<button class="inline edit" id="editPayloadButton"
-									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
+								<button class="inline edit" id="payloadEditBtn"
+									style="position: relative; left: 0%">
+									<spring:message code="EDIT_BTN" />
+								</button>
 							</div>
-
 							<sf:form class="display-content" id="payloadEdit" method="POST"
 								style="display:none;position: relative;" action="editPayload"
 								modelAttribute="fedoraObject">
@@ -690,20 +631,19 @@ varStatus="loopStatus">
 										path="payloadDescriptor.functionName"
 										value="${fedoraObject.payloadDescriptor.functionName}" />
 									<span>140/140</span>
-
 								</div>
 								<div class="addtext">
 									<h4>
 										<spring:message code="PAYLOAD_TYPE" />
 										<spring:message code="REQUIRED_TO_SELECT" />
 									</h4>
-									<sf:select path="payloadDescriptor.engineType" class="options" id="engineType">
+									<sf:select path="payloadDescriptor.engineType" class="options"
+										id="engineType">
 										<sf:option value="Python">PYTHON</sf:option>
 									</sf:select>
 								</div>
-
-
-								<div id="payloadDropFile" class="dropfile" style="display:none;">
+								<div id="payloadDropFile" class="dropfile"
+									style="display: none;">
 									<div class="upload-direction">
 										<input type="file" name="file" id="file_payload"
 											class="inputfile"
@@ -719,7 +659,6 @@ varStatus="loopStatus">
 											<p>
 												<spring:message code="FILE_TYPE" />
 											</p>
-
 										</label>
 									</div>
 									<p class="instruction">
@@ -728,29 +667,24 @@ varStatus="loopStatus">
 										<spring:message code="PAYLOAD_DOWNLOAD_MESSAGE" />
 									</p>
 								</div>
-
 								<div class="display-payload" id="payloadTextAreaDisplay">
-																	<button id="clearPayloadButton"><spring:message code="REMOVE_BTN" /></button>
-									<sf:textarea id="payloadTextArea"
-										path="payload"></sf:textarea>
+									<button id="clearPayloadButton">
+										<spring:message code="REMOVE_BTN" />
+									</button>
+									<sf:textarea id="payloadTextArea" path="payload"></sf:textarea>
 									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
 								</div>
-
-
-
 							</sf:form>
-
-							<form class="display-content" id="displayPayload">
-
+							<form class="display-content" id="displaypayload">
 								<div>
 									<h4>
 										<spring:message code="PAYLOAD_FUNCTION" />
 										<spring:message code="REQUIRED_FIELD" />
 									</h4>
-									<input type="text" class="metaEdit" id="functionname_data" disabled
+									<input type="text" class="metaEdit" id="functionname_data"
+										disabled
 										value="${fedoraObject.payloadDescriptor.functionName}">
 								</div>
-
 								<div>
 									<h4>
 										<spring:message code="PAYLOAD_TYPE" />
@@ -758,13 +692,10 @@ varStatus="loopStatus">
 									<input type="text" class="metaEdit" id="enginetype_data"
 										disabled value="${fedoraObject.payloadDescriptor.engineType}">
 								</div>
-
-
 								<div class="display-payload">
 									<textarea class="autosize" id="payloadTextArea-v">${fedoraObject.payload}</textarea>
 								</div>
 							</form>
-
 						</div>
 					</li>
 					<li id="input">
@@ -773,13 +704,14 @@ varStatus="loopStatus">
 								<spring:message code="INPUT_MESSAGE" />
 							</h3>
 							<div class="inline editwrapper accessLevelOne">
-								<button class="inline edit" id="editInputButton" style="position:relative;"><spring:message code="EDIT_BTN" /></button>
+								<button class="inline edit" id="inputEditBtn"
+									style="position: relative;">
+									<spring:message code="EDIT_BTN" />
+								</button>
 							</div>
-
-							<form class="display-content" id="displayInput">
-
+							<form class="display-content" id="displayinput">
 								<div class="display-payload">
-										<textarea class="autosize" id="inputTextArea-v">${fedoraObject.inputMessage}</textarea>
+									<textarea class="autosize" id="inputTextArea-v">${fedoraObject.inputMessage}</textarea>
 								</div>
 							</form>
 							<sf:form class="display-content" id="inputEdit" method="POST"
@@ -788,8 +720,7 @@ varStatus="loopStatus">
 								<button type="submit" class="done" id="saveInputButton">
 									<spring:message code="SAVE_CHANGES_BTN" />
 								</button>
-
-								<div id="inputDropFile" class="dropfile" style="display:none;">
+								<div id="inputDropFile" class="dropfile" style="display: none;">
 									<div class="upload-direction">
 										<input type="file" name="file_input" id="file_input"
 											class="inputfile"
@@ -812,17 +743,15 @@ varStatus="loopStatus">
 										<spring:message code="INPUT_MESSAGE_DOWNLOAD" />
 									</p>
 								</div>
-
 								<div class="display-payload" id="inputTextAreaDisplay">
-																		<button id="clearInputButton"><spring:message code="REMOVE_BTN" /></button>
+									<button id="clearInputButton">
+										<spring:message code="REMOVE_BTN" />
+									</button>
 									<sf:textarea class="autosize" id="inputTextArea"
-									
 										path="inputMessage"></sf:textarea>
 									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
 								</div>
 							</sf:form>
-
-
 						</div>
 					</li>
 					<li id="output">
@@ -831,14 +760,14 @@ varStatus="loopStatus">
 								<spring:message code="OUTPUT_MESSAGE" />
 							</h3>
 							<div class="inline editwrapper accessLevelOne">
-								<button class="inline edit" id="editOutputButton"
-									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
+								<button class="inline edit" id="outputEditBtn"
+									style="position: relative; left: 0%">
+									<spring:message code="EDIT_BTN" />
+								</button>
 							</div>
-							<form class="display-content" id="displayOutput">
-
+							<form class="display-content" id="displayoutput">
 								<div class="display-payload">
 									<textarea class="autosize" id="outputTextArea-v">${fedoraObject.outputMessage}</textarea>
-								
 								</div>
 							</form>
 							<sf:form class="display-content" id="outputEdit" method="POST"
@@ -847,8 +776,7 @@ varStatus="loopStatus">
 								<button type="submit" class="done" id="saveOutputButton">
 									<spring:message code="SAVE_CHANGES_BTN" />
 								</button>
-
-								<div id="outputDropFile" class="dropfile" style="display:none;">
+								<div id="outputDropFile" class="dropfile" style="display: none;">
 									<div class="upload-direction">
 										<input type="file" name="file_output" id="file_output"
 											class="inputfile"
@@ -872,9 +800,10 @@ varStatus="loopStatus">
 										<spring:message code="OUTPUT_MESSAGE_DOWNLOAD" />
 									</p>
 								</div>
-
-			<div class="display-output" id="outputTextAreaDisplay">
-									<button id="clearOutputButton"><spring:message code="REMOVE_BTN" /></button>
+								<div class="display-output" id="outputTextAreaDisplay">
+									<button id="clearOutputButton">
+										<spring:message code="REMOVE_BTN" />
+									</button>
 									<sf:textarea class="autosize" id="outputTextArea"
 										path="outputMessage"></sf:textarea>
 									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
@@ -887,7 +816,6 @@ varStatus="loopStatus">
 							<h3 class="fieldName inline ">
 								<spring:message code="LOG_DATA_TAB" />
 							</h3>
-
 							<section class="display-content">
 							<div class="display-payload">
 								<p>${processedLogData}</p>
@@ -895,21 +823,7 @@ varStatus="loopStatus">
 							</section>
 						</div>
 					</li>
-					<li id="rfu">
-						<div id="tab-content6" class="tab-content view-obj">
-							<h3 class="fieldName inline">RFU</h3>
-							<div class="inline edit">
-								<spring:message code="EDIT_BTN" />
-							</div>
-							<section class="display-content">
-							<div>
-								<p>
-									{<br> Code from database <br>}
-								</p>
-							</div>
-							</section>
-						</div>
-					</li>
+
 				</ul>
 			</div>
 		</div>

@@ -1,14 +1,49 @@
 'use strict';
 
+
+function resetCitationText(){
+	$( "#citation_title" ).val( "" );
+	$( "#citation_link" ).val( "" );
+	$("#citation_detail").attr("src","");
+}
+
+function resetUserInfoText(){
+	$( "input[id$='_data']" ).val( "" );
+	/* $("#role_data").val(''); */
+	$("#pwd_data").prop('disabled',false);
+	$("#addUserButton").text("ADD USER");
+	document.getElementById("addUserButton").style.display = "block";
+	document.getElementById("cancelButton").style.display = "block";
+}
+
+
+function resetInputText() {
+	$(".current-tab").removeClass("current-tab");
+	$("#progressbar li:first-child").addClass("current-tab");
+	$('#progressbar li').children("img").css("display","none");
+	$('#addObj .fieldcontainer').css("display","none");
+	$('#first').css("display",	"block");
+	$("#entry_form").show();
+	$("#end_page").hide();		
+	$('#payloadTextArea').val("");
+	$('#functionName').val("");
+	$('#inputTextArea').val("");
+	$('#outputTextArea').val("");
+	$( "input[id$='_data']" ).val( "" );
+	$("#description_data").val("");
+	$("div[id$='_entry']").children().remove();
+	
+}
+
 $(document)
 		.ready(
 				function() {
 					document.getElementById('file_payload').addEventListener(
 							'change', readMultipleFiles, false);
 					document.getElementById('file_input').addEventListener(
-							'change', readInputFiles, false);
+							'change', readMultipleFiles, false);
 					document.getElementById('file_output').addEventListener(
-							'change', readOutputFiles, false);
+							'change', readMultipleFiles, false);
 					
 					
 					var inputLabels = ["TITLE","DESCRIPTION","KEYWORDS","OWNERS","CONTRIBUTORS","CITATIONS","LICENSE"];
@@ -260,17 +295,6 @@ $(document)
 					var urllink=$("#citation_link").val();
 					console.log(urllink);
 					$("#citation_detail").attr('src',urllink);
-/*					var myWindow = window.open(urllink, "myWindow", "width=400,height=700");   // Opens a new window
-					myWindow.focus();*/
-/*					var resp =myWindow.confirm("Is the displayed link correct?");
-					if(resp){
-						console.log("citation added.");
-						// Code to add citation
-					}else{
-						console.log("citation added.");
-						// Go back to citation overlay
-					}*/
-					//myWindow.close();
 					
 				});
 				$("#license_preview_btn").click(function(e){
@@ -278,16 +302,7 @@ $(document)
 					console.log(urllink);
 					var myWindow = window.open(urllink, "myWindow", "width=400,height=700");   // Opens a new window
 					myWindow.focus();
-/*					var resp =myWindow.confirm("Is the displayed link correct?");
-					if(resp){
-						console.log("citation added.");
-						// Code to add citation
-					}else{
-						console.log("citation added.");
-						// Go back to citation overlay
-					}*/
-					//myWindow.close();
-					
+				
 				});
 					$(".add-more1")
 							.click(

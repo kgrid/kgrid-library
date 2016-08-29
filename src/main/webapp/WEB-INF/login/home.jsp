@@ -27,8 +27,6 @@
 
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/button.css" />" type="text/css" />
-<%-- <link rel="stylesheet"
-	href="<c:url value="/resources/css/overlay.css" />" type="text/css" /> --%>
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/l_overlay.css" />" type="text/css" />
 <link rel="shortcut icon"
@@ -41,7 +39,7 @@
 	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" />
 <title><spring:message code="LOGIN_TITLE" /></title>
 <script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script type="text/javascript"
 	src="<c:url value="/resources/js/dropdown.js"/>"></script>
 <script src="<c:url value="/resources/js/scroll.js"/>"></script>
@@ -49,25 +47,6 @@
 
 <script>
 	
-/* 	function overlayToggle(overlayID, open){
-		var olElement = document.getElementById(overlayID);
-		if(open){
-			olElement.style.display="block";
-			olElement.style.width="100%";
-		}else{
-			olElement.style.display="none";
-			olElement.style.width="0%";
-		}
-	    document.body.classList.toggle('noscroll', open);
-		if(overlayID=="addObject"){
-			resetInputText();
-		}
-		if(overlayID=="libraryuser"){
-			resetUserInfoText();
-		}
-		
-	} */
-
 	function overlayHeightResize(overlayID, window_height){
 		var overlayPane =$('#'+overlayID).find("> .ol_pane");
 		var entryform = overlayPane.find(".entryform");
@@ -118,42 +97,6 @@
 		}
 		
 	}
-	
-	function resetCitationText(){
-		$( "#citation_title" ).val( "" );
-		$( "#citation_link" ).val( "" );
-		$("#citation_detail").attr("src","");
-	}
-	
-	function resetUserInfoText(){
-		$( "input[id$='_data']" ).val( "" );
-		/* $("#role_data").val(''); */
-		$("#pwd_data").prop('disabled',false);
-		$("#addUserButton").text("ADD USER");
-		document.getElementById("addUserButton").style.display = "block";
-		document.getElementById("cancelButton").style.display = "block";
-	}
-	
-	
-	function resetInputText() {
-		$(".current-tab").removeClass("current-tab");
-		$("#progressbar li:first-child").addClass("current-tab");
-		$('#progressbar li').children("img").css("display","none");
-		$('#addObj .fieldcontainer').css("display","none");
-		$('#first').css("display",	"block");
-		$("#entry_form").show();
-		$("#end_page").hide();		
-		$('#payloadTextArea').val("");
-		$('#functionName').val("");
-		$('#inputTextArea').val("");
-		$('#outputTextArea').val("");
-		$( "input[id$='_data']" ).val( "" );
-		$("#description_data").val("");
-		$("div[id$='_entry']").children().remove();
-		
-	}
-
-
 </script>
 </head>
 <body>
@@ -189,7 +132,6 @@
 			<div id="bannerbk">
  				<img src="<c:url value="/resources/images/bannerBackground.png"/>"> 
 			</div>
-
 			<div class="banner-content" id="landing">
 				<h1>
 					<spring:message code="PRODUCT_NAME" />
@@ -284,10 +226,7 @@
 	</div>
 	<div class="maincontentwrapper">
 		<div class="main-content">
-
 			<div class="datagrid">
-
-
 				<table class="rowcontainer">
 					<c:forEach var="fedoraObject" items="${objects}"
 						varStatus="loopStatus">
@@ -298,7 +237,6 @@
 										<ul>
 											<li class="col-data col-type"><c:choose>
 													<c:when test="${not fedoraObject.metadata.published}">
-
 													</c:when>
 													<c:otherwise>
 														<img
@@ -319,7 +257,6 @@
 						</tr>
 					</c:forEach>
 				</table>
-
 			</div>
 		</div>
 	</div>

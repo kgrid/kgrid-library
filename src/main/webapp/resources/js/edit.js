@@ -25,7 +25,8 @@ $(document).ready(
 		function savechange() {
               document.getElementById("editButton").style.display = "inline-block";
                        document.getElementById("saveButton").style.display = "none";
-             document.getElementById("cancelButton").style.display = "none";          var y = document.getElementsByClassName("metaEdit");
+             document.getElementById("cancelButton").style.display = "none";          
+             var y = document.getElementsByClassName("metaEdit");
             var i;
             for (i = 0; i < y.length; i++) {
                  y[i].disabled = true;
