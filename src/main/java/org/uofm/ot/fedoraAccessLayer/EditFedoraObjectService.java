@@ -6,39 +6,40 @@ import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.Metadata;
 
 public class EditFedoraObjectService extends FedoraObjectService {
 
-	public void editObjectMetadata(FedoraObject fedoraObject) throws ObjectTellerException{
+	public void editObjectMetadata(Metadata metadata,String objectURI) throws ObjectTellerException{
 		String data = 
 			FusekiConstants.PREFIX_DC +"\n "+
 			FusekiConstants.PREFIX_OT +"\n "+		
 			"	DELETE \n" +
 			"	{ \n" +  
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   dc:title  ?o0. \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:contributors ?o1. \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:description ?o2. \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">	  ot:owner ?o3 . \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:keywords ?o4 . \n"+
+			"	  <"+super.baseURI+objectURI+">   dc:title  ?o0. \n"+
+			"	  <"+super.baseURI+objectURI+">   ot:contributors ?o1. \n"+
+			"	  <"+super.baseURI+objectURI+">   ot:description ?o2. \n"+
+			"	  <"+super.baseURI+objectURI+">	  ot:owner ?o3 . \n"+
+			"	  <"+super.baseURI+objectURI+">   ot:keywords ?o4 . \n"+
 			"	} \n"+
 			"	INSERT \n"+
 			"	{ \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   dc:title   \""+fedoraObject.getMetadata().getTitle()+"\"  .  \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:contributors  \""+fedoraObject.getMetadata().getContributors()+"\"  .  \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:description   \""+fedoraObject.getMetadata().getDescription()+"\"  . \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:owner    \""+fedoraObject.getMetadata().getOwner()+"\"  .  \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+">   ot:keywords  \""+fedoraObject.getMetadata().getKeywords()+"\" . \n"+
+			"	  <"+super.baseURI+objectURI+">   dc:title   \""+metadata.getTitle()+"\"  .  \n"+
+			"	  <"+super.baseURI+objectURI+">   ot:contributors  \""+metadata.getContributors()+"\"  .  \n"+
+			"	  <"+super.baseURI+objectURI+">   ot:description   \""+metadata.getDescription()+"\"  . \n"+
+			"	  <"+super.baseURI+objectURI+">   ot:owner    \""+metadata.getOwner()+"\"  .  \n"+
+			"	  <"+super.baseURI+objectURI+">   ot:keywords  \""+metadata.getKeywords()+"\" . \n"+
 			"	} \n"+
 			"	WHERE \n"+
 			"	{  \n"+
-			"	 <"+super.baseURI+fedoraObject.getURI()+">   dc:title  ?o0 . \n"+
-			"	 <"+super.baseURI+fedoraObject.getURI()+">   ot:contributors ?o1 .\n"+
-			"	 <"+super.baseURI+fedoraObject.getURI()+">   ot:description ?o2 .\n"+
-			"	 <"+super.baseURI+fedoraObject.getURI()+">	 ot:owner ?o3 .\n"+
-			"	 <"+super.baseURI+fedoraObject.getURI()+"> 	 ot:keywords ?o4 . \n"+
+			"	 <"+super.baseURI+objectURI+">   dc:title  ?o0 . \n"+
+			"	 <"+super.baseURI+objectURI+">   ot:contributors ?o1 .\n"+
+			"	 <"+super.baseURI+objectURI+">   ot:description ?o2 .\n"+
+			"	 <"+super.baseURI+objectURI+">	 ot:owner ?o3 .\n"+
+			"	 <"+super.baseURI+objectURI+"> 	 ot:keywords ?o4 . \n"+
 			"	} ";
 		
-		super.sendPatchRequestForUpdatingTriples(data, fedoraObject.getURI(),null); 
+		super.sendPatchRequestForUpdatingTriples(data, objectURI,null); 
 	} 
 	
 	public void toggleObject(String objectURI, String param) throws ObjectTellerException {

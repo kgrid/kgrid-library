@@ -29,6 +29,7 @@ import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.User;
+import org.uofm.ot.services.KnowledgeObjectService;
 
 import com.google.gson.Gson; 
 
@@ -44,6 +45,8 @@ public class ObjectController {
 	private GetFedoraObjectService getFedoraObjectService;
 	
 	private DeleteFedoraResourceService deleteFedoraResourceService;
+	
+	private KnowledgeObjectService objectService;
 
 	private static final Logger logger = Logger.getLogger(ObjectController.class);
 
@@ -73,12 +76,16 @@ public class ObjectController {
 	}
 
 
+	public void setObjectService(KnowledgeObjectService objectService) {
+		this.objectService = objectService;
+	}
+
+
 	@RequestMapping(value = "/object.{objectURI}", method = RequestMethod.GET)
 	public String getObject( @PathVariable String objectURI, ModelMap model, FedoraObject fedoraObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
 		String view = "objects/ObjectView";
 		try {
 			if(validateAccessToPrivateObject(objectURI, loggedInUser)) {
-
 				getObject(objectURI, model);
 				model.addAttribute("ActiveTab", "METADATA");
 			} else {
@@ -102,7 +109,7 @@ public class ObjectController {
 				
 				List<Citation> oldCitations = fusekiService.getObjectCitations(fedoraObject.getURI());
 				
-				editFedoraObjectService.editObjectMetadata(fedoraObject);
+				editFedoraObjectService.editObjectMetadata(fedoraObject.getMetadata(),fedoraObject.getURI());
 				
 				
 				if(fedoraObject.getMetadata() != null && fedoraObject.getMetadata().getCitations() != null) {
@@ -191,31 +198,8 @@ public class ObjectController {
 	}
 
 	private void getObject(String objectURI,ModelMap model) throws ObjectTellerException {
-		FedoraObject object = new FedoraObject();
-		object.setURI(objectURI);
-
-		object = fusekiService.getKnowledgeObject(object);
-
-		PayloadDescriptor payloadD = fusekiService.getPayloadProperties(objectURI);
-
-		object.setPayloadDescriptor(payloadD);
-
-		String provDataPart1 = fusekiService.getObjectProvProperties(objectURI);
-
-		String provDataPart2 = fusekiService.getObjectProvProperties(objectURI+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType());
-
-		object.setLogData(provDataPart1+provDataPart2);
 		
-		List<Citation> citations = fusekiService.getObjectCitations(objectURI);
-		
-		object.getMetadata().setCitations(citations);
-
-		object.setPayload(getFedoraObjectService.getObjectContent(objectURI, ChildType.PAYLOAD.getChildType()));
-
-		object.setInputMessage(getFedoraObjectService.getObjectContent(objectURI, ChildType.INPUT.getChildType()));
-
-		object.setOutputMessage(getFedoraObjectService.getObjectContent(objectURI, ChildType.OUTPUT.getChildType()));
-
+		FedoraObject object = objectService.getCompleteKnowledgeObject(objectURI);
 		model.addAttribute("fedoraObject",object);
 
 		String logData = object.getLogData();

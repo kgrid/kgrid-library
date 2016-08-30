@@ -9,9 +9,6 @@ public class MetadataService {
 		return null;
 	}
 	
-	public Metadata addOrEditMetadataOfKnowledgeObject(String uri, Metadata newMetadata) throws ObjectTellerException {
-		return null;
-	}
 	
 
 

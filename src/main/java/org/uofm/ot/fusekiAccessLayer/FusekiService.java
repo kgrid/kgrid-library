@@ -215,7 +215,7 @@ public class FusekiService {
 				
 				while(resultSet.hasNext()) {
 					QuerySolution querySolution = resultSet.next();
-					fedoraObject = mapQuerySolutionToFedoraObject(querySolution,true,uri,false);
+					fedoraObject = mapQuerySolutionToFedoraObject(querySolution,true,fedoraObject.getURI(),false);
 				}
 			}
 		} else {

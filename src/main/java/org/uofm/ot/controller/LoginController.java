@@ -61,8 +61,8 @@ public class LoginController {
 
 	private String getObjectPage( ModelMap model) {		
 		try {
-			List<FedoraObject> list = objectService.getKnowledeObjects(false);
-			Integer publishedObjects = fusekiService.getNumberOfPublishedObjects();
+			List<FedoraObject> list = objectService.getKnowledgeObjects(false);
+			Integer publishedObjects = objectService.getNumberOfPublishedObjects();
 			model.addAttribute("objects", list);
 			model.addAttribute("TotalObjects", list.size());
 			if(publishedObjects != null)
@@ -126,7 +126,7 @@ public class LoginController {
 
 			List<FedoraObject> list;
 			try {
-				list = objectService.getKnowledeObjects(true);
+				list = objectService.getKnowledgeObjects(true);
 				model.addAttribute("objects", list);
 			} catch (ObjectTellerException ex) {
 				logger.error("Exception occured while retrieving objects "+ex.getCause());
