@@ -1,10 +1,13 @@
 package org.uofm.ot.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.knowledgeObject.Citation;
@@ -34,17 +37,26 @@ public class KnowledgeObjectController {
 		return null;
 	}
 	
+	@RequestMapping(value="/knowledgeObject", 
+			method=RequestMethod.GET , 
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public List<FedoraObject> geKnowledgeObjects(FedoraObject KnowledgeObject) throws ObjectTellerException {
+		return knowledgeObjectService.getKnowledgeObjects(false);
+	}
+	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject getKnowledgeObject( @PathVariable String objectURI)  {
-		FedoraObject fedoraObject = null;
-		try {
-			fedoraObject = knowledgeObjectService.getKnowledeObject(objectURI);
-		} catch (ObjectTellerException e) {
-			logger.error("Exception occured while retrieving Object with id "+objectURI+". Exception "+e.getMessage());
-		}
-		return fedoraObject;
+	public FedoraObject getKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
+		return knowledgeObjectService.getKnowledgeObject(objectURI);				
+	}
+	
+	
+	@RequestMapping(value="/knowledgeObject-complete/{objectURI}/", 
+			method=RequestMethod.GET , 
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public FedoraObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
+		return knowledgeObjectService.getCompleteKnowledgeObject(objectURI);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/", 
@@ -55,7 +67,7 @@ public class KnowledgeObjectController {
 		return null;
 	}
 	
-	@RequestMapping(value="/knowledgeObject", 
+	@RequestMapping(value="/knowledgeObject/{objectURI}/", 
 			method=RequestMethod.DELETE , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -109,10 +121,10 @@ public class KnowledgeObjectController {
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/metadata", 
 			method=RequestMethod.PUT , 
-			consumes = {MediaType.APPLICATION_JSON_VALUE},
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public Payload updateMetadta(Metadata metadata , @PathVariable String objectURI) {
-		return null;
+			consumes = {MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void updateMetadata(@RequestBody Metadata metadata , @PathVariable String objectURI) throws ObjectTellerException {
+		 knowledgeObjectService.addOrEditMetadata(objectURI, metadata);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage", 
@@ -127,32 +139,4 @@ public class KnowledgeObjectController {
 		return null;
 	}
 	
-	@RequestMapping(value="/knowledgeObject/{objectURI}/citations", 
-			method=RequestMethod.GET, 
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public List<Citation> getObjectCitations(@PathVariable String objectURI) {
-		return null;
-	}
-	
-	@RequestMapping(value="/knowledgeObject/{objectURI}/citation/{citationID}", 
-			method=RequestMethod.DELETE)
-	public List<Citation> deleteObjectCitation(@PathVariable String objectURI,@PathVariable String citationID ) {
-		return null;
-	}
-	
-	@RequestMapping(value="/knowledgeObject/{objectURI}/citations/", 
-			method=RequestMethod.PUT, 
-			consumes = {MediaType.APPLICATION_JSON_VALUE},
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public List<Citation> updateObjectCitations(@PathVariable String objectURI,List<Citation> citations) {
-		return null;
-	}
-	
-	@RequestMapping(value="/knowledgeObject/{objectURI}/citation/{citationID}", 
-			method=RequestMethod.PUT, 
-			consumes = {MediaType.APPLICATION_JSON_VALUE},
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public List<Citation> updateObjectCitation(@PathVariable String objectURI,@PathVariable String citationID, List<Citation> citations) {
-		return null;
-	}
 }

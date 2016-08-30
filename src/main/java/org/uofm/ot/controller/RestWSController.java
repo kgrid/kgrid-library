@@ -109,7 +109,7 @@ public class RestWSController {
 						PayloadDescriptor descriptor = fusekiService.getPayloadProperties(io.getObjectName());
 
 
-						if( chunk != null) {
+			     			if( chunk != null) {
 							if( EngineType.PYTHON.toString().equalsIgnoreCase(descriptor.getEngineType())){
 								PythonAdapter adapter = new PythonAdapter();
 								result = adapter.executeString(chunk, descriptor.getFunctionName(),io.getParams(),metadata.getReturntype());
