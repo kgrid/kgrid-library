@@ -55,6 +55,8 @@ public class KnowledgeObjectService {
 		FedoraObject object = new FedoraObject();
 		object.setURI(uri);
 		object = fusekiService.getKnowledgeObject(object);
+		List<Citation> citations = fusekiService.getObjectCitations(uri);	
+		object.getMetadata().setCitations(citations);
 		return object;
 	}
 	
@@ -77,11 +79,8 @@ public class KnowledgeObjectService {
 	}
 	
 	public FedoraObject getCompleteKnowledgeObject(String uri) throws ObjectTellerException {
-		FedoraObject object = new FedoraObject();
 		
-		object.setURI(uri);
-		
-		object = fusekiService.getKnowledgeObject(object);
+		FedoraObject object = getKnowledgeObject(uri);	
 		
 		PayloadDescriptor payloadD = fusekiService.getPayloadProperties(uri);
 
@@ -92,10 +91,6 @@ public class KnowledgeObjectService {
 		String provDataPart2 = fusekiService.getObjectProvProperties(uri+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType());
 
 		object.setLogData(provDataPart1+provDataPart2);
-		
-		List<Citation> citations = fusekiService.getObjectCitations(uri);
-		
-		object.getMetadata().setCitations(citations);
 
 		object.setPayload(getFedoraObjectService.getObjectContent(uri, ChildType.PAYLOAD.getChildType()));
 

@@ -44,7 +44,7 @@ public class KnowledgeObjectController {
 		return knowledgeObjectService.getKnowledgeObjects(false);
 	}
 	
-	@RequestMapping(value="/knowledgeObject/{objectURI}/", 
+	@RequestMapping(value="/knowledgeObject/{objectURI}", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public FedoraObject getKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
@@ -87,8 +87,8 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/{objectURI}/metadata", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject getMetadata( @PathVariable String objectURI) {
-		return null;
+	public Metadata getMetadata( @PathVariable String objectURI) throws ObjectTellerException {
+		return knowledgeObjectService.getKnowledgeObject(objectURI).getMetadata();
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/payload", 
