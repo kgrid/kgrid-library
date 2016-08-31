@@ -218,7 +218,7 @@ $(document)
 							console.log(cTitle);
 							var springPath = "metadata.citations["+citNumber+"]";
 							citNumber++;
-							var inField = '<div class="addtext"><input type="text" id="'+idx+'" name="'+idxName+'.citation_title" path="'+springPath+'.citation_title"  value="'+cTitle+'">';
+							var inField = '<div class="addtext"><input type="text" id="'+idx+'_title"'+'" name="'+idxName+'.citation_title" path="'+springPath+'.citation_title"  value="'+cTitle+'">';
 							var inField2 ='<input type="hidden" id="'+idx+'_link" name="'+idxName+'.citation_at"  path="'+springPath+'.citation_at" value="'+urllink+'">';
 		                    var delBtn ='<button class="redroundbutton delete_btn" type="button"><img src="resources/images/Close_Icon.png" width="12px"></button>';
 		                    var endTag="</div>";
