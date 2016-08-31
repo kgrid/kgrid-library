@@ -159,6 +159,7 @@
 						'change', readMultipleFiles, false);
 				document.getElementById('file_output').addEventListener(
 						'change', readMultipleFiles, false);
+				
 			});
 </script>
 <script type="text/javascript">
@@ -286,6 +287,55 @@
 				}
 			});
 		}
+	}
+	
+	function displayMetadata(uri) {
+		
+		
+			$.ajax({
+				type : 'GET',
+				url : "knowledgeObject/" + uri +"/metadata",
+				success : function(response) {
+					var test = JSON.stringify(response);
+					alert(test);
+				},
+				failure : function(response){
+					var test = JSON.stringify(response);
+					alert(test);
+				}
+			});
+		
+	}
+	
+	function saveMetadata(uri) {
+		
+		alert(uri);
+		
+		var metadata = new Object();
+		metadata.title = document.getElementById("title_data").value;
+		metadata.contributor = document.getElementById("contributor_data").value;
+		metadata.keywords = document.getElementById("keyword_data").value;
+		metadata.owner = document.getElementById("owner_data").value;
+		metadata.description = document.getElementById("description_data").value;
+		
+		var text = JSON.stringify(metadata);
+		
+		$.ajax({
+			method : 'PUT',
+			url : "knowledgeObject/" + uri +"/metadata",
+			dataType: "json",
+			data: text,
+			contentType: "application/json" ,
+			success : function(response) {
+				var test = JSON.stringify(response);
+				alert("Changes were successfully saved ");
+				
+			},
+			failure : function(response){
+				var test = JSON.stringify(response);
+				alert(test);
+			}
+		});
 	}
 </script>
 <script type="text/javascript"
@@ -443,6 +493,9 @@
 									style="position: relative; left: 0%">
 									<spring:message code="EDIT_BTN" />
 								</button>
+								<%-- <button type="button" class="inline edit" id="metadataeditDisplay"
+									style="position: relative; left: 0%" onclick="displayMetadata('${fedoraObject.URI}')">Display Metadata
+								</button> --%>
 								<button class="inline edit" id="deleteButton"
 									style="position: relative; left: 90%"
 									onclick="deleteObject('${fedoraObject.URI}')">
@@ -514,9 +567,10 @@
 								action="editMetadata" modelAttribute="fedoraObject"
 								style="display:none; position: relative;" id="metadata_edit">
 
-								<button class="done" id="saveButton" type="submit">
+								<%-- <button class="done" id="saveButton" type="submit">
 									<spring:message code="SAVE_CHANGES_BTN" />
-								</button>
+								</button> --%>
+								<button class="done" id="saveButton" type="button" onclick="saveMetadata('${fedoraObject.URI}')"><spring:message code="SAVE_CHANGES_BTN" /></button>
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_TITLE" />
