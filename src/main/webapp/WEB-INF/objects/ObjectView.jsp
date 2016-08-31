@@ -104,28 +104,11 @@
 						$("#owner_data").val(data_o);
 						$("#contributor_data").val(data_c);
 					} else {
-						$("#metadata_view").show();
-						$("#metadata_edit").hide();
-						$("#metadataeditBtn").text("EDIT");
-						$("#deleteButton").show();
-						$("#metadataeditBtn").css("left", "0%");
-						$("#title_data").text(function(i, origText) {
-							return origText;
-						});
-						$("#description_data").text(function(i, origText) {
-							return origText;
-						});
-						$("#keyword_data").text(function(i, origText) {
-							return origText;
-						});
-						$("#owner_data").text(function(i, origText) {
-							return origText;
-						});
-						$("#contributor_data").text(function(i, origText) {
-							return origText;
-						});
+						cancelEdit();
 					}
 				});
+				
+				
 
 				$("[id$='EditBtn']").click(function() {
 					var btn_id = this.id;
@@ -161,6 +144,29 @@
 						'change', readMultipleFiles, false);
 				
 			});
+	
+	function cancelEdit() {
+		$("#metadata_view").show();
+		$("#metadata_edit").hide();
+		$("#metadataeditBtn").text("EDIT");
+		$("#deleteButton").show();
+		$("#metadataeditBtn").css("left", "0%");
+		$("#title_data").text(function(i, origText) {
+			return origText;
+		});
+		$("#description_data").text(function(i, origText) {
+			return origText;
+		});
+		$("#keyword_data").text(function(i, origText) {
+			return origText;
+		});
+		$("#owner_data").text(function(i, origText) {
+			return origText;
+		});
+		$("#contributor_data").text(function(i, origText) {
+			return origText;
+		});
+	}
 </script>
 <script type="text/javascript">
 	function toggleObject(uri, param) {
@@ -309,14 +315,46 @@
 	
 	function saveMetadata(uri) {
 		
-		alert(uri);
+	
 		
 		var metadata = new Object();
 		metadata.title = document.getElementById("title_data").value;
-		metadata.contributor = document.getElementById("contributor_data").value;
+		metadata.contributors = document.getElementById("contributor_data").value;
 		metadata.keywords = document.getElementById("keyword_data").value;
 		metadata.owner = document.getElementById("owner_data").value;
 		metadata.description = document.getElementById("description_data").value;
+		
+		var citations = [] ;
+		var c = document.getElementById("citation_data_entry").childNodes ;
+		var i ;
+		for (i = 0; i < c.length; i++) {
+	
+	        if(c[i].nodeName == 'DIV'){
+	        	var citation = new Object() ;
+	        	var nodes = c[i].childNodes ;
+	        	var j ;
+	        	for (j = 0; j < nodes.length; j++) {
+	        		var id = nodes[j].id ; 
+	        		
+	        		if (typeof id != 'undefined') {
+	        			if(id.endsWith('_link')) {
+	        				citation.citation_at = nodes[j].value ;
+	        			}
+	        		
+	        			if(id.endsWith('_title')){
+	        				citation.citation_title = nodes[j].value ;
+	        			}
+	        		
+	        			if(id.endsWith('_id')) {
+	        				citation.citation_id = nodes[j].value ;
+	        			}
+	        		}
+	        	}
+	        	citations.push(citation);
+	        }
+	    }
+		
+		metadata.citations = citations ; 
 		
 		var text = JSON.stringify(metadata);
 		
@@ -329,13 +367,13 @@
 			success : function(response) {
 				var test = JSON.stringify(response);
 				alert("Changes were successfully saved ");
-				
+				location.reload();
 			},
 			failure : function(response){
 				var test = JSON.stringify(response);
 				alert(test);
 			}
-		});
+		}); 
 	}
 </script>
 <script type="text/javascript"
@@ -569,8 +607,10 @@
 
 								<%-- <button class="done" id="saveButton" type="submit">
 									<spring:message code="SAVE_CHANGES_BTN" />
-								</button> --%>
-								<button class="done" id="saveButton" type="button" onclick="saveMetadata('${fedoraObject.URI}')"><spring:message code="SAVE_CHANGES_BTN" /></button>
+								</button>    --%>
+								<button class="done" id="saveButton" type="button" onclick="saveMetadata('${fedoraObject.URI}')">
+									<spring:message code="SAVE_CHANGES_BTN" />
+								</button> 
 								<div class="addtext">
 									<h4>
 										<spring:message code="OBJECT_TITLE" />
@@ -627,14 +667,14 @@
 											varStatus="loopStatus">
 											<div class="addtext">
 												<sf:input type="text" class="metaEdit"
-													id="citation${loopStatus.index}"
+													id="citation${loopStatus.index}_title"
 													value="${citationEntry.citation_title}"
 													path="metadata.citations[${loopStatus.index}].citation_title" />
 												<sf:input type="hidden"
 													id="citation${loopStatus.index}_link" class="metaEdit"
 													path="metadata.citations[${loopStatus.index}].citation_at"
 													value="${citationEntry.citation_at}" />
-												<sf:input type="hidden"
+												<sf:input type="hidden" id="citation${loopStatus.index}_id"
 													path="metadata.citations[${loopStatus.index}].citation_id"
 													value="${citationEntry.citation_id}" />
 												<button class="redroundbutton delete_btn" type="button">
