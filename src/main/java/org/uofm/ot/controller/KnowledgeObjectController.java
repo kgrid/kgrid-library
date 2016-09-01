@@ -45,9 +45,7 @@ public class KnowledgeObjectController {
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<FedoraObject> createKnowledgeObject(@RequestBody FedoraObject KnowledgeObject,@ModelAttribute("loggedInUser") User loggedInUser, HttpServletRequest request ) throws ObjectTellerException, URISyntaxException {
-		if(loggedInUser == null) {
-			loggedInUser = new User("nbahulek@umich.edu", "test", 48, "Namita", "B.", UserRoles.ADMIN );
-		}
+
 		ResponseEntity<FedoraObject> entity = null;
 		if (loggedInUser != null) {
 			
