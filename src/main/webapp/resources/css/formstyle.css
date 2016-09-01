@@ -18,13 +18,17 @@
     padding: 10px;
     height:100%;
 }
-#end_page{
+#begin_page, #end_page{
     width:96%;
     text-align: center;
     height:70%;
     margin:0 auto;
 }
 
+#begin_page h3{
+	margin-top: 60px;
+    padding: 70px;
+}
 #addObj_f{
 	height:96%;
 }
@@ -111,6 +115,10 @@ input[type=password]{
 input[type=text].error,
 input[type=password].error{
 	  border: 1px solid red;
+}
+
+#new_title_data{
+   margin: 50px 0px 0px 0px;	
 }
 select{
    background: transparent;
@@ -226,6 +234,13 @@ input[type=button]{
     right:50px;
     bottom:0px;
 }
+
+#addObjButton {
+	    position:absolute;
+   margin: 0 auto;
+    bottom:80px;
+}
+
 .pre_btn{
      position:absolute;
      left:50px;
@@ -353,7 +368,7 @@ span[id$="error"]{
     font-style:italic;
 }
 
-#clearPayloadButton, #clearInputButton, #clearOutputButton{
+#payloadClearBtn, #inputClearBtn, #outputClearBtn{
 	background-color: #fff;
   color: #39b54a;
   font-size: 21px;

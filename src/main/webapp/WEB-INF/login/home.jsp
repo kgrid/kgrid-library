@@ -107,7 +107,7 @@
 		</div>
 	</c:if>
 
-	<div id="addObject" class="layered_overlay" aria-hidden="true">
+	<div id="addObject" class="layered_overlay">
 		<%@ include file="../objects/createNewObject.jsp"%>
 	</div>
 	
