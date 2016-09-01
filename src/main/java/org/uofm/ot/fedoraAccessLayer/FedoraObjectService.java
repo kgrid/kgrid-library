@@ -56,6 +56,9 @@ public class FedoraObjectService {
 				new UsernamePasswordCredentials(userName, password),
 				"UTF-8", false));
 
+		if(binary == null)
+			binary = "";
+		
 		HttpClient httpClient = new DefaultHttpClient();
 
 		HttpResponse response;
