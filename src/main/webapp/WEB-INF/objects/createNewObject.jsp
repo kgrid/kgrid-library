@@ -12,100 +12,6 @@
 <title>Add Object</title>
 <script>
 
-	function readMultipleFiles(evt) {
-		var field_id = this.id;
-		var sect_id = field_id.replace("file_", "");
-		var files = evt.target.files;
-		if (files) {
-			for (var i = 0, f; f = files[i]; i++) {
-				var r = new FileReader();
-				r.onload = (function(f) {
-					return function(e) {
-						var contents = e.target.result;
-						$("#" + sect_id + "DropFile").hide();
-						$("#" + sect_id + "TextAreaDisplay").show();
-						$("#" + sect_id + "TextArea").val(contents);
-					};
-				})(f);
-				r.readAsText(f);
-			}
-		} else {
-			alert("Failed to load files");
-		}
-	}
-
-	function addNewObject() {
-		var fedoraObject = new Object();
-		var metadata = new Object();
-		metadata.title = document.getElementById("title_data").value;
-		metadata.owner = document.getElementById("owner_data").value;
-		metadata.description = document.getElementById("description_data").value;
-		metadata.contributors = document.getElementById("contri_data").value;
-		metadata.keywords = document.getElementById("keyword_data").value;
-		//		metadata.license = document.getElementById("license_data").value;
-		var ctitle;
-		var clink;
-		var citations = [];
-		$("#citation_data_entry").find('input').each(function(index, element) {
-			var citation = new Object();
-			ctitle = $(element).attr("title");
-			clink = $(element).attr("url");
-			console.log(ctitle + " " + clink);
-			citation.citation_title = ctitle;
-			citation.citation_at = clink;
-			citations.push(citation);
-		});
-
-		metadata.citations = citations;
-
-		fedoraObject.metadata = metadata;
-
-		fedoraObject.payload = document.getElementById("payloadTextArea").value;
-		fedoraObject.inputMessage = document.getElementById("inputTextArea").value;
-		fedoraObject.outputMessage = document.getElementById("outputTextArea").value;
-
-		var payloadDescriptor = new Object();
-
-		payloadDescriptor.functionName = document
-				.getElementById("functionName").value;
-		payloadDescriptor.engineType = document.getElementById("engineType").value;
-
-		fedoraObject.payloadDescriptor = payloadDescriptor;
-
-		var text = JSON.stringify(fedoraObject);
-
-		$("#entry_form").hide();
-		$("#end_page").show();
-
-		$
-				.ajax({
-					beforeSend : function(xhrObj) {
-						xhrObj.setRequestHeader("Content-Type",
-								"application/json");
-						xhrObj.setRequestHeader("Accept", "application/json");
-					},
-					type : 'POST',
-					url : "createNewObject",
-					data : text,
-					dataType : "json",
-
-					success : function(response) {
-
-						if (response != 'empty') {
-							var test = JSON.stringify(response);
-							var obj = JSON.parse(test);
-
-							document.getElementById("successResult").innerHTML = " Your New Object Has Been Added To Your Library!<br> To make changes click on the edit button in each section.<br> Object ID: "
-									+ obj.uri;
-						}
-					},
-
-					error : function(response) {
-						document.getElementById("successResult").value = "ERROR";
-					}
-				});
-
-	}
 </script>
 </head>
 </head>
@@ -119,8 +25,23 @@
 			</button>
 		</div>
 		<div class="board" id="addObj">
-			<div class="entryform" id="entry_form">
-				<h3>
+			<div id="begin_page">
+			<h3> Create New Knowledge Object</h3>
+				<div class="addtext" id="newTitle">
+					<h4>
+						Please enter a title for the new knowledge object, then click on "Create Object".
+					</h4>
+				
+					<input type="text" maxlength="140" class="metaEdit"
+						id="new_title_data" path="metadata.title"
+						value="${fedoraObject.metadata.title}" />
+					<span>140/140</span>
+				</div>
+				<input id="addObjButton" type="button"
+					onclick="updateObject('new')" value="Create Object">
+			</div>
+			<div class="entryform" id="entry_form1">
+				<h3 id="page_title">
 					<spring:message code="ADD_OBJECT_TITLE" />
 				</h3>
 				<div>
@@ -130,20 +51,20 @@
 							<ul id="progressbar">
 								<li class="current-tab"><img
 									src="<c:url value="/resources/images/checkmark.png" />"
-									width="20px" style="display: none;">
-								<spring:message code="METADATA_TAB" /></li>
+									width="20px" style="display: none;"> <spring:message
+										code="METADATA_TAB" /></li>
 								<li><img
 									src="<c:url value="/resources/images/checkmark.png" />"
-									width="20px" style="display: none;">
-								<spring:message code="PAYLOAD_TAB" /></li>
+									width="20px" style="display: none;"> <spring:message
+										code="PAYLOAD_TAB" /></li>
 								<li><img
 									src="<c:url value="/resources/images/checkmark.png" />"
-									width="20px" style="display: none;">
-								<spring:message code="INPUT_MESSAGE" /></li>
+									width="20px" style="display: none;"> <spring:message
+										code="INPUT_MESSAGE" /></li>
 								<li><img
 									src="<c:url value="/resources/images/checkmark.png"/>"
-									width="20px" style="display: none;">
-								<spring:message code="OUTPUT_MESSAGE" /></li>
+									width="20px" style="display: none;"> <spring:message
+										code="OUTPUT_MESSAGE" /></li>
 							</ul>
 						</div>
 						<fieldset class="fieldcontainer" id="first">
@@ -194,7 +115,7 @@
 									</p>
 								</div>
 								<div class="display-payload" id="payloadTextAreaDisplay">
-									<button id="clearPayloadButton">
+									<button id="payloadClearBtn">
 										<spring:message code="REMOVE_BTN" />
 									</button>
 									<textarea id="payloadTextArea"></textarea>
@@ -231,7 +152,7 @@
 									</p>
 								</div>
 								<div class="display-input" id="inputTextAreaDisplay">
-									<button id="clearInputButton">
+									<button id="inputClearBtn">
 										<spring:message code="REMOVE_BTN" />
 									</button>
 									<textarea id="inputTextArea"></textarea>
@@ -268,7 +189,7 @@
 									</p>
 								</div>
 								<div class="display-output" id="outputTextAreaDisplay">
-									<button id="clearOutputButton">
+									<button id="outputClearBtn">
 										<spring:message code="REMOVE_BTN" />
 									</button>
 									<textarea id="outputTextArea"></textarea>
@@ -276,7 +197,7 @@
 							</div>
 							<input class="pre_btn" name="previous" type="button"
 								value="Previous"> <input id="addObjButton" type="button"
-								onclick="addNewObject()" value="Add Object">
+								onclick="updateObject('metadata')" value="Apply Changes">
 						</fieldset>
 					</sf:form>
 				</div>
@@ -294,6 +215,10 @@
 				<div>
 					<p id="successResult"
 						style="font-size: 28px; line-height: 2em; color: #666666;"></p>
+					<input id="editObjButton" type="button"
+								onclick="addObjContent()" value="Edit Content">
+					<input id="doneBtn" type="button"
+								onclick="overlaySlide('addObject',false)" value="Done">
 				</div>
 
 			</div>

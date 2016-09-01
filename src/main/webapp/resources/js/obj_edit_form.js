@@ -29,23 +29,15 @@ $(document)
 					
 					var count = 0; // To Count Blank Fields
 					/*------------ Validation Function-----------------*/
-					$("#clearPayloadButton").click(function(event) {
+					$("[id$='ClearBtn']").click(function(event) {
 						event.preventDefault();
-						$("#payloadDropFile").show();
-						$("#payloadTextAreaDisplay").hide();
-						$('#payloadTextArea').text("");
-					});
-					$("#clearInputButton").click(function(event) {
-						event.preventDefault();
-						$("#inputDropFile").show();
-						$("#inputTextAreaDisplay").hide();
-						$('#inputTextArea').text("");
-					});
-					$("#clearOutputButton").click(function(event) {
-						event.preventDefault();
-						$("#outputDropFile").show();
-						$("#outputTextAreaDisplay").hide();
-						$('#outputTextArea').text("");
+						var btn_id = this.id;
+						var tArea_id = btn_id.replace("ClearBtn", "TextArea");
+						var dropfile = btn_id.replace("ClearBtn", "DropFile");
+						$("#" + dropfile).show();
+						$("#" + tArea_id + "Display").hide();
+						$("#" + tArea_id).text("");
+						
 					});
 					$(".next_btn").click(function() { // Function Runs On NEXT
 						// Button Click

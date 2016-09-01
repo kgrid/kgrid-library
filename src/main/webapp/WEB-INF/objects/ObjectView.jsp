@@ -38,7 +38,6 @@
 
 	$(document).ready(	
 			function() {
-			
 				var userObj ="<%=session.getAttribute("DBUser")%>";
 				var prefixhash = "#";
 				var activeTab = prefixhash.concat('${ActiveTab}');
@@ -83,7 +82,15 @@
 						break;
 					}
 				}
+				
+				
+				
+				
+				
+				
+				
 				$("#metadataeditBtn").click(function() {
+					
 					console.log($(this).attr("id"));
 					var buttonText = $("#metadataeditBtn").text();
 					console.log(buttonText);
@@ -98,7 +105,7 @@
 						$("#metadata_edit").show();
 						$("#metadataeditBtn").text("CANCEL");
 						$("#metadataeditBtn").css("left", "640px");
-						$("#title_data").val(data_t);
+						$("#title_data_e").val(data_t);
 						$("#description_data").val(data_d);
 						$("#keyword_data").val(data_k);
 						$("#owner_data").val(data_o);
@@ -136,12 +143,7 @@
 					}
 				});
 
-				document.getElementById('file_payload').addEventListener(
-						'change', readMultipleFiles, false);
-				document.getElementById('file_input').addEventListener(
-						'change', readMultipleFiles, false);
-				document.getElementById('file_output').addEventListener(
-						'change', readMultipleFiles, false);
+				$('[id^="file_"]').on('change', readMultipleFiles);
 				
 			});
 	
@@ -244,34 +246,18 @@
 	}
 
 	function readMultipleFiles(evt) {
-
 		var field_id = this.id;
-		//Retrieve all the files from the FileList object
+		var sect_id = field_id.replace("file_", "");
 		var files = evt.target.files;
-
 		if (files) {
 			for (var i = 0, f; f = files[i]; i++) {
 				var r = new FileReader();
 				r.onload = (function(f) {
 					return function(e) {
 						var contents = e.target.result;
-						if (field_id.endsWith('payload')) {
-							$("#payloadDropFile").hide();
-							$("#payloadTextAreaDisplay").show();
-							$('#payloadTextArea').val(contents);
-						} else {
-							if (field_id.endsWith('input')) {
-								$("#inputDropFile").hide();
-								$("#inputTextAreaDisplay").show();
-								$('#inputTextArea').val(contents);
-							} else {
-								if (field_id.endsWith('output')) {
-									$("#outputDropFile").hide();
-									$("#outputTextAreaDisplay").show();
-									$('#outputTextArea').val(contents);
-								}
-							}
-						}
+						$("#" + sect_id + "DropFile").hide();
+						$("#" + sect_id + "TextAreaDisplay").show();
+						$("#" + sect_id + "TextArea").val(contents);
 					};
 				})(f);
 				r.readAsText(f);
@@ -390,6 +376,9 @@
 	<div id="overlay2">
 		<%@ include file="secondaryOverlay.jsp"%>
 	</div>
+<%-- 		<div id="addObject" class="layered_overlay" aria-hidden="true">
+		<%@ include file="../objects/createNewObject.jsp"%>
+	</div> --%>
 	<div id="topfixed">
 		<%@ include file="../common/banner.jsp"%>
 	</div>
@@ -528,9 +517,7 @@
 								modelAttribute="fedoraObject" action="deleteObject" method="DELETE"> --%>
 							<div class="inline editwrapper accessLevelOne">
 								<button class="inline edit" id="metadataeditBtn"
-									style="position: relative; left: 0%">
-									<spring:message code="EDIT_BTN" />
-								</button>
+									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
 								<%-- <button type="button" class="inline edit" id="metadataeditDisplay"
 									style="position: relative; left: 0%" onclick="displayMetadata('${fedoraObject.URI}')">Display Metadata
 								</button> --%>
@@ -599,7 +586,7 @@
 									<input type="text" class="metaEdit" id="license_data_v"
 										disabled value="--------" />
 								</div> --%>
-								<input type="hidden" path="URI" value="${fedoraObject.URI}" />
+								<input type="hidden" id="fObj" path="URI" value="${fedoraObject.URI}" />
 							</form>
 							<sf:form class="display-content" method="POST"
 								action="editMetadata" modelAttribute="fedoraObject"
@@ -616,7 +603,7 @@
 										<spring:message code="OBJECT_TITLE" />
 									</h4>
 									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="title_data" path="metadata.title"
+										id="title_data_e" path="metadata.title"
 										value="${fedoraObject.metadata.title}" />
 									<span>140/140</span>
 								</div>
@@ -704,9 +691,7 @@
 							</h3>
 							<div class="inline editwrapper accessLevelOne">
 								<button class="inline edit" id="payloadEditBtn"
-									style="position: relative; left: 0%">
-									<spring:message code="EDIT_BTN" />
-								</button>
+									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
 							</div>
 							<sf:form class="display-content" id="payloadEdit" method="POST"
 								style="display:none;position: relative;" action="editPayload"
@@ -762,7 +747,7 @@
 									</p>
 								</div>
 								<div class="display-payload" id="payloadTextAreaDisplay">
-									<button id="clearPayloadButton">
+									<button id="payloadClearBtn">
 										<spring:message code="REMOVE_BTN" />
 									</button>
 									<sf:textarea id="payloadTextArea" path="payload"></sf:textarea>
@@ -799,9 +784,7 @@
 							</h3>
 							<div class="inline editwrapper accessLevelOne">
 								<button class="inline edit" id="inputEditBtn"
-									style="position: relative;">
-									<spring:message code="EDIT_BTN" />
-								</button>
+									style="position: relative;"><spring:message code="EDIT_BTN" /></button>
 							</div>
 							<form class="display-content" id="displayinput">
 								<div class="display-payload">
@@ -838,7 +821,7 @@
 									</p>
 								</div>
 								<div class="display-payload" id="inputTextAreaDisplay">
-									<button id="clearInputButton">
+									<button id="inputClearBtn">
 										<spring:message code="REMOVE_BTN" />
 									</button>
 									<sf:textarea class="autosize" id="inputTextArea"
@@ -855,9 +838,7 @@
 							</h3>
 							<div class="inline editwrapper accessLevelOne">
 								<button class="inline edit" id="outputEditBtn"
-									style="position: relative; left: 0%">
-									<spring:message code="EDIT_BTN" />
-								</button>
+									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
 							</div>
 							<form class="display-content" id="displayoutput">
 								<div class="display-payload">
@@ -895,7 +876,7 @@
 									</p>
 								</div>
 								<div class="display-output" id="outputTextAreaDisplay">
-									<button id="clearOutputButton">
+									<button id="outputClearBtn">
 										<spring:message code="REMOVE_BTN" />
 									</button>
 									<sf:textarea class="autosize" id="outputTextArea"

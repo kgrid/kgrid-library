@@ -87,7 +87,9 @@
     margin-top:0px;
 }
 
-
+#entry_form1{
+	display:none;
+}
 .entryform h3{
     padding:22px 22px;
 }
