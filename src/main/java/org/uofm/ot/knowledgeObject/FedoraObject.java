@@ -12,7 +12,7 @@ public class FedoraObject {
 	
 	private String outputMessage;
 	
-	private PayloadDescriptor payloadDescriptor;
+	private PayloadDescriptor payloadDescriptor = new PayloadDescriptor();
 	
 	private String logData; 
 	

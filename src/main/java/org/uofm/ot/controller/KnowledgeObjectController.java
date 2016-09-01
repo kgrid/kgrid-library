@@ -1,12 +1,16 @@
 package org.uofm.ot.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.uofm.ot.exception.ObjectTellerException;
@@ -14,9 +18,16 @@ import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
+import org.uofm.ot.model.User;
+import org.uofm.ot.model.UserRoles;
 import org.uofm.ot.services.KnowledgeObjectService;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class KnowledgeObjectController {
@@ -33,8 +44,26 @@ public class KnowledgeObjectController {
 			method=RequestMethod.POST , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject createKnowledgeObject(FedoraObject KnowledgeObject) {
-		return null;
+	public ResponseEntity<FedoraObject> createKnowledgeObject(@RequestBody FedoraObject KnowledgeObject,@ModelAttribute("loggedInUser") User loggedInUser, HttpServletRequest request ) throws ObjectTellerException, URISyntaxException {
+		if(loggedInUser == null) {
+			loggedInUser = new User("nbahulek@umich.edu", "test", 48, "Namita", "B.", UserRoles.ADMIN );
+		}
+		ResponseEntity<FedoraObject> entity = null;
+		if (loggedInUser != null) {
+			
+			FedoraObject object= knowledgeObjectService.createKnowledgeObject(KnowledgeObject, loggedInUser);
+			String uri = request.getRequestURL()+"/" +object.getURI();
+			URI location = new URI(uri);
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.setLocation(location);
+			entity = new ResponseEntity<FedoraObject>(object,responseHeaders,HttpStatus.CREATED);
+			
+		} else {
+			
+			entity = new ResponseEntity<FedoraObject> (HttpStatus.UNAUTHORIZED);	
+			
+		}
+		return entity ; 
 	}
 	
 	@RequestMapping(value="/knowledgeObject", 

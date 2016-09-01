@@ -14,6 +14,7 @@ import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.PayloadDescriptor;
+import org.uofm.ot.model.User;
 
 
 public class KnowledgeObjectService {
@@ -150,5 +151,8 @@ public class KnowledgeObjectService {
 		return getKnowledgeObject(uri).getMetadata() ;
 	}
 	
+	public FedoraObject createKnowledgeObject(FedoraObject fedoraObject, User loggedInUser) throws ObjectTellerException {
+		return createFedoraObjectService.createObject(fedoraObject, loggedInUser);
+	}
 
 }
