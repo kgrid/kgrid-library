@@ -89,17 +89,13 @@ public class KnowledgeObjectService {
 
 		object.setPayloadDescriptor(payloadD);
 
-		String provDataPart1 = fusekiService.getObjectProvProperties(uri);
+		object.setLogData(getProvData(uri));
 
-		String provDataPart2 = fusekiService.getObjectProvProperties(uri+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType());
+		object.setPayload(getPayloadContent(uri));
 
-		object.setLogData(provDataPart1+provDataPart2);
+		object.setInputMessage(getInputMessageContent(uri));
 
-		object.setPayload(getFedoraObjectService.getObjectContent(uri, ChildType.PAYLOAD.getChildType()));
-
-		object.setInputMessage(getFedoraObjectService.getObjectContent(uri, ChildType.INPUT.getChildType()));
-
-		object.setOutputMessage(getFedoraObjectService.getObjectContent(uri, ChildType.OUTPUT.getChildType()));
+		object.setOutputMessage(getOutputMessageContent(uri));
 		
 		return object;
 	}
@@ -157,4 +153,23 @@ public class KnowledgeObjectService {
 		return createFedoraObjectService.createObject(fedoraObject, loggedInUser);
 	}
 
+	public String getInputMessageContent(String objectURI) throws ObjectTellerException{
+		return getFedoraObjectService.getObjectContent(objectURI, ChildType.INPUT.getChildType());
+	}
+	
+	public String getOutputMessageContent(String objectURI) throws ObjectTellerException{
+		return getFedoraObjectService.getObjectContent(objectURI, ChildType.OUTPUT.getChildType());
+	}
+	
+	public String getPayloadContent(String objectURI) throws ObjectTellerException{
+		return getFedoraObjectService.getObjectContent(objectURI, ChildType.PAYLOAD.getChildType());
+	}
+	
+	public String getProvData(String objectURI) throws ObjectTellerException{
+		String provDataPart1 = fusekiService.getObjectProvProperties(objectURI);
+
+		String provDataPart2 = fusekiService.getObjectProvProperties(objectURI+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType());
+
+		return provDataPart1 + provDataPart2 ; 
+	}
 }

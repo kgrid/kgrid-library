@@ -136,24 +136,42 @@ public class KnowledgeObjectController {
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage", 
-			method=RequestMethod.GET , 
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject getInputMessage( @PathVariable String objectURI) {
-		return null;
+			method=RequestMethod.GET )
+	public ResponseEntity<String> getInputMessage( @PathVariable String objectURI)  {
+		ResponseEntity<String> inputMessage = null;
+		try {
+			String content = knowledgeObjectService.getInputMessageContent(objectURI);
+			inputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
+		} catch (ObjectTellerException exception){
+			inputMessage = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		return inputMessage ; 
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/outputMessage", 
-			method=RequestMethod.GET , 
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject getOutputMessage( @PathVariable String objectURI) {
-		return null;
+			method=RequestMethod.GET)
+	public ResponseEntity<String> getOutputMessage( @PathVariable String objectURI) throws ObjectTellerException {
+		ResponseEntity<String> outputMessage = null;
+		try {
+			String content = knowledgeObjectService.getOutputMessageContent(objectURI);
+			outputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
+		} catch (ObjectTellerException exception){
+			outputMessage = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		return outputMessage ;
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/logData", 
-			method=RequestMethod.GET , 
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject getLogData( @PathVariable String objectURI) {
-		return null;
+			method=RequestMethod.GET )
+	public ResponseEntity<String> getLogData( @PathVariable String objectURI) throws ObjectTellerException {
+		ResponseEntity<String> logData = null;
+		try {
+			String content = knowledgeObjectService.getProvData(objectURI);
+			logData = new ResponseEntity<String>(content, HttpStatus.OK);
+		} catch (ObjectTellerException exception){
+			logData = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		return logData ;
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/metadata", 
