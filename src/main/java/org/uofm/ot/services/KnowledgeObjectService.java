@@ -181,4 +181,11 @@ public class KnowledgeObjectService {
 	public void editOutputMessageContent(String objectURI,String outputMessage) throws ObjectTellerException{
 		editFedoraObjectService.putBinary(outputMessage, objectURI, ChildType.OUTPUT.getChildType(), null);
 	}
+	
+	public Payload getPayload(String objectURI) throws ObjectTellerException {
+		Payload payload = fusekiService.getPayloadProperties(objectURI);
+		payload.setContent(getPayloadContent(objectURI));
+		return payload ;
+	}
+	
 }
