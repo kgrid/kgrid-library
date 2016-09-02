@@ -26,7 +26,6 @@ $(document)
 					var numberofFields = inputLabels.length;
 					var inputField;
 					
-					
 					var count = 0; // To Count Blank Fields
 					/*------------ Validation Function-----------------*/
 					$("[id$='ClearBtn']").click(function(event) {
@@ -42,7 +41,6 @@ $(document)
 					$(".next_btn").click(function() { // Function Runs On NEXT
 						// Button Click
 						/* $(this).parent().children("input").validate(); */
-
 						$(this).parent().next().fadeIn('slow');
 						$(this).parent().css({
 							'display' : 'none'
@@ -260,10 +258,8 @@ $(document)
 	                        	return beginTag+inLabel+entryArea+inField+charCounter+endTag;
 	                        }else{
 	                        	return beginTag+inLabel+inField+charCounter+endTag;
-	                  	
 	                        }
 						}
-			
 						
 						var validator = $("#citation_f").validate({ 
 							 errorPlacement: function(error, element) { // Append error within linked label

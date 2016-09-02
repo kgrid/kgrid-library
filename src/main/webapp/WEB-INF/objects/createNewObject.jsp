@@ -46,7 +46,7 @@
 				</h3>
 				<div>
 					<sf:form name="addObj_f" class="Add-content" id="addObj_f"
-						method="POST" modelAttribute="fedoraObject" action="addNewObject">
+						method="POST" modelAttribute="fedoraObject" action="addNewObject1">
 						<div id="barcontainer">
 							<ul id="progressbar">
 								<li class="current-tab"><img
@@ -69,7 +69,8 @@
 						</div>
 						<fieldset class="fieldcontainer" id="first">
 							<div id="metadata_fields"></div>
-							<input class="next_btn" name="next" type="button" value="Next">
+							<input class="next_btn" name="next" type="button" value="Next"><input id="addObjButton" type="button"
+								onclick="updateObject('metadata')" value="Apply Changes">
 						</fieldset>
 						<fieldset class="fieldcontainer">
 							<div id="fields">
@@ -123,7 +124,8 @@
 							</div>
 							<input class="pre_btn" name="previous" type="button"
 								value="Previous"> <input class="next_btn" name="next"
-								type="button" value="Next">
+								type="button" value="Next"><input id="addObjButton" type="button"
+								onclick="updateObject('payload')" value="Apply Changes">
 						</fieldset>
 						<fieldset class="fieldcontainer">
 							<div id="fields">
@@ -160,7 +162,8 @@
 							</div>
 							<input class="pre_btn" name="previous" type="button"
 								value="Previous"> <input class="next_btn" name="next"
-								type="button" value="Next">
+								type="button" value="Next"><input id="addObjButton" type="button"
+								onclick="updateObject('inputMessage')" value="Apply Changes">
 						</fieldset>
 						<fieldset class="fieldcontainer">
 							<div id="fields">
@@ -197,18 +200,10 @@
 							</div>
 							<input class="pre_btn" name="previous" type="button"
 								value="Previous"> <input id="addObjButton" type="button"
-								onclick="updateObject('metadata')" value="Apply Changes">
+								onclick="updateObject('outputMessage')" value="Apply Changes">
 						</fieldset>
 					</sf:form>
 				</div>
-			</div>
-			<div class="Add-content" id="toggle_test" name="toggle_test"
-				style="display: none;">
-				<div>Processing ....</div>
-				<button id="successDisp">Click to show the Status Page
-					after object successfully created object</button>
-				<button id="failureDisp">Click to show the Status Page
-					after object unable to be created</button>
 			</div>
 			<div id="end_page" style="display: none;">
 				<div class="creation_status"></div>
@@ -224,104 +219,8 @@
 			</div>
 		</div>
 	</div>
-	<div id="citation" class="layered_overlay">
-		<div id="citation_pane" class="ol_pane">
-			<div class="sidebar_close">
-				<h3>CLOSE</h3>
-				<button class="greenroundbutton" id="close_overlay"
-					onclick="overlaySlide('citation',false)">
-					<img src="<c:url value="/resources/images/Close_Icon.png" />">
-				</button>
-			</div>
-			<div class="board" id="addCitationEntry">
-				<div class="entryform" id="entry_form">
-					<h3>Add Citation</h3>
-					<div style="height: 80%;">
-						<form name="addObj_f" class="Add-content" id="addObj_f"
-							method="post">
-							<fieldset class="fieldcontainer" id="first">
-								<div>
-									<h4>TITLE, PMID or DOI</h4>
-									<div class="addtext">
-										<input class="textbox" name="citation_title"
-											id="citation_title" type="text"
-											placeholder="Enter Article Title, PMID or DOI "
-											maxlength="140"><span>140/140</span>
-									</div>
-								</div>
-								<div>
-									<h4>HYPERLINK</h4>
-									<button class="inline edit" id="preview_btn">PREVIEW</button>
-									<div class="addtext">
-										<input class="textbox" name="citation_link" id="citation_link"
-											type="text"
-											placeholder="Please provide the URL for the article "
-											maxlength="140"><span>140/140</span>
-									</div>
-								</div>
-								<div>
-									<h4>CITATION DETAIL</h4>
-									<div class="addtext">
-										<iframe id="citation_detail"></iframe>
-									</div>
-									<input class="done_btn" name="done" id="addCitation"
-										type="button" value="ADD">
-							</fieldset>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="license" class="layered_overlay">
-		<div id="license_pane" class="ol_pane">
-			<div class="sidebar_close">
-				<h3>CLOSE</h3>
-				<button class="greenroundbutton" id="close_overlay"
-					onclick="overlaySlide('license',false)">
-					<img src="<c:url value="/resources/images/Close_Icon.png" />">
-				</button>
-			</div>
-			<div class="board" id="selectLicense">
-				<div class="entryform" id="entry_form">
-					<h3>Add License</h3>
-					<div style="height: 80%;">
-						<form name="addObj_f" class="Add-content" id="addObj_f"
-							method="post">
-							<fieldset class="fieldcontainer" id="first">
-								<div class="addtext">
-									<h4>
-										License
-										<spring:message code="REQUIRED_TO_SELECT" />
-									</h4>
-									<select required class="options" id="license_title">
-										<option value="MIT">MIT</option>
-										<option value="CC">Creative Commons</option>
-									</select> <br>
-								</div>
-								<div>
-									<h4>HYPERLINK</h4>
-									<button class="inline edit" id="license_preview_btn">PREVIEW</button>
-									<div class="addtext">
-										<input class="textbox" name="license_link" id="license_link"
-											type="text"
-											placeholder="Please provide the URL for the license "
-											maxlength="140"><span>140/140</span>
-									</div>
-								</div>
-								<div>
-									<h4>LICENSE DETAIL</h4>
-									<div class="addtext">
-										<iframe id="license_detail"></iframe>
-									</div>
-									<input class="done_btn" name="done" id="addLicense"
-										type="button" value="ADD">
-							</fieldset>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+	<div id="overlay2">
+		<%@ include file="secondaryOverlay.jsp"%>
 	</div>
 </body>
 </html>

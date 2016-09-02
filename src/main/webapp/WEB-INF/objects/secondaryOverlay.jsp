@@ -18,7 +18,6 @@
 				<button class="greenroundbutton" id="close_overlay"
 					onclick="overlaySlide('citation',false)">
 					<img src="<c:url value="/resources/images/Close_Icon.png" />">
-
 				</button>
 				<input type="hidden" id="citation_idx">
 			</div>
@@ -38,12 +37,10 @@
 											maxlength="140"><span>140/140</span>
 									</div>
 									<label class="errorLabel" for="citation_title"> </label>
-
 								</div>
 								<div class="citationField">
 									<h4 title="citation_link">HYPERLINK</h4>
 									<button class="inline edit" type="button" id="preview_btn">PREVIEW</button>
-
 									<div class="addtext">
 										<input class="textbox" name="citation_link" id="citation_link"
 											type="text" spellcheck="false"
@@ -51,7 +48,6 @@
 											maxlength="140"><span>140/140</span>
 									</div>
 									<label class="errorLabel" for="citation_link"> </label>
-
 								</div>
 								<div>
 									<h4>CITATION DETAIL</h4>
@@ -75,7 +71,6 @@
 				<button class="greenroundbutton" id="close_overlay"
 					onclick="overlaySlide('license',false)">
 					<img src="<c:url value="/resources/images/Close_Icon.png" />">
-
 				</button>
 			</div>
 			<div class="board" id="selectLicense">
@@ -98,23 +93,17 @@
 								<div>
 									<h4>HYPERLINK</h4>
 									<button class="inline edit" id="license_preview_btn">PREVIEW</button>
-
 									<div class="addtext">
 										<input class="textbox" name="license_link" id="license_link"
-											type="text"
-											placeholder="Please provide the URL for the license "
+											type="text"	placeholder="Please provide the URL for the license "
 											maxlength="140"><span>140/140</span>
 									</div>
 								</div>
-
 								<div>
 									<h4>LICENSE DETAIL</h4>
-
 									<div class="addtext">
 										<iframe id="license_detail"></iframe>
 									</div>
-
-
 									<input class="done_btn" name="done" id="addLicense"
 										type="button" value="ADD">
 							</fieldset>
