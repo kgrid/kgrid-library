@@ -302,14 +302,20 @@ public class FusekiService {
 				QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
 				ResultSet resultSet = execution.execSelect();
 
-				while (resultSet.hasNext()) {
-					QuerySolution binding = resultSet.nextSolution();
-					String predicate = binding.get("p").toString();
-					if(predicate.contains(FusekiConstants.PROV_NAMESPACE) == true) {
-						String actualPredicate = predicate.substring(FusekiConstants.PROV_NAMESPACE.length());
-						logData = logData + objectURI + " " + actualPredicate + " " + binding.get("o").toString() +" \n ";
+				if(resultSet.hasNext()) {
+					while (resultSet.hasNext()) {
+						QuerySolution binding = resultSet.nextSolution();
+						String predicate = binding.get("p").toString();
+						if(predicate.contains(FusekiConstants.PROV_NAMESPACE) == true) {
+							String actualPredicate = predicate.substring(FusekiConstants.PROV_NAMESPACE.length());
+							logData = logData + objectURI + " " + actualPredicate + " " + binding.get("o").toString() +" \n ";
+						}
 					}
-				}
+				} else {
+					logger.error("Object with uri "+objectURI+" not found");
+					ObjectTellerException exception = new ObjectTellerException("Object with uri "+objectURI+" not found");
+					throw exception;
+				} 
 			}
 		} else {
 			logger.error("Fuseki Server URL is not configured");
