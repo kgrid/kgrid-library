@@ -642,8 +642,8 @@
 									<sf:input class="textbox" type="text"
 										placeholder="one instance only" maxlength="140"
 										id="payload_function_name"
-										path="payloadDescriptor.functionName"
-										value="${fedoraObject.payloadDescriptor.functionName}" />
+										path="payload.functionName"
+										value="${fedoraObject.payload.functionName}" />
 									<span>140/140</span>
 								</div>
 								<div class="addtext">
@@ -651,7 +651,7 @@
 										<spring:message code="PAYLOAD_TYPE" />
 										<spring:message code="REQUIRED_TO_SELECT" />
 									</h4>
-									<sf:select path="payloadDescriptor.engineType" class="options"
+									<sf:select path="payload.engineType" class="options"
 										id="engineType">
 										<sf:option value="Python">PYTHON</sf:option>
 									</sf:select>
@@ -685,7 +685,7 @@
 									<button id="payloadClearBtn">
 										<spring:message code="REMOVE_BTN" />
 									</button>
-									<sf:textarea id="payloadTextArea" path="payload"></sf:textarea>
+									<sf:textarea id="payloadTextArea" path="payload.content"></sf:textarea>
 									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
 								</div>
 							</sf:form>
@@ -697,17 +697,17 @@
 									</h4>
 									<input type="text" class="metaEdit" id="functionname_data"
 										disabled
-										value="${fedoraObject.payloadDescriptor.functionName}">
+										value="${fedoraObject.payload.functionName}">
 								</div>
 								<div>
 									<h4>
 										<spring:message code="PAYLOAD_TYPE" />
 									</h4>
 									<input type="text" class="metaEdit" id="enginetype_data"
-										disabled value="${fedoraObject.payloadDescriptor.engineType}">
+										disabled value="${fedoraObject.payload.engineType}">
 								</div>
 								<div class="display-payload">
-									<textarea class="autosize" id="payloadTextArea-v">${fedoraObject.payload}</textarea>
+									<textarea class="autosize" id="payloadTextArea-v">${fedoraObject.payload.content}</textarea>
 								</div>
 							</form>
 						</div>

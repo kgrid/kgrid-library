@@ -248,12 +248,14 @@ function updateObject(section) {
 		});
 		metadata.citations = citations;
 		console.log("Metadata element done.");
-
-		var payloadDescriptor = new Object();
-		payloadDescriptor.functionName = document
+		
+		var payload = new Object();
+		payload.functionName = document
 				.getElementById("functionName").value;
-		payloadDescriptor.engineType = document.getElementById("engineType").value;
-		var payload = document.getElementById("payloadTextArea").value;
+		payload.engineType = document.getElementById("engineType").value;
+		payload.content = document.getElementById("payloadTextArea").value;
+
+		
 		console.log("Payload element done.");
 		
 		var inputMessage= document.getElementById("inputTextArea").value;
@@ -269,8 +271,6 @@ function updateObject(section) {
 		text = JSON.stringify(metadata);
 		break;
 	case "payload":
-		text = JSON.stringify(payloadDescriptor);
-		saveToServer(ajaxMethod,ajaxUrl+"Descriptor",text);
 		text = JSON.stringify(payload);
 		break;
 	case "inputMessage":
@@ -285,7 +285,6 @@ function updateObject(section) {
 		break;
 	default: // full object Add or Edit
 		fedoraObject.metadata = metadata;
-		fedoraObject.payloadDescriptor = payloadDescriptor;
 		fedoraObject.payload = payload;
 		fedoraObject.inputMessage = inputMessage;
 		fedoraObject.outputMessage = outputMessage;

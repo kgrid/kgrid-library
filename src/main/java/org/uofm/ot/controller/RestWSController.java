@@ -11,6 +11,7 @@ import org.uofm.ot.fedoraAccessLayer.FedoraObjectService;
 import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.pythonAdapter.PythonAdapter;
 import org.uofm.ot.transferobjects.InputObject;
@@ -106,13 +107,13 @@ public class RestWSController {
 					if(errormessage == null){
 						String chunk = getFedoraObjectService.getObjectContent(io.getObjectName(), ChildType.PAYLOAD.getChildType());
 
-						PayloadDescriptor descriptor = fusekiService.getPayloadProperties(io.getObjectName());
+						Payload payload = fusekiService.getPayloadProperties(io.getObjectName());
 
 
 			     			if( chunk != null) {
-							if( EngineType.PYTHON.toString().equalsIgnoreCase(descriptor.getEngineType())){
+							if( EngineType.PYTHON.toString().equalsIgnoreCase(payload.getEngineType())){
 								PythonAdapter adapter = new PythonAdapter();
-								result = adapter.executeString(chunk, descriptor.getFunctionName(),io.getParams(),metadata.getReturntype());
+								result = adapter.executeString(chunk, payload.getFunctionName(),io.getParams(),metadata.getReturntype());
 							}
 						} else 
 							errormessage = "Unable to retrieve content of object "+io.getObjectName();

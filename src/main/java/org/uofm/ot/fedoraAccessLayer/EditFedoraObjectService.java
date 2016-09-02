@@ -73,8 +73,8 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			"	} \n"+
 			"	INSERT \n"+
 			"	{ \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:functionName   \""+fedoraObject.getPayloadDescriptor().getFunctionName()+"\"  .  \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:executorType  \""+fedoraObject.getPayloadDescriptor().getEngineType()+"\"  .  \n"+
+			"	  <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:functionName   \""+fedoraObject.getPayload().getFunctionName()+"\"  .  \n"+
+			"	  <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:executorType  \""+fedoraObject.getPayload().getEngineType()+"\"  .  \n"+
 			"	} \n"+
 			"	WHERE \n"+
 			"	{  \n"+

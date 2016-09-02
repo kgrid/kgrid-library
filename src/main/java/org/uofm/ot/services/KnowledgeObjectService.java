@@ -13,6 +13,7 @@ import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
+import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.User;
 
@@ -85,13 +86,13 @@ public class KnowledgeObjectService {
 		
 		FedoraObject object = getKnowledgeObject(uri);	
 		
-		PayloadDescriptor payloadD = fusekiService.getPayloadProperties(uri);
-
-		object.setPayloadDescriptor(payloadD);
+		Payload payload = fusekiService.getPayloadProperties(uri);
+		
+		payload.setContent(getPayloadContent(uri));
+		
+		object.setPayload(payload);
 
 		object.setLogData(getProvData(uri));
-
-		object.setPayload(getPayloadContent(uri));
 
 		object.setInputMessage(getInputMessageContent(uri));
 
