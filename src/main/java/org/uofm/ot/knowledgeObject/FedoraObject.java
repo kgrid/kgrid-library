@@ -5,14 +5,12 @@ public class FedoraObject {
 	private Metadata metadata ;
 	
 	private String URI;
-
-	private String payload;
 	
 	private String inputMessage;
 	
 	private String outputMessage;
 	
-	private PayloadDescriptor payloadDescriptor = new PayloadDescriptor();
+	private Payload payload = new Payload();
 	
 	private String logData; 
 	
@@ -22,7 +20,6 @@ public class FedoraObject {
     	this.URI = URI;
     }
 
-
 	public String getURI() {
 		return URI;
 	}
@@ -31,22 +28,6 @@ public class FedoraObject {
 		URI = uRI;
 	}
 	
-	public String getPayload() {
-		return payload;
-	}
-
-	public void setPayload(String payload) {
-		this.payload = payload;
-	}
-
-	public PayloadDescriptor getPayloadDescriptor() {
-		return payloadDescriptor;
-	}
-
-	public void setPayloadDescriptor(PayloadDescriptor payloadDescriptor) {
-		this.payloadDescriptor = payloadDescriptor;
-	}
-
 	public String getInputMessage() {
 		return inputMessage;
 	}
@@ -81,12 +62,21 @@ public class FedoraObject {
 		this.metadata = metadata;
 	}
 
+	public Payload getPayload() {
+		return payload;
+	}
+
+	public void setPayload(Payload payload) {
+		this.payload = payload;
+	}
 
 	@Override
 	public String toString() {
-		return "FedoraObject [metadata=" + metadata + ", URI=" + URI + ", payload=" + payload + ", inputMessage="
-				+ inputMessage + ", outputMessage=" + outputMessage + ", payloadDescriptor=" + payloadDescriptor
-				+ ", logData=" + logData + "]";
+		return "FedoraObject [metadata=" + metadata + ", URI=" + URI + ", inputMessage=" + inputMessage
+				+ ", outputMessage=" + outputMessage + ", payload=" + payload + ", logData=" + logData + "]";
 	}
+
+	
+	
 
 }

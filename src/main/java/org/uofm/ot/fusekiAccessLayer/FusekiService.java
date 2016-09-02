@@ -30,6 +30,7 @@ import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
+import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.Server_details;
 
@@ -243,8 +244,8 @@ public class FusekiService {
 		return convertedDate;
 	}
 	
-	public PayloadDescriptor getPayloadProperties( String objectURI) throws ObjectTellerException {
-		PayloadDescriptor descriptor = null;
+	public Payload getPayloadProperties( String objectURI) throws ObjectTellerException {
+		Payload payload= null;
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
@@ -261,7 +262,7 @@ public class FusekiService {
 				QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
 				ResultSet resultSet = execution.execSelect();
 
-				descriptor = new PayloadDescriptor();
+				payload = new Payload();
 				
 				while (resultSet.hasNext()) {
 					QuerySolution binding = resultSet.nextSolution();
@@ -269,10 +270,10 @@ public class FusekiService {
 					if(predicate.contains(FusekiConstants.OT_NAMESPACE) == true) {
 						String actualPredicate = predicate.substring(FusekiConstants.OT_NAMESPACE.length());
 						if("functionName".equals(actualPredicate) )
-							descriptor.setFunctionName(binding.get("o").toString());
+							payload.setFunctionName(binding.get("o").toString());
 
 						if( "executorType".equals(actualPredicate)) 
-							descriptor.setEngineType(binding.get("o").toString());
+							payload.setEngineType(binding.get("o").toString());
 					}
 				}
 			}
@@ -281,7 +282,7 @@ public class FusekiService {
 			ObjectTellerException exception = new ObjectTellerException("Fuseki Server URL is not configured");
 			throw exception;
 		} 
-		return descriptor;
+		return payload;
 	} 
 	
 	public String getObjectProvProperties(String objectURI) throws ObjectTellerException {

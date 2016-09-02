@@ -2,30 +2,44 @@ package org.uofm.ot.knowledgeObject;
 
 public class Payload {
 	
-	private String payload;
+	private String content;
 	
-	private PayloadDescriptor payloadDescriptor;
+	private String functionName ;
+	
+	private String engineType;
+	
 
-	public String getPayload() {
-		return payload;
+	public String getContent() {
+		return content;
 	}
 
-	public void setPayload(String payload) {
-		this.payload = payload;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
-	public PayloadDescriptor getPayloadDescriptor() {
-		return payloadDescriptor;
+	public String getFunctionName() {
+		return functionName;
 	}
 
-	public void setPayloadDescriptor(PayloadDescriptor payloadDescriptor) {
-		this.payloadDescriptor = payloadDescriptor;
+	public void setFunctionName(String functionName) {
+		this.functionName = functionName;
+	}
+
+	public String getEngineType() {
+		return engineType;
+	}
+
+	public void setEngineType(String engineType) {
+		this.engineType = engineType;
 	}
 
 	@Override
 	public String toString() {
-		return "Payload [payload=" + payload + ", payloadDescriptor=" + payloadDescriptor + "]";
+		return "Payload [content=" + content + ", functionName=" + functionName + ", engineType=" + engineType + "]";
 	}
+
+	
+	
 	
 	
 	

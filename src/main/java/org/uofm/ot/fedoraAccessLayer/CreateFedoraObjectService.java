@@ -6,6 +6,7 @@ import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.ObjectId;
 import org.uofm.ot.model.User;
@@ -59,13 +60,13 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				}
 				
 
-				putBinary(fedoraObject.getPayload(), uri, ChildType.PAYLOAD.getChildType(), transactionId);
+				putBinary(fedoraObject.getPayload().getContent(), uri, ChildType.PAYLOAD.getChildType(), transactionId);
 
 				putBinary(fedoraObject.getInputMessage(), uri, ChildType.INPUT.getChildType(), transactionId);
 
 				putBinary(fedoraObject.getOutputMessage(), uri , ChildType.OUTPUT.getChildType(), transactionId);
 
-				addPayloadMetadataProperties(fedoraObject.getPayloadDescriptor(), uri, transactionId);
+				addPayloadMetadataProperties(fedoraObject.getPayload(), uri, transactionId);
 
 				addProvMetadataEnd(uri, transactionId);
 				
@@ -168,7 +169,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 
 	}
 
-	public void addPayloadMetadataProperties(PayloadDescriptor payload, String uri, String transactionId) throws ObjectTellerException {
+	public void addPayloadMetadataProperties(Payload payload, String uri, String transactionId) throws ObjectTellerException {
 		
 		String objectURI ;
 		if(transactionId != null)
