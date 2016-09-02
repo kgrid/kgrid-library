@@ -183,15 +183,17 @@ public class KnowledgeObjectController {
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage", 
-			method=RequestMethod.POST)
-	public Payload addOrUpdateInputMessage(String inputMessage , @PathVariable String objectURI) {
-		return null;
+			method=RequestMethod.PUT)
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void addOrUpdateInputMessage(@RequestBody String inputMessage , @PathVariable String objectURI) throws ObjectTellerException {
+		knowledgeObjectService.editInputMessageContent(objectURI, inputMessage);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/outputMessage", 
-			method=RequestMethod.POST)
-	public Payload addOrUpdateOutputMessage(String outputMessage , @PathVariable String objectURI) {
-		return null;
+			method=RequestMethod.PUT)
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void addOrUpdateOutputMessage(@RequestBody String outputMessage , @PathVariable String objectURI) throws ObjectTellerException {
+		knowledgeObjectService.editOutputMessageContent(objectURI, outputMessage);
 	}
 	
 }
