@@ -172,4 +172,12 @@ public class KnowledgeObjectService {
 
 		return provDataPart1 + provDataPart2 ; 
 	}
+	
+	public void editInputMessageContent(String objectURI,String inputMessage) throws ObjectTellerException{
+		editFedoraObjectService.putBinary(inputMessage, objectURI, ChildType.INPUT.getChildType(), null);
+	}
+	
+	public void editOutputMessageContent(String objectURI,String outputMessage) throws ObjectTellerException{
+		editFedoraObjectService.putBinary(outputMessage, objectURI, ChildType.OUTPUT.getChildType(), null);
+	}
 }
