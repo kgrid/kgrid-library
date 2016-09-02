@@ -89,7 +89,7 @@ public class KnowledgeObjectController {
 	}
 	
 	
-	@RequestMapping(value="/knowledgeObject-complete/{objectURI}/", 
+	@RequestMapping(value="/knowledgeObject-complete/{objectURI}", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public FedoraObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
@@ -131,8 +131,15 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/{objectURI}/payload", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public Payload getPayload( @PathVariable String objectURI) {
-		return null;
+	public ResponseEntity<Payload> getPayload( @PathVariable String objectURI) {
+		ResponseEntity<Payload> payload = null;
+		try {
+			Payload payloadObj = knowledgeObjectService.getPayload(objectURI);
+			payload = new ResponseEntity<Payload> (payloadObj,HttpStatus.OK);
+		} catch (ObjectTellerException e) {
+			payload = new ResponseEntity<Payload> (HttpStatus.NOT_FOUND);
+		}
+		return payload;
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage", 
