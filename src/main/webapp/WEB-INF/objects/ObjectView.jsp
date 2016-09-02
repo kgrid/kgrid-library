@@ -32,7 +32,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="<c:url value="/resources/js/iconbutton.js"/>"></script>
 <script src="<c:url value="/resources/js/scroll.js"/>"></script>
-<script src="<c:url value="/resources/js/obj_edit_form.js"/>"></script>
+<%-- <script src="<c:url value="/resources/js/obj_edit_form.js"/>"></script> --%>
 <script src="<c:url value="/resources/js/jquery.validate.js"/>"></script>
 <script>
 
@@ -91,8 +91,12 @@
 				
 				$("#metadataeditBtn").click(function() {
 					
-					console.log($(this).attr("id"));
-					var buttonText = $("#metadataeditBtn").text();
+					//console.log($(this).attr("id"));
+					var uri = $("#fObj").val();
+					console.log("Current URI:"+uri);
+					setURI(uri);
+					overlaySlide('addObject',true);
+					/* var buttonText = $("#metadataeditBtn").text();
 					console.log(buttonText);
 					var data_t = $("#title_data_v").val();
 					var data_d = $("#description_data_v").val();
@@ -112,7 +116,7 @@
 						$("#contributor_data").val(data_c);
 					} else {
 						cancelEdit();
-					}
+					} */
 				});
 				
 				
@@ -183,89 +187,6 @@
 		});
 	}
 
-	function overlayHeightResize(overlayID, window_height) {
-		var overlayPane = $('#' + overlayID).find("> .ol_pane");
-		var entryform = overlayPane.find(".entryform");
-		var ol_pane_height = window_height;
-		var calcHeight = (window_height - 120);
-		entryform.css("height", calcHeight + "px");
-		var addContent = entryform.find(".Add-content");
-		addContent.css("height", (calcHeight - 70) + "px");
-		return ol_pane_height;
-	}
-
-	function overlaySlide(overlayID, open) {
-		document.body.classList.toggle('noscroll', open);
-		var overlayPane = $('#' + overlayID).find("> .ol_pane");
-		var window_width = $(window).width();
-		var window_height = $(window).height();
-		var overlayPane_width = overlayPane.width();
-		var overlayPane_height = overlayHeightResize(overlayID, window_height);
-
-		console.log("Window Width=" + window_width + " Window Height="
-				+ window_height + " olPane Width=" + overlayPane_width
-				+ " olPane Height=" + overlayPane_height);
-
-		var overlayPane_left = window_width - overlayPane_width;
-		if (overlayPane_left <= (window_width * 0.27)) {
-			overlayPane_left = (window_width * 0.27);
-		}
-
-		if (open) {
-			$('#' + overlayID).css("display", "block");
-			$('#' + overlayID).fadeIn('fast', function() {
-				overlayPane.animate({
-					'left' : overlayPane_left + "px"
-				}, 1000);
-			});
-		} else {
-			$('#' + overlayID).css("display", "none");
-			overlayPane.animate({
-				'left' : '100%'
-			}, 1000, function() {
-				$('#' + overlayID).fadeOut('fast');
-			});
-		}
-
-		if (overlayID == "addObject") {
-			resetInputText();
-		}
-		if (overlayID == "libraryuser") {
-			resetUserInfoText();
-		}
-		if (overlayID == "citation") {
-			resetCitationText();
-		}
-
-	}
-
-	function resetCitationText() {
-		$("#citation_title").val("");
-		$("#citation_link").val("");
-		$("#citation_detail").attr("src", "");
-	}
-
-	function readMultipleFiles(evt) {
-		var field_id = this.id;
-		var sect_id = field_id.replace("file_", "");
-		var files = evt.target.files;
-		if (files) {
-			for (var i = 0, f; f = files[i]; i++) {
-				var r = new FileReader();
-				r.onload = (function(f) {
-					return function(e) {
-						var contents = e.target.result;
-						$("#" + sect_id + "DropFile").hide();
-						$("#" + sect_id + "TextAreaDisplay").show();
-						$("#" + sect_id + "TextArea").val(contents);
-					};
-				})(f);
-				r.readAsText(f);
-			}
-		} else {
-			alert("Failed to load files");
-		}
-	}
 
 	function deleteObject(uri) {
 		var txt;
@@ -281,9 +202,25 @@
 		}
 	}
 	
+	function getSection(uri, section) {
+		$.ajax({
+			type : 'GET',
+			url : "knowledgeObject/" + uri +"/"+section,
+			success : function(response) {
+				console.log("GET response:\n"+response);
+				var test = JSON.stringify(response);
+				//alert(test);
+			},
+			failure : function(response){
+				console.log("GET response:\n"+response);
+				var test = JSON.stringify(response);
+				//alert(test);
+			}
+		});
+	
+}
+	
 	function displayMetadata(uri) {
-		
-		
 			$.ajax({
 				type : 'GET',
 				url : "knowledgeObject/" + uri +"/metadata",
@@ -299,10 +236,8 @@
 		
 	}
 	
-	function saveMetadata(uri) {
-		
 	
-		
+	function saveMetadata(uri) {
 		var metadata = new Object();
 		metadata.title = document.getElementById("title_data").value;
 		metadata.contributors = document.getElementById("contributor_data").value;
@@ -373,12 +308,12 @@
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
-	<div id="overlay2">
+<%-- 	<div id="overlay2">
 		<%@ include file="secondaryOverlay.jsp"%>
-	</div>
-<%-- 		<div id="addObject" class="layered_overlay" aria-hidden="true">
-		<%@ include file="../objects/createNewObject.jsp"%>
 	</div> --%>
+		<div id="addObject" class="layered_overlay" aria-hidden="true">
+		<%@ include file="../objects/createNewObject.jsp"%>
+	</div>
 	<div id="topfixed">
 		<%@ include file="../common/banner.jsp"%>
 	</div>
@@ -785,6 +720,9 @@
 							<div class="inline editwrapper accessLevelOne">
 								<button class="inline edit" id="inputEditBtn"
 									style="position: relative;"><spring:message code="EDIT_BTN" /></button>
+									<button type="button" class="inline edit" id="metadataeditDisplay"
+									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','inputMessage')">Display Input
+								</button> 
 							</div>
 							<form class="display-content" id="displayinput">
 								<div class="display-payload">
@@ -839,6 +777,9 @@
 							<div class="inline editwrapper accessLevelOne">
 								<button class="inline edit" id="outputEditBtn"
 									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
+									<button type="button" class="inline edit" id="metadataeditDisplay"
+									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','outputMessage')">Display Output
+								</button> 
 							</div>
 							<form class="display-content" id="displayoutput">
 								<div class="display-payload">
@@ -891,6 +832,9 @@
 							<h3 class="fieldName inline ">
 								<spring:message code="LOG_DATA_TAB" />
 							</h3>
+							<button type="button" class="inline edit" id="metadataeditDisplay"
+									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','logData')">Display Log Data
+								</button> 
 							<section class="display-content">
 							<div class="display-payload">
 								<p>${processedLogData}</p>

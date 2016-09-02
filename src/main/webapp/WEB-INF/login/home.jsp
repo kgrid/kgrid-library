@@ -44,60 +44,8 @@
 	src="<c:url value="/resources/js/dropdown.js"/>"></script>
 <script src="<c:url value="/resources/js/scroll.js"/>"></script>
 <script src="<c:url value="/resources/js/iconbutton.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery.validate.js"/>"></script>
 
-<script>
-	
-	function overlayHeightResize(overlayID, window_height){
-		var overlayPane =$('#'+overlayID).find("> .ol_pane");
-		var entryform = overlayPane.find(".entryform");
-		var ol_pane_height =window_height;
-		var calcHeight = (window_height-120);
-		entryform.css("height",calcHeight+"px");
-		var ef_margin = (ol_pane_height-calcHeight)/2;
-		var addContent = entryform.find(".Add-content");
-		addContent.css("height",(calcHeight-70)+"px");
-		return ol_pane_height;
-	}
-
-	function overlaySlide(overlayID, open){
-	    document.body.classList.toggle('noscroll', open);
-		var overlayPane =$('#'+overlayID).find("> .ol_pane");
-		var window_width= $(window).width();
-		var window_height = $(window).height();
-		var overlayPane_width=overlayPane.width();
-		var overlayPane_height=	overlayHeightResize(overlayID, window_height);
-
-		console.log("Window Width="+ window_width+" Window Height="+window_height+" olPane Width="+overlayPane_width+" olPane Height="+overlayPane_height);
-
-		var overlayPane_left = window_width-overlayPane_width;
-		if(overlayPane_left<=(window_width*0.2)){
-			overlayPane_left=(window_width*0.2);
-		}
-
-		if(open){
-			$('#'+overlayID).css("display","block");
-	        $('#'+overlayID).fadeIn('fast',function(){
-	            overlayPane.animate({'left':overlayPane_left+"px"},1000);
-	        });
-	    }else{
-			$('#'+overlayID).css("display","none");
-	    	overlayPane.animate({'left':'100%'},1000,function(){
-	            $('#'+overlayID).fadeOut('fast');
-	        });
-	    }
-
-		if(overlayID=="addObject"){
-			resetInputText();
-		}
-		if(overlayID=="libraryuser"){
-			resetUserInfoText();
-		}
-		if(overlayID=="citation"){
-			resetCitationText();
-		}
-		
-	}
-</script>
 </head>
 <body>
 
