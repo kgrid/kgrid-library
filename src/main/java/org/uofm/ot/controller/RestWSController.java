@@ -96,7 +96,7 @@ public class RestWSController {
 			objectExists= getFedoraObjectService.checkIfObjectExists(io.getObjectName());
 			if ( objectExists ) {
 
-				FedoraObject object = fusekiService.getKnowledgeObject(new FedoraObject(io.getObjectName()));
+				FedoraObject object = fusekiService.getKnowledgeObject(io.getObjectName());
 				title = object.getMetadata().getTitle();
 
 				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(io.getObjectName());

@@ -201,11 +201,12 @@ public class FusekiService {
 		return result;
 	}
 	
-	public FedoraObject getKnowledgeObject(FedoraObject fedoraObject) throws ObjectTellerException {
+	public FedoraObject getKnowledgeObject(String objectURI) throws ObjectTellerException {
+		FedoraObject fedoraObject = null ;
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
-				String uri = fedoraServerURL+fedoraObject.getURI();
+				String uri = fedoraServerURL+objectURI;
 			
 				String queryString = initQuery(true, uri, false);
 
@@ -213,10 +214,10 @@ public class FusekiService {
 				QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
 				ResultSet resultSet = execution.execSelect();
 				
-				while(resultSet.hasNext()) {
+				if(resultSet.hasNext()) {
 					QuerySolution querySolution = resultSet.next();
-					fedoraObject = mapQuerySolutionToFedoraObject(querySolution,true,fedoraObject.getURI(),false);
-				}
+					fedoraObject = mapQuerySolutionToFedoraObject(querySolution,true,objectURI,false);
+				} 
 			}
 		} else {
 			logger.error("Fuseki Server URL is not configured");

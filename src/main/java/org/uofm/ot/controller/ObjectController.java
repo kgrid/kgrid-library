@@ -329,7 +329,7 @@ public class ObjectController {
 		FedoraObject object = new FedoraObject();
 		object.setURI(objectURI);
 
-		object = fusekiService.getKnowledgeObject(object);
+		object = fusekiService.getKnowledgeObject(objectURI);
 		
 		if(!object.getMetadata().isPublished() && loggedInUser == null)
 			return false;

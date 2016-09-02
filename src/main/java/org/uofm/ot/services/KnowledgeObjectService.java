@@ -55,9 +55,11 @@ public class KnowledgeObjectService {
 	public FedoraObject getKnowledgeObject(String uri) throws ObjectTellerException {
 		FedoraObject object = new FedoraObject();
 		object.setURI(uri);
-		object = fusekiService.getKnowledgeObject(object);
-		List<Citation> citations = fusekiService.getObjectCitations(uri);	
-		object.getMetadata().setCitations(citations);
+		object = fusekiService.getKnowledgeObject(uri);
+		if(object != null) {
+			List<Citation> citations = fusekiService.getObjectCitations(uri);	
+			object.getMetadata().setCitations(citations);
+		}
 		return object;
 	}
 	
