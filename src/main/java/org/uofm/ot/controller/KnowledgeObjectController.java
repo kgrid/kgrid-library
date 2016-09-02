@@ -74,8 +74,18 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/{objectURI}", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject getKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
-		return knowledgeObjectService.getKnowledgeObject(objectURI);				
+	public ResponseEntity<FedoraObject> getKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
+		ResponseEntity<FedoraObject> entity = null;
+		
+		FedoraObject fedoraObject =  knowledgeObjectService.getKnowledgeObject(objectURI);
+		
+		if(fedoraObject != null){
+			entity = new ResponseEntity<FedoraObject>(fedoraObject,HttpStatus.OK);			
+		} else {
+			entity = new ResponseEntity<FedoraObject>(fedoraObject,HttpStatus.NOT_FOUND);
+		}
+		
+		return entity ; 
 	}
 	
 	
