@@ -97,20 +97,19 @@ public class KnowledgeObjectController {
 		return knowledgeObjectService.getCompleteKnowledgeObject(objectURI);
 	}
 	
-	@RequestMapping(value="/knowledgeObject/{objectURI}/", 
+	@RequestMapping(value="/knowledgeObject", 
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject updateKnowledgeObject(@PathVariable String uri,FedoraObject knowledgeObject) {
-		return null;
+	public FedoraObject updateKnowledgeObject(@RequestBody FedoraObject knowledgeObject) throws ObjectTellerException {
+		return knowledgeObjectService.editObject(knowledgeObject);
 	}
 	
-	@RequestMapping(value="/knowledgeObject/{objectURI}/", 
-			method=RequestMethod.DELETE , 
-			consumes = {MediaType.APPLICATION_JSON_VALUE},
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject deleteKnowledgeObject(@PathVariable String uri) {
-		return null;
+	@RequestMapping(value="/knowledgeObject/{objectURI}", 
+			method=RequestMethod.DELETE )
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void deleteKnowledgeObject(@PathVariable String objectURI) throws ObjectTellerException {
+		knowledgeObjectService.deleteObject(objectURI);
 	}
 
 	@RequestMapping(value="/knowledgeObject/{objectURI}/payload", 
