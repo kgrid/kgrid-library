@@ -50,9 +50,8 @@
 				$("ul#tabs li:nth-child(" + nthChild + ")").addClass("active");
 				$("ul#tab li:nth-child(" + nthChild + ")").addClass("active");
 				var kotitle = $("#ko-title").find("small").text();
-				console.log(kotitle);
 				var title_length = kotitle.length;
-				console.log(title_length);
+				console.log("Title: "+kotitle+" Title Length: "+ title_length);
 				if (title_length > 94) {
 					$("#ko-title").find("small").css("font-size", "24px");
 				} else {
@@ -83,68 +82,33 @@
 					}
 				}
 				
-				
-				
-				
-				
-				
-				
 				$("#metadataeditBtn").click(function() {
 					
 					//console.log($(this).attr("id"));
 					var uri = $("#fObj").val();
 					console.log("Current URI:"+uri);
 					setURI(uri);
+					setActiveTab("metadata");
 					overlaySlide('addObject',true);
-					/* var buttonText = $("#metadataeditBtn").text();
-					console.log(buttonText);
-					var data_t = $("#title_data_v").val();
-					var data_d = $("#description_data_v").val();
-					var data_k = $("#keyword_data_v").val();
-					var data_o = $("#owner_data_v").val();
-					var data_c = $("#contributor_data_v").val();
-					if (buttonText == "EDIT") {
-						$("#metadata_view").hide();
-						$("#deleteButton").hide();
-						$("#metadata_edit").show();
-						$("#metadataeditBtn").text("CANCEL");
-						$("#metadataeditBtn").css("left", "640px");
-						$("#title_data_e").val(data_t);
-						$("#description_data").val(data_d);
-						$("#keyword_data").val(data_k);
-						$("#owner_data").val(data_o);
-						$("#contributor_data").val(data_c);
-					} else {
-						cancelEdit();
-					} */
+
 				});
 				
-				
-
 				$("[id$='EditBtn']").click(function() {
 					var btn_id = this.id;
-					var tArea_id = btn_id.replace("EditBtn", "TextArea");
-					var buttonText = $(this).text();
-					var display_form = btn_id.replace("EditBtn", "");
-					var edit_form = btn_id.replace("EditBtn", "Edit");
-					var dropfile = btn_id.replace("EditBtn", "DropFile");
-					var data_p = $("#" + tArea_id + "-v").val();
-					if (buttonText == "EDIT") {
-						$("#display" + display_form).hide();
-						$("#" + tArea_id).val(data_p);
-						$("#" + edit_form).show();
-						$("#" + tArea_id).show();
-						$("#" + tArea_id + "Display").show();
-						$("#" + dropfile).hide();
-						$(this).text("CANCEL");
-						$(this).css("left", "580px");
-					} else {
-						$("#display" + display_form).show();
-						$("#" + edit_form).hide();
-						$(this).text("EDIT");
-						$(this).css("left", "0%");
-
+					switch (btn_id){
+					case "payloadEditBtn":
+						var section = btn_id.replace("EditBtn", "");
+						break;
+					default :
+						var section = btn_id.replace("EditBtn", "Message");
+						break;
 					}
+					var uri = $("#fObj").val();
+					console.log("Current URI:"+uri+ " Section:"+section);
+					setURI(uri);
+					//setActiveTab(section);
+					overlaySlide('addObject',true);
+					
 				});
 
 				$('[id^="file_"]').on('change', readMultipleFiles);
@@ -308,8 +272,6 @@
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
-<%-- 	<div id="overlay2">
-		<%@ include file="secondaryOverlay.jsp"%>
 	</div> --%>
 		<div id="addObject" class="layered_overlay" aria-hidden="true">
 		<%@ include file="../objects/createNewObject.jsp"%>
@@ -392,33 +354,7 @@
 			</div>
 
 		</div>
-		<%-- 		<div class="userbutton accessLevelTwo" display="none">
-			<ul id="bannericonrow">
-				<li>
-					<div style="position: relative">
-						<button class="roundbutton iconBtn" style="z-index: 10"
-							id="objuserlink">
-							<img src="<c:url value="/resources/images/Person_Icon.png"/> " />
-						</button>
-						<button class="greenroundbutton" id="newuser">
-							<img src="<c:url value="/resources/images/Plus_Icon.png" />"
-								width="10px">
-						</button>
-					</div>
-				</li>
-				<li><button class="roundbutton iconBtn" id="JR"
-						style="z-index: 9">JR</button></li>
-				<li><button class="roundbutton iconBtn" id="AF"
-						style="z-index: 8">AF</button></li>
-				<li><button class="roundbutton iconBtn" style="z-index: 7"
-						id="objsettinglink">
-						<img src="<c:url value="/resources/images/Gear_Icon.png"/> " />
-					</button></li>
-			</ul>
-			<div class="floatingInfo" id="objIcons">
-				<span></span>
-			</div>
-		</div> --%>
+
 	</div>
 	<div class="header">
 		<div class="objectcontainer">
@@ -454,7 +390,7 @@
 								<button class="inline edit" id="metadataeditBtn"
 									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
 								<%-- <button type="button" class="inline edit" id="metadataeditDisplay"
-									style="position: relative; left: 0%" onclick="displayMetadata('${fedoraObject.URI}')">Display Metadata
+									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','metadata')">Display Metadata
 								</button> --%>
 								<button class="inline edit" id="deleteButton"
 									style="position: relative; left: 90%"
@@ -513,110 +449,9 @@
 										</div>
 									</c:forEach>
 								</div>
-								<%-- <div class="addtext">
-									<h4>
-										<spring:message code="OBJECT_LICENSE" />
-									</h4>
-									
-									<input type="text" class="metaEdit" id="license_data_v"
-										disabled value="--------" />
-								</div> --%>
+	
 								<input type="hidden" id="fObj" path="URI" value="${fedoraObject.URI}" />
 							</form>
-							<sf:form class="display-content" method="POST"
-								action="editMetadata" modelAttribute="fedoraObject"
-								style="display:none; position: relative;" id="metadata_edit">
-
-								<%-- <button class="done" id="saveButton" type="submit">
-									<spring:message code="SAVE_CHANGES_BTN" />
-								</button>    --%>
-								<button class="done" id="saveButton" type="button" onclick="saveMetadata('${fedoraObject.URI}')">
-									<spring:message code="SAVE_CHANGES_BTN" />
-								</button> 
-								<div class="addtext">
-									<h4>
-										<spring:message code="OBJECT_TITLE" />
-									</h4>
-									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="title_data_e" path="metadata.title"
-										value="${fedoraObject.metadata.title}" />
-									<span>140/140</span>
-								</div>
-								<div class="addtext">
-									<h4>
-										<spring:message code="OBJECT_DESCRIPTION" />
-									</h4>
-									<sf:textarea maxlength="500" class="metaEdit"
-										id="description_data" path="metadata.description"
-										value="${fedoraObject.metadata.description}" />
-									<span>500/500</span>
-								</div>
-								<div class="addtext">
-									<h4>
-										<spring:message code="OBJECT_KEYWORD" />
-									</h4>
-									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="keyword_data" path="metadata.keywords"
-										value="${fedoraObject.metadata.keywords}" />
-									<span>140/140</span>
-								</div>
-								<div class="addtext">
-									<h4>
-										<spring:message code="OBJECT_OWNERS" />
-									</h4>
-									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="owner_data" path="metadata.owner"
-										value="${fedoraObject.metadata.owner}" />
-									<span>140/140</span>
-								</div>
-								<div class="addtext">
-									<h4>
-										<spring:message code="OBJECT_CONTRIBUTORS" />
-									</h4>
-									<sf:input type="text" maxlength="140" class="metaEdit"
-										id="contributor_data" path="metadata.contributors"
-										value="${fedoraObject.metadata.contributors}" />
-									<span>140/140</span>
-									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
-								</div>
-								<div class="addtext">
-									<h4>
-										<spring:message code="OBJECT_CITATIONS" />
-									</h4>
-									<div class='entryArea' id='citation_data_entry'>
-										<c:forEach var="citationEntry"
-											items="${fedoraObject.metadata.citations}"
-											varStatus="loopStatus">
-											<div class="addtext">
-												<sf:input type="text" class="metaEdit"
-													id="citation${loopStatus.index}_title"
-													value="${citationEntry.citation_title}"
-													path="metadata.citations[${loopStatus.index}].citation_title" />
-												<sf:input type="hidden"
-													id="citation${loopStatus.index}_link" class="metaEdit"
-													path="metadata.citations[${loopStatus.index}].citation_at"
-													value="${citationEntry.citation_at}" />
-												<sf:input type="hidden" id="citation${loopStatus.index}_id"
-													path="metadata.citations[${loopStatus.index}].citation_id"
-													value="${citationEntry.citation_id}" />
-												<button class="redroundbutton delete_btn" type="button">
-													<img src="resources/images/Close_Icon.png" width="12px">
-												</button>
-											</div>
-										</c:forEach>
-									</div>
-									<input type="text" class="metaEdit" id="citation_data"
-										placeholder="Click here to add citations.       " />
-								</div>
-								<%-- 									<div class="addtext">
-									<h4>
-										<spring:message code="OBJECT_LICENSE" />
-									</h4>
-									
-									<input type="text" class="metaEdit" id="license_data"
-										value="LICENSE" />
-								</div> --%>
-							</sf:form>
 						</div>
 					</li>
 					<li id="payload">
@@ -628,67 +463,7 @@
 								<button class="inline edit" id="payloadEditBtn"
 									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
 							</div>
-							<sf:form class="display-content" id="payloadEdit" method="POST"
-								style="display:none;position: relative;" action="editPayload"
-								modelAttribute="fedoraObject">
-								<button type="submit" class="done" id="savePayloadButton">
-									<spring:message code="SAVE_CHANGES_BTN" />
-								</button>
-								<div class="addtext">
-									<h4>
-										<spring:message code="PAYLOAD_FUNCTION" />
-										<spring:message code="REQUIRED_FIELD" />
-									</h4>
-									<sf:input class="textbox" type="text"
-										placeholder="one instance only" maxlength="140"
-										id="payload_function_name"
-										path="payload.functionName"
-										value="${fedoraObject.payload.functionName}" />
-									<span>140/140</span>
-								</div>
-								<div class="addtext">
-									<h4>
-										<spring:message code="PAYLOAD_TYPE" />
-										<spring:message code="REQUIRED_TO_SELECT" />
-									</h4>
-									<sf:select path="payload.engineType" class="options"
-										id="engineType">
-										<sf:option value="Python">PYTHON</sf:option>
-									</sf:select>
-								</div>
-								<div id="payloadDropFile" class="dropfile"
-									style="display: none;">
-									<div class="upload-direction">
-										<input type="file" name="file" id="file_payload"
-											class="inputfile"
-											data-multiple-caption="{count} files selected" multiple
-											style="display: none;" /> <label for="file_payload">
-											<img
-											src="<c:url value="/resources/images/Upload_Icon.png" />" />
-											<br>
-											<p class="green">
-												<label for="file_payload"><spring:message
-														code="CHOOSE_FILE" /></label>
-											</p> <br>
-											<p>
-												<spring:message code="FILE_TYPE" />
-											</p>
-										</label>
-									</div>
-									<p class="instruction">
-										<spring:message code="CLICK" />
-										<a href=#><spring:message code="HERE" /></a>
-										<spring:message code="PAYLOAD_DOWNLOAD_MESSAGE" />
-									</p>
-								</div>
-								<div class="display-payload" id="payloadTextAreaDisplay">
-									<button id="payloadClearBtn">
-										<spring:message code="REMOVE_BTN" />
-									</button>
-									<sf:textarea id="payloadTextArea" path="payload.content"></sf:textarea>
-									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
-								</div>
-							</sf:form>
+
 							<form class="display-content" id="displaypayload">
 								<div>
 									<h4>
@@ -720,53 +495,14 @@
 							<div class="inline editwrapper accessLevelOne">
 								<button class="inline edit" id="inputEditBtn"
 									style="position: relative;"><spring:message code="EDIT_BTN" /></button>
-									<button type="button" class="inline edit" id="metadataeditDisplay"
-									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','inputMessage')">Display Input
-								</button> 
+								
 							</div>
 							<form class="display-content" id="displayinput">
 								<div class="display-payload">
 									<textarea class="autosize" id="inputTextArea-v">${fedoraObject.inputMessage}</textarea>
 								</div>
 							</form>
-							<sf:form class="display-content" id="inputEdit" method="POST"
-								style="display:none;position: relative;"
-								action="editInputMessage" modelAttribute="fedoraObject">
-								<button type="submit" class="done" id="saveInputButton">
-									<spring:message code="SAVE_CHANGES_BTN" />
-								</button>
-								<div id="inputDropFile" class="dropfile" style="display: none;">
-									<div class="upload-direction">
-										<input type="file" name="file_input" id="file_input"
-											class="inputfile"
-											data-multiple-caption="{count} files selected" multiple
-											style="display: none;" /> <label for="file_input"> <img
-											src="<c:url value="/resources/images/Upload_Icon.png"/> " />
-											<br>
-											<p class="green">
-												<label for="file_payload"><spring:message
-														code="CHOOSE_FILE" /></label>
-											</p> <br>
-											<p>
-												<spring:message code="FILE_TYPE" />
-											</p>
-										</label>
-									</div>
-									<p class="instruction">
-										<spring:message code="CLICK" />
-										<a href=#><spring:message code="HERE" /></a>
-										<spring:message code="INPUT_MESSAGE_DOWNLOAD" />
-									</p>
-								</div>
-								<div class="display-payload" id="inputTextAreaDisplay">
-									<button id="inputClearBtn">
-										<spring:message code="REMOVE_BTN" />
-									</button>
-									<sf:textarea class="autosize" id="inputTextArea"
-										path="inputMessage"></sf:textarea>
-									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
-								</div>
-							</sf:form>
+
 						</div>
 					</li>
 					<li id="output">
@@ -777,9 +513,9 @@
 							<div class="inline editwrapper accessLevelOne">
 								<button class="inline edit" id="outputEditBtn"
 									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
-									<button type="button" class="inline edit" id="metadataeditDisplay"
+									<%-- <button type="button" class="inline edit" id="metadataeditDisplay"
 									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','outputMessage')">Display Output
-								</button> 
+								</button>  --%>
 							</div>
 							<form class="display-content" id="displayoutput">
 								<div class="display-payload">
@@ -832,9 +568,6 @@
 							<h3 class="fieldName inline ">
 								<spring:message code="LOG_DATA_TAB" />
 							</h3>
-							<button type="button" class="inline edit" id="metadataeditDisplay"
-									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','logData')">Display Log Data
-								</button> 
 							<section class="display-content">
 							<div class="display-payload">
 								<p>${processedLogData}</p>
