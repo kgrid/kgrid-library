@@ -7,6 +7,7 @@ import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
+import org.uofm.ot.knowledgeObject.Payload;
 
 public class EditFedoraObjectService extends FedoraObjectService {
 
@@ -62,28 +63,28 @@ public class EditFedoraObjectService extends FedoraObjectService {
 		super.sendPatchRequestForUpdatingTriples(data, objectURI, null); 
 	} 
 	
-	public void editPayloadMetadata(FedoraObject fedoraObject) throws ObjectTellerException{
+	public void editPayloadMetadata(Payload payload, String objectURI) throws ObjectTellerException{
 
 		String data = 
 			FusekiConstants.PREFIX_OT +"\n "+		
 			"	DELETE \n" +
 			"	{ \n" +  
-			"	  <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType() +">   ot:functionName  ?o0 . \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType() +">   ot:executorType  ?o1 . \n"+
+			"	  <"+super.baseURI+objectURI+"/"+ ChildType.PAYLOAD.getChildType() +">   ot:functionName  ?o0 . \n"+
+			"	  <"+super.baseURI+objectURI+"/"+ ChildType.PAYLOAD.getChildType() +">   ot:executorType  ?o1 . \n"+
 			"	} \n"+
 			"	INSERT \n"+
 			"	{ \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:functionName   \""+fedoraObject.getPayload().getFunctionName()+"\"  .  \n"+
-			"	  <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:executorType  \""+fedoraObject.getPayload().getEngineType()+"\"  .  \n"+
+			"	  <"+super.baseURI+objectURI+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:functionName   \""+payload.getFunctionName()+"\"  .  \n"+
+			"	  <"+super.baseURI+objectURI+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:executorType  \""+payload.getEngineType()+"\"  .  \n"+
 			"	} \n"+
 			"	WHERE \n"+
 			"	{  \n"+
-			"	 <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:functionName  ?o0 . \n"+
-			"	 <"+super.baseURI+fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:executorType  ?o1 .\n"+
+			"	 <"+super.baseURI+objectURI+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:functionName  ?o0 . \n"+
+			"	 <"+super.baseURI+objectURI+"/"+ ChildType.PAYLOAD.getChildType()+">   ot:executorType  ?o1 .\n"+
 			"	} ";
 		
 		
-		super.sendPatchRequestForUpdatingTriples(data, fedoraObject.getURI()+"/"+ ChildType.PAYLOAD.getChildType()+"/fcr:metadata", null);
+		super.sendPatchRequestForUpdatingTriples(data, objectURI+"/"+ ChildType.PAYLOAD.getChildType()+"/fcr:metadata", null);
 		 
 	} 
 	
