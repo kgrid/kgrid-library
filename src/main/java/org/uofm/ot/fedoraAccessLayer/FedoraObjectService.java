@@ -336,7 +336,7 @@ public class FedoraObjectService {
 		
 	}
 	
-	public void deleteFedoraResource(String uri) throws ObjectTellerException {
+	protected void deleteFedoraResource(String uri) throws ObjectTellerException {
 		String deleteResourceURI = baseURI +  uri ;
 		HttpDelete httpDelete = new HttpDelete(deleteResourceURI);
 		httpDelete.addHeader(BasicScheme.authenticate(
