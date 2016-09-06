@@ -49,19 +49,19 @@
 						method="POST" modelAttribute="fedoraObject" action="addNewObject1">
 						<div id="barcontainer">
 							<ul id="progressbar">
-								<li class="current-tab"><img
+								<li class="current-tab" id="metadata"><img
 									src="<c:url value="/resources/images/checkmark.png" />"
 									width="20px" style="display: none;"> <spring:message
 										code="METADATA_TAB" /></li>
-								<li><img
+								<li id="payload"><img
 									src="<c:url value="/resources/images/checkmark.png" />"
 									width="20px" style="display: none;"> <spring:message
 										code="PAYLOAD_TAB" /></li>
-								<li><img
+								<li id="inputMessage"><img
 									src="<c:url value="/resources/images/checkmark.png" />"
 									width="20px" style="display: none;"> <spring:message
 										code="INPUT_MESSAGE" /></li>
-								<li><img
+								<li id="outputMessage"><img
 									src="<c:url value="/resources/images/checkmark.png"/>"
 									width="20px" style="display: none;"> <spring:message
 										code="OUTPUT_MESSAGE" /></li>

@@ -110,28 +110,29 @@ function getSection(uri, section) {
 	$.ajax({
 		type : 'GET',
 		url : "knowledgeObject/" + uri +"/"+section,
-		success : function(response) {
-			console.log("GET response:\n"+response);
+		success : function(response, tStatus, xhr) {
+			console.log("GET request:\n"+"knowledgeObject/" + uri +"/"+section);
+			//console.log("GET response:\n"+response);
+			console.log("GET Text Status:\n"+tStatus);
+			//console.log("GET jqXHR:\n"+xhr);
 			var test = JSON.stringify(response);
-			//alert(test);
+			console.log(test);
 		},
 		failure : function(response){
 			console.log("GET response:\n"+response);
-			var test = JSON.stringify(response);
+			//var test = JSON.stringify(response);
 			//alert(test);
 		}
 	});
 
 }
 function resetInputText(uri) {
+
 	$(".current-tab").removeClass("current-tab");
 	$("#progressbar li:first-child").addClass("current-tab");
 	$('#progressbar li').children("img").css("display", "none");
 	$('#addObj .fieldcontainer').css("display", "none");
 	$('#first').css("display", "block");
-/*	$("#begin_page").show();
-	$("#end_page").hide();
-	$("#entry_form1").hide();*/
 	$('#payloadTextArea').val("");
 	$('#functionName').val("");
 	$('#inputTextArea').val("");
@@ -139,7 +140,14 @@ function resetInputText(uri) {
 	$("input[id$='_data']").val("");
 	$("#description_data").val("");
 	$("div[id$='_entry']").children().remove();
+	retrieveObjectContent(uri,"metadata");
+	retrieveObjectContent(uri,"payload");
+	retrieveObjectContent(uri,"inputMessage");
+	retrieveObjectContent(uri,"outputMessage");
+//	retrieveObjectContent(uri,"logData");
+
 }
+
 function parseJSON(data) {
 	return window.JSON && window.JSON.parse ? window.JSON.parse(data)
 			: (new Function("return " + data))();
@@ -179,27 +187,72 @@ function retrieveObjectContent(uri, section) {
 		if(section!=""){
 			ajaxUrl = ajaxUrl+"/"+section;
 		}
+		console.log("URL: "+ ajaxUrl);
 		$.ajax({
-			beforeSend : function(xhrObj) {
-				xhrObj.setRequestHeader("Content-Type", "application/json");
-				xhrObj.setRequestHeader("Accept", "application/json");
-			},
 			type : ajaxMethod,
 			url : ajaxUrl,
-			dataType : "json",
-			success : function(response) {
-				console.log(response);
+			success : function(response, tStatus, xhr) {
+					console.log("GET request:\n"+"knowledgeObject/" + uri +"/"+section);
+					//console.log("GET response:\n"+response);
+					console.log("GET Text Status:\n"+tStatus);
 				if (response != 'empty') {
-					var test = JSON.stringify(response);
-					fObj = JSON.parse(test);
-					curURI=fObj.uri;
+					fObj = response;
 					console.log(fObj);
-				}
+					switch(section){
+					
+					case "metadata":
+						console.log(" Reset Page Title to: " +fObj.title);
+						$("#page_title").text(fObj.title);
+						$("#title_data").val(fObj.title);
+						$("#description_data").val(fObj.description);
+						$("#keyword_data").val(fObj.keywords);
+						$("#owner_data").val(fObj.owner);
+						$("#contributor_data").val(fObj.contributors);
+					break;
+					case "payload":
+						$("#functionName").val(fObj.functionName);
+						$("#engineType").val(fObj.engineType);
+						if(fObj.content!=""){
+							$("#payloadTextAreaDisplay").show();
+							$("#payloadDropFile").hide();
+							$('#payloadTextArea').val(fObj.content);
+						}else{
+							$("#payloadTextAreaDisplay").hide();
+							$("#payloadDropFile").show();
+						}
+						break;
+					case "inputMessage":
+						console.log(" Display Input: " +fObj);
+						if(fObj!=""){
+							$("#inputTextAreaDisplay").show();
+							$("#inputDropFile").hide();
+							$('#inputTextArea').val(fObj);
+						}else{
+							$("#inputTextAreaDisplay").hide();
+							$("#inputDropFile").show();
+						}
+						
+						break;
+					case "outputMessage":
+						if(fObj!=""){
+							$("#outputTextAreaDisplay").show();
+							$("#outputDropFile").hide();
+							$('#outputTextArea').val(fObj);
+						}else{
+							$("#outputTextAreaDisplay").hide();
+							$("#outputDropFile").show();
+						}
+						break;
+					case "logData":
+						
+						break;
+					default:
+						break;
+				}}
 			},
 			error : function(response) {
 				document.getElementById("successResult").innerHTML = "ERROR";
-				// test code for
-				$("#begin_page").show();
+				
 			}
 		});
 
@@ -299,7 +352,16 @@ function updateObject(section) {
 	$("#end_page").show();
 	curTitle = metadata.title;
 }
-	
+
+function setActiveTab(section){
+	$('.current-tab').removeClass('current-tab');
+	$('#progressbar #'+section).addClass('current-tab');
+	var nthChild = $('#progressbar #'+section).index()+1;
+	console.log("Progress BAr index:"+nthChild);
+	$(".fieldcontainer:nth-child(" + nthChild + ")").css({
+		'display' : 'inline-block'
+	});
+}
 	
 function saveToServer(ajaxMethod,ajaxUrl,ajaxSuccess,text)	{
 	$.ajax({
@@ -362,8 +424,8 @@ $(document)
 							false ];
 					var numberofFields = inputLabels.length;
 					var inputField;
-					for (var i = 0; i < (numberofFields - 1); i++) {
-						console.log(isMultiples[i]);
+					for (var i = 0; i < (numberofFields); i++) {
+						//console.log(isMultiples[i]);
 						if (i != 1) {
 							inputField = createInputField(inputNames[i],
 									inputIDs[i], inputLabels[i], maxLengths[i],
@@ -407,6 +469,7 @@ $(document)
 					$("[id$='ClearBtn']").click(function(event) {
 						event.preventDefault();
 						var btn_id = this.id;
+						console.log(btn_id);
 						var tArea_id = btn_id.replace("ClearBtn", "TextArea");
 						var dropfile = btn_id.replace("ClearBtn", "DropFile");
 						$("#" + dropfile).show();
@@ -503,7 +566,7 @@ $(document)
 						var inLabel = "<h4>" + inputLabel + "</h4>";
 						var entryArea = "<div class='entryArea' id='"
 								+ inputName + "_entry'></div>";
-						var inField = '<div class="addtext"><input type="text" name="'
+						var inField = '<div class="addtext"><input spellcheck="false" type="text" name="'
 								+ inputName
 								+ '" id="'
 								+ inputID
@@ -529,7 +592,7 @@ $(document)
 						var inLabel = "<h4>" + inputLabel + "</h4>";
 						var entryArea = "<div class='entryArea' id='"
 								+ inputName + "_entry'></div>";
-						var inField = '<div class="addtext"><textarea name="'
+						var inField = '<div class="addtext"><textarea spellcheck="false" name="'
 								+ inputName + '" id="' + inputID
 								+ '" placeholder="' + placeholderText
 								+ '" maxlength=' + maxLength + '></textarea>';
