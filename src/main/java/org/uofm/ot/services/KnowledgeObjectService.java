@@ -188,4 +188,8 @@ public class KnowledgeObjectService {
 		return payload ;
 	}
 	
+	public void editPayload(String objectURI,Payload payload) throws ObjectTellerException {
+		editFedoraObjectService.putBinary( payload.getContent(), objectURI, ChildType.PAYLOAD.getChildType(),null);
+		editFedoraObjectService.editPayloadMetadata(payload,objectURI);
+	}
 }

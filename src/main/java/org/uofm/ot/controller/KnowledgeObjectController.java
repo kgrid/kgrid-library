@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.uofm.ot.exception.ObjectTellerException;
+import org.uofm.ot.fedoraAccessLayer.FedoraObjectService;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
@@ -67,7 +68,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public List<FedoraObject> geKnowledgeObjects(FedoraObject KnowledgeObject) throws ObjectTellerException {
+	public List<FedoraObject> geKnowledgeObjects() throws ObjectTellerException {
 		return knowledgeObjectService.getKnowledgeObjects(false);
 	}
 	
@@ -113,11 +114,12 @@ public class KnowledgeObjectController {
 	}
 
 	@RequestMapping(value="/knowledgeObject/{objectURI}/payload", 
-			method=RequestMethod.POST , 
+			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public Payload addOrUpdatePayload(Payload payload , @PathVariable String objectURI) {
-		return null;
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void addOrUpdatePayload(@RequestBody Payload payload , @PathVariable String objectURI) throws ObjectTellerException {
+		knowledgeObjectService.editPayload(objectURI, payload);	
 	}
 	
 	

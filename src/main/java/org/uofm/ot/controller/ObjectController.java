@@ -225,7 +225,7 @@ public class ObjectController {
 				String transactionId = null;
 
 				editFedoraObjectService.putBinary(fedoraObject.getPayload().getContent(), fedoraObject.getURI(), ChildType.PAYLOAD.getChildType(),transactionId);
-				editFedoraObjectService.editPayloadMetadata(fedoraObject);
+				editFedoraObjectService.editPayloadMetadata(fedoraObject.getPayload(),fedoraObject.getURI());
 				try {
 					Thread.sleep(1000);                 
 				} catch(InterruptedException ex) {
