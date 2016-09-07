@@ -296,8 +296,7 @@ h3 {
 
 .date {
 	position:absolute;
-	bottom:0px;
-	padding: 22px 38px;
+	padding: 4px 38px;
 	color: dimgrey;
 	display: inline-block;
 	margin-right: 10%;
@@ -313,7 +312,7 @@ h3 {
 
 .date div {
 	display: inline-block;
-	width: 130px;
+	width: 120px;
 }
 
 .date-title {
@@ -334,6 +333,12 @@ h3 {
 	padding-top: 45px;
 }
 
+#pubIndicator{
+	width: 10px;
+	height: 60px;
+	display: inline-block;
+}
+
 .type-status {
 	display: inline-block;
 	height: 10px;
@@ -350,18 +355,17 @@ h3 {
 	font-size: 14pt;
 }
 
-.display-banner #ko-title {
+#ko-title {
 	position:relative;
-	margin-top: 10px;
 	display: block;
 	font-size: 28pt;
-	margin-left:10px;
-	width:980px;
+	margin-left:11px;
+	width:860px;
 	height:60px;
 	background-color:#fff;
 }
 
-.display-banner h1{
+#ko-title h1{
 	position:absolute;
 	display: inline-block;
 	font-size: 28pt;

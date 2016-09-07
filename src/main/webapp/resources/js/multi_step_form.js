@@ -15,8 +15,26 @@ function createViewField(inputName, inputID, inputLabel, maxLength, value,isMult
     	return beginTag+inLabel+entryArea+inField+endTag;
     }else{
     	return beginTag+inLabel+inField+endTag;
-	
     }
+}
+
+function updateCount() {
+	/* alert("key typed!"); */
+	var cs = $(this).val().length;
+	var elementid = this.id;
+	var count = $(this).parent().children("span").text();
+	var maxl_s = count.substring(count.length - 3,
+			count.length)
+	var maxl = parseInt(maxl_s);
+	var csl = maxl - cs;
+	var s = csl.toString().concat("/" + maxl_s);
+	var cs_color = "lightgreen";
+	if (csl < 10) {
+		cs_color = "red";
+	}
+	$(this).parent().children("span").text(s);
+	$(this).parent().children("span")
+			.css("color", cs_color);
 }
 
 function overlayHeightResize(overlayID, window_height){
@@ -31,6 +49,22 @@ function overlayHeightResize(overlayID, window_height){
 	return ol_pane_height;
 }
 
+function deleteObject() {
+	var txt;
+	if(curURI!=""){
+	var r = confirm("Do you really want to delete the object ? ");
+	if (r == true) {
+		$.ajax({
+			type : 'DELETE',
+			url : "deleteObject." + curURI,
+			success : function(response) {
+				window.location.href = "home";
+			}
+		});
+	}
+	}
+}
+
 function overlaySlide(overlayID, open){
     document.body.classList.toggle('noscroll', open);
 	var overlayPane =$('#'+overlayID).find("> .ol_pane");
@@ -38,24 +72,12 @@ function overlaySlide(overlayID, open){
 	var window_height = $(window).height();
 	var overlayPane_width=overlayPane.width();
 	var overlayPane_height=	overlayHeightResize(overlayID, window_height);
-
 	var overlayPane_left = window_width-overlayPane_width;
 	if(overlayPane_left<=(window_width*0.27)){
 		overlayPane_left=(window_width*0.27);
 	}
-	if(open){
-		$('#'+overlayID).css("display","block");
-        $('#'+overlayID).fadeIn('fast',function(){
-            overlayPane.animate({'left':overlayPane_left+"px"},1000);
-        });
-    }else{
-		$('#'+overlayID).css("display","none");
-    	overlayPane.animate({'left':'100%'},1000,function(){
-            $('#'+overlayID).fadeOut('fast');
-        });
-    }
-
 	if(overlayID=="addObject"){
+		resetInputText();
 		console.log("Overlay IN with URI:"+curURI);
 		if(curURI!=""){
 			$("#begin_page").hide();
@@ -63,9 +85,8 @@ function overlaySlide(overlayID, open){
 		}else{
 			$("#begin_page").show();
 			$("#entry_form1").hide();
-			
 		}
-		resetInputText(curURI);
+		initInputText(curURI);
 	}
 	if(overlayID=="libraryuser"){
 		resetUserInfoText();
@@ -73,7 +94,25 @@ function overlaySlide(overlayID, open){
 	if(overlayID=="citation"){
 		resetCitationText();
 	}
-	
+	if(overlayID=="license"){
+		resetlicenseText();
+	}
+	if(open){
+		$('#'+overlayID).css("display","block");
+        $('#'+overlayID).fadeIn('fast',function(){
+            overlayPane.animate({'left':overlayPane_left+"px"},1000);
+        });
+    }else{
+    	curURI="";
+		$('#'+overlayID).css("display","none");
+    	overlayPane.animate({'left':'100%'},1000,function(){
+            $('#'+overlayID).fadeOut('fast');
+        });
+    	
+    	
+    }
+
+
 }
 
 function createViewTextarea(inputName, inputID, inputLabel, maxLength, value,isMultiple){
@@ -92,12 +131,31 @@ function createViewTextarea(inputName, inputID, inputLabel, maxLength, value,isM
 }
 
 function resetCitationText() {
+	$('.addtext>input').each(updateCount);
 	$("#citation_title").val("");
 	$("#citation_link").val("");
 	$("#citation_detail").attr("src", "");
 	$("#entry_form").show();
+	$("#citation_idx").val("");
+	$("#addCitation").val("ADD");
 }
 
+function initCitationText(overlayID, cidx, ctitle, clink){
+	console.log("Citation Index:"+cidx+" Title:"+ctitle+" Link:"+clink);
+	$( "#citation_title" ).val( ctitle );
+	$( "#citation_link" ).val( clink );
+	$("#citation_detail").attr("src","");
+	$("#addCitation").val("UPDATE");
+	$("#citation_idx").val(cidx);
+	$('.addtext>input').each(updateCount);
+}
+
+function resetLicenseText() {
+	$("#license_title").val("");
+	$("#license_link").val("");
+	$("#license_detail").attr("src", "");
+	$("#entry_form").show();
+}
 function resetUserInfoText() {
 	$("input[id$='_data']").val("");
 	$("#pwd_data").prop('disabled', false);
@@ -112,21 +170,36 @@ function getSection(uri, section) {
 		url : "knowledgeObject/" + uri +"/"+section,
 		success : function(response, tStatus, xhr) {
 			console.log("GET request:\n"+"knowledgeObject/" + uri +"/"+section);
-			//console.log("GET response:\n"+response);
 			console.log("GET Text Status:\n"+tStatus);
-			//console.log("GET jqXHR:\n"+xhr);
 			var test = JSON.stringify(response);
 			console.log(test);
 		},
 		failure : function(response){
 			console.log("GET response:\n"+response);
-			//var test = JSON.stringify(response);
-			//alert(test);
 		}
 	});
 
 }
-function resetInputText(uri) {
+
+function resetInputText() {
+
+	$(".current-tab").removeClass("current-tab");
+	$("#progressbar li:first-child").addClass("current-tab");
+	$('#progressbar li').children("img").css("display", "none");
+	$('#addObj .fieldcontainer').css("display", "none");
+	$('#first').css("display", "block");
+	$('#payloadTextArea').val("");
+	$('#functionName').val("");
+	$('#inputTextArea').val("");
+	$('#outputTextArea').val("");
+	$("input[id$='_data']").val("");
+	$("#description_data").val("");
+	$("div[id$='_entry']").children().remove();
+	$("#page_title").text("");
+	$("#cDate").text("");
+	$("#uDate").text("");
+}
+function initInputText(uri) {
 
 	$(".current-tab").removeClass("current-tab");
 	$("#progressbar li:first-child").addClass("current-tab");
@@ -145,6 +218,7 @@ function resetInputText(uri) {
 	retrieveObjectContent(uri,"inputMessage");
 	retrieveObjectContent(uri,"outputMessage");
 //	retrieveObjectContent(uri,"logData");
+
 
 }
 
@@ -203,11 +277,34 @@ function retrieveObjectContent(uri, section) {
 					case "metadata":
 						console.log(" Reset Page Title to: " +fObj.title);
 						$("#page_title").text(fObj.title);
+						var title_length = fObj.title.length;
+						if (title_length > 74) {
+							$("#page_title").css("font-size", "21px");
+						} else {
+							$("#page_title").css("font-size", "24px");
+
+						}
 						$("#title_data").val(fObj.title);
 						$("#description_data").val(fObj.description);
 						$("#keyword_data").val(fObj.keywords);
 						$("#owner_data").val(fObj.owner);
 						$("#contributor_data").val(fObj.contributors);
+						if(fObj.published){
+							$("#preTitle").show();
+							$(".pri-pub2").addClass("current-tab");
+							$(".pri-pub2 span").addClass("middleout");
+							$(".pri-pub1").removeClass("current-tab");
+							$(".pri-pub1 span").removeClass("middleout");
+						}else{
+							$("#preTitle").hide();
+							$(".pri-pub1").addClass("current-tab");
+							$(".pri-pub1 span").addClass("middleout");
+							$(".pri-pub2").removeClass("current-tab");
+							$(".pri-pub2 span").removeClass("middleout");
+						}
+						$("#cDate").text($.datepicker.formatDate('M dd, yy', new Date(fObj.createdOn)));
+						$("#uDate").text($.datepicker.formatDate('M dd, yy', new Date(fObj.lastModified)));
+						
 					break;
 					case "payload":
 						$("#functionName").val(fObj.functionName);
@@ -259,6 +356,17 @@ function retrieveObjectContent(uri, section) {
 	}
 }
 
+function toggleObject(param) {
+	$(this).find("span").addClass("middleout");
+	$(".pri-pub .current-tab").find("span").removeClass("middleout");
+	$.ajax({
+		type : 'GET',
+		url : "publishObject." + curURI + "/" + param,
+		success : function(response) {
+			location.reload();
+		}
+	});
+}
 function updateObject(section) {
 
 	var fedoraObject = new Object();
@@ -438,8 +546,9 @@ $(document)
 						}
 						$(inputField).appendTo("#metadata_fields");
 					}
-
-					/*
+					
+					var count = 0; // To Count Blank Fields
+				/*
 					 * $("#addObj_f").validate({ errorPlacement: function(error,
 					 * element) { // Append error within linked label $( element )
 					 * .closest( "form" ) .find( "label[for='" + element.attr(
@@ -464,8 +573,7 @@ $(document)
 					 * output_file:"Please choose and upload a file as your
 					 * output message." } });
 					 */
-					var count = 0; // To Count Blank Fields
-					/*------------ Validation Function-----------------*/
+					
 					$("[id$='ClearBtn']").click(function(event) {
 						event.preventDefault();
 						var btn_id = this.id;
@@ -475,12 +583,8 @@ $(document)
 						$("#" + dropfile).show();
 						$("#" + tArea_id + "Display").hide();
 						$("#" + tArea_id).text("");
-
 					});
 					$(".next_btn").click(function() { // Function Runs On NEXT
-						// Button Click
-						/* $(this).parent().children("input").validate(); */
-
 						$(this).parent().next().fadeIn('slow');
 						$(this).parent().css({
 							'display' : 'none'
@@ -540,25 +644,7 @@ $(document)
 					$("[id$='_data']").each(updateCount);
 
 					
-					function updateCount() {
-						/* alert("key typed!"); */
-						var cs = $(this).val().length;
-						var elementid = this.id;
-						var count = $(this).parent().children("span").text();
-						var maxl_s = count.substring(count.length - 3,
-								count.length)
-						var maxl = parseInt(maxl_s);
-						var csl = maxl - cs;
-						var s = csl.toString().concat("/" + maxl_s);
-						var cs_color = "lightgreen";
-						if (csl < 10) {
-							cs_color = "red";
-						}
-						$(this).parent().children("span").text(s);
-						$(this).parent().children("span")
-								.css("color", cs_color);
-					}
-					;
+					
 
 					function createInputField(inputName, inputID, inputLabel,
 							maxLength, placeholderText, isMultiple) {
@@ -687,15 +773,7 @@ $(document)
 						initCitationText('citation',idx,ctitle,clink);
 					});
 					}
-					function initCitationText(overlayID, cidx, ctitle, clink){
-						console.log("Citation Index:"+cidx+" Title:"+ctitle+" Link:"+clink);
-						$( "#citation_title" ).val( ctitle );
-						$( "#citation_link" ).val( clink );
-						$("#citation_detail").attr("src","");
-						$("#addCitation").val("UPDATE");
-						$("#citation_idx").val(cidx);
-						$('.addtext>input').each(updateCount);
-					}
+
 					$("button").click(function(e) {
 						e.preventDefault();
 					});
@@ -758,5 +836,12 @@ $(document)
 					   			url:"Please enter a valid URL link for your citation."}
 					   		}
 						});
+					
+					$(".backrow").click(function(evt){
+						var uri = this.id;
+						console.log("Clicking "+uri);
+						setURI(uri);
+						overlaySlide("addObject", true);
+					});
 					
 				});

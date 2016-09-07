@@ -44,6 +44,7 @@
 	src="<c:url value="/resources/js/dropdown.js"/>"></script>
 <script src="<c:url value="/resources/js/scroll.js"/>"></script>
 <script src="<c:url value="/resources/js/iconbutton.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery-ui.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery.validate.js"/>"></script>
 
 </head>
@@ -180,8 +181,9 @@
 						varStatus="loopStatus">
 						<tr>
 							<td>
-								<div class="backrow clickable">
-									<a href="object.${fedoraObject.URI}">
+								<div class="backrow clickable" id="${fedoraObject.URI}">
+									<a href="#">
+									<%-- <a href="object.${fedoraObject.URI}"> --%>
 										<ul>
 											<li class="col-data col-type"><c:choose>
 													<c:when test="${not fedoraObject.metadata.published}">
