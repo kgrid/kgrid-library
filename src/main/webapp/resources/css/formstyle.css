@@ -102,7 +102,7 @@ display:block;
 
 input[type=text],
 input[type=password]{
-  width:820px;
+  width:860px;
   height: 38px;
   padding: 0px 16px;
   border: 1px solid #e6e6e6;
@@ -169,13 +169,13 @@ option:hover
   font-size: 14px;
     height:80px;
         min-height:80px;
-        width:820px;
+        width:860px;
 }
 
 #citation_detail, #license_detail {
 	    height:320px;
         min-height:320px;
-		width:820px;
+		width:860px;
 	}
 .board h3{
     color:#666666;

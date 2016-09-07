@@ -105,7 +105,7 @@
 										<iframe id="license_detail"></iframe>
 									</div>
 									<input class="done_btn" name="done" id="addLicense"
-										type="button" value="ADD">
+										type="button" value="UPDATE">
 							</fieldset>
 						</form>
 					</div>

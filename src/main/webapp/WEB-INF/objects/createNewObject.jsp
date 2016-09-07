@@ -10,9 +10,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script src="<c:url value="/resources/js/multi_step_form.js"/>"></script>
 <title>Add Object</title>
-<script>
-
-</script>
 </head>
 </head>
 <body>
@@ -26,24 +23,62 @@
 		</div>
 		<div class="board" id="addObj">
 			<div id="begin_page">
-			<h3> Create New Knowledge Object</h3>
+				<h3>Create New Knowledge Object</h3>
 				<div class="addtext" id="newTitle">
-					<h4>
-						Please enter a title for the new knowledge object, then click on "Create Object".
-					</h4>
-				
+					<h4>Please enter a title for the new knowledge object, then
+						click on "Create Object".</h4>
 					<input type="text" maxlength="140" class="metaEdit"
 						id="new_title_data" path="metadata.title"
-						value="${fedoraObject.metadata.title}" />
-					<span>140/140</span>
+						value="${fedoraObject.metadata.title}" /> <span>140/140</span>
 				</div>
-				<input id="addObjButton" type="button"
-					onclick="updateObject('new')" value="Create Object">
+				<input id="addObjButton" type="button" onclick="updateObject('new')"
+					value="Create Object">
 			</div>
 			<div class="entryform" id="entry_form1">
-				<h3 id="page_title">
-					<spring:message code="ADD_OBJECT_TITLE" />
-				</h3>
+				
+		<div id="ko-title">
+			<div id="pubIndicator">
+				<div class="type-status" id="preTitle"></div>
+			</div>
+			<h1><small  id="page_title">
+					</small>
+			</h1>		
+		</div>	
+		<div class="pri-pub accessLevelOne">
+					<div class="pri-pub1"
+						onclick="toggleObject('no')">
+						<span><spring:message code="PRIVATE" /></span>
+					</div>
+					<div class="pri-pub2" onclick="toggleObject('yes')">
+						<div class="minitype-status"></div>
+						<div>
+							<span><spring:message code="PUBLIC" /></span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="date">
+			<div class="date1">
+				<p class="date-title">
+					<spring:message code="DATE_CREATED" />
+				</p>
+				<p class="date-data" id="cDate">
+								</p>
+			</div>
+			<div class="date2">
+				<p class="date-title">
+					<spring:message code="UPDATE_DATE" />
+				</p>
+				<p class="date-data" id="uDate">
+			</p>
+			</div>
+
+		</div>	
+		<button class="inline edit" id="deleteButton"
+									style="position: relative; left: 84%; bottom:-30px"
+									onclick="deleteObject()">
+									<spring:message code="DELETE_OBJ_BUTTON" />
+								</button>		
 				<div>
 					<sf:form name="addObj_f" class="Add-content" id="addObj_f"
 						method="POST" modelAttribute="fedoraObject" action="addNewObject1">
@@ -69,7 +104,8 @@
 						</div>
 						<fieldset class="fieldcontainer" id="first">
 							<div id="metadata_fields"></div>
-							<input class="next_btn" name="next" type="button" value="Next"><input id="addObjButton" type="button"
+							<input class="next_btn" name="next" type="button" value="Next"><input
+								id="addObjButton" type="button"
 								onclick="updateObject('metadata')" value="Apply Changes">
 						</fieldset>
 						<fieldset class="fieldcontainer">
@@ -124,8 +160,9 @@
 							</div>
 							<input class="pre_btn" name="previous" type="button"
 								value="Previous"> <input class="next_btn" name="next"
-								type="button" value="Next"><input id="addObjButton" type="button"
-								onclick="updateObject('payload')" value="Apply Changes">
+								type="button" value="Next"><input id="addObjButton"
+								type="button" onclick="updateObject('payload')"
+								value="Apply Changes">
 						</fieldset>
 						<fieldset class="fieldcontainer">
 							<div id="fields">
@@ -162,8 +199,9 @@
 							</div>
 							<input class="pre_btn" name="previous" type="button"
 								value="Previous"> <input class="next_btn" name="next"
-								type="button" value="Next"><input id="addObjButton" type="button"
-								onclick="updateObject('inputMessage')" value="Apply Changes">
+								type="button" value="Next"><input id="addObjButton"
+								type="button" onclick="updateObject('inputMessage')"
+								value="Apply Changes">
 						</fieldset>
 						<fieldset class="fieldcontainer">
 							<div id="fields">
@@ -210,12 +248,10 @@
 				<div>
 					<p id="successResult"
 						style="font-size: 28px; line-height: 2em; color: #666666;"></p>
-					<input id="editObjButton" type="button"
-								onclick="addObjContent()" value="Edit Content">
-					<input id="doneBtn" type="button"
-								onclick="overlaySlide('addObject',false)" value="Done">
+					<input id="editObjButton" type="button" onclick="addObjContent()"
+						value="Edit Content"> <input id="doneBtn" type="button"
+						onclick="overlaySlide('addObject',false)" value="Done">
 				</div>
-
 			</div>
 		</div>
 	</div>

@@ -32,7 +32,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="<c:url value="/resources/js/iconbutton.js"/>"></script>
 <script src="<c:url value="/resources/js/scroll.js"/>"></script>
-<%-- <script src="<c:url value="/resources/js/obj_edit_form.js"/>"></script> --%>
 <script src="<c:url value="/resources/js/jquery.validate.js"/>"></script>
 <script>
 
@@ -272,8 +271,7 @@
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
-	</div> --%>
-		<div id="addObject" class="layered_overlay" aria-hidden="true">
+	<div id="addObject" class="layered_overlay" aria-hidden="true">
 		<%@ include file="../objects/createNewObject.jsp"%>
 	</div>
 	<div id="topfixed">
@@ -393,7 +391,7 @@
 									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','metadata')">Display Metadata
 								</button> --%>
 								<button class="inline edit" id="deleteButton"
-									style="position: relative; left: 90%"
+									style="position: relative; left: 84%; bottom:-30px"
 									onclick="deleteObject('${fedoraObject.URI}')">
 									<spring:message code="DELETE_OBJ_BUTTON" />
 								</button>
