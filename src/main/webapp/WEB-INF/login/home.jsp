@@ -37,6 +37,8 @@
 	href="<c:url value="/resources/css/librarysetting.css" />"	type="text/css" />
 	<link rel="stylesheet"
 	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" />
+	<link rel="stylesheet" href="<c:url value="/resources/css/tab.css"/>"
+	type="text/css" />
 <title><spring:message code="LOGIN_TITLE" /></title>
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
@@ -46,6 +48,7 @@
 <script src="<c:url value="/resources/js/iconbutton.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery-ui.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery.validate.js"/>"></script>
+<script src="<c:url value="/resources/js/tabs.js"/>"></script>
 
 </head>
 <body>
