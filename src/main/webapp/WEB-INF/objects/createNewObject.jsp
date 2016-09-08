@@ -83,7 +83,18 @@
 					<sf:form name="addObj_f" class="Add-content" id="addObj_f"
 						method="POST" modelAttribute="fedoraObject" action="addNewObject1">
 						<div id="barcontainer">
-							<ul id="progressbar">
+						<ul id="tabs">
+					<li class="labels active"><spring:message code="METADATA_TAB" /></li>
+					<li class="labels"><spring:message code="PAYLOAD_TAB" /></li>
+					<li class="labels"><spring:message code="INPUT_TAB" /></li>
+					<li class="labels"><spring:message code="OUTPUT_TAB" /></li>
+					<li class="labels accessLevelOne"><spring:message
+							code="LOG_DATA_TAB" /></li>
+				</ul>
+				<div id="ellipsis" class="labels accessLevelOne">
+					<img src="<c:url value="/resources/images/more.png"/> " />
+				</div>
+							<%-- <ul id="progressbar">
 								<li class="current-tab" id="metadata"><img
 									src="<c:url value="/resources/images/checkmark.png" />"
 									width="20px" style="display: none;"> <spring:message
@@ -100,15 +111,20 @@
 									src="<c:url value="/resources/images/checkmark.png"/>"
 									width="20px" style="display: none;"> <spring:message
 										code="OUTPUT_MESSAGE" /></li>
-							</ul>
+							</ul> --%>
 						</div>
+						<ul id="tab">
+					<li class="active" id="metadata">
 						<fieldset class="fieldcontainer" id="first">
 							<div id="metadata_fields"></div>
-							<input class="next_btn" name="next" type="button" value="Next"><input
-								id="addObjButton" type="button"
+							<!-- <input class="next_btn" name="next" type="button" value="Next"> -->
+							<div id="metaEditWrapper"><input id="addObjButton" type="button"
 								onclick="updateObject('metadata')" value="Apply Changes">
+								<button class="inline edit" id="metadataCancelBtn"
+									>CANCEL</button></div>
 						</fieldset>
-						<fieldset class="fieldcontainer">
+						</li>
+					<li id="payload"><fieldset class="fieldcontainer">
 							<div id="fields">
 								<h4>
 									<spring:message code="PAYLOAD_FUNCTION" />
@@ -158,13 +174,16 @@
 									<textarea id="payloadTextArea"></textarea>
 								</div>
 							</div>
-							<input class="pre_btn" name="previous" type="button"
+							<!-- <input class="pre_btn" name="previous" type="button"
 								value="Previous"> <input class="next_btn" name="next"
-								type="button" value="Next"><input id="addObjButton"
+								type="button" value="Next"> --><div id="metaEditWrapper"><input id="addObjButton"
 								type="button" onclick="updateObject('payload')"
-								value="Apply Changes">
+								value="Apply Changes"><button class="inline edit" id="payloadCancelBtn"
+									>CANCEL</button></div>
 						</fieldset>
-						<fieldset class="fieldcontainer">
+						</fieldset>
+						</li>
+					<li id="input"><fieldset class="fieldcontainer">
 							<div id="fields">
 								<div id="inputDropFile" class="dropfile">
 									<div class="upload-direction">
@@ -197,13 +216,16 @@
 									<textarea id="inputTextArea"></textarea>
 								</div>
 							</div>
-							<input class="pre_btn" name="previous" type="button"
+							<!-- <input class="pre_btn" name="previous" type="button"
 								value="Previous"> <input class="next_btn" name="next"
-								type="button" value="Next"><input id="addObjButton"
+								type="button" value="Next"> --><div id="inputEditWrapper"><input id="addObjButton"
 								type="button" onclick="updateObject('inputMessage')"
-								value="Apply Changes">
+								value="Apply Changes"><button class="inline edit" id="inputCancelBtn"
+									>CANCEL</button></div>
 						</fieldset>
-						<fieldset class="fieldcontainer">
+						</fieldset>
+					</li>
+					<li id="output">	<fieldset class="fieldcontainer">
 							<div id="fields">
 								<div id="outputDropFile" class="dropfile">
 									<div class="upload-direction">
@@ -236,10 +258,20 @@
 									<textarea id="outputTextArea"></textarea>
 								</div>
 							</div>
-							<input class="pre_btn" name="previous" type="button"
-								value="Previous"> <input id="addObjButton" type="button"
+							<!-- <input class="pre_btn" name="previous" type="button"
+								value="Previous">  --><div id="outputEditWrapper"><input id="addObjButton" type="button"
 								onclick="updateObject('outputMessage')" value="Apply Changes">
+						<button class="inline edit" id="outputCancelBtn"
+									>CANCEL</button></div>
 						</fieldset>
+						</li>
+					<li id="logData">
+						
+							<div class="display-payload">
+								<textarea id="logdata_display"></textarea>
+							</div>
+							
+					</li>
 					</sf:form>
 				</div>
 			</div>

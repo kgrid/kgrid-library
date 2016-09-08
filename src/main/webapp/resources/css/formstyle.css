@@ -74,10 +74,8 @@ color:#b3b3b3;
 
 
 fieldset{
-display:none;
-padding:15px 0px 0px 0px;
+
 margin: 0 auto;
-margin-top:5px;
 border-radius:5px;
 /* overflow:auto; */
 }
@@ -102,16 +100,19 @@ display:block;
 
 input[type=text],
 input[type=password]{
-  width:860px;
+  width:900px;
   height: 38px;
   padding: 0px 16px;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #fff;
   border-radius: 10px;
   margin:2px 0;
   font-size: 14px;
   color:#666666;
 }
 
+input[type=text]:focus{
+	  border: 1px solid #39b45a;
+}
 input[type=text].error,
 input[type=password].error{
 	  border: 1px solid red;
@@ -160,18 +161,23 @@ option:hover
   margin:2px 0;
   font-size: 14px;
 }
-#description_data, #citation_detail, #license_detail {
+#description_data, #citation_detail, #license_detail, #logdata_display {
     display:block;
   padding: 5px 16px;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #fff;
   border-radius: 10px;
   margin:2px 0;
   font-size: 14px;
     height:80px;
         min-height:80px;
-        width:860px;
+        width:900px;
 }
 
+ #logdata_display {
+    height:400px;
+    min-height:400px;
+    border:none;    
+ }
 #citation_detail, #license_detail {
 	    height:320px;
         min-height:320px;
@@ -195,7 +201,7 @@ option:hover
   padding:10px 0;
 }
 textarea{
-width:98%;
+width:920px;
 margin:0px;
 resize:none;
 padding:5px;
@@ -236,9 +242,8 @@ input[type=button]{
 }
 
 #addObjButton {
-	    position:absolute;
    margin: 0 auto;
-    bottom:80px;
+
 }
 
 .pre_btn{
@@ -371,9 +376,9 @@ span[id$="error"]{
 #payloadClearBtn, #inputClearBtn, #outputClearBtn{
 	background-color: #fff;
   color: #39b54a;
-  font-size: 21px;
+  font-size: 16px;
   font-weight: 300;
-  padding-left: 10px;
+  padding: 0 25px;
     border:none;
     outline:none;
     cursor:pointer;
@@ -382,11 +387,37 @@ span[id$="error"]{
     display:block;
 }
 
+.addtext span{
+	display:none;
+}
+
+.addtext span.inEdit{
+	display:block;
+}
+button[id$="CancelBtn"] {
+	bottom: 5px;
+	font-size:21px;
+	right: 280px;
+	position:absolute;
+}
+
+[id$="EditWrapper"]{
+	display:none;
+	
+	
+}
+
+
+[id$="EditWrapper"].inEdit{
+	display:block;
+	
+	
+}
 @media (max-height: 960px){
 
 input[type=text],
 input[type=password]{
-  border: 1px solid #e6e6e6;
+  border: 1px solid #fff;
   border-radius: 10px;
   margin:0px;
   font-size: 14px;

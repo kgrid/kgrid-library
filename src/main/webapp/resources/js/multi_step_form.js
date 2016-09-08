@@ -41,7 +41,7 @@ function overlayHeightResize(overlayID, window_height){
 	var overlayPane =$('#'+overlayID).find("> .ol_pane");
 	var entryform = overlayPane.find(".entryform");
 	var ol_pane_height =window_height;
-	var calcHeight = (window_height-120);
+	var calcHeight = (window_height-140);
 	entryform.css("height",calcHeight+"px");
 	var ef_margin = (ol_pane_height-calcHeight)/2;
 	var addContent = entryform.find(".Add-content");
@@ -95,7 +95,7 @@ function overlaySlide(overlayID, open){
 		resetCitationText();
 	}
 	if(overlayID=="license"){
-		resetlicenseText();
+		resetLicenseText();
 	}
 	if(open){
 		$('#'+overlayID).css("display","block");
@@ -186,8 +186,8 @@ function resetInputText() {
 	$(".current-tab").removeClass("current-tab");
 	$("#progressbar li:first-child").addClass("current-tab");
 	$('#progressbar li').children("img").css("display", "none");
-	$('#addObj .fieldcontainer').css("display", "none");
-	$('#first').css("display", "block");
+	/*$('#addObj .fieldcontainer').css("display", "none");
+	$('#first').css("display", "block");*/
 	$('#payloadTextArea').val("");
 	$('#functionName').val("");
 	$('#inputTextArea').val("");
@@ -204,8 +204,8 @@ function initInputText(uri) {
 	$(".current-tab").removeClass("current-tab");
 	$("#progressbar li:first-child").addClass("current-tab");
 	$('#progressbar li').children("img").css("display", "none");
-	$('#addObj .fieldcontainer').css("display", "none");
-	$('#first').css("display", "block");
+/*	$('#addObj .fieldcontainer').css("display", "none");
+	$('#first').css("display", "block");*/
 	$('#payloadTextArea').val("");
 	$('#functionName').val("");
 	$('#inputTextArea').val("");
@@ -217,7 +217,7 @@ function initInputText(uri) {
 	retrieveObjectContent(uri,"payload");
 	retrieveObjectContent(uri,"inputMessage");
 	retrieveObjectContent(uri,"outputMessage");
-//	retrieveObjectContent(uri,"logData");
+	retrieveObjectContent(uri,"logData");
 
 
 }
@@ -341,7 +341,12 @@ function retrieveObjectContent(uri, section) {
 						}
 						break;
 					case "logData":
-						
+						if(fObj!=""){
+							console.log("TOstring: "+fObj.toString());
+							var fobjFormat=fObj.replace("\n","<br>");
+							console.log("format"+fobjFormat);
+							$("#logdata_display").html(fObj);
+						}
 						break;
 					default:
 						break;
@@ -699,6 +704,24 @@ $(document)
 					$("input[id$='_data']").click(function(e) {
 						e.preventDefault();
 					});
+					$( "input[type=text]" ).focus(function() {
+						  $(this).parent().find("span").addClass("inEdit");
+						  $("[id$='EditWrapper']").addClass("inEdit");
+						  $(this).each(updateCount);
+						});
+					$( "input[type=text]" ).blur(function() {
+						  $(this).parent().find("span").removeClass("inEdit");
+						  $("[id$='EditWrapper']").removeClass("inEdit");
+						});
+					$( "#description_data" ).focus(function() {
+						  $(this).parent().find("span").addClass("inEdit");
+						  $("[id$='EditWrapper']").addClass("inEdit");
+						  $(this).each(updateCount);
+						});
+					$( "#description_data" ).blur(function() {
+						  $(this).parent().find("span").removeClass("inEdit");
+						  $("[id$='EditWrapper']").removeClass("inEdit");
+						});
 					$("input[id$='_title']").click(function(e) {
 						e.preventDefault();
 					});
