@@ -48,6 +48,7 @@ public class KnowledgeObjectController {
 	public ResponseEntity<FedoraObject> createKnowledgeObject(@RequestBody FedoraObject KnowledgeObject,@ModelAttribute("loggedInUser") User loggedInUser, HttpServletRequest request ) throws ObjectTellerException, URISyntaxException {
 
 		ResponseEntity<FedoraObject> entity = null;
+		
 		if (loggedInUser != null) {
 			
 			FedoraObject object= knowledgeObjectService.createKnowledgeObject(KnowledgeObject, loggedInUser);

@@ -29,6 +29,7 @@ import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.License;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.knowledgeObject.PayloadDescriptor;
@@ -118,7 +119,7 @@ public class FusekiService {
 
 	}
 	
-	private ArrayList<FedoraObject> getFedoraObjects(String queryString,boolean isPublicOnly) throws ConnectException, ObjectTellerException {
+	private ArrayList<FedoraObject> getFedoraObjects(String queryString, boolean isPublicOnly) throws ConnectException, ObjectTellerException {
 		ArrayList< FedoraObject> list = new ArrayList<FedoraObject>();
 		Query query = QueryFactory.create(queryString) ;
 		QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
@@ -382,9 +383,12 @@ public class FusekiService {
 		}
 	}
 
-
 	
 	private String initQuery(boolean isSingleObject, String uri , boolean published ) {
+		
+		String subject = "";
+		String kwOpt = "OPTIONAL ";
+		
 		String query = FusekiConstants.PREFIX_OT + "\n"+
 				FusekiConstants.PREFIX_DC + "\n"+
 				FusekiConstants.PREFIX_FEDORA + "\n" + 
@@ -392,23 +396,29 @@ public class FusekiService {
 				"WHERE { " + "\n" ; 
 
 		if(isSingleObject ) {
-			query =  query + "<"+uri+"> dc:title ?title ; "+ "\n" ; 
+			subject = "<"+uri+">" ;
 		} else {
-			query =  query + "?x dc:title ?title ; "+ "\n" ;
+			subject = "?x " ;
 		}
+		
+		query = query + subject + " dc:title ?title . "+ "\n" ;
+		
+		
 	
 		if(published)
-			query =  query + "ot:published \"yes\" ; " + "\n" ;
+			query =  query + subject +" ot:published \"yes\" . " + "\n" ;
 		else
-			query =  query + "ot:published ?published ; " + "\n" ;
+			query =  query + subject +" ot:published ?published . " + "\n" ;
     										  
 											  
-		query = query + " fedora:created ?created ; "+" \n "+
-     					" fedora:lastModified ?lastModified ; "+" \n "+
-     					" ot:keywords ?keywords ;"+" \n "+
-  						" ot:owner ?owner ;"+" \n "+
-    					" ot:contributors ?contributors ;"+" \n "+
-    					" ot:description ?description ;"+" \n "+
+		query = query + subject +" fedora:created ?created . "+" \n "+
+						subject +" fedora:lastModified ?lastModified . "+" \n "+
+						subject +" ot:keywords ?keywords ."+" \n "+
+						subject +" ot:owner ?owner ."+" \n "+
+						subject +" ot:contributors ?contributors ."+" \n "+
+						subject +" ot:description ?description ."+" \n "+
+						kwOpt + "{" + subject +" ot:licenseName ?licenseName ."+ " } " +" \n "+
+						kwOpt + "{" + subject +" ot:licenseLink ?licenseLink ."+" } "+" \n "+
     
         "} ";
 		
@@ -457,6 +467,15 @@ public class FusekiService {
 			metadata.setContributors(querySolution.get("contributors").toString());
 			metadata.setDescription(querySolution.get("description").toString());
 
+			License license = new License();
+			if(querySolution.get("licenseName") != null)
+				license.setLicenseName(querySolution.get("licenseName").toString());
+			
+			if(querySolution.get("licenseLink") != null)
+				license.setLicenseLink(querySolution.get("licenseLink").toString());
+			
+			metadata.setLicense(license);
+			
 			fedoraObject.setMetadata(metadata);
 		}
 		return fedoraObject;
