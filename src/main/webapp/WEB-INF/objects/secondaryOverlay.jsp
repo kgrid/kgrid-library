@@ -31,7 +31,7 @@
 								<div class="citationField">
 									<h4 title="citation_title">TITLE, PMID or DOI</h4>
 									<div class="addtext">
-										<input class="textbox" name="citation_title"
+										<input class="textbox inEdit" name="citation_title"
 											id="citation_title" type="text" spellcheck="false"
 											placeholder="Enter Article Title, PMID or DOI "
 											maxlength="140"><span>140/140</span>
@@ -42,7 +42,7 @@
 									<h4 title="citation_link">HYPERLINK</h4>
 									<button class="inline edit" type="button" id="preview_btn">PREVIEW</button>
 									<div class="addtext">
-										<input class="textbox" name="citation_link" id="citation_link"
+										<input class="textbox inEdit" name="citation_link" id="citation_link"
 											type="text" spellcheck="false"
 											placeholder="Please provide the URL for the article "
 											maxlength="140"><span>140/140</span>
@@ -52,7 +52,7 @@
 								<div>
 									<h4>CITATION DETAIL</h4>
 									<div class="addtext">
-										<iframe id="citation_detail"></iframe>
+										<iframe class="inEdit" id="citation_detail"></iframe>
 									</div>
 								</div>
 								<input class="done_btn" name="done" id="addCitation"
