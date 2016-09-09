@@ -90,17 +90,16 @@ function overlaySlide(overlayID, open, mode){
 	if(overlayID=="addObject"){
 		resetInputText();
 		console.log("Overlay IN with URI:"+curURI);
+		
 		if(mode!="new"){
 			$("#begin_page").hide();
 			$("#entry_form1").show();
-			initInputTextFromObject(curObj);
+			if(open){
+			initInputTextFromObject(curObj);}
 		}else{
 			$("#begin_page").show();
 			$("#entry_form1").hide();
 		}
-		
-
-		
 	}
 	if(overlayID=="libraryuser"){
 		resetUserInfoText();
