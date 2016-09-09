@@ -149,23 +149,33 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 
 	private void addHEMetadataProperties(FedoraObject fedoraObject, String uri,String transactionId) throws ObjectTellerException {
 		
-		String objectURI ;
-		if(transactionId != null)
-			objectURI = baseURI + transactionId + "/" + uri;
-		else
-			objectURI = baseURI + uri ;
-		
-		String properties = FusekiConstants.PREFIX_OT +"\n "+	
-				FusekiConstants.PREFIX_DC +"\n "+
-				"INSERT DATA \n"+
-				"{ 	<"+objectURI+"> ot:owner  \""+fedoraObject.getMetadata().getOwner()+"\" ; \n"+
-				" ot:description  \""+fedoraObject.getMetadata().getDescription()+"\" ; \n"+
-				" ot:contributors  \""+fedoraObject.getMetadata().getContributors()+"\" ; \n"+
-				" dc:title \""+fedoraObject.getMetadata().getTitle()+"\" ; \n"+
-				" ot:keywords  \""+fedoraObject.getMetadata().getKeywords()+"\" ; \n"+ 
-				" ot:published  \"no\" . \n"+"} ";
+		if(fedoraObject.getMetadata() != null) {
+			String objectURI ;
+			if(transactionId != null)
+				objectURI = baseURI + transactionId + "/" + uri;
+			else
+				objectURI = baseURI + uri ;
 
-		sendPatchRequestForUpdatingTriples(properties, uri,transactionId);
+			String properties = FusekiConstants.PREFIX_OT +"\n "+	
+					FusekiConstants.PREFIX_DC +"\n "+
+					"INSERT DATA \n"+
+					"{ 	<"+objectURI+"> ot:owner  \""+fedoraObject.getMetadata().getOwner()+"\" ; \n"+
+					" ot:description  \""+fedoraObject.getMetadata().getDescription()+"\" ; \n"+
+					" ot:contributors  \""+fedoraObject.getMetadata().getContributors()+"\" ; \n"+
+					" dc:title \""+fedoraObject.getMetadata().getTitle()+"\" ; \n"+
+					" ot:keywords  \""+fedoraObject.getMetadata().getKeywords()+"\" ; \n"+ 
+					" ot:published  \"no\" ; \n";
+
+			if(fedoraObject.getMetadata().getLicense() != null) {
+				properties = properties + 
+						" ot:licenseName  \""+fedoraObject.getMetadata().getLicense().getLicenseName()+"\" ; \n"+
+						" ot:licenseLink  \""+fedoraObject.getMetadata().getLicense().getLicenseLink()+"\" ; \n" ; 
+			} 
+
+			properties = properties + "} ";
+
+			sendPatchRequestForUpdatingTriples(properties, uri,transactionId);
+		}
 
 	}
 

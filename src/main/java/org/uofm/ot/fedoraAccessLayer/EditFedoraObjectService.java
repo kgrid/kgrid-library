@@ -21,7 +21,15 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			"	  <"+super.baseURI+objectURI+">   ot:contributors ?o1. \n"+
 			"	  <"+super.baseURI+objectURI+">   ot:description ?o2. \n"+
 			"	  <"+super.baseURI+objectURI+">	  ot:owner ?o3 . \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:keywords ?o4 . \n"+
+			"	  <"+super.baseURI+objectURI+">   ot:keywords ?o4 . \n";
+		
+			if(metadata.getLicense() != null) {
+				data = data + 
+						"	  <"+super.baseURI+objectURI+">	  ot:licenseName ?o5 . \n"+
+						"	  <"+super.baseURI+objectURI+">   ot:licenseLink ?o6 . \n";						
+			}
+			
+		data = data +	
 			"	} \n"+
 			"	INSERT \n"+
 			"	{ \n"+
@@ -29,7 +37,15 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			"	  <"+super.baseURI+objectURI+">   ot:contributors  \""+metadata.getContributors()+"\"  .  \n"+
 			"	  <"+super.baseURI+objectURI+">   ot:description   \""+metadata.getDescription()+"\"  . \n"+
 			"	  <"+super.baseURI+objectURI+">   ot:owner    \""+metadata.getOwner()+"\"  .  \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:keywords  \""+metadata.getKeywords()+"\" . \n"+
+			"	  <"+super.baseURI+objectURI+">   ot:keywords  \""+metadata.getKeywords()+"\" . \n";
+		
+			if(metadata.getLicense() != null) {
+				data = data + 
+					"	  <"+super.baseURI+objectURI+">	  ot:licenseName \""+metadata.getLicense().getLicenseName()+"\" . \n"+
+					"	  <"+super.baseURI+objectURI+">   ot:licenseLink \""+metadata.getLicense().getLicenseLink()+"\" . \n";						
+			}
+			
+		data = data + 
 			"	} \n"+
 			"	WHERE \n"+
 			"	{  \n"+
@@ -37,7 +53,15 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			"	 <"+super.baseURI+objectURI+">   ot:contributors ?o1 .\n"+
 			"	 <"+super.baseURI+objectURI+">   ot:description ?o2 .\n"+
 			"	 <"+super.baseURI+objectURI+">	 ot:owner ?o3 .\n"+
-			"	 <"+super.baseURI+objectURI+"> 	 ot:keywords ?o4 . \n"+
+			"	 <"+super.baseURI+objectURI+"> 	 ot:keywords ?o4 . \n";
+			
+			if(metadata.getLicense() != null) {
+				data = data + 
+				"	  <"+super.baseURI+objectURI+">	  ot:licenseName ?o5 . \n"+
+				"	  <"+super.baseURI+objectURI+">   ot:licenseLink ?o6 . \n";						
+			}
+			
+			data = data + 
 			"	} ";
 		
 		super.sendPatchRequestForUpdatingTriples(data, objectURI,null); 
