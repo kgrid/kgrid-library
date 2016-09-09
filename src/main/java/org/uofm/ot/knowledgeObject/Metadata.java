@@ -25,6 +25,8 @@ public class Metadata {
 	
 	private List<Citation> citations;
 	
+	private License license ;
+	
 
 	public String getTitle() {
 		return title;
@@ -106,17 +108,20 @@ public class Metadata {
 		this.citations = citations;
 	}
 
+	public License getLicense() {
+		return license;
+	}
+
+	public void setLicense(License license) {
+		this.license = license;
+	}
+
 	@Override
 	public String toString() {
 		return "Metadata [title=" + title + ", owner=" + owner + ", description=" + description + ", contributors="
 				+ contributors + ", keywords=" + keywords + ", published=" + published + ", lastModified="
 				+ lastModified + ", createdOn=" + createdOn + ", objectType=" + objectType + ", citations=" + citations
-				+ "]";
+				+ ", license=" + license + "]";
 	}
-
-
-
-	
-	
 
 }
