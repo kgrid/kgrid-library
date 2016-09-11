@@ -8,7 +8,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script src="<c:url value="/resources/js/multi_step_form.js"/>"></script>
 <title>Add Object</title>
 </head>
 </head>
@@ -27,7 +26,7 @@
 				<div class="addtext" id="newTitle">
 					<h4>Please enter a title for the new knowledge object, then
 						click on "Create Object".</h4>
-					<input type="text" maxlength="140" class="metaEdit"
+					<input type="text" maxlength="140" class="metaEdit inEdit"
 						id="new_title_data" path="metadata.title"
 						value="${fedoraObject.metadata.title}" /> <span>140/140</span>
 				</div>
@@ -35,95 +34,30 @@
 					value="Create Object">
 			</div>
 			<div class="entryform" id="entry_form1">
-				
-		<div id="ko-title">
-			<div id="pubIndicator">
-				<div class="type-status" id="preTitle"></div>
-			</div>
-			<h1><small  id="page_title">
-					</small>
-			</h1>		
-		</div>	
-		<div class="pri-pub accessLevelOne">
-					<div class="pri-pub1"
-						onclick="toggleObject('no')">
-						<span><spring:message code="PRIVATE" /></span>
-					</div>
-					<div class="pri-pub2" onclick="toggleObject('yes')">
-						<div class="minitype-status"></div>
-						<div>
-							<span><spring:message code="PUBLIC" /></span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="date">
-			<div class="date1">
-				<p class="date-title">
-					<spring:message code="DATE_CREATED" />
-				</p>
-				<p class="date-data" id="cDate">
-								</p>
-			</div>
-			<div class="date2">
-				<p class="date-title">
-					<spring:message code="UPDATE_DATE" />
-				</p>
-				<p class="date-data" id="uDate">
-			</p>
-			</div>
-
-		</div>	
-		<button class="inline edit" id="deleteButton"
-									style="position: relative; left: 84%; bottom:-30px"
-									onclick="deleteObject()">
-									<spring:message code="DELETE_OBJ_BUTTON" />
-								</button>		
-				<div>
-					<sf:form name="addObj_f" class="Add-content" id="addObj_f"
+				<div id="ko-title">
+					<h1><small  id="page_title"></small></h1>		
+				</div>	
+			<div>
+			<sf:form name="addObj_f" class="Add-content" id="addObj_f"
 						method="POST" modelAttribute="fedoraObject" action="addNewObject1">
-						<div id="barcontainer">
-						<ul id="tabs">
+			<div id="barcontainer">
+				<ul class="inEdit" id="tabs">
 					<li class="labels active"><spring:message code="METADATA_TAB" /></li>
 					<li class="labels"><spring:message code="PAYLOAD_TAB" /></li>
 					<li class="labels"><spring:message code="INPUT_TAB" /></li>
 					<li class="labels"><spring:message code="OUTPUT_TAB" /></li>
-					<li class="labels accessLevelOne"><spring:message
-							code="LOG_DATA_TAB" /></li>
 				</ul>
-				<div id="ellipsis" class="labels accessLevelOne">
-					<img src="<c:url value="/resources/images/more.png"/> " />
-				</div>
-							<%-- <ul id="progressbar">
-								<li class="current-tab" id="metadata"><img
-									src="<c:url value="/resources/images/checkmark.png" />"
-									width="20px" style="display: none;"> <spring:message
-										code="METADATA_TAB" /></li>
-								<li id="payload"><img
-									src="<c:url value="/resources/images/checkmark.png" />"
-									width="20px" style="display: none;"> <spring:message
-										code="PAYLOAD_TAB" /></li>
-								<li id="inputMessage"><img
-									src="<c:url value="/resources/images/checkmark.png" />"
-									width="20px" style="display: none;"> <spring:message
-										code="INPUT_MESSAGE" /></li>
-								<li id="outputMessage"><img
-									src="<c:url value="/resources/images/checkmark.png"/>"
-									width="20px" style="display: none;"> <spring:message
-										code="OUTPUT_MESSAGE" /></li>
-							</ul> --%>
-						</div>
-						<ul id="tab">
-					<li class="active" id="metadata">
+			</div>
+			<ul class="inEdit" id="tab">
+					<li class="active current-tab" id="metadata">
 						<fieldset class="fieldcontainer" id="first">
 							<div id="metadata_fields"></div>
-							<!-- <input class="next_btn" name="next" type="button" value="Next"> -->
 							<div id="metaEditWrapper"><input id="addObjButton" type="button"
 								onclick="updateObject('metadata')" value="Apply Changes">
 								<button class="inline edit" id="metadataCancelBtn"
 									>CANCEL</button></div>
 						</fieldset>
-						</li>
+					</li>
 					<li id="payload"><fieldset class="fieldcontainer">
 							<div id="fields">
 								<h4>
@@ -131,7 +65,7 @@
 									<spring:message code="REQUIRED_FIELD" />
 								</h4>
 								<div class="addtext">
-									<input class="textbox" type="text" id="functionName"
+									<input class="textbox inEdit" type="text" id="functionName"
 										placeholder="one instance only" maxlength="140"><span>140/140</span>
 								</div>
 								<div class="addtext">
@@ -265,13 +199,7 @@
 									>CANCEL</button></div>
 						</fieldset>
 						</li>
-					<li id="logData">
-						
-							<div class="display-payload">
-								<textarea id="logdata_display"></textarea>
-							</div>
-							
-					</li>
+					</ul>
 					</sf:form>
 				</div>
 			</div>

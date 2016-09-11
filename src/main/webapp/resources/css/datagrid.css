@@ -262,7 +262,7 @@ h3 {
 
 .inline {
 	display: inline-block;
-	margin:0px;
+	margin:0px 0px 0px 50px;
 	vertical-align: middle;
 }
 
@@ -296,7 +296,7 @@ h3 {
 
 .date {
 	position:absolute;
-	padding: 4px 30px;
+	padding: 4px 38px;
 	color: dimgrey;
 	display: inline-block;
 	margin-right: 10%;
@@ -359,7 +359,8 @@ h3 {
 	position:relative;
 	display: block;
 	font-size: 28pt;
-	margin-left:2px;
+	margin-left:11px;
+	margin-top:16px;
 	width:860px;
 	height:60px;
 	background-color:#fff;
