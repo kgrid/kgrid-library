@@ -31,6 +31,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <script src="<c:url value="/resources/js/iconbutton.js"/>"></script>
+<script src="<c:url value="/resources/js/multi_step_form.js"/>"></script>
 <script src="<c:url value="/resources/js/scroll.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery.validate.js"/>"></script>
 <script>
@@ -38,227 +39,80 @@
 	$(document).ready(	
 			function() {
 				var userObj ="<%=session.getAttribute("DBUser")%>";
-				var prefixhash = "#";
-				var activeTab = prefixhash.concat('${ActiveTab}');
-				var tabNum = $(activeTab.toLowerCase()).index();
-				var nthChild = 1;
-				if (tabNum >= 0) {
-					var nthChild = tabNum + 1;
-				}
-				$("ul#tabs li.active").removeClass("active");
-				$("ul#tabs li:nth-child(" + nthChild + ")").addClass("active");
-				$("ul#tab li:nth-child(" + nthChild + ")").addClass("active");
-				var kotitle = $("#ko-title").find("small").text();
-				var title_length = kotitle.length;
-				console.log("Title: "+kotitle+" Title Length: "+ title_length);
-				if (title_length > 94) {
-					$("#ko-title").find("small").css("font-size", "24px");
-				} else {
-					$("#ko-title").find("small").css("font-size", "28px");
-
-				}
-				var accessLevel = 1;
-				if (userObj == "null") {
-					$(".accessLevelOne").css({
-						"visibility" : "hidden"
-					});
-					$("#session").show();
-					$("#logoutsession").hide();
-				} else {
-					$("#session").hide();
-					$("#logoutsession").show();
-					switch (accessLevel) {
-					default:
-						$(".accessLevelOne").css({
-							"visibility" : "hidden"
-						});
-						break;
-					case 1:
-						$(".accessLevelOne").css({
-							"visibility" : "visible"
-						});
-						break;
-					}
-				}
-				
-				$("#metadataeditBtn").click(function() {
-					
-					//console.log($(this).attr("id"));
-					var uri = $("#fObj").val();
-					console.log("Current URI:"+uri);
-					setURI(uri);
-					setActiveTab("metadata");
-					overlaySlide('addObject',true);
-
-				});
-				
-				$("[id$='EditBtn']").click(function() {
-					var btn_id = this.id;
-					switch (btn_id){
-					case "payloadEditBtn":
-						var section = btn_id.replace("EditBtn", "");
-						break;
-					default :
-						var section = btn_id.replace("EditBtn", "Message");
-						break;
-					}
-					var uri = $("#fObj").val();
-					console.log("Current URI:"+uri+ " Section:"+section);
-					setURI(uri);
-					//setActiveTab(section);
-					overlaySlide('addObject',true);
-					
-				});
-
-				$('[id^="file_"]').on('change', readMultipleFiles);
-				
-			});
-	
-	function cancelEdit() {
-		$("#metadata_view").show();
-		$("#metadata_edit").hide();
-		$("#metadataeditBtn").text("EDIT");
-		$("#deleteButton").show();
-		$("#metadataeditBtn").css("left", "0%");
-		$("#title_data").text(function(i, origText) {
-			return origText;
-		});
-		$("#description_data").text(function(i, origText) {
-			return origText;
-		});
-		$("#keyword_data").text(function(i, origText) {
-			return origText;
-		});
-		$("#owner_data").text(function(i, origText) {
-			return origText;
-		});
-		$("#contributor_data").text(function(i, origText) {
-			return origText;
-		});
-	}
-</script>
-<script type="text/javascript">
-	function toggleObject(uri, param) {
-		$(this).find("span").addClass("middleout");
-		$(".pri-pub .current-tab").find("span").removeClass("middleout");
-		$.ajax({
-			type : 'GET',
-			url : "publishObject." + uri + "/" + param,
-			success : function(response) {
-				location.reload();
-			}
-		});
-	}
-
-
-	function deleteObject(uri) {
-		var txt;
-		var r = confirm("Do you really want to delete the object ? ");
-		if (r == true) {
-			$.ajax({
-				type : 'DELETE',
-				url : "deleteObject." + uri,
-				success : function(response) {
-					window.location.href = "home";
-				}
-			});
+		var prefixhash = "#";
+		var activeTab = prefixhash.concat('${ActiveTab}');
+		var tabNum = $(activeTab.toLowerCase()).index();
+		var nthChild = 1;
+		if (tabNum >= 0) {
+			var nthChild = tabNum + 1;
 		}
-	}
-	
-	function getSection(uri, section) {
-		$.ajax({
-			type : 'GET',
-			url : "knowledgeObject/" + uri +"/"+section,
-			success : function(response) {
-				console.log("GET response:\n"+response);
-				var test = JSON.stringify(response);
-				//alert(test);
-			},
-			failure : function(response){
-				console.log("GET response:\n"+response);
-				var test = JSON.stringify(response);
-				//alert(test);
-			}
-		});
-	
-}
-	
-	function displayMetadata(uri) {
-			$.ajax({
-				type : 'GET',
-				url : "knowledgeObject/" + uri +"/metadata",
-				success : function(response) {
-					var test = JSON.stringify(response);
-					alert(test);
-				},
-				failure : function(response){
-					var test = JSON.stringify(response);
-					alert(test);
-				}
+		$("ul#tabs li.active").removeClass("active");
+		$("ul#tabs li:nth-child(" + nthChild + ")").addClass("active");
+		$("ul#tab li:nth-child(" + nthChild + ")").addClass("active");
+		var kotitle = $("#ko-title").find("small").text();
+		var title_length = kotitle.length;
+		console.log("Title: " + kotitle + " Title Length: " + title_length);
+		if (title_length > 94) {
+			$("#ko-title").find("small").css("font-size", "24px");
+		} else {
+			$("#ko-title").find("small").css("font-size", "28px");
+
+		}
+		var accessLevel = 1;
+		if (userObj == "null") {
+			$(".accessLevelOne").css({
+				"visibility" : "hidden"
 			});
-		
-	}
-	
-	
-	function saveMetadata(uri) {
-		var metadata = new Object();
-		metadata.title = document.getElementById("title_data").value;
-		metadata.contributors = document.getElementById("contributor_data").value;
-		metadata.keywords = document.getElementById("keyword_data").value;
-		metadata.owner = document.getElementById("owner_data").value;
-		metadata.description = document.getElementById("description_data").value;
-		
-		var citations = [] ;
-		var c = document.getElementById("citation_data_entry").childNodes ;
-		var i ;
-		for (i = 0; i < c.length; i++) {
-	
-	        if(c[i].nodeName == 'DIV'){
-	        	var citation = new Object() ;
-	        	var nodes = c[i].childNodes ;
-	        	var j ;
-	        	for (j = 0; j < nodes.length; j++) {
-	        		var id = nodes[j].id ; 
-	        		
-	        		if (typeof id != 'undefined') {
-	        			if(id.endsWith('_link')) {
-	        				citation.citation_at = nodes[j].value ;
-	        			}
-	        		
-	        			if(id.endsWith('_title')){
-	        				citation.citation_title = nodes[j].value ;
-	        			}
-	        		
-	        			if(id.endsWith('_id')) {
-	        				citation.citation_id = nodes[j].value ;
-	        			}
-	        		}
-	        	}
-	        	citations.push(citation);
-	        }
-	    }
-		
-		metadata.citations = citations ; 
-		
-		var text = JSON.stringify(metadata);
-		
-		$.ajax({
-			method : 'PUT',
-			url : "knowledgeObject/" + uri +"/metadata",
-			dataType: "json",
-			data: text,
-			contentType: "application/json" ,
-			success : function(response) {
-				var test = JSON.stringify(response);
-				alert("Changes were successfully saved ");
-				location.reload();
-			},
-			failure : function(response){
-				var test = JSON.stringify(response);
-				alert(test);
+			$("#session").show();
+			$("#logoutsession").hide();
+		} else {
+			$("#session").hide();
+			$("#logoutsession").show();
+			switch (accessLevel) {
+			default:
+				$(".accessLevelOne").css({
+					"visibility" : "hidden"
+				});
+				break;
+			case 1:
+				$(".accessLevelOne").css({
+					"visibility" : "visible"
+				});
+				break;
 			}
-		}); 
-	}
+		}
+
+		$("#metadataeditBtn").click(function() {
+
+			//console.log($(this).attr("id"));
+			var uri = $("#fObj").val();
+			console.log("Current URI:" + uri);
+			setURI(uri);
+			setActiveTab("metadata");
+			overlaySlide('addObject', true);
+
+		});
+
+		$("[id$='EditBtn']").click(function() {
+			var btn_id = this.id;
+			switch (btn_id) {
+			case "payloadEditBtn":
+				var section = btn_id.replace("EditBtn", "");
+				break;
+			default:
+				var section = btn_id.replace("EditBtn", "Message");
+				break;
+			}
+			var uri = $("#fObj").val();
+			console.log("Current URI:" + uri + " Section:" + section);
+			//setActiveTab(section);
+			overlaySlide('addObject', true);
+
+		});
+
+		/* 				$('[id^="file_"]').on('change', readMultipleFiles); */
+
+	});
 </script>
 <script type="text/javascript"
 	src="<c:url value="/resources/js/dropdown.js"/>"></script>
@@ -352,20 +206,26 @@
 			</div>
 
 		</div>
-
+		<div class="inline editwrapper accessLevelOne" style="margin-left:660px">
+			<button class="inline edit" id="metadataeditBtn">
+				<spring:message code="EDIT_BTN" /> OBJECT
+			</button>
+			<button class="inline edit" id="deleteButton"
+								onclick="deleteObject('${fedoraObject.URI}')">
+				<spring:message code="DELETE_OBJ_BUTTON" />
+			</button>
+		</div>
 	</div>
 	<div class="header">
 		<div class="objectcontainer">
 			<div class="headercol">
-				<ul id="tabs">
+				<ul class="view" id="tabs">
 					<li class="labels"><spring:message code="METADATA_TAB" /></li>
 					<li class="labels"><spring:message code="PAYLOAD_TAB" /></li>
 					<li class="labels"><spring:message code="INPUT_TAB" /></li>
 					<li class="labels"><spring:message code="OUTPUT_TAB" /></li>
 					<li class="labels accessLevelOne"><spring:message
 							code="LOG_DATA_TAB" /></li>
-
-
 				</ul>
 				<div id="ellipsis" class="labels accessLevelOne">
 					<img src="<c:url value="/resources/images/more.png"/> " />
@@ -376,26 +236,9 @@
 	<div class="maincontentwrapper">
 		<div class="main-content">
 			<div class="datagrid">
-				<ul id="tab">
+				<ul class="view" id="tab">
 					<li id="metadata">
 						<div id="tab-content1" class="tab-content view-obj">
-							<h3 class="fieldName inline">
-								<spring:message code="METADATA_TAB" />
-							</h3>
-							<%-- <sf:form class="display-content" id="metadata_view" 
-								modelAttribute="fedoraObject" action="deleteObject" method="DELETE"> --%>
-							<div class="inline editwrapper accessLevelOne">
-								<button class="inline edit" id="metadataeditBtn"
-									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
-								<%-- <button type="button" class="inline edit" id="metadataeditDisplay"
-									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','metadata')">Display Metadata
-								</button> --%>
-								<button class="inline edit" id="deleteButton"
-									style="position: relative; left: 84%; bottom:-30px"
-									onclick="deleteObject('${fedoraObject.URI}')">
-									<spring:message code="DELETE_OBJ_BUTTON" />
-								</button>
-							</div>
 							<form class="display-content" id="metadata_view">
 								<div class="addtext">
 									<h4>
@@ -447,21 +290,14 @@
 										</div>
 									</c:forEach>
 								</div>
-	
-								<input type="hidden" id="fObj" path="URI" value="${fedoraObject.URI}" />
+
+								<input type="hidden" id="fObj" path="URI"
+									value="${fedoraObject.URI}" />
 							</form>
 						</div>
 					</li>
 					<li id="payload">
 						<div id="tab-content2" class="tab-content view-obj">
-							<h3 class="fieldName inline">
-								<spring:message code="PAYLOAD_TAB" />
-							</h3>
-							<div class="inline editwrapper accessLevelOne">
-								<button class="inline edit" id="payloadEditBtn"
-									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
-							</div>
-
 							<form class="display-content" id="displaypayload">
 								<div>
 									<h4>
@@ -469,8 +305,7 @@
 										<spring:message code="REQUIRED_FIELD" />
 									</h4>
 									<input type="text" class="metaEdit" id="functionname_data"
-										disabled
-										value="${fedoraObject.payload.functionName}">
+										disabled value="${fedoraObject.payload.functionName}">
 								</div>
 								<div>
 									<h4>
@@ -487,14 +322,6 @@
 					</li>
 					<li id="input">
 						<div id="tab-content3" class="tab-content view-obj">
-							<h3 class="fieldName inline">
-								<spring:message code="INPUT_MESSAGE" />
-							</h3>
-							<div class="inline editwrapper accessLevelOne">
-								<button class="inline edit" id="inputEditBtn"
-									style="position: relative;"><spring:message code="EDIT_BTN" /></button>
-								
-							</div>
 							<form class="display-content" id="displayinput">
 								<div class="display-payload">
 									<textarea class="autosize" id="inputTextArea-v">${fedoraObject.inputMessage}</textarea>
@@ -505,16 +332,6 @@
 					</li>
 					<li id="output">
 						<div id="tab-content4" class="tab-content view-obj">
-							<h3 class="fieldName inline">
-								<spring:message code="OUTPUT_MESSAGE" />
-							</h3>
-							<div class="inline editwrapper accessLevelOne">
-								<button class="inline edit" id="outputEditBtn"
-									style="position: relative; left: 0%"><spring:message code="EDIT_BTN" /></button>
-									<%-- <button type="button" class="inline edit" id="metadataeditDisplay"
-									style="position: relative; left: 0%" onclick="getSection('${fedoraObject.URI}','outputMessage')">Display Output
-								</button>  --%>
-							</div>
 							<form class="display-content" id="displayoutput">
 								<div class="display-payload">
 									<textarea class="autosize" id="outputTextArea-v">${fedoraObject.outputMessage}</textarea>

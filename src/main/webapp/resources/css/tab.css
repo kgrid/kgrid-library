@@ -19,13 +19,13 @@ input[type=radio] {
     margin:5px 0px 15px 0px;
     color:#666666;
 }
-/* .addtext  span:not(.error){
+.addtext  span:not(.error){
   position:absolute;
   right:80px;
   bottom:-20px;
   color:#39b45a;
   font-size:12px;
-} */
+}
 
 .tabs label {
 	display: block;
@@ -109,8 +109,6 @@ input[type=radio] {
 		border-left: 1px solid #b3b3b3;
 }
 
-
-
 .metaEdit, .obj-edit {
 	background-color: #fff;
 	padding-left: 2px;
@@ -120,7 +118,7 @@ input[type=radio] {
 	border-radius: 5px;
 }
 
-/* input[type=text],
+input[type=text],
 input[type=password]{
   width:900px;
   height: 38px;
@@ -131,8 +129,8 @@ input[type=password]{
   font-size: 14px;
   color:#666666;
   font-weight:400;
-} */
-/* #description_data, #description_data_v{
+}
+#description_data, #description_data_v{
 width:900px;
 height:90px;
 min-height:60px;
@@ -145,7 +143,7 @@ color:#666666;
   font-size: 14px;
   overflow-y:auto;
   line-height:1.5em;
-} */
+}
 #description_data_v:disabled{
 	border:none;
 }
@@ -153,10 +151,10 @@ color:#666666;
 	border: 1px solid #39b45a;
 }
 
-/* input[type=text]:focus {
+input[type=text]:focus {
 	border: 1px solid #39b54a;
 	outline: none;
-} */
+}
 
 input[type=text]:disabled {
 	border: 1px solid #fff;
@@ -216,10 +214,9 @@ input[type=text]:disabled {
 
 ul#tabs {
 	list-style-type: none;
-	margin: 0 0 2px 0;
+	margin: 0 0 12px 0;
 	padding: 0px;
 	text-align: center;
-	height:1.1em;
 }
 
 ul#tabs li {
@@ -233,8 +230,8 @@ ul#tabs li {
 	line-height: 2;
 	margin-top: 6px;
 	margin-bottom: 6px;
-	margin-left: 16px;
-	margin-right: 98px;
+	margin-left: 38px;
+	margin-right: 85px;
 	cursor: pointer;
 	vertical-align: bottom;
 	padding: 0px 0px 0px 0px;
@@ -297,10 +294,10 @@ ul#tabs li.greenBar {
 }
 
 #ellipsis {
-	display:inline-block;
-	position:relative;
-	top:-16px;
-	right:-18px;
+	display:block;
+	position:absolute;
+	top:4px;
+	right:38px;
 }
 
 ul#tab:hover {
@@ -317,12 +314,18 @@ ul#tab li {
 	display: none;
 	width: 100%;
 	float: left;
-	height: 530px;
+	min-height: 800px;
 	margin-top: 22px;
 	padding: 0px;
 	box-sizing: border-box;
 	background-color: #ffffff;
 }
+
+ul#tab.inEdit li {
+	min-height:400px;
+	height:570px;	
+	
+	}
 
 ul#tab li.active {
 	display: block;
@@ -417,7 +420,7 @@ option {
 } /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
 
 
-/* #payloadTextArea, #outputTextArea, #inputTextArea {
+#payloadTextArea, #outputTextArea, #inputTextArea {
 	display:block;
     min-height:380px;
 	width:900px;
@@ -441,7 +444,7 @@ option {
    font-weight:400;
    	border:none;
    	   margin-top:40px;
-} */
+}
 #clearPayloadButton, #clearInputButton, #clearOutputButton{
 	background-color: #fff;
   color: #39b45a;

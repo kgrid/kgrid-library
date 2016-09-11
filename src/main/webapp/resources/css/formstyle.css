@@ -33,6 +33,7 @@
 	height:96%;
 }
 #barcontainer{
+	height:36px;
 border-bottom: 1px solid #e6e6e6;	
 }
 
@@ -113,6 +114,9 @@ input[type=password]{
 input[type=text]:focus{
 	  border: 1px solid #39b45a;
 }
+input[type=text].inEdit{
+	  border: 1px solid #39b45a;
+}
 input[type=text].error,
 input[type=password].error{
 	  border: 1px solid red;
@@ -162,7 +166,7 @@ option:hover
   font-size: 14px;
 }
 #description_data, #citation_detail, #license_detail, #logdata_display {
-    display:block;
+  display:block;
   padding: 5px 16px;
   border: 1px solid #fff;
   border-radius: 10px;
@@ -173,6 +177,9 @@ option:hover
         width:900px;
 }
 
+#description_data.inEdit{
+	 border: 1px solid #39b45a;
+}
  #logdata_display {
     height:400px;
     min-height:400px;
@@ -402,8 +409,7 @@ button[id$="CancelBtn"] {
 }
 
 [id$="EditWrapper"]{
-	display:none;
-	
+	display: block;
 	
 }
 

@@ -49,7 +49,7 @@
 <script src="<c:url value="/resources/js/jquery-ui.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery.validate.js"/>"></script>
 <script src="<c:url value="/resources/js/tabs.js"/>"></script>
-
+<script src="<c:url value="/resources/js/multi_step_form.js"/>"></script>
 </head>
 <body>
 
@@ -155,7 +155,7 @@
 	<div class="header">
 		<c:if test="${not empty loggedInUser }">
 			<button class="greenroundbutton open-overlay" type="button"
-				id="addObjbutton" onclick="overlaySlide('addObject',true)">
+				id="addObjbutton" onclick="overlaySlide('addObject',true,'new')">
 				<img src="<c:url value="/resources/images/Plus_Icon.png"/>" />
 			</button>
 		</c:if>
@@ -185,8 +185,8 @@
 						<tr>
 							<td>
 								<div class="backrow clickable" id="${fedoraObject.URI}">
-									<a href="#">
-									<%-- <a href="object.${fedoraObject.URI}"> --%>
+									<!-- <a href="#"> -->
+									<a href="object.${fedoraObject.URI}">
 										<ul>
 											<li class="col-data col-type"><c:choose>
 													<c:when test="${not fedoraObject.metadata.published}">
