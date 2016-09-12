@@ -462,10 +462,17 @@ public class FusekiService {
 			Date lastModified = convertRDFNodetoDate(querySolution.get("lastModified"));
 			metadata.setLastModified(lastModified);
 			metadata.setCreatedOn(createdOn);
-			metadata.setKeywords(querySolution.get("keywords").toString());
-			metadata.setOwner(querySolution.get("owner").toString());
-			metadata.setContributors(querySolution.get("contributors").toString());
-			metadata.setDescription(querySolution.get("description").toString());
+			if(querySolution.get("keywords") != null)
+				metadata.setKeywords(querySolution.get("keywords").toString());
+			
+			if(querySolution.get("owner") != null)
+				metadata.setOwner(querySolution.get("owner").toString());
+			
+			if(querySolution.get("contributors") != null)
+				metadata.setContributors(querySolution.get("contributors").toString());
+			
+			if(querySolution.get("description") != null)
+				metadata.setDescription(querySolution.get("description").toString());
 
 			License license = new License();
 			if(querySolution.get("licenseName") != null)

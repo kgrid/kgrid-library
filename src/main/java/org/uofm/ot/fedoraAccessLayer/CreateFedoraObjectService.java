@@ -156,14 +156,32 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 			else
 				objectURI = baseURI + uri ;
 
+			String description = fedoraObject.getMetadata().getDescription();
+			if(description == null)
+				description = "";
+			
+			String owner = fedoraObject.getMetadata().getOwner();
+			if(owner == null)
+				owner = "";
+			
+			String contributors = fedoraObject.getMetadata().getContributors();
+			if(contributors == null)
+				contributors = "";
+			
+			String keywords = fedoraObject.getMetadata().getKeywords();
+			if(keywords == null)
+				keywords = "";
+		
+			
+			
 			String properties = FusekiConstants.PREFIX_OT +"\n "+	
 					FusekiConstants.PREFIX_DC +"\n "+
 					"INSERT DATA \n"+
-					"{ 	<"+objectURI+"> ot:owner  \""+fedoraObject.getMetadata().getOwner()+"\" ; \n"+
-					" ot:description  \""+fedoraObject.getMetadata().getDescription()+"\" ; \n"+
-					" ot:contributors  \""+fedoraObject.getMetadata().getContributors()+"\" ; \n"+
+					"{ 	<"+objectURI+"> ot:owner  \""+owner+"\" ; \n"+
+					" ot:description  \""+description+"\" ; \n"+
+					" ot:contributors  \""+contributors+"\" ; \n"+
 					" dc:title \""+fedoraObject.getMetadata().getTitle()+"\" ; \n"+
-					" ot:keywords  \""+fedoraObject.getMetadata().getKeywords()+"\" ; \n"+ 
+					" ot:keywords  \""+keywords+"\" ; \n"+ 
 					" ot:published  \"no\" ; \n";
 
 			if(fedoraObject.getMetadata().getLicense() != null) {
