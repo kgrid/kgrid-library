@@ -1,37 +1,24 @@
 package org.uofm.ot.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
-import org.python.bouncycastle.crypto.modes.OldCTSBlockCipher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.ChildType;
-import org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService;
-import org.uofm.ot.fedoraAccessLayer.DeleteFedoraResourceService;
-import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
-import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
+import org.uofm.ot.fedoraAccessLayer.*;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
-import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.User;
 import org.uofm.ot.services.KnowledgeObjectService;
 
-import com.google.gson.Gson; 
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ObjectController {
@@ -46,6 +33,7 @@ public class ObjectController {
 	
 	private DeleteFedoraResourceService deleteFedoraResourceService;
 	
+	@Autowired
 	private KnowledgeObjectService objectService;
 
 	private static final Logger logger = Logger.getLogger(ObjectController.class);
@@ -73,11 +61,6 @@ public class ObjectController {
 
 	public void setDeleteFedoraResourceService(DeleteFedoraResourceService deleteFedoraResourceService) {
 		this.deleteFedoraResourceService = deleteFedoraResourceService;
-	}
-
-
-	public void setObjectService(KnowledgeObjectService objectService) {
-		this.objectService = objectService;
 	}
 
 

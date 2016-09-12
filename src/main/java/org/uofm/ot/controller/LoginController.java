@@ -1,10 +1,8 @@
 package org.uofm.ot.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +20,8 @@ import org.uofm.ot.model.Server_details;
 import org.uofm.ot.model.User;
 import org.uofm.ot.services.KnowledgeObjectService;
 
-import com.google.gson.Gson;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author nbahulek
@@ -37,6 +36,7 @@ public class LoginController {
 	
 	private FusekiService fusekiService;
 	
+	@Autowired
 	private KnowledgeObjectService objectService;
 	
 	private SystemConfigurationDAO sysConfDao;
@@ -52,14 +52,8 @@ public class LoginController {
 	public void setFusekiService(FusekiService fusekiService) {
 		this.fusekiService = fusekiService;
 	}
-
 	
-	
-	public void setObjectService(KnowledgeObjectService objectService) {
-		this.objectService = objectService;
-	}
-
-	private String getObjectPage( ModelMap model) {		
+	private String getObjectPage( ModelMap model) {
 		try {
 			List<FedoraObject> list = objectService.getKnowledgeObjects(false);
 			Integer publishedObjects = objectService.getNumberOfPublishedObjects();

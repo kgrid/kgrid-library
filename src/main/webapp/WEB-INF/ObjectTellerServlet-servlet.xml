@@ -36,7 +36,7 @@
         <property name="basename" value="objectTeller"/>
     </bean>
 
-    <context:component-scan base-package="org.uofm.ot.controller"/>
+    <context:component-scan base-package="org.uofm.ot.controller,org.uofm.ot.services"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass"
@@ -101,7 +101,6 @@
         <property name="sysConfDao" ref="sysConfDao"/>
         <property name="userDao" ref="userDao"/>
         <property name="fusekiService" ref="fusekiService"/>
-        <property name="objectService" ref="knowledgeObjectService"/>
     </bean>
 
     <bean id="accountController" class="org.uofm.ot.controller.AccountController">
@@ -114,19 +113,6 @@
         <property name="createFedoraObjectService" ref="createfedoraObjectService"/>
         <property name="getFedoraObjectService" ref="getfedoraObjectService"/>
         <property name="deleteFedoraResourceService" ref="deleteFedoraResourceService"/>
-        <property name="objectService" ref="knowledgeObjectService"/>
-    </bean>
-    
-    <bean id="knowledgeObjectService" class="org.uofm.ot.services.KnowledgeObjectService">
-    	<property name="fusekiService" ref="fusekiService"/>
-    	<property name="getFedoraObjectService" ref="getfedoraObjectService"/>
-    	<property name="deleteFedoraResourceService" ref="deleteFedoraResourceService"/>
-    	<property name="editFedoraObjectService" ref="editfedoraObjectService"/>
-    	<property name="createFedoraObjectService" ref="createfedoraObjectService"/>
-    </bean> 
-    
-    <bean id="knowledgeObjectController" class="org.uofm.ot.controller.KnowledgeObjectController">
-    	<property name="knowledgeObjectService" ref="knowledgeObjectService"/>
     </bean>
     
 
