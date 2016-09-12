@@ -48,7 +48,7 @@ public class EditFedoraObjectService extends FedoraObjectService {
 		data = data + 
 			"	} \n"+
 			"	WHERE \n"+
-			"	{  \n"+
+			"	{ \n"+
 			"	 <"+super.baseURI+objectURI+">   dc:title  ?o0 . \n"+
 			"	 <"+super.baseURI+objectURI+">   ot:contributors ?o1 .\n"+
 			"	 <"+super.baseURI+objectURI+">   ot:description ?o2 .\n"+
@@ -57,12 +57,12 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			
 			if(metadata.getLicense() != null) {
 				data = data + 
-				"	  <"+super.baseURI+objectURI+">	  ot:licenseName ?o5 . \n"+
+				"	 OPTIONAL {    <"+super.baseURI+objectURI+">	  ot:licenseName ?o5 . \n"+
 				"	  <"+super.baseURI+objectURI+">   ot:licenseLink ?o6 . \n";						
 			}
 			
 			data = data + 
-			"	} ";
+			" }	} ";
 		
 		super.sendPatchRequestForUpdatingTriples(data, objectURI,null); 
 	} 
