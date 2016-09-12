@@ -423,7 +423,7 @@ option {
 #payloadTextArea, #outputTextArea, #inputTextArea {
 	display:block;
     min-height:380px;
-	width:900px;
+	width:860px;
 	padding:5px 16px;
   border:1px solid #e6e6e6;
   border-radius: 8px;
@@ -432,6 +432,12 @@ option {
    font-size:14px;
    font-weight:400;
    margin-top:40px;
+}
+
+#payloadTextArea{
+	height: 240px;
+	min-height:240px;
+
 }
 #payloadTextArea-v, #outputTextArea-v, #inputTextArea-v, #inputTextArea-clone  {
 	display:block;

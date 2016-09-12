@@ -49,13 +49,13 @@
 		$("ul#tabs li.active").removeClass("active");
 		$("ul#tabs li:nth-child(" + nthChild + ")").addClass("active");
 		$("ul#tab li:nth-child(" + nthChild + ")").addClass("active");
-		var kotitle = $("#ko-title").find("small").text();
+		var kotitle = $("#ko-title h1 small").text();
 		var title_length = kotitle.length;
 		console.log("Title: " + kotitle + " Title Length: " + title_length);
-		if (title_length > 94) {
-			$("#ko-title").find("small").css("font-size", "24px");
+		if (title_length > 74) {
+			$("#ko-title h1 small").css("font-size", "24px");
 		} else {
-			$("#ko-title").find("small").css("font-size", "28px");
+			$("#ko-title h1 small").css("font-size", "28px");
 
 		}
 		var accessLevel = 1;
@@ -304,14 +304,14 @@
 										<spring:message code="PAYLOAD_FUNCTION" />
 										<spring:message code="REQUIRED_FIELD" />
 									</h4>
-									<input type="text" class="metaEdit" id="functionname_data"
+									<input type="text" class="metaEdit" id="functionname_data_v"
 										disabled value="${fedoraObject.payload.functionName}">
 								</div>
 								<div>
 									<h4>
 										<spring:message code="PAYLOAD_TYPE" />
 									</h4>
-									<input type="text" class="metaEdit" id="enginetype_data"
+									<input type="text" class="metaEdit" id="enginetype_data_v"
 										disabled value="${fedoraObject.payload.engineType}">
 								</div>
 								<div class="display-payload">
