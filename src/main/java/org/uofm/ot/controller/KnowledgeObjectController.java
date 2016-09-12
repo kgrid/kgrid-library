@@ -1,45 +1,31 @@
 package org.uofm.ot.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.FedoraObjectService;
-import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.User;
-import org.uofm.ot.model.UserRoles;
 import org.uofm.ot.services.KnowledgeObjectService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class KnowledgeObjectController {
 	
+	@Autowired
 	private KnowledgeObjectService knowledgeObjectService ;
 	
 	private static final Logger logger = Logger.getLogger(KnowledgeObjectController.class);
-
-	public void setKnowledgeObjectService(KnowledgeObjectService knowledgeObjectService) {
-		this.knowledgeObjectService = knowledgeObjectService;
-	}
 
 	@RequestMapping(value="/knowledgeObject", 
 			method=RequestMethod.POST , 

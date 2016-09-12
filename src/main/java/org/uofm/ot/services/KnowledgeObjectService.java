@@ -1,58 +1,38 @@
 package org.uofm.ot.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.ChildType;
-import org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService;
-import org.uofm.ot.fedoraAccessLayer.DeleteFedoraResourceService;
-import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
-import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
+import org.uofm.ot.fedoraAccessLayer.*;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
-import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 
+
+@Service
 public class KnowledgeObjectService {
 	
+	@Autowired
 	private FusekiService fusekiService;
 	
+	@Autowired
 	private GetFedoraObjectService getFedoraObjectService;
 	
+	@Autowired
 	private EditFedoraObjectService editFedoraObjectService;
 	
+	@Autowired
 	private DeleteFedoraResourceService deleteFedoraResourceService;
 	
+	@Autowired
 	private CreateFedoraObjectService createFedoraObjectService;
 	
-	public void setCreateFedoraObjectService(CreateFedoraObjectService createFedoraObjectService) {
-		this.createFedoraObjectService = createFedoraObjectService;
-	}
-
-	public void setFusekiService(FusekiService fusekiService) {
-		this.fusekiService = fusekiService;
-	}
-	
-	public void setGetFedoraObjectService(GetFedoraObjectService getFedoraObjectService) {
-		this.getFedoraObjectService = getFedoraObjectService;
-	}
-
-
-	public void setEditFedoraObjectService(EditFedoraObjectService editFedoraObjectService) {
-		this.editFedoraObjectService = editFedoraObjectService;
-	}
-	
-	
-
-	public void setDeleteFedoraResourceService(DeleteFedoraResourceService deleteFedoraResourceService) {
-		this.deleteFedoraResourceService = deleteFedoraResourceService;
-	}
-
 	public FedoraObject getKnowledgeObject(String uri) throws ObjectTellerException {
 		FedoraObject object = new FedoraObject();
 		object.setURI(uri);
