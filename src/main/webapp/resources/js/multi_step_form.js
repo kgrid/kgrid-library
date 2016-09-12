@@ -272,9 +272,14 @@ function initInputText(uri) {
 	retrieveObjectContent(uri,"logData");
 }
 
-function initInputTextFromObject(curObj) {
+function initInputTextFromObject(obj) {
 	resetInputText();
-	displayMetaData(curObj.metadata);
+	displayMetaData(obj.metadata);
+	$("#functionName").val(obj.payload.functionName);
+	$("#engineType").val(obj.payload.engineType);
+	displayIOMessage("payload", obj.payload.content);
+	displayIOMessage("inputMessage", obj.outputMessage);
+	displayIOMessage("outputMessage", obj.inputMessage);
 	}
 
 function displayMetaData(obj){
@@ -413,12 +418,12 @@ function retrieveObjectContent(uri, section) {
 	}
 }
 
-function toggleObject(param) {
+function toggleObject(uri, param) {
 	$(this).find("span").addClass("middleout");
 	$(".pri-pub .current-tab").find("span").removeClass("middleout");
 	$.ajax({
 		type : 'GET',
-		url : "publishObject." + curURI + "/" + param,
+		url : "publishObject." + uri + "/" + param,
 		success : function(response) {
 			location.reload();
 		}
@@ -450,16 +455,16 @@ function buildBKObject(){
 	
 	var payload = new Object();
 	payload.functionName = document
-			.getElementById("functionName").value;
-	payload.engineType = document.getElementById("engineType").value;
-	payload.content = document.getElementById("payloadTextArea").value;
+			.getElementById("functionname_data_v").value;
+	payload.engineType = document.getElementById("enginetype_data_v").value;
+	payload.content = document.getElementById("payloadTextArea-v").value;
 
 	
 	console.log("Payload element done.");
 	
-	var inputMessage= document.getElementById("inputTextArea").value;
+	var inputMessage= document.getElementById("inputTextArea-v").value;
 //	console.log("INPUT: "+inputMessage);
-	var outputMessage= document.getElementById("outputTextArea").value;
+	var outputMessage= document.getElementById("outputTextArea-v").value;
 //	console.log("OUTPUT: "+outputMessage);
 	console.log("I/O element done.");
 	return buildFedoraObject("update", metadata, payload, inputMessage, outputMessage);

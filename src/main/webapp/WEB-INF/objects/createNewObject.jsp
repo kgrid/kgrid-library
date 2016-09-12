@@ -59,7 +59,7 @@
 						</fieldset>
 					</li>
 					<li id="payload"><fieldset class="fieldcontainer">
-							<div id="fields">
+							<div id="payload_fields">
 								<h4>
 									<spring:message code="PAYLOAD_FUNCTION" />
 									<spring:message code="REQUIRED_FIELD" />
@@ -108,17 +108,15 @@
 									<textarea id="payloadTextArea"></textarea>
 								</div>
 							</div>
-							<!-- <input class="pre_btn" name="previous" type="button"
-								value="Previous"> <input class="next_btn" name="next"
-								type="button" value="Next"> --><div id="metaEditWrapper"><input id="addObjButton"
+							<div id="metaEditWrapper"><input id="addObjButton"
 								type="button" onclick="updateObject('payload')"
 								value="Apply Changes"><button class="inline edit" id="payloadCancelBtn"
 									>CANCEL</button></div>
 						</fieldset>
-						</fieldset>
+
 						</li>
 					<li id="input"><fieldset class="fieldcontainer">
-							<div id="fields">
+							<div id="input_fields">
 								<div id="inputDropFile" class="dropfile">
 									<div class="upload-direction">
 										<input type="file" name="file" id="file_input"
@@ -150,17 +148,14 @@
 									<textarea id="inputTextArea"></textarea>
 								</div>
 							</div>
-							<!-- <input class="pre_btn" name="previous" type="button"
-								value="Previous"> <input class="next_btn" name="next"
-								type="button" value="Next"> --><div id="inputEditWrapper"><input id="addObjButton"
+							<div id="inputEditWrapper"><input id="addObjButton"
 								type="button" onclick="updateObject('inputMessage')"
 								value="Apply Changes"><button class="inline edit" id="inputCancelBtn"
 									>CANCEL</button></div>
 						</fieldset>
-						</fieldset>
 					</li>
 					<li id="output">	<fieldset class="fieldcontainer">
-							<div id="fields">
+							<div id="output_fields">
 								<div id="outputDropFile" class="dropfile">
 									<div class="upload-direction">
 										<input type="file" name="file" id="file_output"
@@ -192,8 +187,7 @@
 									<textarea id="outputTextArea"></textarea>
 								</div>
 							</div>
-							<!-- <input class="pre_btn" name="previous" type="button"
-								value="Previous">  --><div id="outputEditWrapper"><input id="addObjButton" type="button"
+						<div id="outputEditWrapper"><input id="addObjButton" type="button"
 								onclick="updateObject('outputMessage')" value="Apply Changes">
 						<button class="inline edit" id="outputCancelBtn"
 									>CANCEL</button></div>
