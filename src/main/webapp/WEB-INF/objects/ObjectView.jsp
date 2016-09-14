@@ -125,7 +125,7 @@
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
-	<div id="addObject" class="layered_overlay" aria-hidden="true">
+	<div id="addObject" class="layered_overlay" >
 		<%@ include file="../objects/createNewObject.jsp"%>
 	</div>
 	<div id="topfixed">
@@ -136,11 +136,9 @@
 	</div>
 	<div class="banner-content display-banner">
 		<div id="goback">
-			<div id="leadarrow"></div>
-
-			<a href="<c:url value="/home"/>" id="backButton"> <spring:message
+			<div  id="backButton"><a href="<c:url value="/home"/>"> <spring:message
 					code="BACK_RESULTS" />
-			</a>
+			</a></div>
 		</div>
 
 		<c:choose>
@@ -278,21 +276,28 @@
 									<h4>
 										<spring:message code="OBJECT_CITATIONS" />
 									</h4>
-
+<div class='entryArea' id='citation_data_entry_v'>
 									<c:forEach var="citationEntry"
 										items="${fedoraObject.metadata.citations}"
 										varStatus="loopStatus">
 										<div>
-											<input type="text" class="metaEdit" disabled
+											<input type="text" class="ctitle" disabled
 												value="${citationEntry.citation_title}"><input
-												type="hidden" class="metaEdit"
+												type="hidden" class="clink"
 												value="${citationEntry.citation_at}">
 										</div>
 									</c:forEach>
-								</div>
-
-								<input type="hidden" id="fObj" path="URI"
-									value="${fedoraObject.URI}" />
+								</div></div>
+								<div class="addtext">
+									<h4>
+										<spring:message code="OBJECT_LICENSE" />
+									</h4>
+									
+									<input type="text" class="metaEdit" disabled id="license_data_v"
+										value="${fedoraObject.metadata.license.licenseName}" />
+										<input	type="hidden" class="metaEdit" id="licenseLink_v" value="${fedoraObject.metadata.license.licenseLink}">
+								</div> 
+								<input type="hidden" id="fObj" value="${fedoraObject.URI}" />
 							</form>
 						</div>
 					</li>
@@ -374,6 +379,7 @@
 									<sf:textarea class="autosize" id="outputTextArea"
 										path="outputMessage"></sf:textarea>
 									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
+									<sf:input type="hidden" id="fedoraObj" path="URI" value="${fedoraObject}" />
 								</div>
 							</sf:form>
 						</div>
@@ -383,11 +389,11 @@
 							<h3 class="fieldName inline ">
 								<spring:message code="LOG_DATA_TAB" />
 							</h3>
-							<section class="display-content">
+							<div class="display-content">
 							<div class="display-payload">
 								<p>${processedLogData}</p>
 							</div>
-							</section>
+							</div>
 						</div>
 					</li>
 

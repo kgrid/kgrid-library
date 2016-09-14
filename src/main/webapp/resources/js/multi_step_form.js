@@ -3,8 +3,25 @@
 var curTitle = "";
 var curURI = "";
 var urlPrefix = "knowledgeObject";
-var curObj=new Object();
+var viewObj=new Object();
+var editObj=new Object();
 var curMode = "new";
+var citNumber = 0;
+
+
+function initObj(){
+	var objJson = $('#fedoraObj');
+	if(objJson.length){
+		console.log("Set Obj:"+objJson.val());
+		viewObj = objJson.val();
+		editObj = JSON.stringify(objJson.val());
+		curMode="inEdit";
+	}else{
+		curMode="new";
+	}
+}
+
+
 
 function createViewField(inputName, inputID, inputLabel, maxLength, value,isMultiple, mode){
 	var beginTag= "<div class='addtext'>";
@@ -95,7 +112,9 @@ function overlaySlide(overlayID, open, mode){
 			$("#begin_page").hide();
 			$("#entry_form1").show();
 			if(open){
-			initInputTextFromObject(curObj);}
+				console.log("Init Obj:"+editObj);
+				initInputTextFromObject(editObj);
+			   }
 		}else{
 			$("#begin_page").show();
 			$("#entry_form1").hide();
@@ -283,6 +302,7 @@ function initInputTextFromObject(obj) {
 	}
 
 function displayMetaData(obj){
+	console.log("Metadata display:"+obj);
 	console.log(" Reset Page Title to: " +obj.title);
 	$("#page_title").text(obj.title);
 	var title_length = obj.title.length;
@@ -296,6 +316,15 @@ function displayMetaData(obj){
 	$("#keyword_data").val(obj.keywords);
 	$("#owner_data").val(obj.owner);
 	$("#contributor_data").val(obj.contributors);
+	
+	
+	console.log("Number of Citation:"+obj.citations.length);
+	for(var i=0;i<obj.citations.length;i++){
+		console.log("CTitle:"+obj.citations[i].citation_title+" CLInk:"+obj.citations[i].citation_at);
+		addCitationEntry(obj.citations[i].citation_title,obj.citations[i].citation_at);
+	}
+	$("#license_data").val(obj.license.licenseName);
+	$("#license_data").attr("licenseLink",obj.license.licenseLink);
 	if(fObj.published){
 		$("#preTitle").show();
 		$(".pri-pub2").addClass("current-tab");
@@ -339,12 +368,7 @@ function setURI(uri){
 	console.log(curURI);
 }
 
-function setObj(){
-	 var objJson = $('#curObj');
-	 console.log(objJson.val());
-	  //  curObj = parseJSON(objJson.val());
-	  //  alert(curObj);
-}
+
 
 function readMultipleFiles(evt) {
 	var field_id = this.id;
@@ -430,7 +454,7 @@ function toggleObject(uri, param) {
 	});
 }
 
-function buildBKObject(){
+function initObject(){
 	var metadata = new Object();
 	metadata.title = document.getElementById("title_data_v").value;
 	metadata.owner = document.getElementById("owner_data_v").value;
@@ -441,17 +465,25 @@ function buildBKObject(){
 	var ctitle;
 	var clink;
 	var citations = [];
-	$("#citation_data_entry").find('input').each(function(index, element) {
+	$("#citation_data_entry_v").find('div').each(function(index, element) {
 		var citation = new Object();
-		ctitle = $(element).attr("title");
-		clink = $(element).attr("url");
+		ctitle = $(element).find(".ctitle").val();
+		clink = $(element).find(".clink").val();
 		console.log(ctitle + " " + clink);
 		citation.citation_title = ctitle;
 		citation.citation_at = clink;
 		citations.push(citation);
 	});
 	metadata.citations = citations;
-	console.log("Metadata element done.");
+	
+	var lname= $("#license_data_v").val();
+	var llink=$("#licenseLink_v").val();
+	var license= new Object();
+	license.licenseName=lname;
+	license.licenseLink = llink;
+	metadata.license=license;
+	
+	console.log("Metadata element done."+metadata);
 	
 	var payload = new Object();
 	payload.functionName = document
@@ -517,16 +549,27 @@ function updateObject(section) {
 		var ctitle;
 		var clink;
 		var citations = [];
-		$("#citation_data_entry").find('input').each(function(index, element) {
+		$("#citation_data_entry").find('div').each(function(index, element) {
 			var citation = new Object();
-			ctitle = $(element).attr("title");
-			clink = $(element).attr("url");
+			ctitle = $(element).find(".ctitle").val();
+			clink = $(element).find(".clink").val();
 			console.log(ctitle + " " + clink);
 			citation.citation_title = ctitle;
 			citation.citation_at = clink;
 			citations.push(citation);
 		});
+
+		
 		metadata.citations = citations;
+		
+		var lname= $("#license_data").val();
+		var llink=$("#license_data").attr("licenseLink");
+		var license= new Object();
+		license.licenseName=lname;
+		license.licenseLink = llink;
+		metadata.license=license;
+		console.log(license);
+		
 		console.log("Metadata element done.");
 		
 		var payload = new Object();
@@ -615,6 +658,7 @@ function saveToServer(section,ajaxMethod,ajaxUrl,ajaxSuccess,text)	{
 					alert("Update successful");
 				},
 				error : function(response) {
+					console.log(response);
 					document.getElementById("successResult").innerHTML = "ERROR";
 					// test code for
 					alert("Update failed");
@@ -677,7 +721,36 @@ function buildMetaDataTab(mode){
 					}
 }
 
-
+function addCitationEntry(cTitle,urllink){
+	var idx = "citation"+citNumber;
+	var idxName = "metadata.citations["+citNumber+"]";
+	console.log(idx);
+	console.log(cTitle);
+	var springPath = "metadata.citations["+citNumber+"]";
+	citNumber++;
+	var inField = '<div class="addtext"><input type="text" class="ctitle" id="'+idx+'_title"'+'" name="'+idxName+'.citation_title" path="'+springPath+'.citation_title"  value="'+cTitle+'">';
+	var inField2 ='<input type="hidden" class="clink" id="'+idx+'_link" name="'+idxName+'.citation_at"  path="'+springPath+'.citation_at" value="'+urllink+'">';
+    var delBtn ='<button class="redroundbutton delete_btn" type="button"><img src="resources/images/Close_Icon.png" width="12px"></button>';
+    var endTag="</div>";
+    var citationEntry = inField+inField2+delBtn+endTag;
+     $(citationEntry).appendTo(".entryArea#citation_data_entry");
+     $(".delete_btn").click(function(e){
+ 		var tgt =e.target;
+			console.log(tgt);
+			$(this).parent().remove();
+			return false;
+		})
+	$("#"+idx+"_title").focus(function(e){
+		var idx = $(this).attr("id");
+		var ctitle = $("#"+idx).val();
+		var linkid=idx.replace("title","link");
+		var clink = $("#"+linkid).val();
+		
+	console.log("Citation field in focus..."+idx);
+	overlaySlide('citation',true);
+	initCitationText('citation',idx,ctitle,clink);
+});
+}
 
 
 $(document)
@@ -696,9 +769,9 @@ $(document)
 					buildInputTab();
 					buildOutputTab();*/
 					if(curURI!=""){
-						curObj=buildBKObject();
+						editObj=initObject();
 					}
-					
+					//initObj();
 					var count = 0; // To Count Blank Fields
 				/*
 					 * $("#addObj_f").validate({ errorPlacement: function(error,
@@ -863,39 +936,12 @@ $(document)
 					$("#addLicense").click(function() {
 						// Code to add citation to metadata form
 						var lTitle = $("#license_title").val();
+						var lLink = $("#license_link").val();
 						$("#license_data").val(lTitle);
+						$("#license_data").attr("licenseLink",lLink);
 						overlaySlide("license", false);
 					});
-					function addCitationEntry(cTitle,urllink){
-						var idx = "citation"+citNumber;
-						var idxName = "metadata.citations["+citNumber+"]";
-						console.log(idx);
-						console.log(cTitle);
-						var springPath = "metadata.citations["+citNumber+"]";
-						citNumber++;
-						var inField = '<div class="addtext"><input type="text" id="'+idx+'_title"'+'" name="'+idxName+'.citation_title" path="'+springPath+'.citation_title"  value="'+cTitle+'">';
-						var inField2 ='<input type="hidden" id="'+idx+'_link" name="'+idxName+'.citation_at"  path="'+springPath+'.citation_at" value="'+urllink+'">';
-	                    var delBtn ='<button class="redroundbutton delete_btn" type="button"><img src="resources/images/Close_Icon.png" width="12px"></button>';
-	                    var endTag="</div>";
-	                    var citationEntry = inField+inField2+delBtn+endTag;
-	                     $(citationEntry).appendTo(".entryArea#citation_data_entry");
-	                     $(".delete_btn").click(function(e){
-	                 		var tgt =e.target;
-	     					console.log(tgt);
-	     					$(this).parent().remove();
-	     					return false;
-	     				})
-						$("#"+idx+"_title").focus(function(e){
-							var idx = $(this).attr("id");
-							var ctitle = $("#"+idx).val();
-							var linkid=idx.replace("title","link");
-							var clink = $("#"+linkid).val();
-							
-						console.log("Citation field in focus..."+idx);
-						overlaySlide('citation',true);
-						initCitationText('citation',idx,ctitle,clink);
-					});
-					}
+					
 					$("[id$='CancelBtn']").click(function(event) {
 						if(curMode!="new"){
 						overlaySlide('addObject',false);

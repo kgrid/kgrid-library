@@ -87,14 +87,14 @@
 									</h4>
 									<select required class="options" id="license_title">
 										<option value="MIT">MIT</option>
-										<option value="CC">Creative Commons</option>
+										<option value="CreativeCommons">Creative Commons</option>
 									</select> <br>
 								</div>
 								<div>
 									<h4>HYPERLINK</h4>
 									<button class="inline edit" id="license_preview_btn">PREVIEW</button>
 									<div class="addtext">
-										<input class="textbox" name="license_link" id="license_link"
+										<input class="textbox inEdit" name="license_link" id="license_link"
 											type="text"	placeholder="Please provide the URL for the license "
 											maxlength="140"><span>140/140</span>
 									</div>
@@ -102,10 +102,11 @@
 								<div>
 									<h4>LICENSE DETAIL</h4>
 									<div class="addtext">
-										<iframe id="license_detail"></iframe>
+										<iframe class="inEdit" id="license_detail"></iframe>
 									</div>
 									<input class="done_btn" name="done" id="addLicense"
 										type="button" value="UPDATE">
+										</div>
 							</fieldset>
 						</form>
 					</div>

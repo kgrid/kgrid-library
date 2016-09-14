@@ -422,26 +422,50 @@ h3 {
 
 #leadarrow {
 	top: 0;
-	left: 100px;;
-	width: 7px;
-	height: 7px;
+	left: 100px;
+/* 			background-image: url("../images/Back_Icon_Light-01.png"); */
+	width: 21px;
+	height: 21px; 
 	display: inline-block;
-	border-left: 1px solid #666666;
+/* 	border-left: 1px solid #666666;
 	border-top: 1px solid #666666;
 	-webkit-transform: rotate(-45deg);
 	transform: rotate(-45deg);
 	-webkit-animation: sdb04 2s infinite;
-	animation: sdb04 2s infinite;
+	animation: sdb04 2s infinite; */
 	box-sizing: border-box;
 }
 
 #backButton {
+	background-image: url("../images/Back_Icon_Light-01.png");
+	background-repeat: no-repeat;
+	background-position: left top;
+	display:inline-block;
 	background-color: #fff;
 	border: none;
-	color: #666666;
+	color: #b3b3b3;
 	font-size: 12px;
-	padding-left:12px;
+	vertical-align:top;
+	height:21px;
 }
+
+#backButton a{
+	padding-left:26px;
+	vertical-align:middle;
+		color: #b3b3b3;
+}
+
+#backButton:hover{
+		background-image: url("../images/Back_Icon_Dark-01.png");
+			background-repeat: no-repeat;
+	background-position: left top;
+	color:#666666;
+}
+
+#backButton a:hover{
+	color:#666666;
+}
+
 
 .pri-pub div {
 	display: inline-block;
