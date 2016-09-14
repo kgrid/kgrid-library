@@ -176,12 +176,14 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 			
 			String properties = FusekiConstants.PREFIX_OT +"\n "+	
 					FusekiConstants.PREFIX_DC +"\n "+
+					FusekiConstants.PREFIX_RDF +"\n "+
 					"INSERT DATA \n"+
 					"{ 	<"+objectURI+"> ot:owner  \""+owner+"\" ; \n"+
 					" ot:description  \""+description+"\" ; \n"+
 					" ot:contributors  \""+contributors+"\" ; \n"+
 					" dc:title \""+fedoraObject.getMetadata().getTitle()+"\" ; \n"+
 					" ot:keywords  \""+keywords+"\" ; \n"+ 
+					" rdf:type "+FusekiConstants.OT_TYPE_KNOWLEDGE_OBJECT+" ; \n"+
 					" ot:published  \"no\" ; \n";
 
 			if(fedoraObject.getMetadata().getLicense() != null) {
