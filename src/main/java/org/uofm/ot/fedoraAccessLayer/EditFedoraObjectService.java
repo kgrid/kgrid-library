@@ -12,7 +12,7 @@ import org.uofm.ot.knowledgeObject.Payload;
 public class EditFedoraObjectService extends FedoraObjectService {
 
 	public void editObjectMetadata(Metadata metadata,String objectURI) throws ObjectTellerException{
-		String data = 
+/*		String data = 
 			FusekiConstants.PREFIX_DC +"\n "+
 			FusekiConstants.PREFIX_OT +"\n "+		
 			"	DELETE \n" +
@@ -62,7 +62,43 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			}
 			
 			data = data + 
-			" }	} ";
+			" }	} ";*/
+			 
+			String prefixKG = "PREFIX kg: <"+super.baseURI+">";
+			
+			
+			String baseQuery =  "%s { "+"\n "+
+					"kg:"+objectURI+"  dc:title  %s;"+ "\n"+
+			   "ot:contributors %s; "+ " \n"+
+			   "ot:description %s; "+ " \n"+
+			   "ot:owner %s; "+ " \n"+
+			   "ot:keywords %s; "+ " \n"+
+			   "%s ot:licenseName %s; "+  " \n"+
+			   "ot:licenseLink %s . %s"+ "\n" +
+			   "}"+"\n" ;
+			
+			String deleteClause = String.format(baseQuery, new Object [] {"DELETE","?o0","?o1","?o2","?o3","?o4","","?o5","?o6",""});
+			
+			String licenseName = "";
+			if(metadata.getLicense() != null)
+				licenseName = metadata.getLicense().getLicenseName();
+			
+			String licenseLink = "";
+			if(metadata.getLicense() != null)
+				licenseLink = metadata.getLicense().getLicenseLink();
+			
+			
+			String insertClause = String.format(baseQuery, new Object [] {"INSERT",quote(metadata.getTitle()),quote(metadata.getContributors()),quote(metadata.getDescription()),
+					quote(metadata.getOwner()),quote(metadata.getKeywords()),"",quote(licenseName),quote(licenseLink),""});
+			
+			String whereClause = String.format(baseQuery, new Object [] {"WHERE","?o0","?o1","?o2","?o3","?o4","OPTIONAL { kg:"+objectURI,"?o5","?o6","}"});
+			
+			String data = FusekiConstants.PREFIX_DC +"\n "+
+					FusekiConstants.PREFIX_OT +"\n "
+					+ prefixKG+ "\n "+ deleteClause + insertClause + whereClause;
+					
+			
+			System.out.println(data);
 		
 		super.sendPatchRequestForUpdatingTriples(data, objectURI,null); 
 	} 
@@ -141,5 +177,7 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			}
 	}
 	
-	
+	private String quote(String str){
+		return "\""+str+"\"";
+	}
 }
