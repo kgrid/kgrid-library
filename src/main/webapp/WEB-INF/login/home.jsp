@@ -54,7 +54,7 @@
 <body>
 
 	<c:if test="${loggedInUser.role == 'ADMIN' }">
-		<div id="libsettings" class="layered_overlay" aria-hidden="true">
+		<div id="libsettings" class="layered_overlay" >
 			<%@ include file="../system/librarySetting.jsp"%>
 		</div>
 	</c:if>
@@ -63,7 +63,7 @@
 		<%@ include file="../objects/createNewObject.jsp"%>
 	</div>
 	
-	<div id="libraryuser"  class="layered_overlay" aria-hidden="true">
+	<div id="libraryuser"  class="layered_overlay" >
      	<%@ include file="../account/libraryUser.jsp" %>
 	 </div> 
 
