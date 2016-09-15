@@ -183,6 +183,14 @@
 		</div>
 
 		<div class="date">
+			<div class="id">
+				<p class="date-title">
+					Object ID:
+				</p>
+				<p class="date-data">
+					<span>${fedoraObject.URI}</span>
+				</p>
+			</div>
 			<div class="date1">
 				<p class="date-title">
 					<spring:message code="DATE_CREATED" />
@@ -204,15 +212,7 @@
 			</div>
 
 		</div>
-		<div class="inline editwrapper accessLevelOne" style="margin-left:660px">
-			<button class="inline edit" id="metadataeditBtn">
-				<spring:message code="EDIT_BTN" /> OBJECT
-			</button>
-			<button class="inline edit" id="deleteButton"
-								onclick="deleteObject('${fedoraObject.URI}')">
-				<spring:message code="DELETE_OBJ_BUTTON" />
-			</button>
-		</div>
+		
 	</div>
 	<div class="header">
 		<div class="objectcontainer">
@@ -228,6 +228,15 @@
 				<div id="ellipsis" class="labels accessLevelOne">
 					<img src="<c:url value="/resources/images/more.png"/> " />
 				</div>
+				<div class="inline editwrapper accessLevelOne" id="objBtns" style="top:4px; right:40px;position:absolute;">
+			<button class="edit" style="border-right:1px solid #39b45a;" id="metadataeditBtn">EDIT</button>
+			<button class="edit" id="deleteButton"
+								onclick="deleteObject('${fedoraObject.URI}')">DELETE</button>
+								<%-- <button class="edit" id="downloadButton"
+								onclick="downloadObject('${fedoraObject.URI}')">DOWNLOAD</button> --%>
+								<a class="edit" id="downloadButton"	href="knowledgeObject/${fedoraObject.URI}/complete.json">DOWNLOAD</a>
+								
+		</div>
 			</div>
 		</div>
 	</div>
