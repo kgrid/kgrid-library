@@ -12,6 +12,7 @@ import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.User;
+import org.uofm.ot.model.UserRoles;
 import org.uofm.ot.services.KnowledgeObjectService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +35,10 @@ public class KnowledgeObjectController {
 	public ResponseEntity<FedoraObject> createKnowledgeObject(@RequestBody FedoraObject KnowledgeObject,@ModelAttribute("loggedInUser") User loggedInUser, HttpServletRequest request ) throws ObjectTellerException, URISyntaxException {
 
 		ResponseEntity<FedoraObject> entity = null;
+
+		loggedInUser = new User("libadmin@umich.edu", "test", 42 , "Larry", "Info", UserRoles.INFORMATICIAN);
 		
-		if (loggedInUser != null) {
+		if (loggedInUser != null ) {
 			
 			FedoraObject object= knowledgeObjectService.createKnowledgeObject(KnowledgeObject, loggedInUser);
 			String uri = request.getRequestURL()+"/" +object.getURI();
