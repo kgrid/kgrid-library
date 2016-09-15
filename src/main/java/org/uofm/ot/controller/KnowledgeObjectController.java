@@ -77,7 +77,7 @@ public class KnowledgeObjectController {
 	}
 	
 	
-	@RequestMapping(value="/knowledgeObject-complete/{objectURI}", 
+	@RequestMapping(value="/knowledgeObject/{objectURI}/complete", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public FedoraObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
