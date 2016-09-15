@@ -231,7 +231,7 @@ ul#tabs li {
 	margin-top: 6px;
 	margin-bottom: 6px;
 	margin-left: 38px;
-	margin-right: 85px;
+	margin-right: 2px;
 	cursor: pointer;
 	vertical-align: bottom;
 	padding: 0px 0px 0px 0px;
@@ -297,7 +297,7 @@ ul#tabs li.greenBar {
 	display:block;
 	position:absolute;
 	top:4px;
-	right:38px;
+	right:450px;
 }
 
 ul#tab:hover {
@@ -433,6 +433,15 @@ option {
    font-weight:400;
    margin-top:40px;
 }
+
+#metadataeditBtn, #deleteButton, #downloadButton{
+	padding:0px 12px 0px 10px;
+	line-height:1.1em;
+	
+}
+ #downloadButton{
+ padding-left:40px;
+ }
 
 #payloadTextArea{
 	height: 240px;

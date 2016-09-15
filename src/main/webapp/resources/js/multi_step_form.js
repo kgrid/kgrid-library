@@ -2,7 +2,7 @@
 
 var curTitle = "";
 var curURI = "";
-var urlPrefix = "knowledgeObject";
+var urlPrefix = "knowledgeObject";//
 var viewObj=new Object();
 var editObj=new Object();
 var curMode = "new";
@@ -90,6 +90,14 @@ function deleteObject(uri) {
 		});
 	}
 	}
+}
+
+
+	
+
+function downloadObject(uri) {
+	
+	window.location.href=urlPrefix+"/"+uri+"/complete";
 }
 
 function overlaySlide(overlayID, open, mode){
@@ -612,6 +620,7 @@ function updateObject(section) {
 		break;
 	}
 	console.log("Data to be sent: "+text);
+	$( "div.processing" ).fadeIn( 300 );
 	saveToServer(section,ajaxMethod,ajaxUrl,ajaxSuccess,text);
 	curTitle = metadata.title;
 }
@@ -655,13 +664,15 @@ function saveToServer(section,ajaxMethod,ajaxUrl,ajaxSuccess,text)	{
 					else{
 						//overlaySlide("addObject", false);
 					}
-					alert("Update successful");
+					$( "div.processing" ).fadeOut( 200 );
+					 $( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 				},
 				error : function(response) {
 					console.log(response);
 					document.getElementById("successResult").innerHTML = "ERROR";
 					// test code for
-					alert("Update failed");
+					$( "div.processing" ).fadeOut( 200 );
+					 $( "div.faiure" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 					
 				}
 			});
@@ -870,7 +881,12 @@ $(document)
 
 					
 					
-
+					/*$("a#downloadButton").click(function(e){
+						e.preventDefault();
+						console.log("Downloading "+curURI);
+						window.location.href=urlPrefix+"/"+curURI+"/complete";
+						
+					});*/
 
 					var next = 1;
 					$("input[id$='_data']").click(function(e) {

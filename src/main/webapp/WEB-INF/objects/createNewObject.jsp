@@ -37,6 +37,11 @@
 				<div id="ko-title">
 					<h1><small  id="page_title"></small></h1>		
 				</div>	
+				<div class="alert-box processing">Processing...</div>
+				<div class="alert-box success">Update Successful !!!</div>
+<div class="alert-box failure">Update Failure !!!</div>
+<div class="alert-box warning">Warning !!!</div>
+				
 			<div>
 			<sf:form name="addObj_f" class="Add-content" id="addObj_f"
 						method="POST" modelAttribute="fedoraObject" action="addNewObject1">
