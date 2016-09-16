@@ -123,7 +123,7 @@
 						<li><div style="position: relative">
 								<button class="roundbutton iconBtn" id="userlink"
 									onclick="overlaySlide('libraryuser',true)">
-									<img class="hover-out" src="<c:url value="/resources/images/Person_Icon.png"/> " />
+									<img class="hover-out" src="<c:url value="/resources/images/Person_Icon-01.png"/> " />
 									<img class="hover-in" style="display:none;" src="<c:url value="/resources/images/transparent_profile_icon.png"/> " />
 								</button>
 								<button class="greenroundbutton iconBtn" id="newuser">
@@ -137,7 +137,7 @@
 						<li>
 							<button class="roundbutton open-overlay iconBtn" type="button"
 								id="settinglink" onclick="overlaySlide('libsettings',true)">
-								<img class="hover-out"  src="<c:url value="/resources/images/Gear_Icon.png"/> " />
+								<img class="hover-out"  src="<c:url value="/resources/images/Gear_Icon-01.png"/> " />
 								<img class="hover-in"  style="display:none;" src="<c:url value="/resources/images/Gear_Icon_White.png"/> " />
 							</button>
 						</li>

@@ -225,8 +225,10 @@
 					<li class="labels accessLevelOne"><spring:message
 							code="LOG_DATA_TAB" /></li>
 				</ul>
-				<div id="ellipsis" class="labels accessLevelOne">
-					<img src="<c:url value="/resources/images/more.png"/> " />
+				<div id="ellipsis" class="labels iconBtn accessLevelOne">
+					<img class="hover-out" src="<c:url value="/resources/images/More_Icon_Light-01.png"/> " />
+					<img class="hover-in" style="display:none;" src="<c:url value="/resources/images/More_Icon_Dark-01.png"/> " />
+					
 				</div>
 				<div class="inline editwrapper accessLevelOne" id="objBtns" style="top:4px; right:40px;position:absolute;">
 			<button class="edit" style="border-right:1px solid #39b45a;" id="metadataeditBtn">EDIT</button>

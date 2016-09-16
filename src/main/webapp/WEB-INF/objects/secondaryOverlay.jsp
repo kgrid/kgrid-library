@@ -80,15 +80,15 @@
 						<form name="addObj_f" class="Add-content" id="addObj_f"
 							method="post">
 							<fieldset class="fieldcontainer" id="first">
-								<div class="addtext">
-									<h4>
-										License
-										<spring:message code="REQUIRED_TO_SELECT" />
-									</h4>
-									<select required class="options" id="license_title">
-										<option value="MIT">MIT</option>
-										<option value="CreativeCommons">Creative Commons</option>
-									</select> <br>
+								<div class="licenseField">
+									<h4 title="license_title">LICENSE TITLE</h4>
+									<div class="addtext">
+										<input class="textbox inEdit" name="license_title"
+											id="license_title" type="text" spellcheck="false"
+											placeholder="Enter License Title"
+											maxlength="140"><span>140/140</span>
+									</div>
+									<label class="errorLabel" for="license_title"> </label>
 								</div>
 								<div>
 									<h4>HYPERLINK</h4>
