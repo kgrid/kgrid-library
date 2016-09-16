@@ -73,7 +73,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	<div id="logo"><a href="home">
+	<div id="logo"><a href="">
 		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
 			height="auto"></a>
 	</div>

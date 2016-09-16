@@ -296,9 +296,10 @@ ul#tabs li.greenBar {
 #ellipsis {
 	display:block;
 	position:absolute;
-	top:4px;
-	right:450px;
+	top:16px;
+	right:465px;
 }
+
 
 ul#tab:hover {
 	color: #b3b3b3;

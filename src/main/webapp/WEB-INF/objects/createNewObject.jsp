@@ -30,8 +30,8 @@
 						id="new_title_data" path="metadata.title"
 						value="${fedoraObject.metadata.title}" /> <span>140/140</span>
 				</div>
-				<input id="addObjButton" type="button" onclick="updateObject('new')"
-					value="Create Object">
+				<div id="EditWrapper"><input id="addObjButton" type="button" onclick="updateObject('new')"
+					value="Create Object"></div>
 			</div>
 			<div class="entryform" id="entry_form1">
 				<div id="ko-title">

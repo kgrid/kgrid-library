@@ -64,11 +64,21 @@ function overlayHeightResize(overlayID, window_height){
 	var overlayPane =$('#'+overlayID).find("> .ol_pane");
 	var entryform = overlayPane.find(".entryform");
 	var ol_pane_height =window_height;
-	var calcHeight = (window_height-140);
+	var calcHeight = (window_height-157);
 	entryform.css("height",calcHeight+"px");
 	var ef_margin = (ol_pane_height-calcHeight)/2;
 	var addContent = entryform.find(".Add-content");
 	addContent.css("height",(calcHeight-70)+"px");
+	$("ul#tab.inEdit li").css("height",(calcHeight-80)+"px");
+	$("ul#tab.inEdit li").css("min-height",(calcHeight-80)+"px");
+	if(calcHeight<700){
+		$("[id$='EditWrapper']").css("bottom","0px");
+	}
+	console.log("Overlay Height Resize - window height: "+window_height+"px");
+	console.log("Overlay Height Resize - overlay height: "+ol_pane_height+"px");
+	console.log("Overlay Height Resize - calculate height: "+calcHeight+"px");
+	console.log("Overlay Height Resize - ef Margin: "+ef_margin+"px");
+
 	return ol_pane_height;
 }
 
@@ -187,6 +197,12 @@ function initCitationText(overlayID, cidx, ctitle, clink){
 	$("#addCitation").val("UPDATE");
 	$("#citation_idx").val(cidx);
 	$('.addtext>input').each(updateCount);
+}
+
+function initLicenseText(overlayID, title, link){
+	$("#license_title").val(title);
+	$("#license_link").val(link);
+	$("#entry_form").show();
 }
 
 function resetLicenseText() {
@@ -353,7 +369,7 @@ function displayPayload(obj){
 }
 function displayIOMessage(section,obj){
 	var sect_id = section.replace("Message", "");
-	console.log(" Display "+section+": " +obj);
+	//console.log(" Display "+section+": " +obj);
 	if(obj!=""){
 		$("#" + sect_id + "DropFile").hide();
 		$("#" + sect_id + "TextAreaDisplay").show();
@@ -921,10 +937,6 @@ $(document)
 						console.log("New citation field in focus...");
 						overlaySlide('citation', true);
 					});
-					$("#license_data").focus(function(e) {
-						console.log("New license field in focus...");
-						overlaySlide('license', true);
-					});
 					var citNumber = 0;
 					$("#addCitation").click(function(){
 						// Code to add citation to metadata form
@@ -949,6 +961,15 @@ $(document)
 
 						}
 					});
+					$("#license_data").focus(function(e){
+						var idx = $(this).attr("id");
+						var ltitle = $("#license_data").val();
+						var llink = $("#license_data").attr("licenseLink");
+						
+					console.log("license field in focus..."+ltitle+"  "+llink);
+					overlaySlide('license',true);
+					initLicenseText('license',ltitle,llink);
+				});
 					$("#addLicense").click(function() {
 						// Code to add citation to metadata form
 						var lTitle = $("#license_title").val();
@@ -976,11 +997,12 @@ $(document)
 							function(e) {
 								var urllink = $("#license_link").val();
 								console.log(urllink);
-								var myWindow = window.open(urllink, "myWindow",
+								$("#license_detail").attr('src', urllink);
+								/*var myWindow = window.open(urllink, "myWindow",
 										"width=400,height=700"); // Opens a
 																	// new
 																	// window
-								myWindow.focus();
+								myWindow.focus();*/
 							});
 					
 					var citation_validator = $("#citation_f").validate({ 
