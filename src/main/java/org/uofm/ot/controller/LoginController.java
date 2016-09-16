@@ -113,7 +113,7 @@ public class LoginController {
 	 * @param httpSession
 	 * @return View to render home page
 	 */
-	@RequestMapping(value="/home")
+	@RequestMapping(value={"/home","/"})
 	public String newLogin(ModelMap model,  HttpSession httpSession ) {		
 
 		if(httpSession.getAttribute("DBUser") == null){
