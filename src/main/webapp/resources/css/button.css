@@ -96,6 +96,23 @@ img#dropdown{
             z-index:500;
         }
 
+.delete_btn, .edit_btn{
+	dispplay:inline-block;
+	background-color:#fff;
+	line-height: 2em;
+	font-size:14px;
+	color: #b3b3b3;
+	padding:0px 10px 0px 10px;
+	
+}
+ .edit_btn{
+ 	border-right: 1px solid #b3b3b3;
+ }
+
+
+.delete_btn:hover, .edit_btn:hover{
+	color:#666666;
+}
 #newuser{
 	width:16px;
 	height:16px;

@@ -231,11 +231,10 @@
 					
 				</div>
 				<div class="inline editwrapper accessLevelOne" id="objBtns" style="top:4px; right:40px;position:absolute;">
-			<button class="edit" style="border-right:1px solid #39b45a;" id="metadataeditBtn">EDIT</button>
+			<button class="edit" id="metadataeditBtn">EDIT</button>
 			<button class="edit" id="deleteButton"
 								onclick="deleteObject('${fedoraObject.URI}')">DELETE</button>
-								<%-- <button class="edit" id="downloadButton"
-								onclick="downloadObject('${fedoraObject.URI}')">DOWNLOAD</button> --%>
+								
 								<a class="edit" id="downloadButton"	href="knowledgeObject/${fedoraObject.URI}/complete.json">DOWNLOAD</a>
 								
 		</div>

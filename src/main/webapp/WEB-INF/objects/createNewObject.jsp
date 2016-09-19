@@ -58,9 +58,9 @@
 						<fieldset class="fieldcontainer" id="first">
 							<div id="metadata_fields"></div>
 							<div id="metaEditWrapper"><input id="addObjButton" type="button"
-								onclick="updateObject('metadata')" value="Apply Changes">
+								onclick="updateObject('metadata')" value="Save & Close">
 								<button class="inline edit" id="metadataCancelBtn"
-									>CANCEL</button></div>
+									>UNDO</button></div>
 						</fieldset>
 					</li>
 					<li id="payload"><fieldset class="fieldcontainer">
@@ -115,8 +115,8 @@
 							</div>
 							<div id="metaEditWrapper"><input id="addObjButton"
 								type="button" onclick="updateObject('payload')"
-								value="Apply Changes"><button class="inline edit" id="payloadCancelBtn"
-									>CANCEL</button></div>
+								value="Save & Close"><button class="inline edit" id="payloadCancelBtn"
+									>UNDO</button></div>
 						</fieldset>
 
 						</li>
@@ -155,8 +155,8 @@
 							</div>
 							<div id="inputEditWrapper"><input id="addObjButton"
 								type="button" onclick="updateObject('inputMessage')"
-								value="Apply Changes"><button class="inline edit" id="inputCancelBtn"
-									>CANCEL</button></div>
+								value="Save & Close"><button class="inline edit" id="inputCancelBtn"
+									>UNDO</button></div>
 						</fieldset>
 					</li>
 					<li id="output">	<fieldset class="fieldcontainer">
@@ -193,9 +193,9 @@
 								</div>
 							</div>
 						<div id="outputEditWrapper"><input id="addObjButton" type="button"
-								onclick="updateObject('outputMessage')" value="Apply Changes">
+								onclick="updateObject('outputMessage')" value="Save & Close">
 						<button class="inline edit" id="outputCancelBtn"
-									>CANCEL</button></div>
+									>UNDO</button></div>
 						</fieldset>
 						</li>
 					</ul>

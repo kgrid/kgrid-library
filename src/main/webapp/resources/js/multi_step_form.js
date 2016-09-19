@@ -44,7 +44,7 @@ function updateCount() {
 		cs=$(this).val().length;
 	}
 		
-	var elementid = this.id;
+	var elementid = $(this).id;
 	var count = $(this).parent().children("span").text();
 	var maxl_s = count.substring(count.length - 3,
 			count.length)
@@ -757,17 +757,28 @@ function addCitationEntry(cTitle,urllink){
 	citNumber++;
 	var inField = '<div class="addtext"><input type="text" class="ctitle" id="'+idx+'_title"'+'" name="'+idxName+'.citation_title" path="'+springPath+'.citation_title"  value="'+cTitle+'">';
 	var inField2 ='<input type="hidden" class="clink" id="'+idx+'_link" name="'+idxName+'.citation_at"  path="'+springPath+'.citation_at" value="'+urllink+'">';
-    var delBtn ='<button class="redroundbutton delete_btn" type="button"><img src="resources/images/Close_Icon.png" width="12px"></button>';
+	var editBtn ='<button class="edit_btn" id="'+idx+'_btn" type="button">EDIT</button>';
+	var delBtn ='<button class="delete_btn" type="button">DELETE</button>';
     var endTag="</div>";
-    var citationEntry = inField+inField2+delBtn+endTag;
+    var citationEntry = inField+inField2+editBtn+delBtn+endTag;
      $(citationEntry).appendTo(".entryArea#citation_data_entry");
      $(".delete_btn").click(function(e){
  		var tgt =e.target;
 			console.log(tgt);
 			$(this).parent().remove();
 			return false;
-		})
-	$("#"+idx+"_title").focus(function(e){
+		});
+     $(".edit_btn").click(function(e){
+ 		var idx = $(this).attr("id").replace("_btn","_title");
+		var ctitle = $("#"+idx).val();
+		var linkid=idx.replace("title","link");
+		var clink = $("#"+linkid).val();
+		
+	console.log("Citation field in focus..."+idx);
+	overlaySlide('citation',true);
+	initCitationText('citation',idx,ctitle,clink);
+ 		});
+/*	$("#"+idx+"_title").focus(function(e){
 		var idx = $(this).attr("id");
 		var ctitle = $("#"+idx).val();
 		var linkid=idx.replace("title","link");
@@ -776,7 +787,7 @@ function addCitationEntry(cTitle,urllink){
 	console.log("Citation field in focus..."+idx);
 	overlaySlide('citation',true);
 	initCitationText('citation',idx,ctitle,clink);
-});
+});*/
 }
 
 
@@ -796,7 +807,10 @@ $(document)
 					buildInputTab();
 					buildOutputTab();*/
 					if(curURI!=""){
+						console.log("Init Obj - Current URI:" + uri);
 						editObj=initObject();
+						viewObj=initObject();
+						console.log("Init Obj - Current Obj:" + editObj);
 					}
 					//initObj();
 					var count = 0; // To Count Blank Fields
@@ -890,7 +904,13 @@ $(document)
 					$('.addtext>input').keyup(updateCount);
 					$('.addtext>input').keydown(updateCount);
 					$('.addtext>input').each(updateCount);
-					$('.addtext>input').change(updateCount);
+					$('.addtext>input').change(function(){
+						updateCount();
+/*						var tabTitle = $(this).parents("#addObj_f").find("ul#tabs li.active").text();
+						console.log("Actvie Tab Title:"+tabTitle);
+						$(this).parents("#addObj_f").find("ul#tabs li.active").text(tabTitle+"*");
+*/					});
+					
 					$('#description_data').keyup(updateCount);
 					$('#description_data').keydown(updateCount);
 					$("[id$='_data']").each(updateCount);
@@ -980,9 +1000,10 @@ $(document)
 					});
 					
 					$("[id$='CancelBtn']").click(function(event) {
-						if(curMode!="new"){
-						overlaySlide('addObject',false);
-						}
+						console.log("View:"+viewObj);
+						console.log("Edit:"+editObj);
+						
+						initInputTextFromObject(viewObj);
 					});
 					$("button").click(function(e) {
 						e.preventDefault();
