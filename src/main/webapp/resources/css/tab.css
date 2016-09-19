@@ -238,7 +238,7 @@ ul#tabs li {
 }
 
 ul#tabs li span:before {
-  content: "";
+  content: "*";
   position: absolute;
   width: 100%;
   height: 2px;
@@ -437,11 +437,20 @@ option {
 
 #metadataeditBtn, #deleteButton, #downloadButton{
 	padding:0px 12px 0px 10px;
-	line-height:1.1em;
+	line-height:1em;
+	 color: #b3b3b3;
+	 font-weight: 400;
+	 
 	
 }
+
+#metadataeditBtn:hover, #deleteButton:hover, #downloadButton:hover{
+ color:#666666;
+}
  #downloadButton{
- padding-left:40px;
+ 
+ padding-left:20px;
+ border-left:1px solid #b3b3b3;
  }
 
 #payloadTextArea{

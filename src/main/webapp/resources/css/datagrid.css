@@ -452,7 +452,8 @@ h3 {
 #backButton a{
 	padding-left:26px;
 	vertical-align:middle;
-		color: #b3b3b3;
+	color: #b3b3b3;
+	line-height: 1.8em;
 }
 
 #backButton:hover{

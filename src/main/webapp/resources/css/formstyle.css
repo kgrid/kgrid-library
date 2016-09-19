@@ -117,6 +117,10 @@ input[type=text]:focus{
 input[type=text].inEdit{
 	  border: 1px solid #39b45a;
 }
+
+input[type=text].ctitle{
+	width:740px;
+}
 input[type=text].error,
 input[type=password].error{
 	  border: 1px solid red;
@@ -403,9 +407,10 @@ span[id$="error"]{
 }
 button[id$="CancelBtn"] {
 	bottom: 0px;
-	font-size:21px;
+	font-size:16px;
 	right: 280px;
 	position:absolute;
+	line-height:2.4em;
 }
 
 [id$="EditWrapper"]{
