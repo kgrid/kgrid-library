@@ -2,27 +2,36 @@ package org.uofm.ot.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+
+import javax.validation.constraints.AssertTrue;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/ObjectTellerServlet-servlet.xml" })
-@PropertySource("classpath:application.properties")
 public class IdServiceTest {
 	
-	@Autowired
 	private IdService idService;
+	
+	@Mock
+	private EzidService ezidService; 
+	
+	public IdServiceTest() {
+		MockitoAnnotations.initMocks(this);
+	}
 	
 	@Before
 	public void setUp() {
-		
+		idService = new IdService(ezidService);
 	}
 
 	@After
@@ -32,30 +41,20 @@ public class IdServiceTest {
 
 	
 	@Test
-	public void canMintTwoNewArkIdsThatAreDifferent() {
-		
-	
-		
-		String arkId = idService.mint();
-
-		String arkId2 = idService.mint();
-
-		assertNotEquals("Should be different", arkId, arkId2);
-
+	public void testMethodDelegation() throws Exception {
+		idService.mint();
+		verify(ezidService).mint();
 	}
 
 	@Test
-	public void arkIdsStartWithStringArkColonAndHave3Parts() {
-
-		String arkId = idService.mint();
-
-
-		String[] idParts = arkId.split("/");
-
-		assertEquals(3, idParts.length);
-
-		assertEquals("Should be 'ark:'", "ark:", idParts[0]);
+	public void makeIdPublic(){
+		idService.publish("ark:/99999/12345");
+		verify(ezidService).status("ark:/99999/12345",IDStatus.PUBLIC);
 	}
-
-
+	
+	@Test
+	public void retractId(){
+		idService.retract("ark:/99999/12345");
+		verify(ezidService).status("ark:/99999/12345",IDStatus.UNAVAILABLE);
+	}
 }

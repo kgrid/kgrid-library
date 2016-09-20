@@ -24,12 +24,21 @@ public class EzidService {
 	
 	@Value(value = "${NAAN}")
 	private String NAAN;
+	
+	@Value(value = "${EZID_BASE_URL}")
+	private String EZID_BASE_URL;
+	
+	@Value(value = "${EZID_USERNAME}")
+	private String EZID_USERNAME;
+	
+	@Value(value = "${EZID_PASSWORD}")
+	private String EZID_PASSWORD;
 
     public String get(String id) {
 
         RestTemplate rt = new RestTemplate();
         
-        String url = "https://ezid.cdlib.org/id/" + id  ; 
+        String url = EZID_BASE_URL+"id/" + id  ; 
 
         ResponseEntity<String> response = rt.getForEntity(url, String.class);
 
@@ -41,7 +50,7 @@ public class EzidService {
 
         RestTemplate rt = new RestTemplate();
 
-        rt.getInterceptors().add(new BasicAuthorizationInterceptor("apitest", "apitest"));
+        rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
@@ -49,7 +58,7 @@ public class EzidService {
         HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
 
         ResponseEntity<String> response = rt.postForEntity(
-                "https://ezid.cdlib.org/shoulder/ark:/"+NAAN+"/fk4",
+                EZID_BASE_URL+"shoulder/ark:/"+NAAN+"/fk4",
                 requestEntity,
                 String.class);
 
@@ -62,14 +71,14 @@ public class EzidService {
     private String modify(String id, String metadata){
         RestTemplate rt = new RestTemplate();
 
-        rt.getInterceptors().add(new BasicAuthorizationInterceptor("apitest", "apitest"));
+        rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
 
         HttpHeaders headers = new HttpHeaders();
        headers.setContentType(MediaType.TEXT_PLAIN);
         
         HttpEntity<String> requestEntity = new HttpEntity<>(metadata, headers);
 
-        String url = "https://ezid.cdlib.org/id/"+id ; 
+        String url = EZID_BASE_URL+"id/"+id ; 
         
         ResponseEntity<String> response = rt.postForEntity(
                 url,
@@ -85,8 +94,8 @@ public class EzidService {
     	return  modify(id, metadata);
     }
     
-    public String status(String id, String status){
-    	String metadata = "_status: "+status ; 
+    public String status(String id, IDStatus status){
+    	String metadata = "_status: "+status.toString() ; 
     	return  modify(id, metadata);
     }
   
