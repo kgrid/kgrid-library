@@ -12,13 +12,23 @@ public class IdService {
 	@Autowired
 	private EzidService ezidService;
 
+	public IdService(EzidService ezidService) {
+		this.ezidService = ezidService ;
+	}
+
 	public String mint() {
         return ezidService.mint();
-    }
-
-	public void setEzidService(EzidService ezidService) {
-		this.ezidService = ezidService;
+    }    
+    
+	public void publish(String id) {
+		ezidService.status(id, IDStatus.PUBLIC);
 	}
-    
-    
+	
+	public void retract(String id){
+		ezidService.status(id, IDStatus.UNAVAILABLE);
+	}
+	
+	public void resolve (String arkId){
+		// TODO: 1. fuseki 2. ezid
+	}
 }
