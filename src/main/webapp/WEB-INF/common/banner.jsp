@@ -13,7 +13,6 @@
 
 $(document).ready(function(){
 	
-/* 		alert("inside banner test"); */
 		var userObj = "<%=session.getAttribute("DBUser")%>";
 		if ('null' != userObj) {
 			$("#session").hide();
@@ -24,14 +23,20 @@ $(document).ready(function(){
 			$("#logoutsession").hide();
 		}
 
-		$("#login").click( function login() {
+		$("#login_btn").click( function login() {
 	
 		var user = new Object();
 		user.username = document.getElementById("username").value;
-		user.passwd = document.getElementById("passwd").value;
+		user.passwd = document.getElementById("password").value;
 
 		var text = JSON.stringify(user);
- 		$.ajax({
+		console.log(text);
+		
+		var validForm=login_validator.form();
+		if(validForm){
+			console.log("validation result: " +validForm);
+			$( "div.processing" ).fadeIn( 300 );
+			$.ajax({
 					beforeSend : function(xhrObj) {
 						xhrObj.setRequestHeader("Content-Type",
 								"application/json");
@@ -52,9 +57,14 @@ $(document).ready(function(){
 					
 					error : function(response) {
 						// TODO: Handle Error Message
-						alert(response.responseText);
+						
+						$( "div.processing" ).fadeOut( 200 );
+						 $( "div.failure" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 					}
 				});
+		}else{
+			}
+		
 		}); 
 		
 		
@@ -68,6 +78,49 @@ $(document).ready(function(){
 				}
 			});
 		});
+		var login_validator = $("#login_f").validate({ 
+			 errorPlacement: function(error, element) { // Append error within linked label
+				 $( element ).closest( "form" ) .find( "label[for='" + element.attr("id" ) + "']" ) .after( error );
+				 }, 
+			errorElement: "span",
+			debug:true,
+			success:function(form) {
+				if(form.children(".error").length==0){
+			    $("#login_btn").removeAttr('disabled');
+			    $("#login_btn").css("background-color","#39b45a");
+				}
+			  },
+			highlight: function(element, errorClass, validClass) {
+			    $(element).addClass(errorClass).removeClass(validClass);
+			    $(element.form).find("h4[title=" + element.id + "]")
+			      .addClass(errorClass);
+			    $(element.form).find("input[id=" + element.id + "]")
+			      .addClass(errorClass);
+			  },
+			  unhighlight: function(element, errorClass, validClass) {
+			    $(element).removeClass(errorClass).addClass(validClass);
+			    $(element.form).find("h4[title=" + element.id + "]")
+			      .removeClass(errorClass);
+			    $(element.form).find("input[id=" + element.id + "]")
+			      .removeClass(errorClass);
+			  },
+			rules: { 
+				username: {
+					required:true },
+				password:  {
+					required:true
+					//, url:true
+				}
+			},
+		   	messages: { 
+		   		username: { 
+		   			required:"Please enter your username."}, 
+		   		password: {
+		   			required:"Please enter your password."
+		   				//,url:"Please enter a valid URL link for your citation."
+		   					}
+		   		}
+			});
 
 	});
 </script>
@@ -77,6 +130,7 @@ $(document).ready(function(){
 		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
 			height="auto"></a>
 	</div>
+
 			<div class="active-links">
 				
 					<div id="session" class="login-link">
@@ -90,7 +144,7 @@ $(document).ready(function(){
 							<fieldset class="signin-textbox">
 								<input name="username" type="text" id="username"
 									autocomplete="on" placeholder="Username"></input>
-								<input type="password"  placeholder="Password" id="passwd"
+								<input type="password"  placeholder="Password" id="password"
 									name="passwd" autocomplete="off"></input>
 							</fieldset>
 							<fieldset class="remb">
@@ -109,8 +163,7 @@ $(document).ready(function(){
 						</form>
 					</div>
 					
-				<!-- 
-					<div id="logout"> -->
+
 					<div id="logoutsession" class="logout-link">
 						<ul>
 <li id="user"><a id="user-link" href="#"> <strong><spring:message
@@ -136,8 +189,6 @@ $(document).ready(function(){
 							</fieldset>
 						</form>
 						</div>
-					<!-- </div> -->
-				
 			</div>
 		
 

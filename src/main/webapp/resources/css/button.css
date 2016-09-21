@@ -97,9 +97,9 @@ img#dropdown{
         }
 
 .delete_btn, .edit_btn{
-	dispplay:inline-block;
+	display:inline-block;
 	background-color:#fff;
-	line-height: 2em;
+	line-height: 1em;
 	font-size:14px;
 	color: #b3b3b3;
 	padding:0px 10px 0px 10px;
