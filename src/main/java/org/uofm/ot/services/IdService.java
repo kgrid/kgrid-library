@@ -2,6 +2,7 @@ package org.uofm.ot.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.uofm.ot.knowledgeObject.FedoraObject;
 
 /**
  * Created by pboisver on 9/15/16.
@@ -30,5 +31,16 @@ public class IdService {
 	
 	public void resolve (String arkId){
 		// TODO: 1. fuseki 2. ezid
+	}
+
+	public FedoraObject bind(FedoraObject ko) {
+
+		String arkId = ezidService.mint();
+
+		ko.setURI(arkId);
+
+		ezidService.bind(arkId,ko.getURL());
+
+		return ko;
 	}
 }

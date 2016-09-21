@@ -12,8 +12,10 @@ public class FedoraObject {
 	
 	private Payload payload = new Payload();
 	
-	private String logData; 
-	
+	private String logData;
+
+	private String libraryUrl;
+
 	public FedoraObject(){}
 	
     public FedoraObject(String URI) {
@@ -76,7 +78,14 @@ public class FedoraObject {
 				+ ", outputMessage=" + outputMessage + ", payload=" + payload + ", logData=" + logData + "]";
 	}
 
-	
-	
 
+	public void setLibraryURL(String libraryUrl) {
+
+		this.libraryUrl = libraryUrl;
+	}
+
+	public String getURL() {
+
+		return this.libraryUrl + getURI();
+	}
 }
