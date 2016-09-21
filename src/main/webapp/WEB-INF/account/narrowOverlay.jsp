@@ -32,8 +32,9 @@
 										<input class="textbox login" name="username"
 											id="username" type="text" spellcheck="false"
 											placeholder="Enter your email"
-											maxlength="140"><button class="edit_btn" >Need to create an account?</button>
-									</div>
+											maxlength="140">
+<!-- 											<button class="edit_btn" >Need to create an account?</button>
+ -->									</div>
 									<label class="errorLabel" for="username"> </label>
 								</div>
 								<div class="loginField">
@@ -42,7 +43,8 @@
 										<input class="textbox login" name="password" id="password"
 											type="password" spellcheck="false"
 											placeholder="Enter your password"
-											maxlength="140"><button class="edit_btn">Forgot Password?</button>
+											maxlength="140">
+											<!-- <button class="edit_btn">Forgot Password?</button> -->
 									</div>
 									<label class="errorLabel" for="password"> </label>
 								</div>
