@@ -44,12 +44,12 @@ public class KnowledgeObjectService {
 		return object;
 	}
 	
-	public FedoraObject editObject(FedoraObject newObject) throws ObjectTellerException {
-		addOrEditMetadata(newObject.getURI(), newObject.getMetadata());
-		editPayload(newObject.getURI(), newObject.getPayload());
-		editInputMessageContent(newObject.getURI(), newObject.getInputMessage());
-		editOutputMessageContent(newObject.getURI(), newObject.getInputMessage());
-		FedoraObject updatedObject = getCompleteKnowledgeObject(newObject.getURI());
+	public FedoraObject editObject(FedoraObject newObject,String objectURI) throws ObjectTellerException {
+		addOrEditMetadata(objectURI, newObject.getMetadata());
+		editPayload(objectURI, newObject.getPayload());
+		editInputMessageContent(objectURI, newObject.getInputMessage());
+		editOutputMessageContent(objectURI, newObject.getInputMessage());
+		FedoraObject updatedObject = getCompleteKnowledgeObject(objectURI);
 		return updatedObject ; 
 	}
 	
