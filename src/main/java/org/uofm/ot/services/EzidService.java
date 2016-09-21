@@ -1,18 +1,12 @@
 package org.uofm.ot.services;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -90,7 +84,7 @@ public class EzidService {
     }
     
     public String bind(String id, String objectURL){
-    	String metadata = "_target: "+objectURL ; 
+    	String metadata = "_target: " + objectURL ;
     	return  modify(id, metadata);
     }
     

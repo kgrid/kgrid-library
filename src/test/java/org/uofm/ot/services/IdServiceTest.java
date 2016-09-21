@@ -1,25 +1,27 @@
 package org.uofm.ot.services;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-
-import javax.validation.constraints.AssertTrue;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import static org.mockito.Mockito.*;
+import org.uofm.ot.knowledgeObject.FedoraObject;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/ObjectTellerServlet-servlet.xml" })
 public class IdServiceTest {
-	
+
+	@Autowired
+
+	public static final String ARKID = "ark:/99999/12345";
 	private IdService idService;
 	
 	@Mock
@@ -48,13 +50,30 @@ public class IdServiceTest {
 
 	@Test
 	public void makeIdPublic(){
-		idService.publish("ark:/99999/12345");
-		verify(ezidService).status("ark:/99999/12345",IDStatus.PUBLIC);
+		idService.publish(ARKID);
+		verify(ezidService).status(ARKID,IDStatus.PUBLIC);
 	}
 	
 	@Test
 	public void retractId(){
-		idService.retract("ark:/99999/12345");
-		verify(ezidService).status("ark:/99999/12345",IDStatus.UNAVAILABLE);
+		idService.retract(ARKID);
+		verify(ezidService).status(ARKID,IDStatus.UNAVAILABLE);
 	}
+
+	@Test
+	public void givenNewKoCanBindNewArkId() throws Exception {
+
+		when(ezidService.mint()).thenReturn(ARKID);
+
+		FedoraObject ko = new FedoraObject();
+
+		ko.setLibraryURL("http://kgrid.umich.edu/ko/");
+
+		idService.bind(ko);
+
+		assertEquals(ARKID, ko.getURI());
+
+		verify(ezidService).bind(ARKID, ko.getURL());
+
+		}
 }
