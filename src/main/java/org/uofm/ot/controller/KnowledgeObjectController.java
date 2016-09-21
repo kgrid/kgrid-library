@@ -87,12 +87,12 @@ public class KnowledgeObjectController {
 		return knowledgeObjectService.getCompleteKnowledgeObject(objectURI);
 	}
 	
-	@RequestMapping(value="/knowledgeObject", 
+	@RequestMapping(value="/knowledgeObject/{objectURI}", 
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject updateKnowledgeObject(@RequestBody FedoraObject knowledgeObject) throws ObjectTellerException {
-		return knowledgeObjectService.editObject(knowledgeObject);
+	public FedoraObject updateKnowledgeObject(@RequestBody FedoraObject knowledgeObject,@PathVariable String objectURI) throws ObjectTellerException {
+		return knowledgeObjectService.editObject(knowledgeObject,objectURI);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}", 
