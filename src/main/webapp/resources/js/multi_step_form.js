@@ -69,16 +69,16 @@ function overlayHeightResize(overlayID, window_height){
 	var ef_margin = (ol_pane_height-calcHeight)/2;
 	var addContent = entryform.find(".Add-content");
 	addContent.css("height",(calcHeight-70)+"px");
-	$("ul#tab.inEdit li").css("height",(calcHeight-80)+"px");
-	$("ul#tab.inEdit li").css("min-height",(calcHeight-80)+"px");
+	$("ul#tab.inEdit li").css("height",(calcHeight-120)+"px");
+	$("ul#tab.inEdit li").css("min-height",(calcHeight-120)+"px");
 	if(calcHeight<700){
 		$("[id$='EditWrapper']").css("bottom","0px");
 	}
-	console.log("Overlay Height Resize - window height: "+window_height+"px");
+/*	console.log("Overlay Height Resize - window height: "+window_height+"px");
 	console.log("Overlay Height Resize - overlay height: "+ol_pane_height+"px");
 	console.log("Overlay Height Resize - calculate height: "+calcHeight+"px");
 	console.log("Overlay Height Resize - ef Margin: "+ef_margin+"px");
-
+*/
 	return ol_pane_height;
 }
 
@@ -119,6 +119,9 @@ function overlaySlide(overlayID, open, mode){
 	var overlayPane_width=overlayPane.width();
 	var overlayPane_height=	overlayHeightResize(overlayID, window_height);
 	var overlayPane_left = window_width-overlayPane_width;
+	if(overlayID=="login_overlay"){
+		overlayPane_left=overlayPane_left+overlayPane_width/2;
+	}
 	if(overlayPane_left<=(window_width*0.27)){
 		overlayPane_left=(window_width*0.27);
 	}
@@ -138,6 +141,9 @@ function overlaySlide(overlayID, open, mode){
 			$("#entry_form1").hide();
 		}
 	}
+	if(overlayID=="login_overlay"){
+		
+	}
 	if(overlayID=="libraryuser"){
 		resetUserInfoText();
 	}
@@ -153,12 +159,12 @@ function overlaySlide(overlayID, open, mode){
             overlayPane.animate({'left':overlayPane_left+"px"},1000);
         });
     }else{
- 		$('#'+overlayID).css("display","none");
+ 		
     	overlayPane.animate({'left':'100%'},1000,function(){
-            $('#'+overlayID).fadeOut('fast');
+            $('#'+overlayID).delay(500).fadeOut('fast');
         });
     	
-    	
+    	$('#'+overlayID).css("display","none");
     }
 
 
@@ -507,22 +513,14 @@ function initObject(){
 	license.licenseLink = llink;
 	metadata.license=license;
 	
-	console.log("Metadata element done."+metadata);
-	
 	var payload = new Object();
 	payload.functionName = document
 			.getElementById("functionname_data_v").value;
 	payload.engineType = document.getElementById("enginetype_data_v").value;
 	payload.content = document.getElementById("payloadTextArea-v").value;
-
-	
-	console.log("Payload element done.");
 	
 	var inputMessage= document.getElementById("inputTextArea-v").value;
-//	console.log("INPUT: "+inputMessage);
 	var outputMessage= document.getElementById("outputTextArea-v").value;
-//	console.log("OUTPUT: "+outputMessage);
-	console.log("I/O element done.");
 	return buildFedoraObject("update", metadata, payload, inputMessage, outputMessage);
 
 }
@@ -535,7 +533,6 @@ function buildFedoraObject(mode, metadata, payload, inputMessage, outputMessage)
 		obj.inputMessage = inputMessage;
 		obj.outputMessage = outputMessage;
 	}
-	console.log(obj);
 	return obj;
 }
 
@@ -549,8 +546,8 @@ function updateObject(section) {
 	var ajaxUrl;
 	var ajaxSuccess;
 	var ajaxMethod;
-	console.log("constructing data elements for FedoraObject...");
-	var uri =curURI;
+/*	console.log("constructing data elements for FedoraObject...");
+*/	var uri =curURI;
 	console.log("URI:"+uri);
 	if (uri == "") {// new Object
 		ajaxMethod="POST";
@@ -593,23 +590,15 @@ function updateObject(section) {
 		license.licenseLink = llink;
 		metadata.license=license;
 		console.log(license);
-		
-		console.log("Metadata element done.");
-		
+
 		var payload = new Object();
 		payload.functionName = document
 				.getElementById("functionName").value;
 		payload.engineType = document.getElementById("engineType").value;
 		payload.content = document.getElementById("payloadTextArea").value;
 
-		
-		console.log("Payload element done.");
-		
 		var inputMessage= document.getElementById("inputTextArea").value;
-//		console.log("INPUT: "+inputMessage);
 		var outputMessage= document.getElementById("outputTextArea").value;
-//		console.log("OUTPUT: "+outputMessage);
-		console.log("I/O element done.");
 
 	}
 	var text;
@@ -631,7 +620,7 @@ function updateObject(section) {
 		text = JSON.stringify(fedoraObject);
 		break;
 	default: // full object Add or Edit
-		fedoraObjectbuildFedoraObject("update", metadata, payload, inputMessage, outputMessage);
+		fedoraObject=buildFedoraObject("update", metadata, payload, inputMessage, outputMessage);
 		text = JSON.stringify(fedoraObject);
 		break;
 	}
@@ -807,10 +796,8 @@ $(document)
 					buildInputTab();
 					buildOutputTab();*/
 					if(curURI!=""){
-						console.log("Init Obj - Current URI:" + uri);
 						editObj=initObject();
 						viewObj=initObject();
-						console.log("Init Obj - Current Obj:" + editObj);
 					}
 					//initObj();
 					var count = 0; // To Count Blank Fields
@@ -846,6 +833,12 @@ $(document)
 						console.log(btn_id);
 						var tArea_id = btn_id.replace("ClearBtn", "TextArea");
 						var dropfile = btn_id.replace("ClearBtn", "DropFile");
+						var fileinput="file_"+btn_id.replace("ClearBtn","");
+						console.log("Before Clear:"+fileinput+
+								$("#"+fileinput).val());
+						$("#"+fileinput).val("");
+						console.log("After Clear:"+
+								$("#"+fileinput).val());
 						$("#" + dropfile).show();
 						$("#" + tArea_id + "Display").hide();
 						$("#" + tArea_id).text("");
@@ -906,24 +899,24 @@ $(document)
 					$('.addtext>input').each(updateCount);
 					$('.addtext>input').change(function(){
 						updateCount();
-/*						var tabTitle = $(this).parents("#addObj_f").find("ul#tabs li.active").text();
+						var tabTitle = $(this).parents("#addObj_f").find("ul#tabs li.active").text();
 						console.log("Actvie Tab Title:"+tabTitle);
-						$(this).parents("#addObj_f").find("ul#tabs li.active").text(tabTitle+"*");
-*/					});
-					
+						if(!tabTitle.endsWith("*")){
+							$(this).parents("#addObj_f").find("ul#tabs li.active").text(tabTitle+"*");
+						}
+					});
+					$('[id^="file_"]').change(function(){
+						var tabTitle = $(this).parents("#addObj_f").find("ul#tabs li.active").text();
+						console.log($(this).val());
+						console.log("Actvie Tab Title:"+tabTitle);
+						if(!tabTitle.endsWith("*")){
+							$(this).parents("#addObj_f").find("ul#tabs li.active").text(tabTitle+"*");
+						}
+					});
 					$('#description_data').keyup(updateCount);
 					$('#description_data').keydown(updateCount);
 					$("[id$='_data']").each(updateCount);
-
 					
-					
-					/*$("a#downloadButton").click(function(e){
-						e.preventDefault();
-						console.log("Downloading "+curURI);
-						window.location.href=urlPrefix+"/"+curURI+"/complete";
-						
-					});*/
-
 					var next = 1;
 					$("input[id$='_data']").click(function(e) {
 						e.preventDefault();
@@ -999,11 +992,16 @@ $(document)
 						overlaySlide("license", false);
 					});
 					
-					$("[id$='CancelBtn']").click(function(event) {
+					$("[id$='ancelBtn']").click(function(event) {
 						console.log("View:"+viewObj);
 						console.log("Edit:"+editObj);
 						
 						initInputTextFromObject(viewObj);
+						$(this).parents("#addObj_f").find("ul#tabs li").each(function(){
+							console.log("UL li text:"+$(this).text());
+							$(this).text($(this).text().replace("*",""));
+						});
+						
 					});
 					$("button").click(function(e) {
 						e.preventDefault();
@@ -1019,11 +1017,6 @@ $(document)
 								var urllink = $("#license_link").val();
 								console.log(urllink);
 								$("#license_detail").attr('src', urllink);
-								/*var myWindow = window.open(urllink, "myWindow",
-										"width=400,height=700"); // Opens a
-																	// new
-																	// window
-								myWindow.focus();*/
 							});
 					
 					var citation_validator = $("#citation_f").validate({ 
@@ -1056,19 +1049,20 @@ $(document)
 							citation_title: {
 								required:true },
 							citation_link:  {
-								required:true,
-								url:true
+								required:true
+								//, url:true
 							}
 						},
 					   	messages: { 
 					   		citation_title: { 
 					   			required:"Please enter a title for this citation."}, 
 					   		citation_link: {
-					   			required:"A valid URL link for your citation is required.",
-					   			url:"Please enter a valid URL link for your citation."}
+					   			required:"A valid URL link for your citation is required."
+					   				//,url:"Please enter a valid URL link for your citation."
+					   					}
 					   		}
 						});
-					
+
 /*					$(".backrow").click(function(evt){
 						var uri = this.id;
 						console.log("Clicking "+uri);

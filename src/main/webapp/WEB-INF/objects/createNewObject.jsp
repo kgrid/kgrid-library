@@ -52,15 +52,19 @@
 					<li class="labels"><spring:message code="INPUT_TAB" /></li>
 					<li class="labels"><spring:message code="OUTPUT_TAB" /></li>
 				</ul>
+				<div id="editWrapper">
+					<button class="edit" id="cancelBtn">Undo</button>
+					<button class="edit" id="saveObjButton" onclick="updateObject('')">Save & Close</button>
+								</div>
 			</div>
 			<ul class="inEdit" id="tab">
 					<li class="active current-tab" id="metadata">
 						<fieldset class="fieldcontainer" id="first">
 							<div id="metadata_fields"></div>
-							<div id="metaEditWrapper"><input id="addObjButton" type="button"
+							<!-- <div id="metaEditWrapper"><input id="addObjButton" type="button"
 								onclick="updateObject('metadata')" value="Save & Close">
 								<button class="inline edit" id="metadataCancelBtn"
-									>UNDO</button></div>
+									>UNDO</button></div> -->
 						</fieldset>
 					</li>
 					<li id="payload"><fieldset class="fieldcontainer">
@@ -113,10 +117,10 @@
 									<textarea id="payloadTextArea"></textarea>
 								</div>
 							</div>
-							<div id="metaEditWrapper"><input id="addObjButton"
+							<!-- <div id="metaEditWrapper"><input id="addObjButton"
 								type="button" onclick="updateObject('payload')"
 								value="Save & Close"><button class="inline edit" id="payloadCancelBtn"
-									>UNDO</button></div>
+									>UNDO</button></div> -->
 						</fieldset>
 
 						</li>
@@ -153,10 +157,10 @@
 									<textarea id="inputTextArea"></textarea>
 								</div>
 							</div>
-							<div id="inputEditWrapper"><input id="addObjButton"
+							<!-- <div id="inputEditWrapper"><input id="addObjButton"
 								type="button" onclick="updateObject('inputMessage')"
 								value="Save & Close"><button class="inline edit" id="inputCancelBtn"
-									>UNDO</button></div>
+									>UNDO</button></div> -->
 						</fieldset>
 					</li>
 					<li id="output">	<fieldset class="fieldcontainer">
@@ -192,10 +196,10 @@
 									<textarea id="outputTextArea"></textarea>
 								</div>
 							</div>
-						<div id="outputEditWrapper"><input id="addObjButton" type="button"
+						<!-- <div id="outputEditWrapper"><input id="addObjButton" type="button"
 								onclick="updateObject('outputMessage')" value="Save & Close">
 						<button class="inline edit" id="outputCancelBtn"
-									>UNDO</button></div>
+									>UNDO</button></div> -->
 						</fieldset>
 						</li>
 					</ul>

@@ -1,15 +1,14 @@
 $(document).ready(function() {
 	$('.login-link').click(function() {
-		if ($('#signin-dropdown').is(":visible")) {
-			/*            $('#signin-dropdown').slideUp(5000);*/
+/*		if ($('#signin-dropdown').is(":visible")) {
 			$('#signin-dropdown').hide();
 			$('#session').removeClass('active');
 		} else {
-			/*           $('#signin-dropdown').slideDown(5000);*/
 			$('#signin-dropdown').show();
 			$('#username').focus();
 			$('#session').addClass('active');
-		}
+		}*/
+		overlaySlide("login_overlay",true);
 		return false;
 	});
 	
@@ -39,9 +38,9 @@ $(document).ready(function() {
 		e.stopPropagation();
 	});
 	
-	$(document).click(function() {
+/*	$(document).click(function() {
 		$('.dropdown').hide();
 		$('#session').removeClass('active');
-	});
+	});*/
 
 });
