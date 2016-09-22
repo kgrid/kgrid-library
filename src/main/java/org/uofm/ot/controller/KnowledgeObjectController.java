@@ -36,7 +36,7 @@ public class KnowledgeObjectController {
 
 		ResponseEntity<FedoraObject> entity = null;
 
-		loggedInUser = new User("libadmin@umich.edu", "test", 42 , "Larry", "Info", UserRoles.INFORMATICIAN);
+	//	loggedInUser = new User("libadmin@umich.edu", "test", 42 , "Larry", "Info", UserRoles.INFORMATICIAN);
 		
 		if (loggedInUser != null ) {
 			
