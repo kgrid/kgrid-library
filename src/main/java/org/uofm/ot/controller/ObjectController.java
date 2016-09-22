@@ -309,10 +309,8 @@ public class ObjectController {
 	}
 	
 	private boolean validateAccessToPrivateObject(String objectURI,User loggedInUser) throws ObjectTellerException{
-		FedoraObject object = new FedoraObject();
-		object.setURI(objectURI);
 
-		object = fusekiService.getKnowledgeObject(objectURI);
+		FedoraObject object = fusekiService.getKnowledgeObject(objectURI);
 		
 		if(!object.getMetadata().isPublished() && loggedInUser == null)
 			return false;

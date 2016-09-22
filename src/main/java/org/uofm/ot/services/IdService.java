@@ -9,7 +9,10 @@ import org.uofm.ot.knowledgeObject.FedoraObject;
  */
 @Service
 public class IdService {
-	
+
+//	@Autowired
+//	ServletContext servletContext;
+
 	@Autowired
 	private EzidService ezidService;
 
@@ -21,12 +24,12 @@ public class IdService {
         return ezidService.mint();
     }    
     
-	public void publish(String id) {
-		ezidService.status(id, IDStatus.PUBLIC);
+	public void publish(FedoraObject ko) {
+		ezidService.status(ko.getURI(), IDStatus.PUBLIC);
 	}
 	
-	public void retract(String id){
-		ezidService.status(id, IDStatus.UNAVAILABLE);
+	public void retract(FedoraObject ko){
+		ezidService.status(ko.getURI(), IDStatus.UNAVAILABLE);
 	}
 	
 	public void resolve (String arkId){

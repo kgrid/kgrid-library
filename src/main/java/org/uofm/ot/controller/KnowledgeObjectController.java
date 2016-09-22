@@ -12,7 +12,6 @@ import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.User;
-import org.uofm.ot.model.UserRoles;
 import org.uofm.ot.services.KnowledgeObjectService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +61,7 @@ public class KnowledgeObjectController {
 		return knowledgeObjectService.getKnowledgeObjects(false);
 	}
 	
-	@RequestMapping(value="/knowledgeObject/{objectURI}", 
+	@RequestMapping(value="/knowledgeObject/{objectURI}",
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<FedoraObject> getKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {

@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.uofm.ot.knowledgeObject.FedoraObject;
@@ -19,9 +18,8 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/ObjectTellerServlet-servlet.xml" })
 public class IdServiceTest {
 
-	@Autowired
-
 	public static final String ARKID = "ark:/99999/12345";
+
 	private IdService idService;
 	
 	@Mock
@@ -49,14 +47,19 @@ public class IdServiceTest {
 	}
 
 	@Test
-	public void makeIdPublic(){
-		idService.publish(ARKID);
+	public void publishKnowledgeObject(){
+
+		FedoraObject ko = new FedoraObject();
+		ko.setURI(ARKID);
+		idService.publish(ko);
 		verify(ezidService).status(ARKID,IDStatus.PUBLIC);
 	}
 	
 	@Test
 	public void retractId(){
-		idService.retract(ARKID);
+		FedoraObject ko = new FedoraObject();
+		ko.setURI(ARKID);
+		idService.retract(ko);
 		verify(ezidService).status(ARKID,IDStatus.UNAVAILABLE);
 	}
 
