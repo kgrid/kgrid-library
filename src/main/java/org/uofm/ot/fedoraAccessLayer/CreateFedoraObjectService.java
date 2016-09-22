@@ -50,7 +50,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				createContainer(uri+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType() , transactionId);
 				addProvMetadataStart(uri,loggedInUser,transactionId);
 				
-				
+				fedoraObject.setArkID(arkID);
 
 				addHEMetadataProperties(fedoraObject, uri, transactionId);
 				
@@ -79,7 +79,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				
 				fedoraObject.setURI(uri);
 				
-				fedoraObject.setArkID(arkID);
+				
 				
 				logger.info("Successfully created object "+fedoraObject);
 				
@@ -182,8 +182,6 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				keywords = "";
 		
 			
-			// TODO: Add ark ID triple here
-			
 			String properties = FusekiConstants.PREFIX_OT +"\n "+	
 					FusekiConstants.PREFIX_DC +"\n "+
 					FusekiConstants.PREFIX_RDF +"\n "+
@@ -194,6 +192,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 					" dc:title \""+fedoraObject.getMetadata().getTitle()+"\" ; \n"+
 					" ot:keywords  \""+keywords+"\" ; \n"+ 
 					" rdf:type "+FusekiConstants.OT_TYPE_KNOWLEDGE_OBJECT+" ; \n"+
+					" ot:arkID \""+fedoraObject.getArkID().getArkId()+"\" ; \n"+
 					" ot:published  \"no\" ; \n";
 
 			if(fedoraObject.getMetadata().getLicense() != null) {
