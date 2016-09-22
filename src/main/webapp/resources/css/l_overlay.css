@@ -72,6 +72,9 @@
     height:100%;
 }
 
+.ol_pane#login_pane {
+	width:550px;
+}
 .sidebar_close {
     background-color:#fff;
     position:absolute;
@@ -118,12 +121,13 @@
     height: 100%;
     top: 0px;
     left: 60px;
-
     padding: 0px 0px;
     border-left: 1px solid #e6e6e6;
 }
 
-
+.board#loginEntry{
+	width:480px;
+}
 
 .entryform{
     /* 	height:80%; */

@@ -124,6 +124,9 @@
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
+	<div id="login_overlay" class="layered_overlay" >
+		<%@ include file="../account/narrowOverlay.jsp"%>
+	</div>
 	<div id="addObject" class="layered_overlay">
 		<%@ include file="../objects/createNewObject.jsp"%>
 	</div>
@@ -178,7 +181,7 @@
 				</c:if>
 			</div>
 			<h1>
-				<small><c:out value="${fedoraObject.metadata.title}"></c:out></small>
+				<small id="page_title_v"><c:out value="${fedoraObject.metadata.title}"></c:out></small>
 			</h1>
 		</div>
 		<div class="date">
@@ -334,7 +337,7 @@
 										disabled value="${fedoraObject.payload.engineType}">
 								</div>
 								<div class="display-payload">
-									<textarea class="autosize" id="payloadTextArea-v">${fedoraObject.payload.content}</textarea>
+									<textarea class="autosize" id="payloadTextArea_v">${fedoraObject.payload.content}</textarea>
 								</div>
 							</form>
 						</div>
@@ -343,7 +346,7 @@
 						<div id="tab-content3" class="tab-content view-obj">
 							<form class="display-content" id="displayinput">
 								<div class="display-payload">
-									<textarea class="autosize" id="inputTextArea-v">${fedoraObject.inputMessage}</textarea>
+									<textarea class="autosize" id="inputTextArea_v">${fedoraObject.inputMessage}</textarea>
 								</div>
 							</form>
 
@@ -353,7 +356,7 @@
 						<div id="tab-content4" class="tab-content view-obj">
 							<form class="display-content" id="displayoutput">
 								<div class="display-payload">
-									<textarea class="autosize" id="outputTextArea-v">${fedoraObject.outputMessage}</textarea>
+									<textarea class="autosize" id="outputTextArea_v">${fedoraObject.outputMessage}</textarea>
 								</div>
 							</form>
 							<sf:form class="display-content" id="outputEdit" method="POST"
