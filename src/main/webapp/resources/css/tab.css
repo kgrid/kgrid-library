@@ -151,10 +151,10 @@ color:#666666;
 	border: 1px solid #39b45a;
 }
 
-input[type=text]:focus {
+/* input[type=text]:focus {
 	border: 1px solid #39b54a;
 	outline: none;
-}
+} */
 
 input[type=text]:disabled {
 	border: 1px solid #fff;
@@ -458,7 +458,7 @@ option {
 	min-height:240px;
 
 }
-#payloadTextArea-v, #outputTextArea-v, #inputTextArea-v, #inputTextArea-clone  {
+#payloadTextArea_v, #outputTextArea_v, #inputTextArea_v, #inputTextArea-clone  {
 	display:block;
     min-height:600px;
 	width:900px;

@@ -130,6 +130,7 @@ input[type=text].inEdit {
 
 input[type=text].login, input[type=password].login{
 	width:350px;
+	border: 1px solid #e6e6e6;
 }
 
 input[type=text].ctitle {
@@ -276,9 +277,10 @@ input[type=submit], input[type=button] {
 }
 
 .done_btn.login {
-	right:545px;
-	bottom:430px;
+	right:0px;
+	bottom:-30px;
 	width:380px;
+	position: relative;
 }
 #addObjButton {
 	margin: 0 auto;
@@ -323,13 +325,13 @@ input[type=submit], input[type=button] {
 }
 
 .addtext button.edit_btn{
-	position: absolute;
+/* 	position: absolute;
 	right: 550px;
 	bottom: -30px;
-	color: #39b45a;
+	color: #39b45a; */
 	font-size: 14px;
 	border:none;
-		font-style: italic;
+/* 	font-style: italic; */
 }
 
 .addtext span:not (.error ){
