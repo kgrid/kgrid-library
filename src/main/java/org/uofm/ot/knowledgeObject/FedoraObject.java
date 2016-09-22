@@ -1,5 +1,7 @@
 package org.uofm.ot.knowledgeObject;
 
+import org.uofm.ot.services.ArkID;
+
 public class FedoraObject {
 
 	private Metadata metadata ;
@@ -13,8 +15,14 @@ public class FedoraObject {
 	private Payload payload = new Payload();
 	
 	private String logData;
+	
+	private ArkID arkID ;
+	
+	
 
-	private String libraryUrl;
+	public FedoraObject(ArkID arkID) {
+		this.arkID = arkID;
+	}
 
 	public FedoraObject(){}
 	
@@ -78,14 +86,13 @@ public class FedoraObject {
 				+ ", outputMessage=" + outputMessage + ", payload=" + payload + ", logData=" + logData + "]";
 	}
 
-
-	public void setLibraryURL(String libraryUrl) {
-
-		this.libraryUrl = libraryUrl;
+	public ArkID getArkID() {
+		return arkID;
 	}
 
-	public String getURL() {
-
-		return this.libraryUrl + getURI();
+	public void setArkID(ArkID arkID) {
+		this.arkID = arkID;
 	}
+
+
 }

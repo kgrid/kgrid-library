@@ -8,6 +8,7 @@ import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.model.ObjectId;
 import org.uofm.ot.model.SETTING_TYPE;
 import org.uofm.ot.model.Server_details;
+import org.uofm.ot.services.ArkID;
 
 public class ObjectIDDAOImpl implements ObjectIDDAO {
 	
@@ -19,19 +20,23 @@ public class ObjectIDDAOImpl implements ObjectIDDAO {
 	
 	private final String CHECK_ID = "SELECT * FROM "+TABLE_NAME ;
 	
-	private final String UPDATE_NEW_ID = "UPDATE "+TABLE_NAME +" SET "+NEW_OBJECT_ID+"= ? WHERE "+COLUMN_ID+"=? ";
+	private final String UPDATE_NEW_ID = "UPDATE "+TABLE_NAME +" SET "+NEW_OBJECT_ID +"= "+NEW_OBJECT_ID +" + 1  WHERE "+COLUMN_ID+"= 1 ";
 	
 	private JdbcTemplate jdbcTemplate;  
+	
+	private static final String ID_PREFIX = "OT";
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
+	
+
 
 	@Override
-	public ObjectId retrieveNewId() throws ObjectTellerException {
+	public ArkID retrieveNewId() throws ObjectTellerException {
 		try {
-			ObjectId objectId = jdbcTemplate.queryForObject(CHECK_ID,new BeanPropertyRowMapper<>(ObjectId.class));
-			return objectId;
+			ObjectId objectId = jdbcTemplate.queryForObject(CHECK_ID,new BeanPropertyRowMapper<>(ObjectId.class));		
+			return new ArkID(ID_PREFIX+ objectId.getNewObjectId());
 		}  catch( EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -39,9 +44,9 @@ public class ObjectIDDAOImpl implements ObjectIDDAO {
 	}
 
 	@Override
-	public void updateNewId(ObjectId objectId) throws ObjectTellerException {
+	public void updateNewId() throws ObjectTellerException {
 		
-		int result = jdbcTemplate.update(UPDATE_NEW_ID, objectId.getNewObjectId()+1,objectId.getId());		
+		int result = jdbcTemplate.update(UPDATE_NEW_ID);		
 		if(result == 0 ) {
 			ObjectTellerException exception = new ObjectTellerException("Unable to generate new ID ");
 			throw exception;

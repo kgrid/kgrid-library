@@ -12,6 +12,7 @@ import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.User;
+import org.uofm.ot.model.UserRoles;
 import org.uofm.ot.services.KnowledgeObjectService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +36,7 @@ public class KnowledgeObjectController {
 
 		ResponseEntity<FedoraObject> entity = null;
 
-	//	loggedInUser = new User("libadmin@umich.edu", "test", 42 , "Larry", "Info", UserRoles.INFORMATICIAN);
+		loggedInUser = new User("nbahulek@umich.edu", "test", 48 , "Namita", "B.", UserRoles.ADMIN);
 		
 		if (loggedInUser != null ) {
 			
