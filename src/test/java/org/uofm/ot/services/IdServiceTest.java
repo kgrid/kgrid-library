@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/ObjectTellerServlet-servlet.xml" })
 public class IdServiceTest {
 
-	public static final String ARKID = "ark:/99999/12345";
+	private static final String ARKID = IdService.ARKID;
 
 	private IdService idService;
 	
@@ -68,15 +68,13 @@ public class IdServiceTest {
 
 		when(ezidService.mint()).thenReturn(ARKID);
 
-		FedoraObject ko = new FedoraObject();
+		FedoraObject ko = new FedoraObject(new ArkID(ARKID));
 
-		ko.setLibraryURL("http://kgrid.umich.edu/ko/");
-
-		idService.bind(ko);
+		idService.bind(ko, "http://dev.umich.edu/"+ARKID);
 
 		assertEquals(ARKID, ko.getURI());
 
-		verify(ezidService).bind(ARKID, ko.getURL());
+		verify(ezidService).bind(ARKID, "http://dev.umich.edu/"+ARKID );
 
 		}
 }

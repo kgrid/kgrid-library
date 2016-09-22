@@ -15,6 +15,7 @@ public class IdService {
 
 	@Autowired
 	private EzidService ezidService;
+	public static final String ARKID = "ark:/99999/12345";
 
 	public IdService(EzidService ezidService) {
 		this.ezidService = ezidService ;
@@ -36,13 +37,13 @@ public class IdService {
 		// TODO: 1. fuseki 2. ezid
 	}
 
-	public FedoraObject bind(FedoraObject ko) {
+	public FedoraObject bind(FedoraObject ko, String targetUrl) {
 
 		String arkId = ezidService.mint();
 
 		ko.setURI(arkId);
 
-		ezidService.bind(arkId,ko.getURL());
+		ezidService.bind(arkId,targetUrl);
 
 		return ko;
 	}

@@ -10,6 +10,7 @@ import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.model.ObjectId;
 import org.uofm.ot.model.User;
+import org.uofm.ot.services.ArkID;
 
 import java.util.Date;
 
@@ -20,10 +21,12 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 	public void setObjectIDDAO(ObjectIDDAO objectIDDAO) {
 		this.objectIDDAO = objectIDDAO;
 	}
+	
+	// TODO: Autowire ID Service
 
 	private static final Logger logger = Logger.getLogger(CreateFedoraObjectService.class);
 	
-	private static final String ID_PREFIX = "OT";
+
 
 
 	public FedoraObject createObject(FedoraObject fedoraObject, User loggedInUser) throws ObjectTellerException {
@@ -32,11 +35,15 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 		String errorMessage = null; 
 		if(baseURI!= null){
 
-			ObjectId newObjId = objectIDDAO.retrieveNewId();
+			ArkID arkID = objectIDDAO.retrieveNewId();
+			
+			
+			String uri = arkID.getArkId();
 
-			if(newObjId != null ) {
+			if(uri != null ) {
 
-				String uri = ID_PREFIX + newObjId.getNewObjectId();
+				// TODO: Mint ID here
+				
 				transactionId =  super.createTransaction();
 				
 				createContainer(uri , transactionId);
@@ -72,11 +79,13 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				
 				fedoraObject.setURI(uri);
 				
+				fedoraObject.setArkID(arkID);
+				
 				logger.info("Successfully created object "+fedoraObject);
 				
 				super.commitTransaction(transactionId);
 				
-				objectIDDAO.updateNewId(newObjId);
+				objectIDDAO.updateNewId();
 
 			} else
 				errorMessage = "Unable to generate unique id for the object "+fedoraObject;
@@ -173,6 +182,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				keywords = "";
 		
 			
+			// TODO: Add ark ID triple here
 			
 			String properties = FusekiConstants.PREFIX_OT +"\n "+	
 					FusekiConstants.PREFIX_DC +"\n "+
