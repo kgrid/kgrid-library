@@ -47,7 +47,7 @@ public class KnowledgeObjectService {
 		addOrEditMetadata(objectURI, newObject.getMetadata());
 		editPayload(objectURI, newObject.getPayload());
 		editInputMessageContent(objectURI, newObject.getInputMessage());
-		editOutputMessageContent(objectURI, newObject.getInputMessage());
+		editOutputMessageContent(objectURI, newObject.getOutputMessage());
 		FedoraObject updatedObject = getCompleteKnowledgeObject(objectURI);
 		return updatedObject ; 
 	}
