@@ -126,8 +126,6 @@ function overlaySlide(overlayID, open, mode) {
 	}
 	if (overlayID == "addObject") {
 		resetInputText();
-		console.log("Overlay IN with URI:" + curURI);
-
 		if (mode != "new") {
 			$("#begin_page").hide();
 			$("#entry_form1").show();
@@ -136,8 +134,12 @@ function overlaySlide(overlayID, open, mode) {
 				initInputTextFromObject(editObj,"overlay");
 			}
 		} else {
+			curURI="";
 			$("#begin_page").show();
+			$("#end_page").hide();
 			$("#entry_form1").hide();
+			console.log("Overlay IN with URI:" + curURI);
+
 		}
 	}
 	if (overlayID == "login_overlay") {
@@ -358,7 +360,7 @@ function displayMetaData(obj, elementSuffix) {
 	}else{
 		$("#citation_data_entry_v").empty();
 	}
-	if (fObj.published) {
+	if (obj.published) {
 		$("#preTitle").show();
 		$(".pri-pub2").addClass("current-tab");
 		$(".pri-pub2 span").addClass("middleout");
@@ -434,6 +436,10 @@ function readMultipleFiles(evt) {
 					$("#" + sect_id + "DropFile").hide();
 					$("#" + sect_id + "TextAreaDisplay").show();
 					$("#" + sect_id + "TextArea").val(contents);
+					if(sect_id=="newObj"){
+						var obj=JSON.parse(contents);
+						$("#new_title_data").val(obj.metadata.title);
+					}
 				};
 			})(f);
 			r.readAsText(f);
@@ -632,7 +638,15 @@ function updateObject(section) {
 		text = outputMessage;
 		break;
 	case "new":
-		fedoraObject = buildFedoraObject("new", metadata, null, null, null);
+		text = $("#newObjTextArea").val();
+		if(text==""){
+			fedoraObject = buildFedoraObject("new", metadata, null, null, null);
+			
+		}else{
+			fedoraObject=JSON.parse(text);
+			fedoraObject.metadata.title = document.getElementById("new_title_data").value;
+			initInputTextFromObject(fedoraObject,"overlay");
+		}
 		text = JSON.stringify(fedoraObject);
 		break;
 	default: // full object Add or Edit
@@ -711,6 +725,7 @@ function saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text) {
 					// test code for
 					$("div.processing").fadeOut(200);
 					$("div.faiure").fadeIn(300).delay(1500).fadeOut(400);
+					resetInputText();
 
 				}
 			});

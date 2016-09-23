@@ -48,7 +48,7 @@
 
 div[id$="_fields"] {
 	overflow: auto;
-	height: 88%;
+	height: 98%;
 }
 
 .fieldcontainer {
@@ -142,7 +142,7 @@ input[type=text].error, input[type=password].error {
 }
 
 #new_title_data {
-	margin: 50px 0px 0px 0px;
+	margin: 20px 0px 30px 0px;
 }
 
 select {
@@ -229,6 +229,10 @@ option:hover {
 	text-align: center;
 }
 
+#newObjDropFile {
+	margin: 10px auto;
+	
+}
 .upload-direction {
 	padding: 10px 0;
 }
@@ -243,7 +247,7 @@ textarea {
 	color: #666666;
 }
 
-.display-payload, .display-input, .display-output {
+.display-payload, .display-input, .display-output, .display-newObj {
 	display: none;
 	min-height: 50px;
 	width: 100%;
@@ -284,6 +288,7 @@ input[type=submit], input[type=button] {
 }
 #addObjButton {
 	margin: 0 auto;
+	bottom:40px;
 }
 
 .pre_btn {
@@ -421,7 +426,7 @@ span[id$="error"] {
 	font-style: italic;
 }
 
-#payloadClearBtn, #inputClearBtn, #outputClearBtn {
+#payloadClearBtn, #inputClearBtn, #outputClearBtn, #newObjClearBtn {
 	background-color: #fff;
 	color: #39b54a;
 	font-size: 16px;
@@ -471,7 +476,7 @@ button[id$="CancelBtn"] {
 		font-size: 14px;
 		color: #666666;
 	}
-	#payloadTextArea {
+	#payloadTextArea, #newObjTextArea {
 		min-height: 200px;
 		max-height: 240px;
 	}

@@ -27,6 +27,10 @@ input[type=radio] {
   font-size:12px;
 }
 
+#newTitle span{
+	bottom:25px;
+}
+
 .tabs label {
 	display: block;
 	float: left;
