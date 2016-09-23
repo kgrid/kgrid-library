@@ -126,9 +126,12 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	<div id="logo"><a href="">
+	<div id="logo"><a href="home">
 		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
 			height="auto"></a>
+	</div>
+	<div id="login_overlay" class="layered_overlay" >
+		<%@ include file="../account/narrowOverlay.jsp"%>
 	</div>
 
 			<div class="active-links">

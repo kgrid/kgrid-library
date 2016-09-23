@@ -55,6 +55,8 @@
 				
 				<div id="EditWrapper"><input id="addObjButton" type="button" onclick="updateObject('new')"
 					value="Create Object"></div>
+				<div class="alert-box processing">Processing...</div>
+				<div class="alert-box warning">Warning !!!</div>
 			</div>
 			<div class="entryform" id="entry_form1">
 				<div id="ko-title">
@@ -62,8 +64,8 @@
 				</div>	
 				<div class="alert-box processing">Processing...</div>
 				<div class="alert-box success">Update Successful !!!</div>
-<div class="alert-box failure">Update Failure !!!</div>
-<div class="alert-box warning">Warning !!!</div>
+				<div class="alert-box failure">Update Failure !!!</div>
+
 				
 			<div>
 			<sf:form name="addObj_f" class="Add-content" id="addObj_f"

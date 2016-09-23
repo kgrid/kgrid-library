@@ -311,20 +311,24 @@ function resetInputText() {
 	$(".current-tab").removeClass("current-tab");
 	$("#progressbar li:first-child").addClass("current-tab");
 	$('#progressbar li').children("img").css("display", "none");
-	/*
-	 * $('#addObj .fieldcontainer').css("display", "none");
-	 * $('#first').css("display", "block");
-	 */
 	$('#payloadTextArea').val("");
 	$('#functionName').val("");
 	$('#inputTextArea').val("");
 	$('#outputTextArea').val("");
+	$("#newObjDropFile").show();
+	$('#file_newObj').val("");
+	$("#newObjTextAreaDisplay").hide();
+	$('#newObjTextArea').val("");
 	$("input[id$='_data']").val("");
 	$("#description_data").val("");
 	$("div[id$='_entry']").children().remove();
 	$("#page_title").text("");
 	$("#cDate").text("");
 	$("#uDate").text("");
+	$("div.success").hide();
+	$("div.warning").hide();
+	$("div.failure").hide();
+	
 }
 
 function initInputText(uri) {
@@ -437,8 +441,14 @@ function readMultipleFiles(evt) {
 					$("#" + sect_id + "TextAreaDisplay").show();
 					$("#" + sect_id + "TextArea").val(contents);
 					if(sect_id=="newObj"){
-						var obj=JSON.parse(contents);
-						$("#new_title_data").val(obj.metadata.title);
+						try{
+							var obj=JSON.parse(contents);
+							$("#new_title_data").val(obj.metadata.title);
+							}
+						catch(e){
+							$("div.warning").text(e.message);
+							$("div.warning").show();
+						}
 					}
 				};
 			})(f);
@@ -572,6 +582,7 @@ function updateObject(section) {
 	var ajaxUrl;
 	var ajaxSuccess;
 	var ajaxMethod;
+	var formError=false;
 	/*
 	 * console.log("constructing data elements for FedoraObject...");
 	 */var uri = curURI;
@@ -641,11 +652,16 @@ function updateObject(section) {
 		text = $("#newObjTextArea").val();
 		if(text==""){
 			fedoraObject = buildFedoraObject("new", metadata, null, null, null);
-			
 		}else{
-			fedoraObject=JSON.parse(text);
-			fedoraObject.metadata.title = document.getElementById("new_title_data").value;
-			initInputTextFromObject(fedoraObject,"overlay");
+			try{
+				fedoraObject=JSON.parse(text);
+				fedoraObject.metadata.title = document.getElementById("new_title_data").value;
+				//initInputTextFromObject(fedoraObject,"overlay");
+			}catch(e){
+				$("div.warning").text(e.message);
+				$("div.warning").show();
+				formError = true;
+			}
 		}
 		text = JSON.stringify(fedoraObject);
 		break;
@@ -656,11 +672,21 @@ function updateObject(section) {
 		break;
 	}
 	console.log("Data to be sent: " + text);
-	$("div.processing").fadeIn(300);
-	editObj = fedoraObject;
-	console.log(editObj);
-	saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text);
-	curTitle = metadata.title;
+	if(!formError){
+		$("div.processing").fadeIn(300);
+		editObj = fedoraObject;
+		console.log(editObj);
+		try{
+			saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text);
+		}catch(e){
+			$("div.warning").text(e.message);
+			$("div.warning").show();
+		}
+		curTitle = metadata.title;
+		
+	}else {
+		
+	}
 }
 
 function setActiveTab(section) {
@@ -698,6 +724,11 @@ function saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text) {
 						document.getElementById("successResult").innerHTML = ajaxSuccess
 								+ obj.uri;
 						curURI = obj.uri;
+						try{
+							initInputTextFromObject(editObj,"overlay");}
+						catch(e){
+							
+						}
 					}
 					$("#page_title").text(editObj.title);
 					$("#addObj_f").find("ul#tabs li").each(function() {
@@ -705,8 +736,7 @@ function saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text) {
 						$(this).text($(this).text().replace("*", ""));
 					});
 					$("div.processing").fadeOut(200);
-					$("div.success").fadeIn(300).delay(1500).fadeOut(400)
-							.delay(1000);
+					
 					if (curMode == "new") {
 						if (ajaxMethod == "POST") {
 							$("#begin_page").hide();
@@ -714,18 +744,28 @@ function saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text) {
 						} else {
 
 						}
+						
 					} else {
+						$("div.success").fadeIn(300).delay(1500).fadeOut(400)
+						.delay(1000);
 						updateViewObject();
 					}
 
 				},
 				error : function(response) {
 					console.log(response);
-					document.getElementById("successResult").innerHTML = "ERROR";
+					//document.getElementById("successResult").innerHTML = "ERROR";
 					// test code for
 					$("div.processing").fadeOut(200);
-					$("div.faiure").fadeIn(300).delay(1500).fadeOut(400);
-					resetInputText();
+					if (curMode != "new") {
+						$("div.warning").text(response.status+"   "+ response.statusText);
+						$("div.faiure").fadeIn(300).delay(1500).fadeOut(400);
+						
+					}else{
+						$("div.warning").text(response.status+"   "+response.statusText);
+						$("div.warning").show();
+					}
+					//resetInputText();
 
 				}
 			});
@@ -777,6 +817,19 @@ function buildMetaDataTab(mode) {
 			break;
 		}
 	}
+}
+
+function indicateChanges(element){
+	
+				var tabTitle = $(element).parents("#addObj_f")
+						.find("ul#tabs li.active").text();
+				console.log("Actvie Tab Title:" + tabTitle);
+				if (!tabTitle.endsWith("*")) {
+					$(element).parents("#addObj_f").find(
+							"ul#tabs li.active").text(
+							tabTitle + "*");
+				}
+			
 }
 
 function addCitationEntry(cTitle, urllink, elementSuffix) {
@@ -857,6 +910,7 @@ $(document)
 								$("#" + dropfile).show();
 								$("#" + tArea_id + "Display").hide();
 								$("#" + tArea_id).text("");
+								$("div.warning").hide();
 							});
 					$("#engineType").click(function() {
 						if ($(this).hasClass("up")) {
@@ -872,15 +926,14 @@ $(document)
 							function() {
 								updateCount();
 								$("#page_title").text($("#title_data").val());
-								var tabTitle = $(this).parents("#addObj_f")
-										.find("ul#tabs li.active").text();
-								console.log("Actvie Tab Title:" + tabTitle);
-								if (!tabTitle.endsWith("*")) {
-									$(this).parents("#addObj_f").find(
-											"ul#tabs li.active").text(
-											tabTitle + "*");
-								}
+								indicateChanges(this);
 							});
+					$("#newObjTextArea").change(function(){
+						$("div.warning").hide();
+					});
+					$("#new_title_data").change(function(){
+						$("div.warning").hide();
+					});
 					$('[id^="file_"]').change(
 							function() {
 								var tabTitle = $(this).parents("#addObj_f")
@@ -895,6 +948,12 @@ $(document)
 							});
 					$('#description_data').keyup(updateCount);
 					$('#description_data').keydown(updateCount);
+					$('#description_data').change(
+							function() {
+								updateCount();
+								indicateChanges(this);
+							});
+				
 					$("[id$='_data']").each(updateCount);
 
 					var next = 1;

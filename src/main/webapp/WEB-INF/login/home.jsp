@@ -58,9 +58,9 @@
 			<%@ include file="../system/librarySetting.jsp"%>
 		</div>
 	</c:if>
-		<div id="login_overlay" class="layered_overlay" >
+<%-- 		<div id="login_overlay" class="layered_overlay" >
 		<%@ include file="../account/narrowOverlay.jsp"%>
-	</div>
+	</div> --%>
 	
 	<div id="addObject" class="layered_overlay">
 		<%@ include file="../objects/createNewObject.jsp"%>
