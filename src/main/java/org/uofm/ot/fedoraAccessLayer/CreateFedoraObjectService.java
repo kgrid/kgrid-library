@@ -7,10 +7,8 @@ import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Payload;
-import org.uofm.ot.knowledgeObject.PayloadDescriptor;
-import org.uofm.ot.model.ObjectId;
 import org.uofm.ot.model.User;
-import org.uofm.ot.services.ArkID;
+import org.uofm.ot.knowledgeObject.ArkID;
 
 import java.util.Date;
 

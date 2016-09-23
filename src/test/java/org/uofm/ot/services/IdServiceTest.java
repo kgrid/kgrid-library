@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.uofm.ot.knowledgeObject.ArkID;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 
 import static org.junit.Assert.assertEquals;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/ObjectTellerServlet-servlet.xml" })
 public class IdServiceTest {
 
-	private static final String ARKID = IdService.ARKID;
+	private static final String ARKID_STRING = ArkID.FAKE_ARKID().toString();
 
 	private IdService idService;
 	
@@ -39,7 +40,6 @@ public class IdServiceTest {
 
 	}
 
-	
 	@Test
 	public void testMethodDelegation() throws Exception {
 		idService.mint();
@@ -50,31 +50,31 @@ public class IdServiceTest {
 	public void publishKnowledgeObject(){
 
 		FedoraObject ko = new FedoraObject();
-		ko.setURI(ARKID);
+		ko.setURI(ARKID_STRING);
 		idService.publish(ko);
-		verify(ezidService).status(ARKID,IDStatus.PUBLIC);
+		verify(ezidService).status(ARKID_STRING, ArkID.Status.PUBLIC);
 	}
 	
 	@Test
 	public void retractId(){
 		FedoraObject ko = new FedoraObject();
-		ko.setURI(ARKID);
+		ko.setURI(ARKID_STRING);
 		idService.retract(ko);
-		verify(ezidService).status(ARKID,IDStatus.UNAVAILABLE);
+		verify(ezidService).status(ARKID_STRING, ArkID.Status.UNAVAILABLE);
 	}
 
 	@Test
 	public void givenNewKoCanBindNewArkId() throws Exception {
 
-		when(ezidService.mint()).thenReturn(ARKID);
+		when(ezidService.mint()).thenReturn(ARKID_STRING);
 
-		FedoraObject ko = new FedoraObject(new ArkID(ARKID));
+		FedoraObject ko = new FedoraObject(new ArkID(ARKID_STRING));
 
-		idService.bind(ko, "http://dev.umich.edu/"+ARKID);
+		idService.bind(ko, "http://dev.umich.edu/"+ ARKID_STRING);
 
-		assertEquals(ARKID, ko.getURI());
+		assertEquals(ARKID_STRING, ko.getURI());
 
-		verify(ezidService).bind(ARKID, "http://dev.umich.edu/"+ARKID );
+		verify(ezidService).bind(ARKID_STRING, "http://dev.umich.edu/"+ ARKID_STRING);
 
 		}
 }

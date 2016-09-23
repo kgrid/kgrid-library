@@ -1,13 +1,5 @@
 package org.uofm.ot.services;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
+import org.uofm.ot.knowledgeObject.ArkID;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import static org.junit.Assert.*;
 
  
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -87,7 +85,7 @@ public class EzidServiceTest {
 		 String arkId = ezidService.mint(); 	 
 
 		 //Modify
-		 ezidService.status(arkId, IDStatus.PUBLIC);
+		 ezidService.status(arkId, ArkID.Status.PUBLIC);
 
 		 //GET
 		 String modified = ezidService.get(arkId);
@@ -101,10 +99,10 @@ public class EzidServiceTest {
 		 String arkId = ezidService.mint(); 	 
 
 		 //Modify
-		 ezidService.status(arkId, IDStatus.PUBLIC);
+		 ezidService.status(arkId, ArkID.Status.PUBLIC);
 		 
 		 try {
-			 ezidService.status(arkId, IDStatus.RESERVED);	
+			 ezidService.status(arkId, ArkID.Status.RESERVED);
 			 assertTrue(false);
 		 } catch(HttpClientErrorException e){
 			//GET

@@ -1,8 +1,7 @@
 package org.uofm.ot.dao;
 
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.model.ObjectId;
-import org.uofm.ot.services.ArkID;
+import org.uofm.ot.knowledgeObject.ArkID;
 
 public interface ObjectIDDAO {
 	
