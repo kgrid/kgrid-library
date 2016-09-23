@@ -1,71 +1,18 @@
 package org.uofm.ot.fedoraAccessLayer;
 
-import java.util.List;
-
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 import org.uofm.ot.knowledgeObject.Citation;
-import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
+
+import java.util.List;
 
 public class EditFedoraObjectService extends FedoraObjectService {
 
 	public void editObjectMetadata(Metadata metadata,String objectURI) throws ObjectTellerException{
-/*		String data = 
-			FusekiConstants.PREFIX_DC +"\n "+
-			FusekiConstants.PREFIX_OT +"\n "+		
-			"	DELETE \n" +
-			"	{ \n" +  
-			"	  <"+super.baseURI+objectURI+">   dc:title  ?o0. \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:contributors ?o1. \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:description ?o2. \n"+
-			"	  <"+super.baseURI+objectURI+">	  ot:owner ?o3 . \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:keywords ?o4 . \n";
-		
-			if(metadata.getLicense() != null) {
-				data = data + 
-						"	  <"+super.baseURI+objectURI+">	  ot:licenseName ?o5 . \n"+
-						"	  <"+super.baseURI+objectURI+">   ot:licenseLink ?o6 . \n";						
-			}
-			
-		data = data +	
-			"	} \n"+
-			"	INSERT \n"+
-			"	{ \n"+
-			"	  <"+super.baseURI+objectURI+">   dc:title   \""+metadata.getTitle()+"\"  .  \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:contributors  \""+metadata.getContributors()+"\"  .  \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:description   \""+metadata.getDescription()+"\"  . \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:owner    \""+metadata.getOwner()+"\"  .  \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:keywords  \""+metadata.getKeywords()+"\" . \n";
-		
-			if(metadata.getLicense() != null) {
-				data = data + 
-					"	  <"+super.baseURI+objectURI+">	  ot:licenseName \""+metadata.getLicense().getLicenseName()+"\" . \n"+
-					"	  <"+super.baseURI+objectURI+">   ot:licenseLink \""+metadata.getLicense().getLicenseLink()+"\" . \n";						
-			}
-			
-		data = data + 
-			"	} \n"+
-			"	WHERE \n"+
-			"	{ \n"+
-			"	 <"+super.baseURI+objectURI+">   dc:title  ?o0 . \n"+
-			"	 <"+super.baseURI+objectURI+">   ot:contributors ?o1 .\n"+
-			"	 <"+super.baseURI+objectURI+">   ot:description ?o2 .\n"+
-			"	 <"+super.baseURI+objectURI+">	 ot:owner ?o3 .\n"+
-			"	 <"+super.baseURI+objectURI+"> 	 ot:keywords ?o4 . \n";
-			
-			if(metadata.getLicense() != null) {
-				data = data + 
-				"	 OPTIONAL {    <"+super.baseURI+objectURI+">	  ot:licenseName ?o5 . \n"+
-				"	  <"+super.baseURI+objectURI+">   ot:licenseLink ?o6 . \n";						
-			}
-			
-			data = data + 
-			" }	} ";*/
-			 
+
 			String prefixKG = "PREFIX kg: <"+super.baseURI+">";
-			
 			
 			String baseQuery =  "%s { "+"\n "+
 					"kg:"+objectURI+"  dc:title  %s;"+ "\n"+
@@ -101,28 +48,38 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			System.out.println(data);
 		
 		super.sendPatchRequestForUpdatingTriples(data, objectURI,null); 
-	} 
-	
-	public void toggleObject(String objectURI, String param) throws ObjectTellerException {
+	}
 
-		String data = 
-			FusekiConstants.PREFIX_OT +"\n "+		
-			"	DELETE \n" +
-			"	{ \n" +  
-			"	  <"+super.baseURI+objectURI+">   ot:published ?o . \n"+
-			"	} \n"+
-			"	INSERT \n"+
-			"	{ \n"+
-			"	  <"+super.baseURI+objectURI+">   ot:published  \""+param+"\" . \n"+
-			"	} \n"+
-			"	WHERE \n"+
-			"	{  \n"+
-			"	 <"+super.baseURI+objectURI+"> 	 ot:published ?o . \n"+
-			"	} ";
-	
-		super.sendPatchRequestForUpdatingTriples(data, objectURI, null); 
-	} 
-	
+	public void toggleObject(String objectURI, String value) throws ObjectTellerException {
+
+		String query = getGetSingleParamQuery(objectURI, "published", value);
+
+		super.sendPatchRequestForUpdatingTriples(query, objectURI, null);
+	}
+
+	public void updateArkId(String objectURI, String arkId) throws ObjectTellerException {
+
+		String query = getGetSingleParamQuery(objectURI, "arkId", arkId);
+
+		super.sendPatchRequestForUpdatingTriples(query, objectURI, null);
+	}
+
+	private String getGetSingleParamQuery(String objectURI, String param, String value) {
+		return FusekiConstants.PREFIX_OT +"\n "+
+        "	DELETE \n" +
+        "	{ \n" +
+        "	  <"+super.baseURI+objectURI+ ">   ot:" + param + " ?o . \n" +
+        "	} \n"+
+        "	INSERT \n"+
+        "	{ \n"+
+        "	  <"+super.baseURI+objectURI+ ">   ot:" + param + "  \"" +value+"\" . \n"+
+        "	} \n"+
+        "	WHERE \n"+
+        "	{  \n"+
+        "	 <"+super.baseURI+objectURI+ "> 	 ot:" + param + " ?o . \n" +
+        "	} ";
+	}
+
 	public void editPayloadMetadata(Payload payload, String objectURI) throws ObjectTellerException{
 
 		String data = 

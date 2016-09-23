@@ -2,7 +2,7 @@ package org.uofm.ot.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.uofm.ot.knowledgeObject.ArkID;
+import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 
 /**
@@ -26,11 +26,11 @@ public class IdService {
     }    
     
 	public void publish(FedoraObject ko) {
-		ezidService.status(ko.getURI(), ArkID.Status.PUBLIC);
+		ezidService.status(ko.getURI(), ArkId.Status.PUBLIC);
 	}
 	
 	public void retract(FedoraObject ko){
-		ezidService.status(ko.getURI(), ArkID.Status.UNAVAILABLE);
+		ezidService.status(ko.getURI(), ArkId.Status.UNAVAILABLE);
 	}
 	
 	public void resolve (String arkId){

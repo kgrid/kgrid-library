@@ -1,5 +1,7 @@
 package org.uofm.ot.knowledgeObject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class FedoraObject {
 
 	private Metadata metadata ;
@@ -14,12 +16,13 @@ public class FedoraObject {
 	
 	private String logData;
 	
-	private ArkID arkID ;
+	@JsonIgnore
+	private ArkId arkId;
 	
 	
 
-	public FedoraObject(ArkID arkID) {
-		this.arkID = arkID;
+	public FedoraObject(ArkId arkId) {
+		this.arkId = arkId;
 	}
 
 	public FedoraObject(){}
@@ -29,7 +32,8 @@ public class FedoraObject {
     }
 
 	public String getURI() {
-		return URI;
+
+		return arkId.getArkId();
 	}
 
 	public void setURI(String uRI) {
@@ -84,12 +88,12 @@ public class FedoraObject {
 				+ ", outputMessage=" + outputMessage + ", payload=" + payload + ", logData=" + logData + "]";
 	}
 
-	public ArkID getArkID() {
-		return arkID;
+	public ArkId getArkId() {
+		return arkId;
 	}
 
-	public void setArkID(ArkID arkID) {
-		this.arkID = arkID;
+	public void setArkId(ArkId arkId) {
+		this.arkId = arkId;
 	}
 
 

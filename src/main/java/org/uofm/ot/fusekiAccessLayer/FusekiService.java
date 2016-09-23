@@ -1,39 +1,27 @@
 package org.uofm.ot.fusekiAccessLayer;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.log4j.Logger;
+import org.uofm.ot.dao.SystemConfigurationDAO;
+import org.uofm.ot.exception.ObjectTellerException;
+import org.uofm.ot.fedoraAccessLayer.ChildType;
+import org.uofm.ot.knowledgeObject.*;
+import org.uofm.ot.model.Server_details;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.log4j.Logger;
-import org.uofm.ot.dao.SystemConfigurationDAO;
-import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.ChildType;
-import org.uofm.ot.knowledgeObject.Citation;
-import org.uofm.ot.knowledgeObject.FedoraObject;
-import org.uofm.ot.knowledgeObject.License;
-import org.uofm.ot.knowledgeObject.Metadata;
-import org.uofm.ot.knowledgeObject.Payload;
-import org.uofm.ot.knowledgeObject.PayloadDescriptor;
-import org.uofm.ot.model.Server_details;
 
 public class FusekiService {
 	
@@ -225,7 +213,10 @@ public class FusekiService {
 			logger.error("Fuseki Server URL is not configured");
 			ObjectTellerException exception = new ObjectTellerException("Fuseki Server URL is not configured");
 			throw exception;
-		} 
+		}
+
+		fedoraObject.setArkId(new ArkId(objectURI));
+
 		return fedoraObject;
 	
 	} 
@@ -417,6 +408,7 @@ public class FusekiService {
 						subject +" ot:owner ?owner ."+" \n "+
 						subject +" ot:contributors ?contributors ."+" \n "+
 						subject +" ot:description ?description ."+" \n "+
+						kwOpt + "{" + subject +" ot:arkId ?arkId ."+ " } " +" \n "+
 						kwOpt + "{" + subject +" ot:licenseName ?licenseName ."+ " } " +" \n "+
 						kwOpt + "{" + subject +" ot:licenseLink ?licenseLink ."+" } "+" \n "+
     
@@ -430,16 +422,16 @@ public class FusekiService {
 		FedoraObject fedoraObject =null;
 		if(!isSingleObject){
 			String uri = querySolution.get("x").toString();
-			if(uri.length() > fedoraServerURL.length()){
+			if(uri.length() > fedoraServerURL.length()){  // check for some bad triples from misconfiguration
 				if(uri.contains(fedoraServerURL)) {
 					fedoraObject = new FedoraObject();
 					uri = uri.substring(fedoraServerURL.length());
-					fedoraObject.setURI(uri);
+					fedoraObject.setArkId(new ArkId(uri));
 				}
 			} 
 		} else {
 			fedoraObject = new FedoraObject();
-			fedoraObject.setURI(existingUri);
+			fedoraObject.setArkId(new ArkId(existingUri));
 		}
 
 
