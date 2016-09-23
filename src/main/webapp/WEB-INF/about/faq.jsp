@@ -7,11 +7,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />"
 	type="text/css" />
+	<link rel="stylesheet"
+	href="<c:url value="/resources/css/l_overlay.css" />" type="text/css" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/navigation.css" />" 	type="text/css" />
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/infogrid.css" />" 	type="text/css" />
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/datagrid.css" />" type="text/css" />
 
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/button.css" />" type="text/css" />
+	<link rel="stylesheet"
+	href="<c:url value="/resources/css/formstyle.css" />" type="text/css" />
 <link rel="shortcut icon"
 	href="<c:url value="/resources/images/MiniIconObjectTeller.ico" />" />
 <script
@@ -19,6 +27,9 @@
 <script src="<c:url value="/resources/js/info.js"/>"></script>
 <script type="text/javascript"
 	src="<c:url value="/resources/js/dropdown.js"/>"></script>
+		<script src="<c:url value="/resources/js/jquery-ui.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery.validate.js"/>"></script>
+<script src="<c:url value="/resources/js/multi_step_form.js"/>"></script>
 <script>
 	$(document)
 			.ready(

@@ -51,13 +51,6 @@
     display: none;
 }
 
-.warning {
-    color: #8a6d3b;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
-    display: none;
-}
-
 .noscroll { overflow: hidden; }
 
 [aria-hidden="true"] { display: none; }

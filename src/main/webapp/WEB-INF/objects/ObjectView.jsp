@@ -123,9 +123,9 @@
 	<button class="greenroundbutton" id="backtotop">
 		<img src="<c:url value="/resources/images/Chevron_Icon.png"/>">
 	</button>
-	<div id="login_overlay" class="layered_overlay" >
+<%-- 	<div id="login_overlay" class="layered_overlay" >
 		<%@ include file="../account/narrowOverlay.jsp"%>
-	</div>
+	</div> --%>
 	<div id="addObject" class="layered_overlay">
 		<%@ include file="../objects/createNewObject.jsp"%>
 	</div>
