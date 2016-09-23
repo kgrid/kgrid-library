@@ -1,7 +1,5 @@
 package org.uofm.ot.knowledgeObject;
 
-import org.uofm.ot.services.ArkID;
-
 public class FedoraObject {
 
 	private Metadata metadata ;
