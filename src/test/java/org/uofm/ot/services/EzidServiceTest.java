@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
-import org.uofm.ot.knowledgeObject.ArkID;
+import org.uofm.ot.knowledgeObject.ArkId;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -85,7 +85,7 @@ public class EzidServiceTest {
 		 String arkId = ezidService.mint(); 	 
 
 		 //Modify
-		 ezidService.status(arkId, ArkID.Status.PUBLIC);
+		 ezidService.status(arkId, ArkId.Status.PUBLIC);
 
 		 //GET
 		 String modified = ezidService.get(arkId);
@@ -99,10 +99,10 @@ public class EzidServiceTest {
 		 String arkId = ezidService.mint(); 	 
 
 		 //Modify
-		 ezidService.status(arkId, ArkID.Status.PUBLIC);
+		 ezidService.status(arkId, ArkId.Status.PUBLIC);
 		 
 		 try {
-			 ezidService.status(arkId, ArkID.Status.RESERVED);
+			 ezidService.status(arkId, ArkId.Status.RESERVED);
 			 assertTrue(false);
 		 } catch(HttpClientErrorException e){
 			//GET

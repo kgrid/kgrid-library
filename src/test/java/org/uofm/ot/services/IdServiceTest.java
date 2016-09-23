@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.uofm.ot.knowledgeObject.ArkID;
+import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 
 import static org.junit.Assert.assertEquals;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/ObjectTellerServlet-servlet.xml" })
 public class IdServiceTest {
 
-	private static final String ARKID_STRING = ArkID.FAKE_ARKID().toString();
+	private static final String ARKID_STRING = ArkId.FAKE_ARKID().toString();
 
 	private IdService idService;
 	
@@ -50,17 +50,17 @@ public class IdServiceTest {
 	public void publishKnowledgeObject(){
 
 		FedoraObject ko = new FedoraObject();
-		ko.setURI(ARKID_STRING);
+		ko.setArkId(ArkId.FAKE_ARKID());
 		idService.publish(ko);
-		verify(ezidService).status(ARKID_STRING, ArkID.Status.PUBLIC);
+		verify(ezidService).status(ARKID_STRING, ArkId.Status.PUBLIC);
 	}
 	
 	@Test
 	public void retractId(){
 		FedoraObject ko = new FedoraObject();
-		ko.setURI(ARKID_STRING);
+		ko.setArkId(ArkId.FAKE_ARKID());
 		idService.retract(ko);
-		verify(ezidService).status(ARKID_STRING, ArkID.Status.UNAVAILABLE);
+		verify(ezidService).status(ARKID_STRING, ArkId.Status.UNAVAILABLE);
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class IdServiceTest {
 
 		when(ezidService.mint()).thenReturn(ARKID_STRING);
 
-		FedoraObject ko = new FedoraObject(new ArkID(ARKID_STRING));
+		FedoraObject ko = new FedoraObject(new ArkId(ARKID_STRING));
 
 		idService.bind(ko, "http://dev.umich.edu/"+ ARKID_STRING);
 

@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.uofm.ot.dao.ObjectIDDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.model.ObjectId;
-import org.uofm.ot.knowledgeObject.ArkID;
+import org.uofm.ot.knowledgeObject.ArkId;
 
 public class ObjectIDDAOImpl implements ObjectIDDAO {
 	
@@ -31,10 +31,10 @@ public class ObjectIDDAOImpl implements ObjectIDDAO {
 
 
 	@Override
-	public ArkID retrieveNewId() throws ObjectTellerException {
+	public ArkId retrieveNewId() throws ObjectTellerException {
 		try {
 			ObjectId objectId = jdbcTemplate.queryForObject(CHECK_ID,new BeanPropertyRowMapper<>(ObjectId.class));		
-			return new ArkID(ID_PREFIX+ objectId.getNewObjectId());
+			return new ArkId(ID_PREFIX+ objectId.getNewObjectId());
 		}  catch( EmptyResultDataAccessException e) {
 			return null;
 		}

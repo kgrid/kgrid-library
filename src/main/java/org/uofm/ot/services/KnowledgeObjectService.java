@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.*;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
-import org.uofm.ot.knowledgeObject.Citation;
-import org.uofm.ot.knowledgeObject.FedoraObject;
-import org.uofm.ot.knowledgeObject.Metadata;
-import org.uofm.ot.knowledgeObject.Payload;
+import org.uofm.ot.knowledgeObject.*;
 import org.uofm.ot.model.User;
 
 import java.util.ArrayList;
@@ -86,12 +83,14 @@ public class KnowledgeObjectService {
 	}
 	
 	public Metadata addOrEditMetadata(String uri, Metadata newMetadata) throws ObjectTellerException {
-	
-		List<Citation> oldCitations = fusekiService.getObjectCitations(uri);
-		
+
 		editFedoraObjectService.editObjectMetadata(newMetadata,uri);
-		
-		
+		editFedoraObjectService.toggleObject(uri, newMetadata.isPublished() ? "yes" : "no");
+		editFedoraObjectService.updateArkId(uri, new ArkId(uri).getArkId());
+
+
+		List<Citation> oldCitations = fusekiService.getObjectCitations(uri);
+
 		if(newMetadata != null && newMetadata.getCitations() != null) {
 			List<Citation> editCitations = new ArrayList<Citation>();
 
@@ -175,5 +174,10 @@ public class KnowledgeObjectService {
 	public void editPayload(String objectURI,Payload payload) throws ObjectTellerException {
 		editFedoraObjectService.putBinary( payload.getContent(), objectURI, ChildType.PAYLOAD.getChildType(),null);
 		editFedoraObjectService.editPayloadMetadata(payload,objectURI);
+	}
+
+	public void addOrEditArkid(ArkId arkId) {
+
+
 	}
 }

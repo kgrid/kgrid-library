@@ -1,10 +1,10 @@
 package org.uofm.ot.knowledgeObject;
 
-public class ArkID {
+public class ArkId {
 
     private String arkId;
 
-	public ArkID(String string) {
+	public ArkId(String string) {
 		this.arkId = string;
 	}
 
@@ -20,8 +20,8 @@ public class ArkID {
     // Fake/sample Ids (for Testing)
     static final String FAKE_ARKID = "ark:/99999/12345";
 
-	public static ArkID FAKE_ARKID() {
-        return new ArkID(FAKE_ARKID);
+	public static ArkId FAKE_ARKID() {
+        return new ArkId(FAKE_ARKID);
     }
 
     // Status flags for setting state in external services

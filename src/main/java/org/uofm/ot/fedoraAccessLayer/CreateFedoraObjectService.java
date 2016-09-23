@@ -8,7 +8,7 @@ import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.User;
-import org.uofm.ot.knowledgeObject.ArkID;
+import org.uofm.ot.knowledgeObject.ArkId;
 
 import java.util.Date;
 
@@ -33,10 +33,11 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 		String errorMessage = null; 
 		if(baseURI!= null){
 
-			ArkID arkID = objectIDDAO.retrieveNewId();
-			
-			
-			String uri = arkID.getArkId();
+			ArkId arkId = objectIDDAO.retrieveNewId();
+
+			fedoraObject.setArkId(arkId);
+
+			String uri = fedoraObject.getURI();
 
 			if(uri != null ) {
 
@@ -48,7 +49,6 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				createContainer(uri+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType() , transactionId);
 				addProvMetadataStart(uri,loggedInUser,transactionId);
 				
-				fedoraObject.setArkID(arkID);
 
 				addHEMetadataProperties(fedoraObject, uri, transactionId);
 				
@@ -74,10 +74,6 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				addPayloadMetadataProperties(fedoraObject.getPayload(), uri, transactionId);
 
 				addProvMetadataEnd(uri, transactionId);
-				
-				fedoraObject.setURI(uri);
-				
-				
 				
 				logger.info("Successfully created object "+fedoraObject);
 				
@@ -190,7 +186,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 					" dc:title \""+fedoraObject.getMetadata().getTitle()+"\" ; \n"+
 					" ot:keywords  \""+keywords+"\" ; \n"+ 
 					" rdf:type "+FusekiConstants.OT_TYPE_KNOWLEDGE_OBJECT+" ; \n"+
-					" ot:arkID \""+fedoraObject.getArkID().getArkId()+"\" ; \n"+
+					" ot:arkId \""+fedoraObject.getArkId().getArkId()+"\" ; \n"+
 					" ot:published  \"no\" ; \n";
 
 			if(fedoraObject.getMetadata().getLicense() != null) {
