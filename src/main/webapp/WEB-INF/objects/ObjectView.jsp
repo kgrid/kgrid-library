@@ -117,7 +117,6 @@
 	src="<c:url value="/resources/js/dropdown.js"/>"></script>
 <script src="<c:url value="/resources/js/scroll.js"/>"></script>
 <script src="<c:url value="/resources/js/tabs.js"/>"></script>
-<script src="<c:url value="/resources/js/custom-file-input.js"/>"></script>
 <title><c:out value="${fedoraObject.metadata.title}" /></title>
 </head>
 <body>

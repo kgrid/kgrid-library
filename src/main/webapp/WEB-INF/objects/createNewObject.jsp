@@ -10,7 +10,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Add Object</title>
 </head>
-</head>
 <body>
 	<div class="ol_pane">
 		<div class="sidebar_close">
@@ -29,7 +28,31 @@
 					<input type="text" maxlength="140" class="metaEdit inEdit"
 						id="new_title_data" path="metadata.title"
 						value="${fedoraObject.metadata.title}" /> <span>140/140</span>
+						<h4> - Or - </h4>
 				</div>
+				<div id="newObjDropFile" class="dropfile">
+									<div class="upload-direction">
+										<input type="file" name="file" id="file_newObj"
+											class="inputfile"
+											data-multiple-caption="{count} files selected" multiple
+											style="display: none;" /> <label for="file_newObj"
+											id="filecount"> <img
+											src="<c:url value="/resources/images/Upload_Icon.png" />">
+											<br>
+											<p class="green">
+												<label for="file_newObj"><span><spring:message
+															code="CHOOSE_FILE" /></label>
+											</p> <br>
+											</label>
+									</div>
+									</div>
+								<div class="display-newObj" id="newObjTextAreaDisplay">
+									<button id="newObjClearBtn">
+										<spring:message code="REMOVE_BTN" />
+									</button>
+									<textarea id="newObjTextArea"></textarea>
+								</div>
+				
 				<div id="EditWrapper"><input id="addObjButton" type="button" onclick="updateObject('new')"
 					value="Create Object"></div>
 			</div>
