@@ -33,8 +33,13 @@ public class ObjectIDDAOImpl implements ObjectIDDAO {
 	@Override
 	public ArkId retrieveNewId() throws ObjectTellerException {
 		try {
-			ObjectId objectId = jdbcTemplate.queryForObject(CHECK_ID,new BeanPropertyRowMapper<>(ObjectId.class));		
-			return new ArkId(ID_PREFIX+ objectId.getNewObjectId());
+			ObjectId objectId = jdbcTemplate.queryForObject(CHECK_ID,new BeanPropertyRowMapper<>(ObjectId.class));
+			String name = ID_PREFIX + objectId.getNewObjectId();
+			ArkId arkId = new ArkId();
+			arkId.setNaan("99999");
+			arkId.setName(name);
+
+			return arkId;
 		}  catch( EmptyResultDataAccessException e) {
 			return null;
 		}

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.*;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
+import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.model.User;
 import org.uofm.ot.services.KnowledgeObjectService;
@@ -61,8 +62,13 @@ public class ObjectController {
 	}
 
 
-	@RequestMapping(value = "/object.{objectURI}", method = RequestMethod.GET)
-	public String getObject( @PathVariable String objectURI, ModelMap model, FedoraObject fedoraObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
+	@RequestMapping(value = "/object/ark:/{naan}/{name}", method = RequestMethod.GET)
+	public String getObjectForArkId(ArkId arkId, ModelMap model, FedoraObject fedoraObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
+		return getObject(arkId.getArkId(), model, fedoraObject, loggedInUser);
+	}
+
+		@RequestMapping(value = "/object/{objectURI}", method = RequestMethod.GET)
+		public String getObject( @PathVariable String objectURI, ModelMap model, FedoraObject fedoraObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
 		String view = "objects/ObjectView";
 		try {
 			if(validateAccessToPrivateObject(objectURI, loggedInUser)) {
@@ -104,12 +110,15 @@ public class ObjectController {
 	}
 
 	private void getObject(String objectURI,ModelMap model) throws ObjectTellerException {
+
+
 		
-		FedoraObject object = objectService.getCompleteKnowledgeObject(objectURI);
+		FedoraObject object = objectService.getCompleteKnowledgeObject(new ArkId(objectURI));
 		model.addAttribute("fedoraObject",object);
 
 		String logData = object.getLogData();
-		model.addAttribute("processedLogData",addEscapeCharsInXML(logData));
+//		model.addAttribute("processedLogData",addEscapeCharsInXML(logData));
+		model.addAttribute("processedLogData",logData);
 
 	}
 
@@ -206,7 +215,7 @@ public class ObjectController {
 	
 	private boolean validateAccessToPrivateObject(String objectURI,User loggedInUser) throws ObjectTellerException{
 
-		FedoraObject object = fusekiService.getKnowledgeObject(objectURI);
+		FedoraObject object = fusekiService.getKnowledgeObject(new ArkId(objectURI));
 		
 		if(!object.getMetadata().isPublished() && loggedInUser == null)
 			return false;

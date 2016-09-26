@@ -4,17 +4,34 @@ public class ArkId {
 
     private String arkId;
 
-	public ArkId(String string) {
-		this.arkId = string;
+    private String naan;
+
+    private String name;
+
+    public ArkId() {}
+
+	public ArkId(String id_value) {
+
+        if (id_value.contains("ark:/")) {
+            this.arkId = id_value; // full id
+            String[] path = id_value.substring("ark:/".length()).split("/");
+            naan = path[0];
+            name = path[1];
+        } else {
+            this.arkId = this.name = id_value; // old-style id, e.g. "OT42"
+        }
 	}
 
 	public String getArkId() {
-		return arkId;
+
+        if (arkId == null )
+            this.arkId = String.format("ark:/%s", getPathOnly());
+        return arkId;
 	}
 
 	@Override
     public String toString() {
-        return this.arkId;
+        return getArkId();
     }
 
     // Fake/sample Ids (for Testing)
@@ -22,6 +39,23 @@ public class ArkId {
 
 	public static ArkId FAKE_ARKID() {
         return new ArkId(FAKE_ARKID);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNaan(String naan) {
+        this.naan = naan;
+    }
+
+    public String getPathOnly() {
+
+        if (naan == null) {
+            return name;
+        } else {
+            return naan + "/" + name;
+        }
     }
 
     // Status flags for setting state in external services

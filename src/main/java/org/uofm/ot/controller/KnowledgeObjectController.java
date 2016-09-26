@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.uofm.ot.exception.ObjectTellerException;
+import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
@@ -61,30 +62,39 @@ public class KnowledgeObjectController {
 	public List<FedoraObject> geKnowledgeObjects() throws ObjectTellerException {
 		return knowledgeObjectService.getKnowledgeObjects(false);
 	}
-	
-	@RequestMapping(value="/knowledgeObject/{objectURI}",
-			method=RequestMethod.GET , 
+
+	@RequestMapping(value="/knowledgeObject/{name}",
+			method=RequestMethod.GET ,
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<FedoraObject> getKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
+	public ResponseEntity<FedoraObject> getKnowledgeObject(ArkId arkId) throws ObjectTellerException  {
 		ResponseEntity<FedoraObject> entity = null;
-		
-		FedoraObject fedoraObject =  knowledgeObjectService.getKnowledgeObject(objectURI);
-		
+
+		FedoraObject fedoraObject =  knowledgeObjectService.getKnowledgeObject(arkId);
+
 		if(fedoraObject != null){
-			entity = new ResponseEntity<FedoraObject>(fedoraObject,HttpStatus.OK);			
+			entity = new ResponseEntity<FedoraObject>(fedoraObject,HttpStatus.OK);
 		} else {
 			entity = new ResponseEntity<FedoraObject>(fedoraObject,HttpStatus.NOT_FOUND);
 		}
-		
-		return entity ; 
+
+		return entity ;
 	}
-	
-	
-	@RequestMapping(value="/knowledgeObject/{objectURI}/complete", 
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}",
+			method=RequestMethod.GET ,
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<FedoraObject> getKnowledgeObjectForArkId(ArkId arkId) throws ObjectTellerException  {
+
+		return getKnowledgeObject(arkId) ;
+	}
+
+
+	@RequestMapping(value="/knowledgeObject/{objectURI}/complete",
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public FedoraObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
-		return knowledgeObjectService.getCompleteKnowledgeObject(objectURI);
+		ArkId arkId = new ArkId(objectURI);
+		arkId.setName(objectURI);
+		return knowledgeObjectService.getCompleteKnowledgeObject(arkId);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}", 
@@ -92,7 +102,9 @@ public class KnowledgeObjectController {
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public FedoraObject updateKnowledgeObject(@RequestBody FedoraObject knowledgeObject,@PathVariable String objectURI) throws ObjectTellerException {
-		return knowledgeObjectService.editObject(knowledgeObject,objectURI);
+		ArkId arkId = new ArkId(objectURI);
+		arkId.setName(objectURI);
+		return knowledgeObjectService.editObject(knowledgeObject,arkId);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}", 
@@ -116,7 +128,9 @@ public class KnowledgeObjectController {
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public Metadata getMetadata( @PathVariable String objectURI) throws ObjectTellerException {
-		return knowledgeObjectService.getKnowledgeObject(objectURI).getMetadata();
+		ArkId arkId = new ArkId();
+		arkId.setName(objectURI);
+		return knowledgeObjectService.getKnowledgeObject(arkId).getMetadata();
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/payload", 
@@ -177,7 +191,9 @@ public class KnowledgeObjectController {
 			consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void updateMetadata(@RequestBody Metadata metadata , @PathVariable String objectURI) throws ObjectTellerException {
-		 knowledgeObjectService.addOrEditMetadata(objectURI, metadata);
+		ArkId arkId = new ArkId(objectURI);
+		arkId.setName(objectURI);
+		 knowledgeObjectService.addOrEditMetadata(arkId, metadata);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage", 

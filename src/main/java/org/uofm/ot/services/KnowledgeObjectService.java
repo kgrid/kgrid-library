@@ -30,22 +30,24 @@ public class KnowledgeObjectService {
 	@Autowired
 	private CreateFedoraObjectService createFedoraObjectService;
 	
-	public FedoraObject getKnowledgeObject(String uri) throws ObjectTellerException {
+	public FedoraObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException {
 
-		FedoraObject object = fusekiService.getKnowledgeObject(uri);
+		FedoraObject object = fusekiService.getKnowledgeObject(arkId);
 		if(object != null) {
-			List<Citation> citations = fusekiService.getObjectCitations(uri);	
+			List<Citation> citations = fusekiService.getObjectCitations(arkId);
 			object.getMetadata().setCitations(citations);
 		}
 		return object;
 	}
 	
-	public FedoraObject editObject(FedoraObject newObject,String objectURI) throws ObjectTellerException {
-		addOrEditMetadata(objectURI, newObject.getMetadata());
+	public FedoraObject editObject(FedoraObject newObject, ArkId arkId) throws ObjectTellerException {
+
+        String objectURI = arkId.getPathOnly();
+		addOrEditMetadata(arkId, newObject.getMetadata());
 		editPayload(objectURI, newObject.getPayload());
 		editInputMessageContent(objectURI, newObject.getInputMessage());
 		editOutputMessageContent(objectURI, newObject.getOutputMessage());
-		FedoraObject updatedObject = getCompleteKnowledgeObject(objectURI);
+		FedoraObject updatedObject = getCompleteKnowledgeObject(arkId);
 		return updatedObject ; 
 	}
 	
@@ -63,9 +65,11 @@ public class KnowledgeObjectService {
 		return fusekiService.getNumberOfPublishedObjects();
 	}
 	
-	public FedoraObject getCompleteKnowledgeObject(String uri) throws ObjectTellerException {
+	public FedoraObject getCompleteKnowledgeObject(ArkId arkId) throws ObjectTellerException {
+
+        String uri = arkId.getPathOnly();
 		
-		FedoraObject object = getKnowledgeObject(uri);	
+		FedoraObject object = getKnowledgeObject(arkId);
 		
 		Payload payload = fusekiService.getPayloadProperties(uri);
 		
@@ -82,14 +86,16 @@ public class KnowledgeObjectService {
 		return object;
 	}
 	
-	public Metadata addOrEditMetadata(String uri, Metadata newMetadata) throws ObjectTellerException {
+	public Metadata addOrEditMetadata(ArkId arkId, Metadata newMetadata) throws ObjectTellerException {
+
+        String uri = arkId.getPathOnly();
 
 		editFedoraObjectService.editObjectMetadata(newMetadata,uri);
 		editFedoraObjectService.toggleObject(uri, newMetadata.isPublished() ? "yes" : "no");
 		editFedoraObjectService.updateArkId(uri, new ArkId(uri).getArkId());
 
 
-		List<Citation> oldCitations = fusekiService.getObjectCitations(uri);
+		List<Citation> oldCitations = fusekiService.getObjectCitations(arkId);
 
 		if(newMetadata != null && newMetadata.getCitations() != null) {
 			List<Citation> editCitations = new ArrayList<Citation>();
@@ -130,7 +136,7 @@ public class KnowledgeObjectService {
 			}		
 		}
 		
-		return getKnowledgeObject(uri).getMetadata() ;
+		return getKnowledgeObject(arkId).getMetadata() ;
 	}
 	
 	public FedoraObject createKnowledgeObject(FedoraObject fedoraObject, User loggedInUser) throws ObjectTellerException {

@@ -1,37 +1,23 @@
 package org.uofm.ot.controller;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import org.springframework.web.bind.annotation.RestController;
+import com.google.gson.Gson;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.uofm.ot.adapter.OWLAdapter;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
-import org.uofm.ot.fedoraAccessLayer.FedoraObjectService;
 import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
+import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Payload;
-import org.uofm.ot.knowledgeObject.PayloadDescriptor;
 import org.uofm.ot.pythonAdapter.PythonAdapter;
-import org.uofm.ot.transferobjects.InputObject;
-import org.uofm.ot.transferobjects.Result;
+import org.uofm.ot.transferobjects.*;
 
-import org.uofm.ot.transferobjects.ParamDescription;
-import org.uofm.ot.transferobjects.CodeMetadata;
-import org.uofm.ot.transferobjects.DataType;
-import org.uofm.ot.transferobjects.EngineType;
-
-import com.google.gson.Gson;
-import com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.Adapter;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import java.util.ArrayList;
+import java.util.Map;
 
 
 
@@ -97,7 +83,7 @@ public class RestWSController {
 			objectExists= getFedoraObjectService.checkIfObjectExists(io.getObjectName());
 			if ( objectExists ) {
 
-				FedoraObject object = fusekiService.getKnowledgeObject(io.getObjectName());
+				FedoraObject object = fusekiService.getKnowledgeObject(new ArkId(io.getObjectName()));
 				title = object.getMetadata().getTitle();
 
 				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(io.getObjectName());
