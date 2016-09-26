@@ -189,7 +189,7 @@
 							<td>
 								<div class="backrow clickable" id="${fedoraObject.URI}">
 									<!-- <a href="#"> -->
-									<a href="object.${fedoraObject.URI}">
+									<a href="object/${fedoraObject.URI}">
 										<ul>
 											<li class="col-data col-type"><c:choose>
 													<c:when test="${not fedoraObject.metadata.published}">

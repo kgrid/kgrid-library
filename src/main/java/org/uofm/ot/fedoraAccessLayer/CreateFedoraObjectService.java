@@ -35,9 +35,10 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 
 			ArkId arkId = objectIDDAO.retrieveNewId();
 
+
 			fedoraObject.setArkId(arkId);
 
-			String uri = fedoraObject.getURI();
+			String uri = fedoraObject.getArkId().getPathOnly();
 
 			if(uri != null ) {
 
