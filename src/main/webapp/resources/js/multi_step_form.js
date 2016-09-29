@@ -89,7 +89,6 @@ function deleteObject(uri) {
 	if (uri == "") {
 		uri = curURI;
 	}
-	alert(uri);
 	if (uri != "") {
 		var r = confirm("Do you really want to delete the object ? ");
 		if (r == true) {
