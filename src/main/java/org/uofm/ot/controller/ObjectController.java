@@ -126,7 +126,7 @@ public class ObjectController {
 			return null;
 	}
 
-	@RequestMapping(value="/editPayload", method=RequestMethod.POST)
+/*	@RequestMapping(value="/editPayload", method=RequestMethod.POST)
 	public String editPayload(ModelMap model, FedoraObject fedoraObject, @ModelAttribute("loggedInUser") User loggedInUser) {
 		if(validateUser(loggedInUser)) {
 			try {
@@ -201,7 +201,7 @@ public class ObjectController {
 		}
 
 		return "objects/ObjectView";
-	}
+	}*/
 
 	private boolean validateUser(User loggedInUser) {
 		return loggedInUser != null;
@@ -236,7 +236,7 @@ public class ObjectController {
 		return resultEntity ; 
 	}*/
 	
-	@RequestMapping(value="/deleteObject.{objectURI}", method=RequestMethod.DELETE)
+/*	@RequestMapping(value="/deleteObject.{objectURI}", method=RequestMethod.DELETE)
 	public ResponseEntity<String> deleteObject( @PathVariable String objectURI,   @ModelAttribute("loggedInUser") User loggedInUser ) {
 		ResponseEntity<String> resultEntity = null; 
 		
@@ -253,5 +253,5 @@ public class ObjectController {
 			resultEntity = new ResponseEntity<String>( "Please login to edit knowledge object", HttpStatus.UNAUTHORIZED) ;
 		}	
 		return resultEntity ; 
-	}
+	}*/
 }
