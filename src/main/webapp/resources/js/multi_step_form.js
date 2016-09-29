@@ -594,7 +594,7 @@ function updateObject(section) {
 		metadata.title = document.getElementById("new_title_data").value;
 	} else {
 		ajaxMethod = "PUT";
-		ajaxUrl = "../"+urlPrefix + "/" + uri;
+		ajaxUrl = "/ObjectTeller/knowledgeObject/" + uri;
 		if (section != "") {
 			ajaxUrl = ajaxUrl + "/" + section;
 		}
