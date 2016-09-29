@@ -112,8 +112,6 @@
     <bean id="objectController" class="org.uofm.ot.controller.ObjectController">
         <property name="editFedoraObjectService" ref="editfedoraObjectService"/>
         <property name="fusekiService" ref="fusekiService"/>
-        <property name="createFedoraObjectService" ref="createfedoraObjectService"/>
-        <property name="getFedoraObjectService" ref="getfedoraObjectService"/>
         <property name="deleteFedoraResourceService" ref="deleteFedoraResourceService"/>
     </bean>
     

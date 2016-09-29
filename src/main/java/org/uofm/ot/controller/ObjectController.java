@@ -25,9 +25,7 @@ public class ObjectController {
 
 	private FusekiService fusekiService;
 
-	private CreateFedoraObjectService createFedoraObjectService;
-
-	private GetFedoraObjectService getFedoraObjectService;
+	
 	
 	private DeleteFedoraResourceService deleteFedoraResourceService;
 	
@@ -42,9 +40,7 @@ public class ObjectController {
 	}
 
 
-	public void setGetFedoraObjectService(GetFedoraObjectService getFedoraObjectService) {
-		this.getFedoraObjectService = getFedoraObjectService;
-	}
+	
 
 
 	public void setFusekiService(FusekiService fusekiService) {
@@ -52,9 +48,7 @@ public class ObjectController {
 	}
 
 
-	public void setCreateFedoraObjectService(CreateFedoraObjectService createFedoraObjectService) {
-		this.createFedoraObjectService = createFedoraObjectService;
-	}
+
 
 
 	public void setDeleteFedoraResourceService(DeleteFedoraResourceService deleteFedoraResourceService) {
@@ -223,7 +217,7 @@ public class ObjectController {
 			return true;
 	}
 	
-	@RequestMapping(value="/deleteCitation/{objectURI}/{partA}/{partB}/{partC}/{partD}/{partE}", method=RequestMethod.DELETE)
+	/*@RequestMapping(value="/deleteCitation/{objectURI}/{partA}/{partB}/{partC}/{partD}/{partE}", method=RequestMethod.DELETE)
 	public ResponseEntity<String> deleteCitation( @PathVariable String objectURI, @PathVariable String partA ,  @PathVariable String partB ,   @PathVariable String partC , @PathVariable String partD ,@PathVariable String partE,  @ModelAttribute("loggedInUser") User loggedInUser ) {
 		ResponseEntity<String> resultEntity = null; 
 		
@@ -240,7 +234,7 @@ public class ObjectController {
 			resultEntity = new ResponseEntity<String>( "Please login to edit knowledge object", HttpStatus.UNAUTHORIZED) ;
 		}	
 		return resultEntity ; 
-	}
+	}*/
 	
 	@RequestMapping(value="/deleteObject.{objectURI}", method=RequestMethod.DELETE)
 	public ResponseEntity<String> deleteObject( @PathVariable String objectURI,   @ModelAttribute("loggedInUser") User loggedInUser ) {
@@ -249,7 +243,7 @@ public class ObjectController {
 		
 		if(validateUser(loggedInUser)) {
 			try {
-				deleteFedoraResourceService.deleteObject(objectURI);
+				deleteFedoraResourceService.deleteObject(new ArkId(objectURI));
 				resultEntity =  new ResponseEntity<String>( HttpStatus.OK) ;
 			} catch (ObjectTellerException e) {
 				logger.error("An exception occured while deleting Object with Object ID "+objectURI+ ". Caused by "+e.getMessage());

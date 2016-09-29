@@ -42,7 +42,7 @@ public class KnowledgeObjectService {
 	
 	public FedoraObject editObject(FedoraObject newObject, ArkId arkId) throws ObjectTellerException {
 
-        String objectURI = arkId.getPathOnly();
+        String objectURI = arkId.getFedoraPath();
 		addOrEditMetadata(arkId, newObject.getMetadata());
 		editPayload(objectURI, newObject.getPayload());
 		editInputMessageContent(objectURI, newObject.getInputMessage());
@@ -51,8 +51,8 @@ public class KnowledgeObjectService {
 		return updatedObject ; 
 	}
 	
-	public void deleteObject(String uri) throws ObjectTellerException {
-		deleteFedoraResourceService.deleteObject(uri);
+	public void deleteObject(ArkId arkId) throws ObjectTellerException {
+		deleteFedoraResourceService.deleteObject(arkId);
 	}
 	
 	public List<FedoraObject> getKnowledgeObjects(boolean published) throws ObjectTellerException {
@@ -67,7 +67,7 @@ public class KnowledgeObjectService {
 	
 	public FedoraObject getCompleteKnowledgeObject(ArkId arkId) throws ObjectTellerException {
 
-        String uri = arkId.getPathOnly();
+        String uri = arkId.getFedoraPath();
 		
 		FedoraObject object = getKnowledgeObject(arkId);
 		
@@ -88,7 +88,7 @@ public class KnowledgeObjectService {
 	
 	public Metadata addOrEditMetadata(ArkId arkId, Metadata newMetadata) throws ObjectTellerException {
 
-        String uri = arkId.getPathOnly();
+        String uri = arkId.getFedoraPath();
 
 		editFedoraObjectService.editObjectMetadata(newMetadata,uri);
 		editFedoraObjectService.toggleObject(uri, newMetadata.isPublished() ? "yes" : "no");

@@ -11,11 +11,9 @@ import java.util.List;
 public class EditFedoraObjectService extends FedoraObjectService {
 
 	public void editObjectMetadata(Metadata metadata,String objectURI) throws ObjectTellerException{
-
-			String prefixKG = "PREFIX kg: <"+super.baseURI+">";
 			
 			String baseQuery =  "%s { "+"\n "+
-					"kg:"+objectURI+"  dc:title  %s;"+ "\n"+
+					"<"+super.baseURI+objectURI+">  dc:title  %s;"+ "\n"+
 			   "ot:contributors %s; "+ " \n"+
 			   "ot:description %s; "+ " \n"+
 			   "ot:owner %s; "+ " \n"+
@@ -38,11 +36,11 @@ public class EditFedoraObjectService extends FedoraObjectService {
 			String insertClause = String.format(baseQuery, new Object [] {"INSERT",quote(metadata.getTitle()),quote(metadata.getContributors()),quote(metadata.getDescription()),
 					quote(metadata.getOwner()),quote(metadata.getKeywords()),"",quote(licenseName),quote(licenseLink),""});
 			
-			String whereClause = String.format(baseQuery, new Object [] {"WHERE","?o0","?o1","?o2","?o3","?o4","OPTIONAL { kg:"+objectURI,"?o5","?o6","}"});
+			String whereClause = String.format(baseQuery, new Object [] {"WHERE","?o0","?o1","?o2","?o3","?o4","OPTIONAL { <"+super.baseURI+objectURI+">","?o5","?o6","}"});
 			
 			String data = FusekiConstants.PREFIX_DC +"\n "+
 					FusekiConstants.PREFIX_OT +"\n "
-					+ prefixKG+ "\n "+ deleteClause + insertClause + whereClause;
+					+ deleteClause + insertClause + whereClause;
 					
 			
 			System.out.println(data);
