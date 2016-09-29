@@ -25,7 +25,7 @@ public class ArkId {
 	public String getArkId() {
 
         if (arkId == null )
-            this.arkId = String.format("ark:/%s", getPathOnly());
+            this.arkId = String.format("ark:/%s", naan+"/"+name);
         return arkId;
 	}
 
@@ -49,12 +49,12 @@ public class ArkId {
         this.naan = naan;
     }
 
-    public String getPathOnly() {
+    public String getFedoraPath() {
 
         if (naan == null) {
             return name;
         } else {
-            return naan + "/" + name;
+            return naan + "-" + name;
         }
     }
 

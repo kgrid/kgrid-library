@@ -197,7 +197,7 @@ public class FusekiService {
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
-				String uri = fedoraServerURL+ arkId.getPathOnly();
+				String uri = fedoraServerURL+ arkId.getFedoraPath();
 			
 				String queryString = initQuery(true, uri, false);
 
@@ -321,7 +321,7 @@ public class FusekiService {
 
 	public List<Citation> getObjectCitations(ArkId arkId) throws ObjectTellerException {
 		ArrayList<Citation> citations = new ArrayList<Citation>();
-		String uri = fedoraServerURL+ arkId.getPathOnly() +"/"+ChildType.CITATIONS.getChildType();
+		String uri = fedoraServerURL+ arkId.getFedoraPath() +"/"+ChildType.CITATIONS.getChildType();
 		
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {

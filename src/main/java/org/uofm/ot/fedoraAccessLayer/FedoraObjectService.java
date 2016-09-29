@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.exception.ObjectTellerException;
+import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.model.Server_details;
 
 
@@ -336,8 +337,8 @@ public class FedoraObjectService {
 		
 	}
 	
-	protected void deleteFedoraResource(String uri) throws ObjectTellerException {
-		String deleteResourceURI = baseURI +  uri ;
+	protected void deleteFedoraResource(ArkId arkId) throws ObjectTellerException {
+		String deleteResourceURI = getFedoraFreindlyURl(arkId) ;
 		HttpDelete httpDelete = new HttpDelete(deleteResourceURI);
 		httpDelete.addHeader(BasicScheme.authenticate(
 				new UsernamePasswordCredentials(userName, password),
@@ -398,5 +399,10 @@ public class FedoraObjectService {
 			throw exception;
 		}
 		return result;
+	}
+	
+	// TODO: Add service to retrieve fedora friendly id from ark id
+	public String getFedoraFreindlyURl(ArkId arkId){
+		return baseURI+arkId.getFedoraPath();
 	}
 }

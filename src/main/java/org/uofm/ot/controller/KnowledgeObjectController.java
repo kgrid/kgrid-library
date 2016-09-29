@@ -63,6 +63,8 @@ public class KnowledgeObjectController {
 		return knowledgeObjectService.getKnowledgeObjects(false);
 	}
 
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{name}",
 			method=RequestMethod.GET ,
 			produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -79,6 +81,7 @@ public class KnowledgeObjectController {
 
 		return entity ;
 	}
+	
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}",
 			method=RequestMethod.GET ,
 			produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -88,6 +91,14 @@ public class KnowledgeObjectController {
 	}
 
 
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/complete",
+			method=RequestMethod.GET , 
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public FedoraObject getCompleteKnowledgeObjectForArkId( ArkId arkId) throws ObjectTellerException  {
+		return knowledgeObjectService.getCompleteKnowledgeObject(arkId);
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/complete",
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -97,6 +108,16 @@ public class KnowledgeObjectController {
 		return knowledgeObjectService.getCompleteKnowledgeObject(arkId);
 	}
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}", 
+			method=RequestMethod.PUT , 
+			consumes = {MediaType.APPLICATION_JSON_VALUE},
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public FedoraObject updateKnowledgeObjectByArkId(@RequestBody FedoraObject knowledgeObject,ArkId arkId) throws ObjectTellerException {
+		return knowledgeObjectService.editObject(knowledgeObject,arkId);
+	}
+	
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}", 
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -107,11 +128,21 @@ public class KnowledgeObjectController {
 		return knowledgeObjectService.editObject(knowledgeObject,arkId);
 	}
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}", 
+			method=RequestMethod.DELETE )
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void deleteKnowledgeObjectByArkId(ArkId arkId) throws ObjectTellerException {
+		knowledgeObjectService.deleteObject(arkId);
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}", 
 			method=RequestMethod.DELETE )
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void deleteKnowledgeObject(@PathVariable String objectURI) throws ObjectTellerException {
-		knowledgeObjectService.deleteObject(objectURI);
+		ArkId arkId = new ArkId(objectURI);
+		arkId.setName(objectURI);
+		knowledgeObjectService.deleteObject(arkId);
 	}
 
 	@RequestMapping(value="/knowledgeObject/{objectURI}/payload", 

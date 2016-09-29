@@ -89,14 +89,15 @@ function deleteObject(uri) {
 	if (uri == "") {
 		uri = curURI;
 	}
+	alert(uri);
 	if (uri != "") {
 		var r = confirm("Do you really want to delete the object ? ");
 		if (r == true) {
 			$.ajax({
 				type : 'DELETE',
-				url : "deleteObject." + uri,
+				url : "../knowledgeObject/" + uri ,
 				success : function(response) {
-					window.location.href = "home";
+					window.location.href = "../home";
 				}
 			});
 		}
@@ -594,7 +595,7 @@ function updateObject(section) {
 		metadata.title = document.getElementById("new_title_data").value;
 	} else {
 		ajaxMethod = "PUT";
-		ajaxUrl = urlPrefix + "/" + uri;
+		ajaxUrl = "../"+urlPrefix + "/" + uri;
 		if (section != "") {
 			ajaxUrl = ajaxUrl + "/" + section;
 		}
