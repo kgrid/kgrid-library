@@ -184,7 +184,7 @@ function createViewTextarea(inputName, inputID, inputLabel, maxLength, value,
 			+ '_v" value="' + value + '" maxlength=' + maxLength
 			+ '></textarea>';
 	var charCounter = "<span>" + maxLength + "/" + maxLength + "</span>";
-	var addBtn = '<button class="greenroundbutton"><img src="images/Plus_Icon.png" width="12px">';
+	//var addBtn = '<button class="greenroundbutton"><img src="images/Plus_Icon.png" width="12px">';
 	var endTag = "</div></div>";
 	if (isMultiple) {
 		return beginTag + inLabel + entryArea + inField + charCounter + endTag;
@@ -276,11 +276,11 @@ function createInputField(inputName, inputID, inputLabel, maxLength,
 			+ '" maxlength='
 			+ maxLength
 			+ '>';
+	var addBtn = '<button class="mediumgreenroundbutton" id="add'+inputName+'"><img src="../resources/images/Plus_Icon.png" width="12px"></button>';
 	var charCounter = "<span>" + maxLength + "/" + maxLength + "</span>";
-	var addBtn = '<button class="greenroundbutton"><img src="/ObjectTeller/resources/images/Plus_Icon.png" width="12px">';
 	var endTag = "</div></div>";
 	if (isMultiple) {
-		return beginTag + inLabel + entryArea + inField + charCounter + endTag;
+		return beginTag + inLabel + addBtn + entryArea  + endTag;
 	} else {
 		return beginTag + inLabel + inField + charCounter + endTag;
 	}
@@ -297,7 +297,7 @@ function createInputTextarea(inputName, inputID, inputLabel, maxLength,
 			+ '" placeholder="' + placeholderText + '" maxlength=' + maxLength
 			+ '></textarea>';
 	var charCounter = "<span>" + maxLength + "/" + maxLength + "</span>";
-	var addBtn = '<button class="greenroundbutton"><img src="images/Plus_Icon.png" width="12px">';
+	//var addBtn = '<button class="greenroundbutton"><img src="images/Plus_Icon.png" width="12px">';
 	var endTag = "</div></div>";
 	if (isMultiple) {
 		return beginTag + inLabel + entryArea + inField + charCounter + endTag;
@@ -794,7 +794,7 @@ function buildMetaDataTab(mode) {
 			"Click here to add Keywords.", "Click here to add Owners.",
 			"Click here to add Contributors.", "Click here to add Citations",
 			"Click here to add License" ];
-	var isMultiples = [ false, false, true, true, true, true, false ];
+	var isMultiples = [ false, false, false, false, false, true, false ];
 	var numberofFields = inputLabels.length;
 	var inputField;
 	for (var i = 0; i < (numberofFields); i++) {
@@ -993,6 +993,10 @@ $(document)
 					});
 					$("#citation_data").focus(function(e) {
 						console.log("New citation field in focus...");
+						overlaySlide('citation', true);
+					});
+					$("#addcitation_data").click(function(e) {
+						console.log("Add citation in action");
 						overlaySlide('citation', true);
 					});
 					var citNumber = 0;
