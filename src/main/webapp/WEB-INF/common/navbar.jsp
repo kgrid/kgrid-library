@@ -13,9 +13,9 @@
 			<div id="topnav">
 				<div id="nav">
 					<ul>
-						<li id="about"><a href=<%= "about" %>><spring:message code="BANNER_ABOUT" /></a></li>
-						<li id="faq"><a  href="faq"><spring:message code="BANNER_FAQ" /></a></li>
-						<li id="contactus"><a href="contactus"><spring:message code="BANNER_CONTACT_US" /></a></li>
+						<li id="about"><a href='<c:url value="/about"/>'><spring:message code="BANNER_ABOUT" /></a></li>
+						<li id="faq"><a  href='<c:url value="/faq"/>'><spring:message code="BANNER_FAQ" /></a></li>
+						<li id="contactus"><a href='<c:url value="/contactus"/>'><spring:message code="BANNER_CONTACT_US" /></a></li>
 					</ul>
 				</div>
 			</div>

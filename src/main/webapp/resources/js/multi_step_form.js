@@ -156,7 +156,7 @@ function overlaySlide(overlayID, open, mode) {
 	}
 	if (open) {
 		$('#' + overlayID).css("display", "block");
-		$('#' + overlayID).fadeIn('fast', function() {
+		$('#' + overlayID).fadeIn('slow', function() {
 			overlayPane.animate({
 				'left' : overlayPane_left + "px"
 			}, 1000);
@@ -169,7 +169,7 @@ function overlaySlide(overlayID, open, mode) {
 			$('#' + overlayID).delay(500).fadeOut('fast');
 		});
 
-		$('#' + overlayID).css("display", "none");
+//		$('#' + overlayID).css("display", "none");
 	}
 
 }
@@ -276,7 +276,7 @@ function createInputField(inputName, inputID, inputLabel, maxLength,
 			+ '" maxlength='
 			+ maxLength
 			+ '>';
-	var addBtn = '<button class="mediumgreenroundbutton" id="add'+inputName+'"><img src="../resources/images/Plus_Icon.png" width="12px"></button>';
+	var addBtn = '<button class="mediumgreenroundbutton" id="add'+inputName+'"><img src="/ObjectTeller/resources/images/Plus_Icon.png" width="12px"></button>';
 	var charCounter = "<span>" + maxLength + "/" + maxLength + "</span>";
 	var endTag = "</div></div>";
 	if (isMultiple) {
@@ -746,9 +746,12 @@ function saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text) {
 						}
 						
 					} else {
-						$("div.success").fadeIn(300).delay(1500).fadeOut(400)
-						.delay(1000);
 						updateViewObject();
+						$("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
+							overlaySlide("addObject", false, "edit");
+						});
+						
+						
 					}
 
 				},

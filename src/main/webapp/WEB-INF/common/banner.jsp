@@ -43,7 +43,7 @@ $(document).ready(function(){
 						xhrObj.setRequestHeader("Accept", "application/json");
 					},
 					type : 'POST',
-					url : "login",
+					url : "/ObjectTeller/login",
 					data : text,
 					dataType : "json",
 
@@ -71,7 +71,7 @@ $(document).ready(function(){
 		$("#logout").click(function userLogout(){
 			$.ajax({
 				type : 'POST',
-				url : "logout" ,
+				url : "/ObjectTeller/logout" ,
 
 				success : function(response) {
 					location.reload();
@@ -126,7 +126,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	<div id="logo"><a href="home">
+	<div id="logo"><a href='<c:url value="/home"/>'>
 		<img src="<c:url value="/resources/images/logo.png"/>" width="200px"
 			height="auto"></a>
 	</div>
