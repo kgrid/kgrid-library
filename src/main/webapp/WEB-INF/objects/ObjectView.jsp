@@ -336,7 +336,7 @@
 										disabled value="${fedoraObject.payload.engineType}">
 								</div>
 								<div class="display-payload">
-									<textarea class="autosize" id="payloadTextArea_v">${fedoraObject.payload.content}</textarea>
+									<textarea class="autosize" spellcheck="false" id="payloadTextArea_v">${fedoraObject.payload.content}</textarea>
 								</div>
 							</form>
 						</div>
@@ -392,7 +392,7 @@
 									<button id="outputClearBtn">
 										<spring:message code="REMOVE_BTN" />
 									</button>
-									<sf:textarea class="autosize" id="outputTextArea"
+									<sf:textarea class="autosize" id="outputTextArea" spellcheck="false"
 										path="outputMessage"></sf:textarea>
 									<sf:input type="hidden" path="URI" value="${fedoraObject.URI}" />
 									<sf:input type="hidden" id="fedoraObj" path="URI"
@@ -403,14 +403,12 @@
 					</li>
 					<li id="logdata">
 						<div id="tab-content5" class="tab-content view-obj">
-							<h3 class="fieldName inline ">
-								<spring:message code="LOG_DATA_TAB" />
-							</h3>
-							<div class="display-content">
+							<form class="display-content">
 								<div class="display-payload">
-									<p>${processedLogData}</p>
+									<textarea class="autosize" spellcheck="false" id="logTextArea"> ${processedLogData}</textarea>
+										
 								</div>
-							</div>
+							</form>
 						</div>
 					</li>
 

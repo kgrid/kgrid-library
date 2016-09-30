@@ -81,7 +81,6 @@ input[type=radio] {
 	width: 100%;
 	float: left;
 	min-height: 800px;
-	margin-top: 38px;
 	padding: 0px;
 	box-sizing: border-box;
 	background-color: #ffffff;
@@ -462,17 +461,16 @@ option {
 	min-height:240px;
 
 }
-#payloadTextArea_v, #outputTextArea_v, #inputTextArea_v, #inputTextArea-clone  {
+#payloadTextArea_v, #outputTextArea_v, #inputTextArea_v, #inputTextArea-clone, #logTextArea  {
 	display:block;
     min-height:600px;
 	width:900px;
-	padding:5px 16px;
+	padding:0px 16px;
    resize:none;
    color:#666666;
    font-size:14px;
    font-weight:400;
    	border:none;
-   	   margin-top:40px;
 }
 #clearPayloadButton, #clearInputButton, #clearOutputButton{
 	background-color: #fff;
