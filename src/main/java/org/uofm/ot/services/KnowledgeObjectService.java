@@ -181,9 +181,13 @@ public class KnowledgeObjectService {
 		editFedoraObjectService.putBinary( payload.getContent(), arkId.getFedoraPath(), ChildType.PAYLOAD.getChildType(),null);
 		editFedoraObjectService.editPayloadMetadata(payload,arkId.getFedoraPath());
 	}
-
-	public void addOrEditArkid(ArkId arkId) {
-
-
+	
+	public void patchKnowledgeObject(FedoraObject fedoraObject,ArkId arkId) throws ObjectTellerException {
+		if(fedoraObject != null){
+			if(fedoraObject.getMetadata() != null ) {
+				String param = fedoraObject.getMetadata().isPublished() ? "yes":"no";
+				editFedoraObjectService.toggleObject(arkId.getFedoraPath(), param);
+			}
+		}
 	}
 }

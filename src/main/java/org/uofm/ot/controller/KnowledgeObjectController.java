@@ -356,4 +356,12 @@ public class KnowledgeObjectController {
 	public void addOrUpdateOutputMessageByArkId(@RequestBody String outputMessage , ArkId arkId) throws ObjectTellerException {
 		knowledgeObjectService.editOutputMessageContent(arkId, outputMessage);
 	}
+	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}", 
+			method=RequestMethod.PATCH,
+			consumes = {MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void patchKnowledgeObject(@RequestBody FedoraObject knowledgeObject,ArkId arkId) throws ObjectTellerException {
+		knowledgeObjectService.patchKnowledgeObject(knowledgeObject, arkId);
+	}
 }
