@@ -238,7 +238,7 @@
 						onclick="deleteObject('${fedoraObject.URI}')">DELETE</button>
 
 					<a class="edit" id="downloadButton"
-						href="../knowledgeObject/${fedoraObject.URI}/complete.json">DOWNLOAD</a>
+						href="<c:url value="/knowledgeObject/${fedoraObject.URI}/complete.json"/>">DOWNLOAD</a>
 
 				</div>
 			</div>

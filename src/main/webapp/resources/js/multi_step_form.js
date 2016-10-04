@@ -94,9 +94,9 @@ function deleteObject(uri) {
 		if (r == true) {
 			$.ajax({
 				type : 'DELETE',
-				url : "../knowledgeObject/" + uri ,
+				url : "/ObjectTeller/knowledgeObject/" + uri ,
 				success : function(response) {
-					window.location.href = "../home";
+					window.location.href = "/ObjectTeller/home";
 				}
 			});
 		}
