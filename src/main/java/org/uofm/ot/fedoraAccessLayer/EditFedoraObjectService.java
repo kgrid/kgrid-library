@@ -55,12 +55,6 @@ public class EditFedoraObjectService extends FedoraObjectService {
 		super.sendPatchRequestForUpdatingTriples(query, objectURI, null);
 	}
 
-	public void updateArkId(String objectURI, String arkId) throws ObjectTellerException {
-
-		String query = getGetSingleParamQuery(objectURI, "arkId", arkId);
-
-		super.sendPatchRequestForUpdatingTriples(query, objectURI, null);
-	}
 
 	private String getGetSingleParamQuery(String objectURI, String param, String value) {
 		return FusekiConstants.PREFIX_OT +"\n "+
@@ -106,7 +100,7 @@ public class EditFedoraObjectService extends FedoraObjectService {
 	public void editCitations(String fedoraObjectURI , List<Citation> citations) throws ObjectTellerException{
 
 		
-							for (Citation citation : citations) {
+			for (Citation citation : citations) {
 				if(citation.getCitation_id() != null) {
 					String citationObject = "<"+super.baseURI+fedoraObjectURI+"/"+ ChildType.CITATIONS.getChildType() +"/"+citation.getCitation_id()+">" ;
 					String data = 

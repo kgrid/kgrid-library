@@ -338,7 +338,7 @@ public class FedoraObjectService {
 	}
 	
 	protected void deleteFedoraResource(ArkId arkId) throws ObjectTellerException {
-		String deleteResourceURI = getFedoraFreindlyURl(arkId) ;
+		String deleteResourceURI = getFedoraFriendlyURl(arkId) ;
 		HttpDelete httpDelete = new HttpDelete(deleteResourceURI);
 		httpDelete.addHeader(BasicScheme.authenticate(
 				new UsernamePasswordCredentials(userName, password),
@@ -402,7 +402,7 @@ public class FedoraObjectService {
 	}
 	
 	// TODO: Add service to retrieve fedora friendly id from ark id
-	public String getFedoraFreindlyURl(ArkId arkId){
+	public String getFedoraFriendlyURl(ArkId arkId){
 		return baseURI+arkId.getFedoraPath();
 	}
 }
