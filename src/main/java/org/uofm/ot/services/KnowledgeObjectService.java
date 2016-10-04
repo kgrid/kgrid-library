@@ -44,9 +44,9 @@ public class KnowledgeObjectService {
 
         String objectURI = arkId.getFedoraPath();
 		addOrEditMetadata(arkId, newObject.getMetadata());
-		editPayload(objectURI, newObject.getPayload());
-		editInputMessageContent(objectURI, newObject.getInputMessage());
-		editOutputMessageContent(objectURI, newObject.getOutputMessage());
+		editPayload(arkId, newObject.getPayload());
+		editInputMessageContent(arkId, newObject.getInputMessage());
+		editOutputMessageContent(arkId, newObject.getOutputMessage());
 		FedoraObject updatedObject = getCompleteKnowledgeObject(arkId);
 		return updatedObject ; 
 	}
@@ -77,11 +77,11 @@ public class KnowledgeObjectService {
 		
 		object.setPayload(payload);
 
-		object.setLogData(getProvData(uri));
+		object.setLogData(getProvData(arkId));
 
-		object.setInputMessage(getInputMessageContent(uri));
+		object.setInputMessage(getInputMessageContent(arkId));
 
-		object.setOutputMessage(getOutputMessageContent(uri));
+		object.setOutputMessage(getOutputMessageContent(arkId));
 		
 		return object;
 	}
@@ -92,7 +92,7 @@ public class KnowledgeObjectService {
 
 		editFedoraObjectService.editObjectMetadata(newMetadata,uri);
 		editFedoraObjectService.toggleObject(uri, newMetadata.isPublished() ? "yes" : "no");
-		editFedoraObjectService.updateArkId(uri, new ArkId(uri).getArkId());
+	
 
 
 		List<Citation> oldCitations = fusekiService.getObjectCitations(arkId);
@@ -143,43 +143,43 @@ public class KnowledgeObjectService {
 		return createFedoraObjectService.createObject(fedoraObject, loggedInUser);
 	}
 
-	public String getInputMessageContent(String objectURI) throws ObjectTellerException{
-		return getFedoraObjectService.getObjectContent(objectURI, ChildType.INPUT.getChildType());
+	public String getInputMessageContent(ArkId arkId) throws ObjectTellerException{
+		return getFedoraObjectService.getObjectContent(arkId.getFedoraPath(), ChildType.INPUT.getChildType());
 	}
 	
-	public String getOutputMessageContent(String objectURI) throws ObjectTellerException{
-		return getFedoraObjectService.getObjectContent(objectURI, ChildType.OUTPUT.getChildType());
+	public String getOutputMessageContent(ArkId arkId) throws ObjectTellerException{
+		return getFedoraObjectService.getObjectContent(arkId.getFedoraPath(), ChildType.OUTPUT.getChildType());
 	}
 	
 	public String getPayloadContent(String objectURI) throws ObjectTellerException{
 		return getFedoraObjectService.getObjectContent(objectURI, ChildType.PAYLOAD.getChildType());
 	}
 	
-	public String getProvData(String objectURI) throws ObjectTellerException{
-		String provDataPart1 = fusekiService.getObjectProvProperties(objectURI);
+	public String getProvData(ArkId arkId) throws ObjectTellerException{
+		String provDataPart1 = fusekiService.getObjectProvProperties(arkId.getFedoraPath());
 
-		String provDataPart2 = fusekiService.getObjectProvProperties(objectURI+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType());
+		String provDataPart2 = fusekiService.getObjectProvProperties(arkId.getFedoraPath()+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType());
 
 		return provDataPart1 + provDataPart2 ; 
 	}
 	
-	public void editInputMessageContent(String objectURI,String inputMessage) throws ObjectTellerException{
-		editFedoraObjectService.putBinary(inputMessage, objectURI, ChildType.INPUT.getChildType(), null);
+	public void editInputMessageContent(ArkId arkId,String inputMessage) throws ObjectTellerException{
+		editFedoraObjectService.putBinary(inputMessage, arkId.getFedoraPath(), ChildType.INPUT.getChildType(), null);
 	}
 	
-	public void editOutputMessageContent(String objectURI,String outputMessage) throws ObjectTellerException{
-		editFedoraObjectService.putBinary(outputMessage, objectURI, ChildType.OUTPUT.getChildType(), null);
+	public void editOutputMessageContent(ArkId arkId,String outputMessage) throws ObjectTellerException{
+		editFedoraObjectService.putBinary(outputMessage, arkId.getFedoraPath(), ChildType.OUTPUT.getChildType(), null);
 	}
 	
-	public Payload getPayload(String objectURI) throws ObjectTellerException {
-		Payload payload = fusekiService.getPayloadProperties(objectURI);
-		payload.setContent(getPayloadContent(objectURI));
+	public Payload getPayload(ArkId arkId) throws ObjectTellerException {
+		Payload payload = fusekiService.getPayloadProperties(arkId.getFedoraPath());
+		payload.setContent(getPayloadContent(arkId.getFedoraPath()));
 		return payload ;
 	}
 	
-	public void editPayload(String objectURI,Payload payload) throws ObjectTellerException {
-		editFedoraObjectService.putBinary( payload.getContent(), objectURI, ChildType.PAYLOAD.getChildType(),null);
-		editFedoraObjectService.editPayloadMetadata(payload,objectURI);
+	public void editPayload(ArkId arkId,Payload payload) throws ObjectTellerException {
+		editFedoraObjectService.putBinary( payload.getContent(), arkId.getFedoraPath(), ChildType.PAYLOAD.getChildType(),null);
+		editFedoraObjectService.editPayloadMetadata(payload,arkId.getFedoraPath());
 	}
 
 	public void addOrEditArkid(ArkId arkId) {

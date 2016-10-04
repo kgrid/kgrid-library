@@ -37,7 +37,7 @@ public class KnowledgeObjectController {
 
 		ResponseEntity<FedoraObject> entity = null;
 
-		loggedInUser = new User("nbahulek@umich.edu", "test", 48 , "Namita", "B.", UserRoles.ADMIN);
+//		loggedInUser = new User("nbahulek@umich.edu", "test", 48 , "Namita", "B.", UserRoles.ADMIN);
 		
 		if (loggedInUser != null ) {
 			
@@ -145,16 +145,29 @@ public class KnowledgeObjectController {
 		knowledgeObjectService.deleteObject(arkId);
 	}
 
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/payload", 
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void addOrUpdatePayload(@RequestBody Payload payload , @PathVariable String objectURI) throws ObjectTellerException {
-		knowledgeObjectService.editPayload(objectURI, payload);	
+		ArkId arkId = new ArkId(objectURI);
+		arkId.setName(objectURI);
+		knowledgeObjectService.editPayload(arkId, payload);	
 	}
 	
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/payload", 
+			method=RequestMethod.PUT , 
+			consumes = {MediaType.APPLICATION_JSON_VALUE},
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void addOrUpdatePayloadByArkId(@RequestBody Payload payload , ArkId arkId) throws ObjectTellerException {
+		knowledgeObjectService.editPayload(arkId, payload);	
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/metadata", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -164,13 +177,23 @@ public class KnowledgeObjectController {
 		return knowledgeObjectService.getKnowledgeObject(arkId).getMetadata();
 	}
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/metadata", 
+			method=RequestMethod.GET , 
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public Metadata getMetadataByArkId(ArkId arkId) throws ObjectTellerException {
+		return knowledgeObjectService.getKnowledgeObject(arkId).getMetadata();
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/payload", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Payload> getPayload( @PathVariable String objectURI) {
 		ResponseEntity<Payload> payload = null;
 		try {
-			Payload payloadObj = knowledgeObjectService.getPayload(objectURI);
+			ArkId arkId = new ArkId();
+			arkId.setName(objectURI);
+			Payload payloadObj = knowledgeObjectService.getPayload(arkId);
 			payload = new ResponseEntity<Payload> (payloadObj,HttpStatus.OK);
 		} catch (ObjectTellerException e) {
 			payload = new ResponseEntity<Payload> (HttpStatus.NOT_FOUND);
@@ -178,12 +201,29 @@ public class KnowledgeObjectController {
 		return payload;
 	}
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/payload", 
+			method=RequestMethod.GET , 
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<Payload> getPayloadByArkId( ArkId arkId) {
+		ResponseEntity<Payload> payload = null;
+		try {
+			Payload payloadObj = knowledgeObjectService.getPayload(arkId);
+			payload = new ResponseEntity<Payload> (payloadObj,HttpStatus.OK);
+		} catch (ObjectTellerException e) {
+			payload = new ResponseEntity<Payload> (HttpStatus.NOT_FOUND);
+		}
+		return payload;
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage", 
 			method=RequestMethod.GET )
 	public ResponseEntity<String> getInputMessage( @PathVariable String objectURI)  {
 		ResponseEntity<String> inputMessage = null;
 		try {
-			String content = knowledgeObjectService.getInputMessageContent(objectURI);
+			ArkId arkId = new ArkId();
+			arkId.setName(objectURI);
+			String content = knowledgeObjectService.getInputMessageContent(arkId);
 			inputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
 		} catch (ObjectTellerException exception){
 			inputMessage = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
@@ -191,12 +231,28 @@ public class KnowledgeObjectController {
 		return inputMessage ; 
 	}
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/inputMessage", 
+			method=RequestMethod.GET )
+	public ResponseEntity<String> getInputMessageByArkId(ArkId arkId)  {
+		ResponseEntity<String> inputMessage = null;
+		try {
+			String content = knowledgeObjectService.getInputMessageContent(arkId);
+			inputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
+		} catch (ObjectTellerException exception){
+			inputMessage = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		return inputMessage ; 
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/outputMessage", 
 			method=RequestMethod.GET)
 	public ResponseEntity<String> getOutputMessage( @PathVariable String objectURI) throws ObjectTellerException {
 		ResponseEntity<String> outputMessage = null;
 		try {
-			String content = knowledgeObjectService.getOutputMessageContent(objectURI);
+			ArkId arkId = new ArkId();
+			arkId.setName(objectURI);
+			String content = knowledgeObjectService.getOutputMessageContent(arkId);
 			outputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
 		} catch (ObjectTellerException exception){
 			outputMessage = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
@@ -204,12 +260,28 @@ public class KnowledgeObjectController {
 		return outputMessage ;
 	}
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/outputMessage", 
+			method=RequestMethod.GET)
+	public ResponseEntity<String> getOutputMessageByArkId(ArkId arkId) throws ObjectTellerException {
+		ResponseEntity<String> outputMessage = null;
+		try {
+			String content = knowledgeObjectService.getOutputMessageContent(arkId);
+			outputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
+		} catch (ObjectTellerException exception){
+			outputMessage = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		return outputMessage ;
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/logData", 
 			method=RequestMethod.GET )
 	public ResponseEntity<String> getLogData( @PathVariable String objectURI) throws ObjectTellerException {
 		ResponseEntity<String> logData = null;
 		try {
-			String content = knowledgeObjectService.getProvData(objectURI);
+			ArkId arkId = new ArkId();
+			arkId.setName(objectURI);
+			String content = knowledgeObjectService.getProvData(arkId);
 			logData = new ResponseEntity<String>(content, HttpStatus.OK);
 		} catch (ObjectTellerException exception){
 			logData = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
@@ -217,6 +289,20 @@ public class KnowledgeObjectController {
 		return logData ;
 	}
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/logData", 
+			method=RequestMethod.GET )
+	public ResponseEntity<String> getLogDataByArkId( ArkId arkId) throws ObjectTellerException {
+		ResponseEntity<String> logData = null;
+		try {
+			String content = knowledgeObjectService.getProvData(arkId);
+			logData = new ResponseEntity<String>(content, HttpStatus.OK);
+		} catch (ObjectTellerException exception){
+			logData = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		return logData ;
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/metadata", 
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -224,21 +310,50 @@ public class KnowledgeObjectController {
 	public void updateMetadata(@RequestBody Metadata metadata , @PathVariable String objectURI) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
 		arkId.setName(objectURI);
-		 knowledgeObjectService.addOrEditMetadata(arkId, metadata);
+		knowledgeObjectService.addOrEditMetadata(arkId, metadata);
 	}
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/metadata", 
+			method=RequestMethod.PUT , 
+			consumes = {MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void updateMetadataByArkId(@RequestBody Metadata metadata , ArkId arkId) throws ObjectTellerException {
+		knowledgeObjectService.addOrEditMetadata(arkId, metadata);
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage", 
 			method=RequestMethod.PUT)
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void addOrUpdateInputMessage(@RequestBody String inputMessage , @PathVariable String objectURI) throws ObjectTellerException {
-		knowledgeObjectService.editInputMessageContent(objectURI, inputMessage);
+		ArkId arkId = new ArkId(objectURI);
+		arkId.setName(objectURI);
+		knowledgeObjectService.editInputMessageContent(arkId, inputMessage);
 	}
 	
+	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/inputMessage", 
+			method=RequestMethod.PUT)
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void addOrUpdateInputMessageByArkId(@RequestBody String inputMessage , ArkId arkId) throws ObjectTellerException {
+		knowledgeObjectService.editInputMessageContent(arkId, inputMessage);
+	}
+	
+	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/outputMessage", 
 			method=RequestMethod.PUT)
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void addOrUpdateOutputMessage(@RequestBody String outputMessage , @PathVariable String objectURI) throws ObjectTellerException {
-		knowledgeObjectService.editOutputMessageContent(objectURI, outputMessage);
+		ArkId arkId = new ArkId(objectURI);
+		arkId.setName(objectURI);
+		knowledgeObjectService.editOutputMessageContent(arkId, outputMessage);
 	}
 	
+	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/outputMessage", 
+			method=RequestMethod.PUT)
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public void addOrUpdateOutputMessageByArkId(@RequestBody String outputMessage , ArkId arkId) throws ObjectTellerException {
+		knowledgeObjectService.editOutputMessageContent(arkId, outputMessage);
+	}
 }
