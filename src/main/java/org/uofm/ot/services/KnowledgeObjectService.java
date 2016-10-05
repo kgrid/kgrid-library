@@ -52,7 +52,7 @@ public class KnowledgeObjectService {
 	}
 	
 	public void deleteObject(ArkId arkId) throws ObjectTellerException {
-		deleteFedoraResourceService.deleteObject(arkId);
+		deleteFedoraResourceService.deleteObject(arkId.getFedoraPath());
 	}
 	
 	public List<FedoraObject> getKnowledgeObjects(boolean published) throws ObjectTellerException {
@@ -130,7 +130,7 @@ public class KnowledgeObjectService {
 			oldCitations.removeAll(editCitations);
 		}
 		
-		if(oldCitations.isEmpty() == false){
+		if(!oldCitations.isEmpty()){
 			for (Citation citation : oldCitations) {
 				deleteFedoraResourceService.deleteObjectCitation(uri, citation.getCitation_id());
 			}		
@@ -140,7 +140,13 @@ public class KnowledgeObjectService {
 	}
 	
 	public FedoraObject createKnowledgeObject(FedoraObject fedoraObject, User loggedInUser) throws ObjectTellerException {
-		return createFedoraObjectService.createObject(fedoraObject, loggedInUser);
+		return createFedoraObjectService.createObject(fedoraObject, loggedInUser, null);
+	}
+
+	public FedoraObject createFromExistingArkId(FedoraObject fedoraObject, ArkId existingArkId) throws ObjectTellerException {
+		User loggedInUser = new User(null, null, 0, "MANUAL", "IMPORT", null);
+		return createFedoraObjectService.createObject(fedoraObject, loggedInUser, existingArkId);
+
 	}
 
 	public String getInputMessageContent(ArkId arkId) throws ObjectTellerException{
@@ -189,5 +195,9 @@ public class KnowledgeObjectService {
 				editFedoraObjectService.toggleObject(arkId.getFedoraPath(), param);
 			}
 		}
+	}
+
+	public boolean exists(ArkId arkId) throws ObjectTellerException {
+		return getFedoraObjectService.checkIfObjectExists(arkId.getFedoraPath());
 	}
 }
