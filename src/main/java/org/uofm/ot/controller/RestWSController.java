@@ -71,9 +71,11 @@ public class RestWSController {
 		boolean objectExists = false;
 
 		InputObject io= gson.fromJson(content, InputObject.class);
+		
+		ArkId arkId = new ArkId(io.getObjectName());
+		
 
-
-		String uri = io.getObjectName();
+		String uri = arkId.getFedoraPath();
 
 		if(uri != null && io.getParams() != null && !uri.isEmpty() && io.getParams().size() > 0){
 			objectExists= getFedoraObjectService.checkIfObjectExists(uri);
@@ -219,5 +221,13 @@ public class RestWSController {
 		return error;
 	}
 
+/*	@RequestMapping(value = "/knowledgeObject/ark:/{naan}/{name}/result", method = RequestMethod.POST,
+			consumes = {MediaType.APPLICATION_JSON_VALUE},
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<String> getResultByArkId(@RequestBody Map<String,Object> content,ArkId arkId) throws ObjectTellerException {
+		return null;
+	}*/
 
+
+	
 }
