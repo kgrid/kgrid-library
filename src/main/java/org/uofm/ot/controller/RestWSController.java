@@ -61,72 +61,27 @@ public class RestWSController {
 	@RequestMapping(value = "/rest/getResult", method = RequestMethod.POST,
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> getResult(@RequestBody String content) throws ObjectTellerException {
+	public ResponseEntity<Result> getResult(@RequestBody String content) throws ObjectTellerException {
 
 		Gson gson = new Gson();
-
-		Result result = null;
-		String errormessage;
-		String title = null;
-		boolean objectExists = false;
 
 		InputObject io= gson.fromJson(content, InputObject.class);
 
 		ArkId arkId = new ArkId(io.getObjectName());
 
-		String uri = arkId.getFedoraPath();
 
-		if(uri != null && io.getParams() != null && !uri.isEmpty() && io.getParams().size() > 0){
-			objectExists= getFedoraObjectService.checkIfObjectExists(uri);
-			if ( objectExists ) {
-
-				FedoraObject object = knowledgeObjectService.getKnowledgeObject(arkId);
-				title = object.getMetadata().getTitle();
-
-				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(uri);
-
-				if(metadata != null){
-					errormessage = verifyInput(metadata, io);
-					if(errormessage == null){
-						String chunk = getFedoraObjectService.getObjectContent(uri, ChildType.PAYLOAD.getChildType());
-
-						Payload payload = knowledgeObjectService.getPayload(arkId);
-
-			     			if( chunk != null) {
-							if( EngineType.PYTHON.toString().equalsIgnoreCase(payload.getEngineType())){
-								PythonAdapter adapter = new PythonAdapter();
-								result = adapter.executeString(chunk, payload.getFunctionName(),io.getParams(),metadata.getReturntype());
-							}
-						} else
-							errormessage = "Unable to retrieve content of object with id: "+ arkId.getArkId();
-					}
-				} else
-					errormessage = "Unable to convert RDF metadata for object with id:"+ arkId.getArkId();
-			} else
-				errormessage = "Object with id: "+ arkId.getArkId() +" does not exist";
-		} else
-			errormessage = "Either object id or parameter map is missing";
-
-		if(errormessage != null || result == null){ // errormessaage has a value
-			result = new Result();
-			result.setErrorMessage(errormessage);
-			result.setSuccess(0);
-		}
-
-		result.setSource(title);
-		String json = gson.toJson(result);
-
-		return new ResponseEntity<String>(json, HttpStatus.OK);
+		return getResultByArkId(io.getParams(), arkId) ;
 	}
 
-	private String verifyInput(CodeMetadata codeMetadata, InputObject inputObject){
+
+	private String verifyInput(CodeMetadata codeMetadata, Map<String,Object> ipParams){
 		String errorMessage= null;
-		if(codeMetadata.getNoOfParams() != inputObject.getParams().size()){
+		if(codeMetadata.getNoOfParams() != ipParams.size()){
 			errorMessage = "Number of input parameters should be "+codeMetadata.getNoOfParams()+".";
 		}
 
 		for (ParamDescription param : codeMetadata.getParams()) {
-			if(!inputObject.getParams().containsKey(param.getName())){
+			if(!ipParams.containsKey(param.getName())){
 				if(errorMessage == null)
 					errorMessage= " Input parameter "+param.getName()+" is missing.";
 				else
@@ -136,7 +91,7 @@ public class RestWSController {
 		}
 
 		if(errorMessage == null)
-			errorMessage = verifyParameters(codeMetadata.getParams(),inputObject.getParams());
+			errorMessage = verifyParameters(codeMetadata.getParams(),ipParams);
 
 		return errorMessage;
 	}
@@ -219,13 +174,67 @@ public class RestWSController {
 		return error;
 	}
 
-/*	@RequestMapping(value = "/knowledgeObject/ark:/{naan}/{name}/result", method = RequestMethod.POST,
+	@RequestMapping(value = "/knowledgeObject/ark:/{naan}/{name}/result", method = RequestMethod.POST,
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> getResultByArkId(@RequestBody Map<String,Object> content,ArkId arkId) throws ObjectTellerException {
-		return null;
-	}*/
+	public ResponseEntity<Result> getResultByArkId(@RequestBody Map<String,Object> content,ArkId arkId) throws ObjectTellerException {
+
+		Result result = calculate(content, arkId);
+
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
+	}
+	
+
+	private Result calculate(Map<String,Object> map , ArkId arkId) throws ObjectTellerException {
+		
+		Result result = null;
+		String errormessage;
+		String title = null;
+		boolean objectExists = false;
+		
+		String uri = arkId.getFedoraPath();
+
+		if(uri != null && map != null && !uri.isEmpty() && map.size() > 0){
+			objectExists= getFedoraObjectService.checkIfObjectExists(uri);
+			if ( objectExists ) {
+
+				FedoraObject object = knowledgeObjectService.getKnowledgeObject(new ArkId(uri));
+				title = object.getMetadata().getTitle();
+
+				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(uri);
+
+				if(metadata != null){
+					errormessage = verifyInput(metadata, map);
+					if(errormessage == null){
+						String chunk = getFedoraObjectService.getObjectContent(uri, ChildType.PAYLOAD.getChildType());
+
+						Payload payload = knowledgeObjectService.getPayload(new ArkId(uri));
 
 
+			     			if( chunk != null) {
+							if( EngineType.PYTHON.toString().equalsIgnoreCase(payload.getEngineType())){
+								PythonAdapter adapter = new PythonAdapter();
+								result = adapter.executeString(chunk, payload.getFunctionName(),map,metadata.getReturntype());
+}
+						} else 
+							errormessage = "Unable to retrieve content of object with id: "+ arkId.getArkId();
+					}
+				} else 
+					errormessage = "Unable to convert RDF metadata for object with id:"+ arkId.getArkId();
+			} else 
+				errormessage = "Object with id: "+ arkId.getArkId() +" does not exist";
+		} else
+			errormessage = "Either object id or parameter map is missing";
+
+		if(errormessage != null || result == null){ // errormessaage has a value
+			result = new Result();
+			result.setErrorMessage(errormessage);
+			result.setSuccess(0);
+		}
+
+		result.setSource(title);
+		
+		return result ; 
+	}
 	
 }
