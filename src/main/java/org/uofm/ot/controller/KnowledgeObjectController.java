@@ -13,7 +13,6 @@ import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.User;
-import org.uofm.ot.model.UserRoles;
 import org.uofm.ot.services.KnowledgeObjectService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,7 +112,12 @@ public class KnowledgeObjectController {
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public FedoraObject updateKnowledgeObjectByArkId(@RequestBody FedoraObject knowledgeObject,ArkId arkId) throws ObjectTellerException {
-		return knowledgeObjectService.editObject(knowledgeObject,arkId);
+
+		if (knowledgeObjectService.exists(arkId)) {
+			return knowledgeObjectService.editObject(knowledgeObject,arkId);
+		} else {
+            return knowledgeObjectService.createFromExistingArkId(knowledgeObject, arkId);
+        }
 	}
 	
 	

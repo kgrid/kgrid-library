@@ -23,19 +23,21 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 	// TODO: Autowire ID Service
 
 	private static final Logger logger = Logger.getLogger(CreateFedoraObjectService.class);
-	
 
 
-
-	public FedoraObject createObject(FedoraObject fedoraObject, User loggedInUser) throws ObjectTellerException {
+	public FedoraObject createObject(FedoraObject fedoraObject, User loggedInUser, ArkId existingArkId) throws ObjectTellerException {
 
 		String transactionId = null; 
 		String errorMessage = null; 
 		if(baseURI!= null){
 
-			ArkId arkId = objectIDDAO.retrieveNewId();
-
-
+			ArkId arkId;
+			if (existingArkId == null) {
+				arkId = objectIDDAO.retrieveNewId();
+			}
+			else {
+				arkId = existingArkId;
+			}
 			fedoraObject.setArkId(arkId);
 
 			String uri = fedoraObject.getArkId().getFedoraPath();
