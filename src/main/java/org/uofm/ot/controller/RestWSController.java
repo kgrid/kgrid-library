@@ -71,9 +71,8 @@ public class RestWSController {
 		boolean objectExists = false;
 
 		InputObject io= gson.fromJson(content, InputObject.class);
-		
+
 		ArkId arkId = new ArkId(io.getObjectName());
-		
 
 		String uri = arkId.getFedoraPath();
 
@@ -81,7 +80,7 @@ public class RestWSController {
 			objectExists= getFedoraObjectService.checkIfObjectExists(uri);
 			if ( objectExists ) {
 
-				FedoraObject object = knowledgeObjectService.getKnowledgeObject(new ArkId(uri));
+				FedoraObject object = knowledgeObjectService.getKnowledgeObject(arkId);
 				title = object.getMetadata().getTitle();
 
 				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(uri);
@@ -91,23 +90,22 @@ public class RestWSController {
 					if(errormessage == null){
 						String chunk = getFedoraObjectService.getObjectContent(uri, ChildType.PAYLOAD.getChildType());
 
-						Payload payload = knowledgeObjectService.getPayload(new ArkId(uri));
-
+						Payload payload = knowledgeObjectService.getPayload(arkId);
 
 			     			if( chunk != null) {
 							if( EngineType.PYTHON.toString().equalsIgnoreCase(payload.getEngineType())){
 								PythonAdapter adapter = new PythonAdapter();
 								result = adapter.executeString(chunk, payload.getFunctionName(),io.getParams(),metadata.getReturntype());
 							}
-						} else 
-							errormessage = "Unable to retrieve content of object "+ uri;
+						} else
+							errormessage = "Unable to retrieve content of object with id: "+ arkId.getArkId();
 					}
-				} else 
-					errormessage = "Unable to convert RDF metadata for object "+ uri;
-			} else 
-				errormessage = "Object with name "+ uri +" does not exist";
+				} else
+					errormessage = "Unable to convert RDF metadata for object with id:"+ arkId.getArkId();
+			} else
+				errormessage = "Object with id: "+ arkId.getArkId() +" does not exist";
 		} else
-			errormessage = "Either object name or parameter map is missing";
+			errormessage = "Either object id or parameter map is missing";
 
 		if(errormessage != null || result == null){ // errormessaage has a value
 			result = new Result();
