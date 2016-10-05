@@ -1,6 +1,7 @@
 package org.uofm.ot.controller;
 
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,11 +10,11 @@ import org.uofm.ot.adapter.OWLAdapter;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
-import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.pythonAdapter.PythonAdapter;
+import org.uofm.ot.services.KnowledgeObjectService;
 import org.uofm.ot.transferobjects.*;
 
 import java.util.ArrayList;
@@ -26,19 +27,12 @@ public class RestWSController {
 
 	private GetFedoraObjectService getFedoraObjectService;
 
-	private FusekiService fusekiService;
-
+	@Autowired
+	KnowledgeObjectService knowledgeObjectService;
 
 	public void setGetFedoraObjectService(GetFedoraObjectService getFedoraObjectService) {
 		this.getFedoraObjectService = getFedoraObjectService;
 	}
-
-
-
-	public void setFusekiService(FusekiService fusekiService) {
-		this.fusekiService = fusekiService;
-	}
-
 
 	@RequestMapping(value = "/rest/{objectID}/result", method = RequestMethod.POST,
 			consumes = "application/owl+xml",
@@ -79,21 +73,23 @@ public class RestWSController {
 		InputObject io= gson.fromJson(content, InputObject.class);
 
 
-		if(io.getObjectName() != null && io.getParams() != null && !io.getObjectName().isEmpty() && io.getParams().size() > 0){
-			objectExists= getFedoraObjectService.checkIfObjectExists(io.getObjectName());
+		String uri = io.getObjectName();
+
+		if(uri != null && io.getParams() != null && !uri.isEmpty() && io.getParams().size() > 0){
+			objectExists= getFedoraObjectService.checkIfObjectExists(uri);
 			if ( objectExists ) {
 
-				FedoraObject object = fusekiService.getKnowledgeObject(new ArkId(io.getObjectName()));
+				FedoraObject object = knowledgeObjectService.getKnowledgeObject(new ArkId(uri));
 				title = object.getMetadata().getTitle();
 
-				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(io.getObjectName());
+				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(uri);
 
 				if(metadata != null){
 					errormessage = verifyInput(metadata, io);
 					if(errormessage == null){
-						String chunk = getFedoraObjectService.getObjectContent(io.getObjectName(), ChildType.PAYLOAD.getChildType());
+						String chunk = getFedoraObjectService.getObjectContent(uri, ChildType.PAYLOAD.getChildType());
 
-						Payload payload = fusekiService.getPayloadProperties(io.getObjectName());
+						Payload payload = knowledgeObjectService.getPayload(new ArkId(uri));
 
 
 			     			if( chunk != null) {
@@ -102,12 +98,12 @@ public class RestWSController {
 								result = adapter.executeString(chunk, payload.getFunctionName(),io.getParams(),metadata.getReturntype());
 							}
 						} else 
-							errormessage = "Unable to retrieve content of object "+io.getObjectName();
+							errormessage = "Unable to retrieve content of object "+ uri;
 					}
 				} else 
-					errormessage = "Unable to convert RDF metadata for object "+io.getObjectName();
+					errormessage = "Unable to convert RDF metadata for object "+ uri;
 			} else 
-				errormessage = "Object with name "+io.getObjectName()+" does not exist";
+				errormessage = "Object with name "+ uri +" does not exist";
 		} else
 			errormessage = "Either object name or parameter map is missing";
 
