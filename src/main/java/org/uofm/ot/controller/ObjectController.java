@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.*;
-import org.uofm.ot.fusekiAccessLayer.FusekiService;
+import org.uofm.ot.fedoraAccessLayer.DeleteFedoraResourceService;
+import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.model.User;
@@ -23,14 +23,10 @@ public class ObjectController {
 
 	private EditFedoraObjectService editFedoraObjectService;
 
-	private FusekiService fusekiService;
-
-	
-	
 	private DeleteFedoraResourceService deleteFedoraResourceService;
 	
 	@Autowired
-	private KnowledgeObjectService objectService;
+	private KnowledgeObjectService knowledgeObjectService;
 
 	private static final Logger logger = Logger.getLogger(ObjectController.class);
 
@@ -38,17 +34,6 @@ public class ObjectController {
 	public void setEditFedoraObjectService(EditFedoraObjectService editFedoraObjectService) {
 		this.editFedoraObjectService = editFedoraObjectService;
 	}
-
-
-	
-
-
-	public void setFusekiService(FusekiService fusekiService) {
-		this.fusekiService = fusekiService;
-	}
-
-
-
 
 
 	public void setDeleteFedoraResourceService(DeleteFedoraResourceService deleteFedoraResourceService) {
@@ -107,7 +92,7 @@ public class ObjectController {
 
 
 		
-		FedoraObject object = objectService.getCompleteKnowledgeObject(new ArkId(objectURI));
+		FedoraObject object = knowledgeObjectService.getCompleteKnowledgeObject(new ArkId(objectURI));
 		model.addAttribute("fedoraObject",object);
 
 		String logData = object.getLogData();
@@ -209,7 +194,7 @@ public class ObjectController {
 	
 	private boolean validateAccessToPrivateObject(String objectURI,User loggedInUser) throws ObjectTellerException{
 
-		FedoraObject object = fusekiService.getKnowledgeObject(new ArkId(objectURI));
+		FedoraObject object = knowledgeObjectService.getKnowledgeObject(new ArkId(objectURI));
 		
 		if(!object.getMetadata().isPublished() && loggedInUser == null)
 			return false;
