@@ -1,19 +1,10 @@
 package org.uofm.ot.fedoraAccessLayer;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
@@ -22,8 +13,12 @@ import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.model.Server_details;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 
 public class FedoraObjectService {
@@ -337,9 +332,8 @@ public class FedoraObjectService {
 		
 	}
 	
-	protected void deleteFedoraResource(ArkId arkId) throws ObjectTellerException {
-		String deleteResourceURI = getFedoraFriendlyURl(arkId) ;
-		HttpDelete httpDelete = new HttpDelete(deleteResourceURI);
+	protected void deleteFedoraResource(String deleteResourceURI) throws ObjectTellerException {
+		HttpDelete httpDelete = new HttpDelete(baseURI+deleteResourceURI);
 		httpDelete.addHeader(BasicScheme.authenticate(
 				new UsernamePasswordCredentials(userName, password),
 				"UTF-8", false));
@@ -400,9 +394,5 @@ public class FedoraObjectService {
 		}
 		return result;
 	}
-	
-	// TODO: Add service to retrieve fedora friendly id from ark id
-	public String getFedoraFriendlyURl(ArkId arkId){
-		return baseURI+arkId.getFedoraPath();
-	}
+
 }
