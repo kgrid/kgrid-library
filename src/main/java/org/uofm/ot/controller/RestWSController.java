@@ -1,6 +1,6 @@
 package org.uofm.ot.controller;
 
-import com.google.gson.Gson;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,25 +34,22 @@ public class RestWSController {
 		this.getFedoraObjectService = getFedoraObjectService;
 	}
 
-	@RequestMapping(value = "/rest/{objectID}/result", method = RequestMethod.POST,
+	@RequestMapping(value = "/knowledgeObject/ark:/{naan}/{name}/result", method = RequestMethod.POST,
 			consumes = "application/owl+xml",
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> getOWLResult(@RequestBody String content, @PathVariable String objectID) throws ObjectTellerException {
+	public ResponseEntity<Result> getOWLResult(@RequestBody String content, ArkId arkId) throws ObjectTellerException {
 		
-		ResponseEntity<String> resultEntity = null; 
-		
-		Gson gson = new Gson();
+		ResponseEntity<Result> resultEntity = null; 
 		
 		boolean objectExists = false;
 		
-		if(objectID != null ) {
-			objectExists= getFedoraObjectService.checkIfObjectExists(objectID);
+		if(arkId != null ) {
+			objectExists= getFedoraObjectService.checkIfObjectExists(arkId.getFedoraPath());
 			if ( objectExists ) {
-				String payload = getFedoraObjectService.getObjectContent(objectID, ChildType.PAYLOAD.getChildType());
+				String payload = getFedoraObjectService.getObjectContent(arkId.getFedoraPath(), ChildType.PAYLOAD.getChildType());
 				OWLAdapter adapter = new OWLAdapter();
-				Result result = adapter.execute(content, payload);
-				String json = gson.toJson(result);
-				resultEntity = new ResponseEntity<String> (json, HttpStatus.OK);
+				Result result = adapter.execute(content, payload);				
+				resultEntity = new ResponseEntity<Result> (result, HttpStatus.OK);
 			}
 		}
 		return resultEntity;
@@ -61,14 +58,8 @@ public class RestWSController {
 	@RequestMapping(value = "/rest/getResult", method = RequestMethod.POST,
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Result> getResult(@RequestBody String content) throws ObjectTellerException {
-
-		Gson gson = new Gson();
-
-		InputObject io= gson.fromJson(content, InputObject.class);
-
+	public ResponseEntity<Result> getResult(@RequestBody InputObject io) throws ObjectTellerException {
 		ArkId arkId = new ArkId(io.getObjectName());
-
 
 		return getResultByArkId(io.getParams(), arkId) ;
 	}
