@@ -21,8 +21,8 @@ public class IdService {
 		this.ezidService = ezidService ;
 	}
 
-	public String mint() {
-        return ezidService.mint();
+	public ArkId mint() {
+        return new ArkId(ezidService.mint());
     }    
     
 	public void publish(FedoraObject ko) {

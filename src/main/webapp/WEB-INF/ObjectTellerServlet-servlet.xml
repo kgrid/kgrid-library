@@ -66,10 +66,6 @@
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
-    <bean id="objectIDDao" class="org.uofm.ot.dao.impl.ObjectIDDAOImpl">
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
-
     <bean id="sysConfDao" class="org.uofm.ot.dao.impl.SystemConfigurationDAOImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
@@ -92,7 +88,6 @@
 
     <bean id="createfedoraObjectService" parent="fedoraObjectService"
           class="org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService">
-        <property name="objectIDDAO" ref="objectIDDao"/>
     </bean>
 
     <bean id="fusekiService" class="org.uofm.ot.fusekiAccessLayer.FusekiService">
