@@ -62,6 +62,18 @@ public class ArkId {
         return name;
     }
 
+    public void setArkId(String arkId) {
+        this.arkId = arkId;
+    }
+
+    public void setNaan(String naan) {
+        this.naan = naan;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 //    public void setName(String name) {
 //        this.name = name;
 //    }
