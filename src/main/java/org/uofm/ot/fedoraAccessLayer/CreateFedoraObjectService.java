@@ -1,6 +1,7 @@
 package org.uofm.ot.fedoraAccessLayer;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.uofm.ot.dao.ObjectIDDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
@@ -8,19 +9,16 @@ import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.User;
+import org.uofm.ot.services.IdService;
 import org.uofm.ot.knowledgeObject.ArkId;
 
 import java.util.Date;
 
 public class CreateFedoraObjectService extends FedoraObjectService {
-
-	private ObjectIDDAO objectIDDAO;
-
-	public void setObjectIDDAO(ObjectIDDAO objectIDDAO) {
-		this.objectIDDAO = objectIDDAO;
-	}
 	
-	// TODO: Autowire ID Service
+	
+	@Autowired
+	private IdService idService;
 
 	private static final Logger logger = Logger.getLogger(CreateFedoraObjectService.class);
 
@@ -33,7 +31,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 
 			ArkId arkId;
 			if (existingArkId == null) {
-				arkId = objectIDDAO.retrieveNewId();
+				arkId = idService.mint();
 			}
 			else {
 				arkId = existingArkId;
@@ -43,8 +41,6 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 			String uri = fedoraObject.getArkId().getFedoraPath();
 
 			if(uri != null ) {
-
-				// TODO: Mint ID here
 				
 				transactionId =  super.createTransaction();
 				
@@ -81,8 +77,6 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				logger.info("Successfully created object "+fedoraObject);
 				
 				super.commitTransaction(transactionId);
-				
-				objectIDDAO.updateNewId();
 
 			} else
 				errorMessage = "Unable to generate unique id for the object "+fedoraObject;

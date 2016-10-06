@@ -42,6 +42,7 @@ public class IdServiceTest {
 
 	@Test
 	public void testMethodDelegation() throws Exception {
+		when(ezidService.mint()).thenReturn(ARKID_STRING);
 		idService.mint();
 		verify(ezidService).mint();
 	}
