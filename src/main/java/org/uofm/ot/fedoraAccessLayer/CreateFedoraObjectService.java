@@ -2,7 +2,6 @@ package org.uofm.ot.fedoraAccessLayer;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.uofm.ot.dao.ObjectIDDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 import org.uofm.ot.knowledgeObject.Citation;
