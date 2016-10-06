@@ -2,51 +2,38 @@ package org.uofm.ot.knowledgeObject;
 
 public class ArkId {
 
+    // Fake/sample Ids (for Testing)
+    static private final String FAKE_ARKID_PATH = "ark:/99999/12345";
     private String arkId;
-
     private String naan;
-
     private String name;
 
-    public ArkId() {}
+    public ArkId() {
+    }
 
-	public ArkId(String id_value) {
+    public ArkId(String path) {
 
-        if (id_value.contains("ark:/")) {
-            this.arkId = id_value; // full id
-            String[] path = id_value.substring("ark:/".length()).split("/");
-            naan = path[0];
-            name = path[1];
+        if (path == null) throw new IllegalArgumentException("Path cannot be null");
+
+        if (path.contains("ark:/")) {
+            String[] parts = path.substring("ark:/".length()).split("/");
+            naan = parts[0];
+            name = parts[1];
         } else {
-            this.arkId = this.name = id_value; // old-style id, e.g. "OT42"
+            if (path.contains("/")) throw new IllegalArgumentException("Non-ark id may not contain slashes");
+            this.arkId = this.name = path; // old-style id, e.g. "OT42"
         }
-	}
+    }
 
-	public String getArkId() {
+    public static ArkId FAKE_ARKID() {
+        return new ArkId(FAKE_ARKID_PATH);
+    }
 
-        if (arkId == null )
-            this.arkId = String.format("ark:/%s", naan+"/"+name);
+    public String getArkId() {
+
+        if (arkId == null)
+            this.arkId = String.format("ark:/%s", naan + "/" + name);
         return arkId;
-	}
-
-	@Override
-    public String toString() {
-        return getArkId();
-    }
-
-    // Fake/sample Ids (for Testing)
-    static final String FAKE_ARKID = "ark:/99999/12345";
-
-	public static ArkId FAKE_ARKID() {
-        return new ArkId(FAKE_ARKID);
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setNaan(String naan) {
-        this.naan = naan;
     }
 
     public String getFedoraPath() {
@@ -58,8 +45,30 @@ public class ArkId {
         }
     }
 
-    // Status flags for setting state in external services
-    // (ArkId has no status itself
+    @Override
+    public String toString() {
+        return getArkId();
+    }
+
+    String getNaan() {
+        return naan;
+    }
+
+//    public void setNaan(String naan) {
+//        this.naan = naan;
+//    }
+
+    String getName() {
+        return name;
+    }
+
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+
+    // Status flags for setting state (in external
+    // services; ArkId has no status itself)
+    // TODO: Maybe move to IdService
     public static enum Status {
 
         PUBLIC("public"),
@@ -68,13 +77,15 @@ public class ArkId {
 
         private String status;
 
-        private Status(String status) {
-            this.status = status ;
+        Status(String status) {
+            this.status = status;
         }
 
         @Override
-        public String toString(){
+        public String toString() {
             return this.status;
         }
+
     }
+
 }

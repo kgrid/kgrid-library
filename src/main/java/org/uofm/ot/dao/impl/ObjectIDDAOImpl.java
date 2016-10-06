@@ -35,10 +35,7 @@ public class ObjectIDDAOImpl implements ObjectIDDAO {
 		try {
 			ObjectId objectId = jdbcTemplate.queryForObject(CHECK_ID,new BeanPropertyRowMapper<>(ObjectId.class));
 			String name = ID_PREFIX + objectId.getNewObjectId();
-			ArkId arkId = new ArkId();
-			arkId.setNaan("99999");
-			arkId.setName(name);
-
+			ArkId arkId = new ArkId("ark:/99999/" + name);
 			return arkId;
 		}  catch( EmptyResultDataAccessException e) {
 			return null;
