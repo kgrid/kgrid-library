@@ -63,8 +63,7 @@ public class KnowledgeObjectController {
 	}
 
 	
-	// TODO: Remove this method after UI switched it to other API
-	@RequestMapping(value="/knowledgeObject/{name}",
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}",
 			method=RequestMethod.GET ,
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<FedoraObject> getKnowledgeObject(ArkId arkId) throws ObjectTellerException  {
@@ -79,14 +78,6 @@ public class KnowledgeObjectController {
 		}
 
 		return entity ;
-	}
-	
-	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}",
-			method=RequestMethod.GET ,
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<FedoraObject> getKnowledgeObjectForArkId(ArkId arkId) throws ObjectTellerException  {
-
-		return getKnowledgeObject(arkId) ;
 	}
 
 
@@ -103,7 +94,6 @@ public class KnowledgeObjectController {
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public FedoraObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
 		ArkId arkId = new ArkId(objectURI);
-		arkId.setName(objectURI);
 		return knowledgeObjectService.getCompleteKnowledgeObject(arkId);
 	}
 	
@@ -128,7 +118,6 @@ public class KnowledgeObjectController {
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public FedoraObject updateKnowledgeObject(@RequestBody FedoraObject knowledgeObject,@PathVariable String objectURI) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
-		arkId.setName(objectURI);
 		return knowledgeObjectService.editObject(knowledgeObject,arkId);
 	}
 	
@@ -145,7 +134,6 @@ public class KnowledgeObjectController {
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void deleteKnowledgeObject(@PathVariable String objectURI) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
-		arkId.setName(objectURI);
 		knowledgeObjectService.deleteObject(arkId);
 	}
 
@@ -157,8 +145,7 @@ public class KnowledgeObjectController {
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void addOrUpdatePayload(@RequestBody Payload payload , @PathVariable String objectURI) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
-		arkId.setName(objectURI);
-		knowledgeObjectService.editPayload(arkId, payload);	
+		knowledgeObjectService.editPayload(arkId, payload);
 	}
 	
 	
@@ -176,8 +163,7 @@ public class KnowledgeObjectController {
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public Metadata getMetadata( @PathVariable String objectURI) throws ObjectTellerException {
-		ArkId arkId = new ArkId();
-		arkId.setName(objectURI);
+		ArkId arkId = new ArkId(objectURI);
 		return knowledgeObjectService.getKnowledgeObject(arkId).getMetadata();
 	}
 	
@@ -195,8 +181,7 @@ public class KnowledgeObjectController {
 	public ResponseEntity<Payload> getPayload( @PathVariable String objectURI) {
 		ResponseEntity<Payload> payload = null;
 		try {
-			ArkId arkId = new ArkId();
-			arkId.setName(objectURI);
+			ArkId arkId = new ArkId(objectURI);
 			Payload payloadObj = knowledgeObjectService.getPayload(arkId);
 			payload = new ResponseEntity<Payload> (payloadObj,HttpStatus.OK);
 		} catch (ObjectTellerException e) {
@@ -225,8 +210,7 @@ public class KnowledgeObjectController {
 	public ResponseEntity<String> getInputMessage( @PathVariable String objectURI)  {
 		ResponseEntity<String> inputMessage = null;
 		try {
-			ArkId arkId = new ArkId();
-			arkId.setName(objectURI);
+			ArkId arkId = new ArkId(objectURI);
 			String content = knowledgeObjectService.getInputMessageContent(arkId);
 			inputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
 		} catch (ObjectTellerException exception){
@@ -254,8 +238,7 @@ public class KnowledgeObjectController {
 	public ResponseEntity<String> getOutputMessage( @PathVariable String objectURI) throws ObjectTellerException {
 		ResponseEntity<String> outputMessage = null;
 		try {
-			ArkId arkId = new ArkId();
-			arkId.setName(objectURI);
+			ArkId arkId = new ArkId(objectURI);
 			String content = knowledgeObjectService.getOutputMessageContent(arkId);
 			outputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
 		} catch (ObjectTellerException exception){
@@ -283,8 +266,7 @@ public class KnowledgeObjectController {
 	public ResponseEntity<String> getLogData( @PathVariable String objectURI) throws ObjectTellerException {
 		ResponseEntity<String> logData = null;
 		try {
-			ArkId arkId = new ArkId();
-			arkId.setName(objectURI);
+			ArkId arkId = new ArkId(objectURI);
 			String content = knowledgeObjectService.getProvData(arkId);
 			logData = new ResponseEntity<String>(content, HttpStatus.OK);
 		} catch (ObjectTellerException exception){
@@ -313,7 +295,6 @@ public class KnowledgeObjectController {
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void updateMetadata(@RequestBody Metadata metadata , @PathVariable String objectURI) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
-		arkId.setName(objectURI);
 		knowledgeObjectService.addOrEditMetadata(arkId, metadata);
 	}
 	
@@ -331,7 +312,6 @@ public class KnowledgeObjectController {
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void addOrUpdateInputMessage(@RequestBody String inputMessage , @PathVariable String objectURI) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
-		arkId.setName(objectURI);
 		knowledgeObjectService.editInputMessageContent(arkId, inputMessage);
 	}
 	
@@ -349,7 +329,6 @@ public class KnowledgeObjectController {
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void addOrUpdateOutputMessage(@RequestBody String outputMessage , @PathVariable String objectURI) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
-		arkId.setName(objectURI);
 		knowledgeObjectService.editOutputMessageContent(arkId, outputMessage);
 	}
 	
