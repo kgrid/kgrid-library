@@ -118,7 +118,7 @@ public class KnowledgeObjectController {
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public FedoraObject updateKnowledgeObject(@RequestBody FedoraObject knowledgeObject,@PathVariable String objectURI) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
-		return knowledgeObjectService.editObject(knowledgeObject,arkId);
+		return updateKnowledgeObjectByArkId(knowledgeObject,arkId);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}", 
