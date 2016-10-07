@@ -58,6 +58,7 @@ public class RestWSController {
 	@RequestMapping(value = "/rest/getResult", method = RequestMethod.POST,
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
+	@CrossOrigin
 	public ResponseEntity<Result> getResult(@RequestBody InputObject io) throws ObjectTellerException {
 		ArkId arkId = new ArkId(io.getObjectName());
 
