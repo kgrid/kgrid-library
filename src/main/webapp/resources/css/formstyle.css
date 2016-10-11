@@ -125,7 +125,7 @@ input[type=text]:focus {
 }
 
 input[type=text].inEdit {
-	border: 1px solid #39b45a;
+	border: 1px solid #b3b3b3;
 }
 
 input[type=text].login, input[type=password].login{
@@ -156,7 +156,7 @@ select {
 	width: 892px;
 	height: 50px;
 	padding: 5px 16px;
-	border: 1px solid #e6e6e6;
+	border: 1px solid #b3b3b3;
 	border-radius: 10px;
 	margin: 2px 0;
 	font-size: 14px;
@@ -188,7 +188,7 @@ option:hover {
 #description_data, #citation_detail, #license_detail, #logdata_display {
 	display: block;
 	padding: 5px 16px;
-	border: 1px solid #39b54a;
+	border: 1px solid #b3b3b3;
 	border-radius: 10px;
 	margin: 2px 0;
 	font-size: 14px;
@@ -198,7 +198,7 @@ option:hover {
 }
 
 #description_data.inEdit {
-	border: 1px solid #39b45a;
+	border: 1px solid #b3b3b3;
 }
 
 #logdata_display {
@@ -221,7 +221,7 @@ option:hover {
 .dropfile {
 	margin-top: 10px;
 	margin-bottom: 10px;
-	border: 2px dashed #e6e6e6;
+	border: 2px dashed #b3b3b3;
 	/*border-width:1px;*/
 	width: 910px;
 	height: 140px;

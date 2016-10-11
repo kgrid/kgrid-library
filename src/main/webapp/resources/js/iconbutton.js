@@ -2,8 +2,8 @@
 /*global $, $, alert*/
 $(document).ready(function () {
 	   
-	   var roffset=[2,-40,60,-30,25,15];
-	   var iDescription = ["ADD/REMOVE USER","LIBRARY SETTING","ADD/REMOVE USER","OBJECT SETTING","JAMES RAMPTON","ALLEN FLYNN"];
+	   var roffset=[2,-20,60,-30,25,15];
+	   var iDescription = ["ADD/REMOVE USER","SETTING","ADD/REMOVE USER","OBJECT SETTING","JAMES RAMPTON","ALLEN FLYNN"];
   
        $('#backtotop').click(function () {
            $("html, body").animate({

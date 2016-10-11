@@ -67,7 +67,6 @@ $(document).ready(function(){
 		
 		}); 
 		
-		
 		$("#logout").click(function userLogout(){
 			$.ajax({
 				type : 'POST',
@@ -177,13 +176,13 @@ $(document).ready(function(){
 						</ul>
 					</div>
 					<div id="logout-dropdown" class="dropdown">
-						<form method="POST" class="signin" action="">
+						<%-- <form method="POST" class="signin" action="">
 							<fieldset class="links">
 								<button id="settings" type="button" class="open-overlay button" onclick="openNav()">
 									<spring:message code="SETTINGS" />
 								</button>
 							</fieldset>
-						</form>
+						</form> --%>
 						<form class="signin">
 							<fieldset class="links">
 								<button id="logout" class="submit button" type="button">

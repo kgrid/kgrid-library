@@ -69,7 +69,7 @@
 				
 			<div>
 			<sf:form name="addObj_f" class="Add-content" id="addObj_f"
-						method="POST" modelAttribute="fedoraObject" action="addNewObject1">
+						method="POST" modelAttribute="fedoraObject" action="">
 			<div id="barcontainer">
 				<ul class="inEdit" id="tabs">
 					<li class="labels active"><spring:message code="METADATA_TAB" /></li>
@@ -78,8 +78,8 @@
 					<li class="labels"><spring:message code="OUTPUT_TAB" /></li>
 				</ul>
 				<div id="editWrapper">
-					<button class="edit" id="cancelBtn">Undo</button>
-					<button class="edit" id="saveObjButton" onclick="updateObject('')">Save & Close</button>
+					<button class="edit" id="cancelBtn">UNDO</button>
+					<button class="edit" id="saveObjButton" onclick="updateObject('')">SAVE&CLOSE</button>
 								</div>
 			</div>
 			<ul class="inEdit" id="tab">
@@ -124,16 +124,16 @@
 												<label for="file_payload"><spring:message
 														code="CHOOSE_FILE" /></label>
 											</p> <br>
-											<p>
+											<%-- <p>
 												<spring:message code="FILE_TYPE" />
-											</p>
+											</p> --%>
 										</label>
 									</div>
-									<p class="instruction">
+									<%-- <p class="instruction">
 										<spring:message code="CLICK" />
 										<a href=#><spring:message code="HERE" /></a>
 										<spring:message code="PAYLOAD_DOWNLOAD_MESSAGE" />
-									</p>
+									</p> --%>
 								</div>
 								<div class="display-payload" id="payloadTextAreaDisplay">
 									<button id="payloadClearBtn">
@@ -164,16 +164,16 @@
 												<label for="file_input"><span><spring:message
 															code="CHOOSE_FILE" /></label>
 											</p> <br>
-											<p>
+											<%-- <p>
 												<spring:message code="FILE_TYPE" />
-											</p>
+											</p> --%>
 										</label>
 									</div>
-									<p class="instruction">
+									<%-- <p class="instruction">
 										<spring:message code="CLICK" />
 										<a href=#><spring:message code="HERE" /></a>
 										<spring:message code="INPUT_MESSAGE_DOWNLOAD" />
-									</p>
+									</p> --%>
 								</div>
 								<div class="display-input" id="inputTextAreaDisplay">
 									<button id="inputClearBtn">
@@ -203,16 +203,16 @@
 												<label for="file_output"><spring:message
 														code="CHOOSE_FILE" /></label>
 											</p> <br>
-											<p>
+											<%-- <p>
 												<spring:message code="FILE_TYPE" />
-											</p>
+											</p> --%>
 										</label>
 									</div>
-									<p class="instruction">
+									<%-- <p class="instruction">
 										<spring:message code="CLICK" />
 										<a href=#><spring:message code="HERE" /></a>
 										<spring:message code="OUTPUT_MESSAGE_DOWNLOAD" />
-									</p>
+									</p> --%>
 								</div>
 								<div class="display-output" id="outputTextAreaDisplay">
 									<button id="outputClearBtn">
