@@ -345,19 +345,23 @@ function initInputTextFromObject(obj, target) {
 	var elementSuffix = "_v";
 	if (target == "overlay") {
 		elementSuffix = "";
-		resetInputText();
+		//resetInputText();
 	}
-
 	displayMetaData(obj.metadata, elementSuffix);
-	$("#functionName" + elementSuffix).val(obj.payload.functionName);
-	$("#engineType" + elementSuffix).val(obj.payload.engineType);
-	displayIOMessage("payload", obj.payload.content, elementSuffix);
+	if(obj.payload!=null){
+		$("#functionName" + elementSuffix).val(obj.payload.functionName);
+		$("#engineType" + elementSuffix).val(obj.payload.engineType);
+		displayIOMessage("payload", obj.payload.content, elementSuffix);
+	}
+	if(obj.inputMessage!=null){
 	displayIOMessage("inputMessage", obj.inputMessage, elementSuffix);
+	}
+	if(obj.outputMessage!=null){
 	displayIOMessage("outputMessage", obj.outputMessage, elementSuffix);
+}
 }
 
 function displayMetaData(obj, elementSuffix) {
-	console.log("Metadata display:" + obj);
 	console.log(" Reset Page Title to: " + obj.title+" Suffix:"+elementSuffix);
 	if (elementSuffix == "") {
 		
@@ -390,17 +394,20 @@ function displayMetaData(obj, elementSuffix) {
 	$("#owner_data" + elementSuffix).val(obj.owner);
 	$("#contributor_data" + elementSuffix).val(obj.contributors);
 
-	console.log("Number of Citation:" + obj.citations.length);
-	for (var i = 0; i < obj.citations.length; i++) {
+	if(obj.citations!=null){
+		console.log("Number of Citation:" + obj.citations.length);
+		for (var i = 0; i < obj.citations.length; i++) {
 		console.log("CTitle:" + obj.citations[i].citation_title + " CLInk:"
 				+ obj.citations[i].citation_at);
 		addCitationEntry(obj.citations[i].citation_title,
 				obj.citations[i].citation_at, elementSuffix);
+		}
 	}
+	if(obj.license!=null){
 	$("#license_data" + elementSuffix).val(obj.license.licenseName);
 	$("#license_data" + elementSuffix).attr("licenseLink",
 			obj.license.licenseLink);
-
+	}
 }
 
 function displayIOMessage(section, obj, suffix) {
@@ -793,6 +800,7 @@ function saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text) {
 }
 
 function addObjContent() {
+	viewObj = editObj;
 	$("#entry_form1").show();
 	$("#end_page").hide();
 	$("#page_title").text(curTitle);
@@ -803,19 +811,19 @@ function addObjContent() {
 
 function buildMetaDataTab(mode) {
 	var inputLabels = [ "TITLE", "DESCRIPTION", "KEYWORDS", "OWNERS",
-			"CONTRIBUTORS", "CITATIONS", "LICENSE" ];
+			"CONTRIBUTORS", "LICENSE" , "CITATIONS"];
 	var inputNames = [ "title", "description_data", "keyword_data",
-			"owner_data", "contributor_data", "citation_data", "license_data" ];
+			"owner_data", "contributor_data", "license_data", "citation_data" ];
 	var inputIDs = [ "title_data", "description_data", "keyword_data",
-			"owner_data", "contributor_data", "citation_data", "license_data" ];
-	var maxLengths = [ 140, 500, 140, 140, 140, 500, 140 ];
+			"owner_data", "contributor_data", "license_data", "citation_data" ];
+	var maxLengths = [ 140, 500, 140, 140, 140, 140, 500 ];
 	var placeholderTexts = [
 			"A title, which is a formal name.",
 			"A text description of the object - akin to an abstract - maybe enetered for any object.",
 			"Click here to add Keywords.", "Click here to add Owners.",
-			"Click here to add Contributors.", "Click here to add Citations",
-			"Click here to add License" ];
-	var isMultiples = [ false, false, false, false, false, true, false ];
+			"Click here to add Contributors.",
+			"Click here to add License" , "Click here to add Citations"];
+	var isMultiples = [ false, false, false, false, false, false, true ];
 	var numberofFields = inputLabels.length;
 	var inputField;
 	for (var i = 0; i < (numberofFields); i++) {
@@ -894,7 +902,7 @@ function addCitationEntry(cTitle, urllink, elementSuffix) {
 		initCitationText('citation', idx, ctitle, clink);
 	});
 }
-
+var iframeError;
 $(document)
 		.ready(
 				function() {
@@ -1068,45 +1076,39 @@ $(document)
 					$("[id$='ancelBtn']")
 							.click(
 									function(event) {
-										console.log("View:" + viewObj);
-										console.log("Edit:" + editObj);
+										console.log(viewObj);
+										console.log(editObj);
 										editObj = viewObj;
+										
 										initInputTextFromObject(viewObj,"overlay");
-										$(this)
-												.parents("#addObj_f")
-												.find("ul#tabs li")
-												.each(
+										$(this).parents("#addObj_f").find("ul#tabs li").each(
 														function() {
-															console
-																	.log("UL li text:"
-																			+ $(
-																					this)
-																					.text());
-															$(this)
-																	.text(
-																			$(
-																					this)
-																					.text()
-																					.replace(
-																							"*",
-																							""));
+															console.log("UL li text:"+ $(this).text());
+															$(this).text($(this).text().replace("*",""));
 														});
 
 									});
 					$("button").click(function(e) {
 						e.preventDefault();
 					});
+
 					$("#preview_btn").click(function(e) {
 						var urllink = $("#citation_link").val();
 						console.log(urllink);
-						$("#citation_detail").attr('src', urllink);
-
+						//$("#citation_detail").attr('src', urllink);
+						$("#citation_detail").attr('src', "/ObjectTeller/resources/iframe_default.html");
+							var myWindow = window.open(urllink, "myWindow", "width=400,height=700");   // Opens a new window
+							myWindow.focus();
 					});
+
 					$("#license_preview_btn").click(function(e) {
 						var urllink = $("#license_link").val();
 						console.log(urllink);
-						$("#license_detail").attr('src', urllink);
-					});
+						//$("#license_detail").attr('src', urllink);
+						$("#license_detail").attr('src', "/ObjectTeller/resources/iframe_default.html");
+							var myWindow = window.open(urllink, "myWindow", "width=400,height=700");   // Opens a new window
+							myWindow.focus();
+						});
 
 					var citation_validator = $("#citation_f")
 							.validate(

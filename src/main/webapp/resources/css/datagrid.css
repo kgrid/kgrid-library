@@ -268,14 +268,18 @@ h3 {
 
 .edit {
 	background-color: #fff;
-	color: #39b54a;
+	color: #b3b3b3;
 	font-size: 14px;
-	font-weight: 300;
+	font-weight: 400;
 	padding-left: 22px;
 	border: none;
 	outline: none;
 	cursor: pointer;
 	vertical-align: middle;
+}
+
+.edit:hover{
+	color: #666666;
 }
 
 .done {
