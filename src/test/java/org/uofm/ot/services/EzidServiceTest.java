@@ -2,6 +2,7 @@ package org.uofm.ot.services;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +23,23 @@ public class EzidServiceTest {
 
     @Autowired
 	private EzidService ezidService;
+    
 
     @Before
     public void setUp() throws Exception {
     }
-
+    
     @After
     public void tearDown() throws Exception {
 
     }
 
-   @Test
+    @Test
     public void canConnectToEzidService() throws IOException, URISyntaxException {
 
-        String response = ezidService.get("ark:/99999/fk4n303p0d");
+    	String arkId = ezidService.mint();
+    	
+        String response = ezidService.get(arkId);
 
         assertTrue(response.contains("_target"));
     }

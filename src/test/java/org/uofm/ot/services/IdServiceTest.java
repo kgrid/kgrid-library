@@ -15,8 +15,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"file:src/main/webapp/WEB-INF/ObjectTellerServlet-servlet.xml" })
 public class IdServiceTest {
 
 	private static final String ARKID_STRING = ArkId.FAKE_ARKID().toString();
