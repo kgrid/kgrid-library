@@ -1,0 +1,128 @@
+.roundbutton {
+  font-family: 'Open Sans', sans-serif;
+    width:35px;
+    height:35px;
+    border-radius: 100%;
+    color:dimgrey;
+    background-color:white;
+    border:1px solid #666666;
+    font-size:12pt;
+    font-weight: 300;
+    margin:0 -5px;
+    line-height: 35px;
+    position:relative;
+    vertical-align:middle;
+    /*margin-top:25px;
+    margin-left:25px;*/
+}
+.roundbutton p{
+  padding:6px 0;
+}
+
+.roundbutton:hover{
+    border:1px solid #39b45a;
+    color:#39b45a;
+    font-weight:400;
+    background-color:#39b45a;
+}
+
+#settinglink, #objsettinglink{
+  margin-left: 20px;
+}
+
+.saveChange{
+  height:40px;
+  width:145px;
+  border:none;
+  border-radius: 10px;
+  background-color: #39b54a;
+  color:white;
+  font-size: 14px;
+  text-align: center;
+  margin-left: 350px;
+  font-weight: 300;
+  margin-right: 25px;
+}
+.greenroundbutton {
+    width:41px;
+    height:41px;
+    border-radius: 100%;
+    color:white;
+    background-color:#39b54a;
+    border:none;
+    font-size:20px;
+    padding:8px 10px 8px 8px;
+}
+#closebutton {
+  position: absolute;
+  top:-18px;
+  right:-18px;
+  z-index: 1000;
+  box-shadow: 1px 1px #666666;
+}
+
+img{
+    vertical-align: middle;
+    margin:0 auto;
+}
+
+img#dropdown{
+	tr
+}
+.greenroundbutton:hover{
+    background-color: lightgreen;
+    
+}
+        #infoicon{
+            position:absolute;
+            bottom:-20px;
+            right:350px;
+            margin:0 auto;
+            z-index:500;
+        }
+                #addObjbutton{
+            position:absolute;
+            bottom:-20px;
+            right:350px;
+            z-index:500;
+            margin: 0 auto;
+         }
+        #backtotop{
+            position:fixed;
+            bottom:50px;
+            right:350px;
+            margin:0 auto;
+            display:none;
+            z-index:500;
+        }
+
+.delete_btn, .edit_btn{
+	display:inline-block;
+	background-color:#fff;
+	line-height: 1em;
+	font-size:14px;
+	color: #b3b3b3;
+	padding:0px 10px 0px 10px;
+	
+}
+ .edit_btn{
+ 	border-right: 1px solid #b3b3b3;
+ }
+
+
+.delete_btn:hover, .edit_btn:hover{
+	color:#666666;
+}
+#newuser{
+	width:16px;
+	height:16px;
+        position:absolute;
+    bottom:-5px;
+    right:-5px;
+    padding:0;
+    z-index:12;
+}
+
+#newuser:hover{
+	background-color:#39b54a;
+}

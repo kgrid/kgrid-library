@@ -1,0 +1,17 @@
+{"fields":
+	[
+		{"name" : "title", "type": "text","title":"TITLE","section":"metadata"}, 
+		{"name" : "description", "type": "textarea","title":"DESCRIPTION","section":"metadata"},
+		{"name" : "keywords", "type": "text","title":"KEYWORDS","section":"metadata"}, 
+   		{"name" : "owner", "type": "text","title":"OWNERS","section":"metadata"},
+   		{"name" : "contributors", "type": "text","title":"CONTRIBUTORS","section":"metadata"}, 
+   		{"name" : "citations", "type": "list","title":"CITATIONS","section":"metadata"},
+   		{"name" : "license", "type": "linked","title":"LICENSE","section":"metadata"}, 
+   		{"name" : "functionName", "type": "text","title":"FUNCTION NAME","section":"payload"},
+   		{"name" : "engineType", "type": "text","title":"ENGINE TYPE","section":"payload"}, 
+   		{"name" : "content", "type": "textarea","title":"CONTENT","section":"payload"},
+   		{"name" : "inputMessage", "type": "textarea","title":"CONTENT","section":"inputMessage"}, 
+   		{"name" : "outputMessage", "type": "textarea","title":"CONTENT","section":"outputMessage"}, 
+   		{"name" : "logData", "type": "textarea","title":"CONTENT","section":"logData"}
+    ]
+}
