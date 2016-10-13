@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<link rel="shortcut icon"
+	href="images/MiniIconObjectTeller.ico" />
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/bannercontent.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/datagrid.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/button.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/l_overlay.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/navigation.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/librarysetting.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/formstyle.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/tab.css" type="text/css" />
+<link rel="stylesheet" href="css/ot.css" type="text/css" />
+<title>OBJECT TELLER in Vue </title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+<script
+	src="https://unpkg.com/vue@2.0.2/dist/vue.js"></script>
+<script type="text/javascript" src="https://unpkg.com/vue-router@2.0.0"></script>
+<script type="text/javascript" src="js/lodash.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="js/ot.js"></script>
+<script src="js/date.format.js"></script>
+
+</head>
+<body>
+	<div id="app">
+		<div class="ot-nav">
+			<router-link class="navbar-brand ot-1 .router-link-active" to="/">
+				<img alt="Brand" src="images/logo.png">
+			</router-link>
+			<nav class="navbar navbar-default navbar-fixed-top ot-1">
+				<div class="container-fluid ot-1">
+					<div class="navbar-header ot-1">
+						<button type="button" class="navbar-toggle collapsed ot-1"
+							data-toggle="collapse"
+							data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="collapse navbar-collapse ot-1"
+						id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li><router-link to="/about">About</router-link></li>
+							<li><router-link to="/faq">FAQ</router-link></li>
+							<li><router-link to="/contactus">Contact Us</router-link></li>
+
+						</ul>
+						<ul class="nav navbar-nav navbar-right ot-1">
+							<li><a href="#">Log In</a></li>
+							<li><a id="signupBtn" href="#">Sign Up</a></li>
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+		</div>
+		
+		<router-view></router-view>
+	</div>
+	<template id="layout">
+		<div class="ot-content">
+			<button class="greenroundbutton ot-backtotop" v-on:click='backToTop()'>
+				<img src="images/Chevron_Icon.png">
+			</button>
+			<div class="whitebacking">
+				<div class="wrapper">
+					<div class="ot-banner" v-if="nothelper">
+						<slot name="banner"></slot>		
+			</div></div></div>
+			<div class="header" v-if="nothelper">
+				<div class="headercontainer">
+					<div class="headercol">
+						<slot name="header"></slot> 
+			</div></div></div>
+			<div class="e6backing">
+				<div class="wrapper">
+					<div class="datagrid">
+						<slot name="maincontent"></slot>
+					</div>
+					<div class="m_logo_footer" v-if="nothelper==false">
+						<img src="images/blue-transparentbg.png" width="60px"	height="auto" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</template>
+
+	<template id="ko-list">
+		<div class="content">
+			<div id="bannerbk">
+				<img src="images/bannerBackground.png">
+			</div>
+			<appLayout :nothelper="true">
+					
+				<div slot="banner">
+					<h1>
+						ObjectTeller supports Health Knowledge Services<br> <small>by
+					providing a repository toolkit for storing, curating, managing and
+					making computable health knowledge accessible for learning health
+					systems. </small>
+					</h1>
+				</div>
+				<div slot="header">
+				<div class="row">
+						<div class="col-md-6 ot-search">
+							<span class="ot-glybtn glyphicon glyphicon-search"></span> <input
+								placeholder="Search" v-model="filterString" />
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-2 ot-count">{{countString}}</div>
+						<div class="col-md-2">
+							<select class="ot-select" v-model="sortKey">
+								<option value="metadata.title">Title</option>
+								<option value="uri">Object ID</option>
+								<option value="metadata.lastModified">Last Updated</option>
+							</select>
+						</div>
+						<div class="col-md-1">
+							<button v-on:click="toggleOrder()">
+								<span v-if="orderAsc"
+									class="ot-glybtn glyphicon glyphicon-sort-by-attributes"></span>
+								<span v-else
+									class="ot-glybtn glyphicon glyphicon-sort-by-attributes-alt"></span>
+							</button>
+						</div>
+					</div></div>
+				<div slot="maincontent">
+					<ul>
+						<li v-for="object in orderedList"><ko-tile :object="object"
+								:listsize="listSize" v-on:click="objectSelected($index)"></ko-tile></li>
+					</ul>
+				</div>
+				
+			</appLayout>
+
+		</div>
+	</template>
+	
+	<template id="ko-tile-template"> 
+		<router-link v-bind:to="objLink">
+			<div class="container ot-tile" v-bind:id="object.uri">
+				<div class="row ot-2">
+					<div class="col-md-1 ot-type">
+						<img v-if="object.metadata.published" src="images/LittleGreenDot.png" width="10px"	height="auto" />
+					</div>
+					<div class="col-md-10 ot-title" data-toggle="tooltip"
+							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
+					</div>
+					<div class="col-md-1 ot-empty ">
+						<button class="edit" v-on:click="deleteObject()">
+							<span class="glyphicon glyphicon glyphicon-trash"></span>
+						</button>
+					</div>
+				</div>
+				<div class="row ot-2">
+					<div class="col-md-1 ot-empty"></div>
+					<div class="col-md-11 ot-owner">{{object.metadata.owner}}</div>
+				</div>
+				<div class="row ot-2">
+					<div class="col-md-1 ot-empty "></div>
+					<div class="col-md-5 ot-keywords">Keyword:{{object.metadata.keywords}}</div>
+					<div class="col-md-3 ot-id">
+						<span class="ot-left">Object ID: {{object.uri}}</span>
+					</div>
+					<div class="col-md-3 ot-udate">
+						<span class="ot-right">Last Updated: <span v-text="formattedlastModified"></span></span>
+					</div>
+				</div>
+			</div>
+		</router-link> 
+	</template>
+	
+	<template id="obj-detail">
+	<div class="ot-content">
+		<div class="banner-content display-banner">
+			<div id="goback">
+				<div id="backButton">
+					<a href="/ObjectTeller/home">BACK TO THE LIBRARY</a>
+				</div>
+			</div>
+
+			<div id="ko-title">
+				<div style="width: 10px; hieght: 60px; display: inline-block;">
+					<img v-if="objModel.object.metadata.published"
+						src="images/LittleGreenDot.png" width="10px"
+						height="auto" />
+				</div>
+				<h1>
+					<small id="page_title_v">{{objModel.object.metadata.title}}</small>
+				</h1>
+			</div>
+			<div class="date">
+				<div class="id">
+					<p class="date-title">Object ID:</p>
+					<p class="date-data">
+						<span>{{objModel.object.uri}}</span>
+					</p>
+				</div>
+				<div class="date1">
+					<p class="date-title">Last Updated:</p>
+					<p class="date-data">
+						<span v-text="formattedUpdateDate"></span>
+					</p>
+				</div>
+				<div class="date2">
+					<p class="date-title">Created On:</p>
+					<p class="date-data">
+						<span v-text="formattedCreateDate"></span>
+					</p>
+				</div>
+			</div>
+
+		</div>
+		<div class="header">
+			<div class="objectcontainer">
+				<div class="headercol">
+					<ul class="nav nav-tabs" role="tablist" id="tabs">
+						<li role="presentation" class="labels"><a
+							href="#metadata" aria-controls="metadata" role="tab"
+							data-toggle="tab">METADATA</a></li>
+						<li role="presentation" class="labels"><a href="#payload"
+							aria-controls="payload" role="tab" data-toggle="tab">PAYLOAD</a></li>
+						<li role="presentation" class="labels"><a href="#inputMessage"
+							aria-controls="input" role="tab" data-toggle="tab">INPUT</a></li>
+						<li role="presentation" class="labels"><a href="#outputMessage"
+							aria-controls="output" role="tab" data-toggle="tab">OUTPUT</a></li>
+						<li role="presentation" class="labels accessLevelOne"><a
+							href="#logData" aria-controls="logdata" role="tab"
+							data-toggle="tab">LOG DATA</a></li>
+						<li role="presentation" class="labels accessLevelOne"><a
+							href="#" aria-controls="logdata" role="tab" data-toggle="tab">
+								<div class="labels iconBtn accessLevelOne">
+									<img class="hover-out"
+										src="images/More_Icon_Light-01.png" /> <img
+										class="hover-in" style="display: none;"
+										src="images/More_Icon_Dark-01.png" />
+								</div>
+						</a></li>
+
+					</ul>
+
+					<div class="inline editwrapper accessLevelOne" id="objBtns"
+						style="top: 4px; right: 40px; position: absolute;">
+						<button class="edit" id="metadataeditBtn">EDIT</button>
+						<button class="edit" id="deleteButton"
+							onclick="deleteObject('${fedoraObject.URI}')">DELETE</button>
+
+						<a class="edit" id="downloadButton" v-bind:href="downloadLink">DOWNLOAD</a>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="maincontentwrapper">
+			<div class="main-content">
+				<div class="datagrid">
+					<ul class="tab-content" id="tab">
+						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
+							class="tab-pane">
+								<tab-pane v-bind:section="section.name"></tab-pane>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	</template>
+
+	<template id= "tab-panel-template">
+		<div class="tab-content view-obj">
+			<ul>
+				<li class="ot-viewlist" v-for="field in filteredFields">
+					<field-tile :field="field"></field-tile>
+				</li>
+			</ul>
+		</div>
+		
+	</template>
+
+	<template id="field-tile-template">
+	<div class="addtext" :id="field.name">
+		<h4>{{field.title}}</h4>
+		<input :type="field.type" class="metaEdit" disabled
+			v-bind:value="value" v-if="isInput" />
+		<textarea class="metaEdit autosize" disabled v-bind:value="value"
+			v-if="isTextArea">{{value}}</textarea>
+		<linkedfield-tile v-if="isLicense" v-bind:link="value.licenseName"
+			v-bind:value="value.licenseLink"></linkedfield-tile>
+		<div class='entryArea' id='citation_entries' v-if="isCitation">
+			<ul class="list">
+				<li v-for="citation in value">
+				<linkedfield-tile :value="citation.citation_title" :link="citation.citation_at"></linkedfield-tile>
+				</li>
+			</ul>
+		</div>
+	</div>
+	</template>
+
+	<template id="linkedfield-tile-template"> 
+	   <a v-bind:href="link">{{value}}</a> 
+	</template>
+
+	<script>
+		var objModel = { object : {} };
+		var sections = [{name:"metadata"},
+		                {name:"payload"},
+		                {name:"inputMessage"},
+		                {name:"outputMessage"},
+		                {name:"logData"}];
+		var applayout = Vue.component("applayout", {
+				template:"#layout",
+				props:['nothelper'],
+				methods:{
+					backToTop: backToTop
+				}
+		})
+		var vmcomp = Vue
+				.component(
+						"ko-tile",
+						{
+							template : "#ko-tile-template",
+							props : [ 'object', 'listsize' ],
+							computed : {
+								formattedlastModified : function() {
+									return new Date(
+											this.object.metadata.lastModified)
+											.format("mediumDate")
+								},
+								formattedCreatedOn : function() {
+									return new Date(
+											this.object.metadata.createdOn)
+											.format("mediumDate")
+								},
+								objLink : function() {
+									return {
+										name : 'object',
+										params : {
+											uri : this.object.uri
+										}
+									};
+								}
+							},
+							methods : {
+								deleteObject : function() {
+									var uri = this.object.uri;
+									var txt;
+									if (uri != "") {
+										var r = confirm("Do you really want to delete the object ? ");
+										if (r == true) {
+											$
+													.ajax({
+														type : 'DELETE',
+														url : "/ObjectTeller/knowledgeObject/"
+																+ uri,
+														success : function(
+																response) {
+															console.log("Deletion successful!");
+														}
+													});
+										}
+									}
+								},
+								selectObject: function(){
+									console.log(this.object.uri+"selected");
+									this.$emit("selectObj");
+								}
+							}
+						});
+		var vm_fields = Vue
+				.component(
+						"field-tile",
+						{
+							template : "#field-tile-template",
+							props : [ 'field', 'value' ],
+							computed : {
+								value : function() {
+									var propertyValue = "";
+									switch (this.field.section) {
+									case "metadata":
+										propertyValue = objModel.object[this.field.section][this.field.name];
+										break;
+									case "payload":
+										propertyValue = objModel.object[this.field.section][this.field.name];
+										break;
+									default:
+										propertyValue = objModel.object[this.field.name];
+										break;
+
+									}
+									return propertyValue;
+								},
+								isInput : function() {
+									return (this.field.type == "text");
+								},
+								isTextArea : function() {
+									return (this.field.type == "textarea");
+								},
+								isLicense : function() {
+									return this.field.name == "license";
+								},
+								isCitation : function() {
+									return this.field.name == "citations";
+								}
+							}
+						});
+		var vm_linkedfields = Vue.component("linkedfield-tile", {
+			template : "#linkedfield-tile-template",
+			props : [ "link", "value" ]
+		});
+		const tabPane = Vue.component('tab-pane', {
+			template: "#tab-panel-template",
+			props:['section'],
+			data: function(){
+				return {
+					fields_json : {
+						fields : []
+					}
+				}
+			},
+			beforeCreate : function() {
+				var self = this;
+				loadFieldsConfig(function(data) {
+					self.fields_json.fields = data.fields;
+				});
+				
+			},
+			updated : function() {
+				$('.autosize').each(autoresize);
+			},
+			created : function() {
+				$('.autosize').each(autoresize);
+			},
+			computed : {
+				filteredFields :function(){
+					var section = this.section;
+					var fields = this.fields_json.fields;
+					return fields.filter(function(field){
+						console.log("Section: "+section);
+						return (field.section==section)
+					})
+				}
+		}
+		});
+		const
+		objDetail = Vue.component('ko-detail', {
+			template : '#obj-detail',
+			data : function() {
+				return {
+					objModel : objModel,
+					sections:sections
+					
+				}
+			},
+			created : function() {
+				var self = this;
+				console.log('Object URI:' + this.$route.params.uri);
+				retrieveObject(this.$route.params.uri, "complete", function(
+						response) {
+					console.log(response);
+					objModel.object = response;
+				}); 
+				$('ul#tabs li:first').addClass('active'); 
+			    $('ul#tab li:first').addClass('active'); 
+
+				
+			},
+			computed : {
+				formattedUpdateDate : function() {
+					return new Date(objModel.object.metadata.lastModified)
+							.format("mediumDate")
+				},
+				formattedCreateDate : function() {
+					return new Date(objModel.object.metadata.createdOn)
+							.format("mediumDate")
+				},
+				downloadLink : function() {
+					return '/ObjectTeller/knowledgeObject/'
+							+ objModel.object.uri + '/complete.json'
+				}
+
+			},
+			updated : function() {
+				$('ul#tabs li:first').addClass('active'); 
+			    $('ul#tab li:first').addClass('active'); 
+				$('.autosize').each(autoresize);
+			}
+		});
+		const
+		Home = Vue.component("ko-main", {
+			template : '#ko-list',
+			data : function() {
+				return {
+					sortKey : "metadata.lastModified",
+					order : "asc",
+					filterString : "",
+					searchQuery : "",
+					model : {
+						koList : []
+					}
+				}
+			},
+			created : function() {
+				var self = this;
+				retrieveObjectList(function(response) {
+					self.model.koList = response;
+				});
+			},
+			computed : {
+				countString : function() {
+					var count = this.orderedList.length;
+					if (count <= 1) {
+						return count + " Object";
+					} else if (count > 200) {
+						return "Many many Objects";
+					} else {
+						return count + " Objects";
+					}
+				},
+				listSize : function() {
+					return this.model.koList.length;
+				},
+				orderAsc : function() {
+					return (this.order == "asc")
+				},
+				orderedList : function() {
+					console.log(this.filteredList.length);
+					return _.orderBy(this.filteredList, this.sortKey,
+							this.order)
+				},
+				filteredList :function(){
+					var list = this.model.koList;
+					var filterString = this.filterString;
+					return list.filter(function(field){
+						console.log("Filter String: "+filterString);
+						return (field.metadata.title.includes(filterString) ||
+								field.metadata.keywords.includes(filterString) ||
+								field.metadata.owner.includes(filterString) )
+					})
+				}
+			},
+			methods : {
+				toggleOrder : function() {
+					if (this.order == "asc") {
+						this.order = "desc";
+					} else {
+						this.order = "asc";
+					}
+				},
+				objectSelected: function(index){
+					console.log("selected index:"+index)
+					objModel.object=this.model.koList[index];
+				}
+			},
+			components:{'appLayout':applayout}
+
+		});
+
+		const About = {
+			template : '<div><applayout :nothelper="true"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
+		};
+		const Faq = {
+			template : '<div><applayout :nothelper="false"><div slot="banner">FAQ BANNER</div><div slot="header">FAQ HEADER</div><div slot="maincontent">FAQ CONTENT</div></applayout><div>'
+		};
+		const Contactus = {
+			template : '<div><applayout :nothelper="false"><div slot="banner">Contactu Banner</div><div slot="header">Contact HEADER</div><div slot="maincontent">Contact Us CONTENT</div></applayout><div>'
+		};
+		const routes = [ 
+		    { path : '/', component : Home	}, 
+		    { path : '/about',	component : About }, 
+		    { path : '/faq',	component : Faq	}, 
+		    { path : '/contactus',	component : Contactus}, 
+		    { path : '/object/:uri', name : 'object', component : objDetail	} 
+		    ];
+		const router = new VueRouter({
+			routes : routes,
+			hashbang : false,
+			history : true
+		});
+		const app = new Vue({
+			router : router,
+			component : Home
+		}).$mount('#app');
+	</script>
+</body>
+</html>

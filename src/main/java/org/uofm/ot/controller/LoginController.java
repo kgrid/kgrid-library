@@ -135,7 +135,6 @@ public class LoginController {
 		return "login/home" ;			
 	}
 	
-	
-	
+
 	
 }

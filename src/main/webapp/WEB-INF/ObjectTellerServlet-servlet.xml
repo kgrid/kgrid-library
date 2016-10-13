@@ -129,7 +129,7 @@
     <mvc:view-controller path="/contactus" view-name="about/contactus"/>
 
     <mvc:resources mapping="/resources/**" location="/resources/"/>
-    
+    <mvc:resources mapping="/vuehome/**" location="/WEB-INF/vuehome/" />
     <context:property-placeholder location="classpath:*.properties"/>
 
 </beans>
