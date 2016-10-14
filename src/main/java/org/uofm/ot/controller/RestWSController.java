@@ -65,6 +65,17 @@ public class RestWSController {
 		return getResultByArkId(io.getParams(), arkId) ;
 	}
 
+	@RequestMapping(value = "/knowledgeObject/ark:/{naan}/{name}/result", method = RequestMethod.POST,
+			consumes = {MediaType.APPLICATION_JSON_VALUE},
+			produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<Result> getResultByArkId(@RequestBody Map<String,Object> params,ArkId arkId) throws ObjectTellerException {
+
+		Result result = calculate(params, arkId);
+
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
+	}
+
+
 
 	private String verifyInput(CodeMetadata codeMetadata, Map<String,Object> ipParams){
 		String errorMessage= null;
@@ -166,16 +177,6 @@ public class RestWSController {
 		return error;
 	}
 
-	@RequestMapping(value = "/knowledgeObject/ark:/{naan}/{name}/result", method = RequestMethod.POST,
-			consumes = {MediaType.APPLICATION_JSON_VALUE},
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Result> getResultByArkId(@RequestBody Map<String,Object> content,ArkId arkId) throws ObjectTellerException {
-
-		Result result = calculate(content, arkId);
-
-		return new ResponseEntity<Result>(result, HttpStatus.OK);
-	}
-	
 
 	private Result calculate(Map<String,Object> map , ArkId arkId) throws ObjectTellerException {
 		
