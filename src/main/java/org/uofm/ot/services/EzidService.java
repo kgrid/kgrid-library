@@ -28,6 +28,9 @@ public class EzidService {
 	
 	@Value(value = "${EZID_PASSWORD}")
 	private String EZID_PASSWORD;
+	
+	@Value(value = "${EZID_SHOULDER}")
+	private String EZID_SHOULDER;
 
     public String get(String id) {
 
@@ -53,7 +56,7 @@ public class EzidService {
         HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
 
         ResponseEntity<String> response = rt.postForEntity(
-                EZID_BASE_URL+"shoulder/ark:/"+NAAN+"/fk4",
+                EZID_BASE_URL+"shoulder/ark:/"+NAAN+"/"+EZID_SHOULDER,
                 requestEntity,
                 String.class);
 
