@@ -18,6 +18,7 @@ import org.uofm.ot.services.KnowledgeObjectService;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -344,7 +345,24 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PATCH,
 			consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void patchKnowledgeObject(@RequestBody FedoraObject knowledgeObject,ArkId arkId) throws ObjectTellerException {
+	public void patchKnowledgeObject(@RequestBody FedoraObject knowledgeObject, ArkId arkId) throws ObjectTellerException {
 		knowledgeObjectService.patchKnowledgeObject(knowledgeObject, arkId);
+	}
+
+	@PutMapping("/knowledgeObject/ark:/{naan}/{name}/{published:published|unpublished}")
+	@ResponseStatus(HttpStatus.OK)
+	public String publish(@ModelAttribute User loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException {
+
+		knowledgeObjectService.publishKnowledgeObject(arkId, "published".equals(published));
+
+		return String.format("User %s %s ko %s at %s", loggedInUser.getUsername(), published, arkId.getArkId(), new Date());
+	}
+
+	@ExceptionHandler(ObjectTellerException.class)
+	public ResponseEntity<ObjectTellerException> handleObjectTellerExceptions(ObjectTellerException e) {
+
+		ResponseEntity<ObjectTellerException> response = new ResponseEntity<ObjectTellerException>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return response;
 	}
 }

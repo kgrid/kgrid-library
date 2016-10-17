@@ -45,17 +45,13 @@ public class IdServiceTest {
 	@Test
 	public void publishKnowledgeObject(){
 
-		FedoraObject ko = new FedoraObject();
-		ko.setArkId(ArkId.FAKE_ARKID());
-		idService.publish(ko);
+		idService.publish(ArkId.FAKE_ARKID());
 		verify(ezidService).status(ARKID_STRING, ArkId.Status.PUBLIC);
 	}
 	
 	@Test
 	public void retractId(){
-		FedoraObject ko = new FedoraObject();
-		ko.setArkId(ArkId.FAKE_ARKID());
-		idService.retract(ko);
+		idService.retract(ArkId.FAKE_ARKID());
 		verify(ezidService).status(ARKID_STRING, ArkId.Status.UNAVAILABLE);
 	}
 

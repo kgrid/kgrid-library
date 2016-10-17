@@ -5,9 +5,6 @@ import org.springframework.stereotype.Service;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.FedoraObject;
 
-/**
- * Created by pboisver on 9/15/16.
- */
 @Service
 public class IdService {
 
@@ -25,12 +22,13 @@ public class IdService {
         return new ArkId(ezidService.mint());
     }    
     
-	public void publish(FedoraObject ko) {
-		ezidService.status(ko.getURI(), ArkId.Status.PUBLIC);
+	public void publish(ArkId arkId) {
+		ezidService.status(arkId.getArkId(), ArkId.Status.PUBLIC);
 	}
 	
-	public void retract(FedoraObject ko){
-		ezidService.status(ko.getURI(), ArkId.Status.UNAVAILABLE);
+	public void retract(ArkId arkId){
+
+		ezidService.status(arkId.getArkId(), ArkId.Status.UNAVAILABLE);
 	}
 	
 	public void resolve (String arkId){
