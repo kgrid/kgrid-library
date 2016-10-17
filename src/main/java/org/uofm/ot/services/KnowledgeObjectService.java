@@ -14,6 +14,9 @@ import java.util.List;
 
 @Service
 public class KnowledgeObjectService {
+
+	@Autowired
+	private IdService idService;
 	
 	@Autowired
 	private FusekiService fusekiService;
@@ -199,5 +202,23 @@ public class KnowledgeObjectService {
 
 	public boolean exists(ArkId arkId) throws ObjectTellerException {
 		return getFedoraObjectService.checkIfObjectExists(arkId.getFedoraPath());
+	}
+
+	public void publishKnowledgeObject(ArkId arkId, boolean isToBePublished) throws ObjectTellerException {
+
+		FedoraObject ko = getKnowledgeObject(arkId);
+
+		if ( ko == null ) {
+			throw new ObjectTellerException("Unable to retrieve knowledge object: " + arkId.getArkId());
+		}
+
+		editFedoraObjectService.toggleObject(arkId.getFedoraPath(), isToBePublished? "yes" : "no" );
+
+		if(isToBePublished) {
+			idService.publish(arkId);
+		} else {
+			idService.retract(arkId);
+		}
+
 	}
 }
