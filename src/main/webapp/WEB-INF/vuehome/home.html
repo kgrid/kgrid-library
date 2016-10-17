@@ -50,7 +50,6 @@
 <script src="js/jquery.validate.js"></script>
 <script src="js/ot.js"></script>
 <script src="js/date.format.js"></script>
-
 </head>
 <body>
 	<div id="app">
@@ -78,8 +77,8 @@
 
 						</ul>
 						<ul class="nav navbar-nav navbar-right ot-1">
-							<li><a href="#">Log In</a></li>
-							<li><a id="signupBtn" href="#">Sign Up</a></li>
+							<li class="login-link"><a href="#">Log In</a></li>
+							<li class="signup-link"><a id="signupBtn" href="#">Sign Up</a></li>
 						</ul>
 					</div>
 					<!-- /.navbar-collapse -->
@@ -87,8 +86,8 @@
 				<!-- /.container-fluid -->
 			</nav>
 		</div>
-		
 		<router-view></router-view>
+		<loginOverlay></loginOverlay>
 	</div>
 	<template id="layout">
 		<div class="ot-content">
@@ -117,14 +116,12 @@
 			</div>
 		</div>
 	</template>
-
 	<template id="ko-list">
 		<div class="content">
 			<div id="bannerbk">
 				<img src="images/bannerBackground.png">
 			</div>
 			<appLayout :nothelper="true">
-					
 				<div slot="banner">
 					<h1>
 						ObjectTeller supports Health Knowledge Services<br> <small>by
@@ -163,12 +160,9 @@
 								:listsize="listSize" v-on:click="objectSelected($index)"></ko-tile></li>
 					</ul>
 				</div>
-				
 			</appLayout>
-
 		</div>
 	</template>
-	
 	<template id="ko-tile-template"> 
 		<router-link v-bind:to="objLink">
 			<div class="container ot-tile" v-bind:id="object.uri">
@@ -202,16 +196,15 @@
 			</div>
 		</router-link> 
 	</template>
-	
 	<template id="obj-detail">
-	<div class="ot-content">
-		<div class="banner-content display-banner">
+	<div class="content">
+		<appLayout :nothelper="true">
+		<div slot="banner">
 			<div id="goback">
 				<div id="backButton">
 					<a href="/ObjectTeller/home">BACK TO THE LIBRARY</a>
 				</div>
 			</div>
-
 			<div id="ko-title">
 				<div style="width: 10px; hieght: 60px; display: inline-block;">
 					<img v-if="objModel.object.metadata.published"
@@ -242,11 +235,8 @@
 					</p>
 				</div>
 			</div>
-
 		</div>
-		<div class="header">
-			<div class="objectcontainer">
-				<div class="headercol">
+		<div slot="header">
 					<ul class="nav nav-tabs" role="tablist" id="tabs">
 						<li role="presentation" class="labels"><a
 							href="#metadata" aria-controls="metadata" role="tab"
@@ -269,24 +259,16 @@
 										src="images/More_Icon_Dark-01.png" />
 								</div>
 						</a></li>
-
 					</ul>
-
 					<div class="inline editwrapper accessLevelOne" id="objBtns"
 						style="top: 4px; right: 40px; position: absolute;">
 						<button class="edit" id="metadataeditBtn">EDIT</button>
 						<button class="edit" id="deleteButton"
 							onclick="deleteObject('${fedoraObject.URI}')">DELETE</button>
-
 						<a class="edit" id="downloadButton" v-bind:href="downloadLink">DOWNLOAD</a>
-
-					</div>
-				</div>
 			</div>
 		</div>
-		<div class="maincontentwrapper">
-			<div class="main-content">
-				<div class="datagrid">
+			<div slot="maincontent">
 					<ul class="tab-content" id="tab">
 						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
 							class="tab-pane">
@@ -294,11 +276,9 @@
 						</li>
 					</ul>
 				</div>
-			</div>
-		</div>
+			</appLayout>
 	</div>
 	</template>
-
 	<template id= "tab-panel-template">
 		<div class="tab-content view-obj">
 			<ul>
@@ -307,9 +287,7 @@
 				</li>
 			</ul>
 		</div>
-		
 	</template>
-
 	<template id="field-tile-template">
 	<div class="addtext" :id="field.name">
 		<h4>{{field.title}}</h4>
@@ -328,291 +306,90 @@
 		</div>
 	</div>
 	</template>
-
 	<template id="linkedfield-tile-template"> 
 	   <a v-bind:href="link">{{value}}</a> 
 	</template>
 
-	<script>
-		var objModel = { object : {} };
-		var sections = [{name:"metadata"},
-		                {name:"payload"},
-		                {name:"inputMessage"},
-		                {name:"outputMessage"},
-		                {name:"logData"}];
-		var applayout = Vue.component("applayout", {
-				template:"#layout",
-				props:['nothelper'],
-				methods:{
-					backToTop: backToTop
-				}
-		})
-		var vmcomp = Vue
-				.component(
-						"ko-tile",
-						{
-							template : "#ko-tile-template",
-							props : [ 'object', 'listsize' ],
-							computed : {
-								formattedlastModified : function() {
-									return new Date(
-											this.object.metadata.lastModified)
-											.format("mediumDate")
-								},
-								formattedCreatedOn : function() {
-									return new Date(
-											this.object.metadata.createdOn)
-											.format("mediumDate")
-								},
-								objLink : function() {
-									return {
-										name : 'object',
-										params : {
-											uri : this.object.uri
-										}
-									};
-								}
-							},
-							methods : {
-								deleteObject : function() {
-									var uri = this.object.uri;
-									var txt;
-									if (uri != "") {
-										var r = confirm("Do you really want to delete the object ? ");
-										if (r == true) {
-											$
-													.ajax({
-														type : 'DELETE',
-														url : "/ObjectTeller/knowledgeObject/"
-																+ uri,
-														success : function(
-																response) {
-															console.log("Deletion successful!");
-														}
-													});
-										}
-									}
-								},
-								selectObject: function(){
-									console.log(this.object.uri+"selected");
-									this.$emit("selectObj");
-								}
-							}
-						});
-		var vm_fields = Vue
-				.component(
-						"field-tile",
-						{
-							template : "#field-tile-template",
-							props : [ 'field', 'value' ],
-							computed : {
-								value : function() {
-									var propertyValue = "";
-									switch (this.field.section) {
-									case "metadata":
-										propertyValue = objModel.object[this.field.section][this.field.name];
-										break;
-									case "payload":
-										propertyValue = objModel.object[this.field.section][this.field.name];
-										break;
-									default:
-										propertyValue = objModel.object[this.field.name];
-										break;
+<template id="overlaylayout">
+<transition name="slide">
+	<div class="ol_pane" v-show="show">
+		<div class="sidebar_close">
+			<h3>CLOSE</h3>
+			<button class="greenroundbutton" id="close_overlay"
+				@click="show=false">
+				<img src="images/Close_Icon.png" >
+			</button>
+		</div>
+		<div class="overlay-top"></div>
+		<div class="overlay-board">
+				<div class="overlay-title">
+					<slot name="ol-title"></slot>
+				</div>
+				<div class="entryform" id="entry_form">
+					<form name="addObj_f" class="Add-content" id="login_f"
+							method="post">
+							<slot name="ol-form">
+							</slot>
+							<slot name="ol-btn">
+							</slot> 
+							
+					</form>
+					</div>
+					</div>
+				<div class="overlay-alert">
+					<div class="alert-box processing"><slot name="ol-processing"></slot></div>
+					<div class="alert-box success"><slot name="ol-success"></slot></div>
+					<div class="alert-box failure"><slot name="ol-failure"></slot></div>
+					<div class="alert-box warning"><slot name="ol-warning"></slot></div>
+				</div>
+			</div>
+	</div>
+	</transition>
+</template>
+<template id="login_overlay">
+<div class="layered_overlay" id="login_overlay">
+	<overlaylayout> 
+		<div slot="ol-title"><h3>Log in</h3></div>
+		<div slot="ol-form">
+			<fieldset class="fieldcontainer" id="first">
+								<div class="loginField">
+									<h4 title="username">USERNAME</h4>
+									<div class="addtext">
+										<input class="textbox login" name="username"
+											id="username" type="text" spellcheck="false"
+											placeholder="Enter your email"
+											maxlength="140">
+<!-- 											<button class="edit_btn" >Need to create an account?</button>
+ -->									</div>
+									<label class="errorLabel" for="username"> </label>
+								</div>
+								<div class="loginField">
+									<h4 title="password">PASSWORD</h4>
+									<div class="addtext">
+										<input class="textbox login" name="password" id="password"
+											type="password" spellcheck="false"
+											placeholder="Enter your password"
+											maxlength="140">
+											<!-- <button class="edit_btn">Forgot Password?</button> -->
+									</div>
+									<label class="errorLabel" for="password"> </label>
+								</div>
+				</fieldset>
+		</div>
+		<div slot="ol-btn">
+			<input class="done_btn login" name="done" id="login_btn" type="button" value="LOG IN">
+		</div>
+		<div slot="ol-processing">Log in ...</div>
+		<div slot="ol-success">Update Successful !!!</div>
+		<div slot="ol-failure">Unable to login. Please check your username and password! </div>
+		<div slot="ol-warning">Warning !!!</div>
+		
+	</overlaylayout>
+</div>
 
-									}
-									return propertyValue;
-								},
-								isInput : function() {
-									return (this.field.type == "text");
-								},
-								isTextArea : function() {
-									return (this.field.type == "textarea");
-								},
-								isLicense : function() {
-									return this.field.name == "license";
-								},
-								isCitation : function() {
-									return this.field.name == "citations";
-								}
-							}
-						});
-		var vm_linkedfields = Vue.component("linkedfield-tile", {
-			template : "#linkedfield-tile-template",
-			props : [ "link", "value" ]
-		});
-		const tabPane = Vue.component('tab-pane', {
-			template: "#tab-panel-template",
-			props:['section'],
-			data: function(){
-				return {
-					fields_json : {
-						fields : []
-					}
-				}
-			},
-			beforeCreate : function() {
-				var self = this;
-				loadFieldsConfig(function(data) {
-					self.fields_json.fields = data.fields;
-				});
-				
-			},
-			updated : function() {
-				$('.autosize').each(autoresize);
-			},
-			created : function() {
-				$('.autosize').each(autoresize);
-			},
-			computed : {
-				filteredFields :function(){
-					var section = this.section;
-					var fields = this.fields_json.fields;
-					return fields.filter(function(field){
-						console.log("Section: "+section);
-						return (field.section==section)
-					})
-				}
-		}
-		});
-		const
-		objDetail = Vue.component('ko-detail', {
-			template : '#obj-detail',
-			data : function() {
-				return {
-					objModel : objModel,
-					sections:sections
-					
-				}
-			},
-			created : function() {
-				var self = this;
-				console.log('Object URI:' + this.$route.params.uri);
-				retrieveObject(this.$route.params.uri, "complete", function(
-						response) {
-					console.log(response);
-					objModel.object = response;
-				}); 
-				$('ul#tabs li:first').addClass('active'); 
-			    $('ul#tab li:first').addClass('active'); 
+</template>
 
-				
-			},
-			computed : {
-				formattedUpdateDate : function() {
-					return new Date(objModel.object.metadata.lastModified)
-							.format("mediumDate")
-				},
-				formattedCreateDate : function() {
-					return new Date(objModel.object.metadata.createdOn)
-							.format("mediumDate")
-				},
-				downloadLink : function() {
-					return '/ObjectTeller/knowledgeObject/'
-							+ objModel.object.uri + '/complete.json'
-				}
 
-			},
-			updated : function() {
-				$('ul#tabs li:first').addClass('active'); 
-			    $('ul#tab li:first').addClass('active'); 
-				$('.autosize').each(autoresize);
-			}
-		});
-		const
-		Home = Vue.component("ko-main", {
-			template : '#ko-list',
-			data : function() {
-				return {
-					sortKey : "metadata.lastModified",
-					order : "asc",
-					filterString : "",
-					searchQuery : "",
-					model : {
-						koList : []
-					}
-				}
-			},
-			created : function() {
-				var self = this;
-				retrieveObjectList(function(response) {
-					self.model.koList = response;
-				});
-			},
-			computed : {
-				countString : function() {
-					var count = this.orderedList.length;
-					if (count <= 1) {
-						return count + " Object";
-					} else if (count > 200) {
-						return "Many many Objects";
-					} else {
-						return count + " Objects";
-					}
-				},
-				listSize : function() {
-					return this.model.koList.length;
-				},
-				orderAsc : function() {
-					return (this.order == "asc")
-				},
-				orderedList : function() {
-					console.log(this.filteredList.length);
-					return _.orderBy(this.filteredList, this.sortKey,
-							this.order)
-				},
-				filteredList :function(){
-					var list = this.model.koList;
-					var filterString = this.filterString;
-					return list.filter(function(field){
-						console.log("Filter String: "+filterString);
-						return (field.metadata.title.includes(filterString) ||
-								field.metadata.keywords.includes(filterString) ||
-								field.metadata.owner.includes(filterString) )
-					})
-				}
-			},
-			methods : {
-				toggleOrder : function() {
-					if (this.order == "asc") {
-						this.order = "desc";
-					} else {
-						this.order = "asc";
-					}
-				},
-				objectSelected: function(index){
-					console.log("selected index:"+index)
-					objModel.object=this.model.koList[index];
-				}
-			},
-			components:{'appLayout':applayout}
-
-		});
-
-		const About = {
-			template : '<div><applayout :nothelper="true"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
-		};
-		const Faq = {
-			template : '<div><applayout :nothelper="false"><div slot="banner">FAQ BANNER</div><div slot="header">FAQ HEADER</div><div slot="maincontent">FAQ CONTENT</div></applayout><div>'
-		};
-		const Contactus = {
-			template : '<div><applayout :nothelper="false"><div slot="banner">Contactu Banner</div><div slot="header">Contact HEADER</div><div slot="maincontent">Contact Us CONTENT</div></applayout><div>'
-		};
-		const routes = [ 
-		    { path : '/', component : Home	}, 
-		    { path : '/about',	component : About }, 
-		    { path : '/faq',	component : Faq	}, 
-		    { path : '/contactus',	component : Contactus}, 
-		    { path : '/object/:uri', name : 'object', component : objDetail	} 
-		    ];
-		const router = new VueRouter({
-			routes : routes,
-			hashbang : false,
-			history : true
-		});
-		const app = new Vue({
-			router : router,
-			component : Home
-		}).$mount('#app');
-	</script>
+	<script src="js/ot-vue.js"></script>
 </body>
 </html>

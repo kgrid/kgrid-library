@@ -37,9 +37,103 @@ function retrieveObject(uri, section, fillObjectContent){
 	});
 }
 
+
+
 function loadFieldsConfig(fillFieldsConfig){
 	$.getJSON("json/fields.json", fillFieldsConfig);
 }
+function overlayHeightResize(overlayID, window_height) {
+	var overlayPane = $('#' + overlayID).find("> .ol_pane");
+	var entryform = overlayPane.find(".entryform");
+	var ol_pane_height = window_height;
+	var calcHeight = (window_height - 157);
+	entryform.css("height", calcHeight + "px");
+	var ef_margin = (ol_pane_height - calcHeight) / 2;
+	var addContent = entryform.find(".Add-content");
+	addContent.css("height", (calcHeight - 70) + "px");
+	$("ul#tab.inEdit li").css("height", (calcHeight - 120) + "px");
+	$("ul#tab.inEdit li").css("min-height", (calcHeight - 120) + "px");
+	if (calcHeight < 700) {
+		$("[id$='EditWrapper']").css("bottom", "0px");
+	}
+	/*
+	 * console.log("Overlay Height Resize - window height:
+	 * "+window_height+"px"); console.log("Overlay Height Resize - overlay
+	 * height: "+ol_pane_height+"px"); console.log("Overlay Height Resize -
+	 * calculate height: "+calcHeight+"px"); console.log("Overlay Height Resize -
+	 * ef Margin: "+ef_margin+"px");
+	 */
+	return ol_pane_height;
+}
+function overlaySlide(overlayID, open, mode) {
+	var curMode = mode;
+	document.body.classList.toggle('noscroll', open);
+	var overlayPane = $('#' + overlayID).find("> .ol_pane");
+	var window_width = $(window).width();
+	var window_height = $(window).height();
+	var overlayPane_width = overlayPane.width();
+	var overlayPane_height = overlayHeightResize(overlayID, window_height);
+	var overlayPane_left = window_width - overlayPane_width;
+	/*
+	 * if(overlayID=="login_overlay"){
+	 * overlayPane_left=overlayPane_left+overlayPane_width/2; }
+	 */
+	if (overlayPane_left <= (window_width * 0.27)) {
+		overlayPane_left = (window_width * 0.27);
+	}
+	if (overlayID == "addObject") {
+		resetInputText();
+		if (mode != "new") {
+			$("#begin_page").hide();
+			$("#entry_form1").show();
+			if (open) {
+				console.log("Init Obj:" + editObj);
+				initInputTextFromObject(editObj,"overlay");
+			}
+		} else {
+			curURI="";
+			$("#begin_page").show();
+			$("#end_page").hide();
+			$("#entry_form1").hide();
+			console.log("Overlay IN with URI:" + curURI);
+
+		}
+	}
+	if (overlayID == "login_overlay") {
+		//resetLoginForm();
+	}
+	if (overlayID == "libraryuser") {
+		resetUserInfoText();
+	}
+	if (overlayID == "citation") {
+		resetCitationText();
+	}
+	if (overlayID == "license") {
+		resetLicenseText();
+	}
+	if (open) {
+		$('#' + overlayID).css("display", "block");
+		$('#' + overlayID).fadeIn('slow', function() {
+			overlayPane.animate({
+				'left' : overlayPane_left + "px"
+			}, 1000);
+		});
+	} else {
+
+		overlayPane.animate({
+			'left' : '100%'
+		}, 1000, function() {
+			$('#' + overlayID).delay(500).fadeOut('fast');
+		});
+
+//		$('#' + overlayID).css("display", "none");
+	}
+
+}
+
+
+
+
 
 function login() {
 	
@@ -120,6 +214,7 @@ $(document).ready(function() {
 	    $('.autosize').each(autoresize);
 	    $('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active'); 
+
 		var padLeft = 280;
 	    var navOffset = $(".header").offset().top;
 	    $(".header").wrap('<div class="theadwrapper"></div>');
@@ -146,5 +241,9 @@ $(document).ready(function() {
 	       $(".fixed").css("left",-x+"px");
 	    });
 	    
+	    $('.login-link').click(function() {
+   			overlaySlide("login_overlay",true, "view");
+  			return false;
+   		});
 
 })
