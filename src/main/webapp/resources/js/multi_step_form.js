@@ -308,7 +308,7 @@ function createInputTextarea(inputName, inputID, inputLabel, maxLength,
 
 function resetInputText() {
 
-	$(".current-tab").removeClass("current-tab");
+	$("#progressbar .current-tab").removeClass("current-tab");
 	$("#progressbar li:first-child").addClass("current-tab");
 	$('#progressbar li').children("img").css("display", "none");
 	$('#payloadTextArea').val("");
@@ -368,19 +368,20 @@ function displayMetaData(obj, elementSuffix) {
 	}else{
 		$("#citation_data_entry_v").empty();
 	}
-	if (obj.published) {
+	/*if (obj.published) {
 		$("#preTitle").show();
-		$(".pri-pub2").addClass("current-tab");
-		$(".pri-pub2 span").addClass("middleout");
-		$(".pri-pub1").removeClass("current-tab");
-		$(".pri-pub1 span").removeClass("middleout");
-	} else {
-		$("#preTitle").hide();
 		$(".pri-pub1").addClass("current-tab");
 		$(".pri-pub1 span").addClass("middleout");
 		$(".pri-pub2").removeClass("current-tab");
 		$(".pri-pub2 span").removeClass("middleout");
-	}
+	} else {
+		$("#preTitle").hide();
+		$(".pri-pub2").addClass("current-tab");
+		$(".pri-pub2 span").addClass("middleout");
+		$(".pri-pub1").removeClass("current-tab");
+		$(".pri-pub1 span").removeClass("middleout");
+		
+	}*/
 	$("#page_title"+elementSuffix).text(obj.title);
 	var title_length = obj.title.length;
 	if (title_length > 74) {
@@ -704,7 +705,7 @@ function updateObject(section) {
 }
 
 function setActiveTab(section) {
-	$('.current-tab').removeClass('current-tab');
+	$('#progressbar .current-tab').removeClass('current-tab');
 	$('#progressbar #' + section).addClass('current-tab');
 	var nthChild = $('#progressbar #' + section).index() + 1;
 	console.log("Progress BAr index:" + nthChild);
