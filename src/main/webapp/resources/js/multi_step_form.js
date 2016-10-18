@@ -518,29 +518,23 @@ function retrieveObjectContent(uri, section) {
 	}
 }
 
-function toggleObject(uri, param) {
+function toggleObject(uri, published) {
 	$(this).find("span").addClass("middleout");
 	$(".pri-pub .current-tab").find("span").removeClass("middleout");
 
-	var fedoraObject = new Object();
-	var metadata = new Object();
-	var published ;
-	if(param == 'yes'){
-		published = Boolean(1);
-	} else {
-		published = Boolean(0);
-	}
+	// var fedoraObject = new Object();
+	// var metadata = new Object();
+	// var published ;
 	
-	metadata.published = published;
-	fedoraObject.metadata = metadata ;
-	var text = JSON.stringify(fedoraObject);
-	$.ajax({	
+	// metadata.published = published;
+	// fedoraObject.metadata = metadata ;
+	$.ajax({
 		beforeSend : function(xhrObj) {
 			xhrObj.setRequestHeader("Content-Type", "application/json");
 		},
-		type : 'PATCH',
-		url : "/ObjectTeller/knowledgeObject/" + uri ,
-		data : text,
+		type : 'PUT',
+		url : "/ObjectTeller/knowledgeObject/" + uri + "/" + published,
+		// data : text,
 		dataType : "json",
 		success : function(response) {
 			location.reload();
