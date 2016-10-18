@@ -1,5 +1,6 @@
 'use strict';
 var objModel = { object : {} };
+var editObjModel = { object : {} };
 var sections = [{name:"metadata"},
                 {name:"payload"},
                 {name:"inputMessage"},
@@ -12,29 +13,74 @@ var applayout = Vue.component("applayout", {
 			backToTop: backToTop
 		}
 })
-
+var showLogin = {show:false};
+var showOverlay ={show:false};
+var showObjectEditor ={show:false};
 var overlaylayout= Vue.component("overlaylayout",{
 	template:"#overlaylayout",
 	props:['ol_id', 'width'],
 	data:function(){
-		return {show:true}
+		return {showOverlay:showOverlay}
 	},
 	methods:{
-		overlaySlideOut: function(){
-			this.hide();
-			
+		closeOverlay:function(){
+			showOverlay.show=false;
+			this.$emit('slideout');
 		}
 	}
-
 })
 
 var loginOverlay = Vue.component("loginoverlay",{
 	template:'#login_overlay',
+	data:function(){
+		return {showLogin:showLogin}
+	},
 	methods:{
-		openOverlay:function(){
-			overlaySlide();
+		olSlideout:function(){
+			showLogin.show=false;
+		},
+		olSlidein:function(){
+			showLogin.show=true;
 		}
 	}
+})
+
+var objeditor=Vue.component("objeditor",{
+	template:'#objEditor_overlay',
+	data:function(){
+		return {
+			objModel : objModel,
+			editObjModel:editObjModel,
+			sections:sections,
+			showObjectEditor:showObjectEditor}
+	},
+	created:function(){
+		editObjModel.object = objModel.object;
+		console.log(editObjModel.object);
+	},
+	updated : function() {
+		$('ul#etabs li:first').addClass('active'); 
+	    $('ul#etab li:first').addClass('active'); 
+		$('.autosize').each(autoresize);
+	},
+	methods: {
+		saveObj:function(response){
+			
+		},
+		undoEdit: function(){
+			editObjModel.object = objModel.object;
+		},
+		createObj: function(){
+			
+		},olSlideout:function(){
+			showObjectEditor.show=false;
+		},
+		olSlidein:function(){
+			showObjectEditor.show=true;
+		}
+	
+	}
+	
 })
 var vmcomp = Vue
 		.component(
@@ -82,9 +128,10 @@ var vmcomp = Vue
 								}
 							}
 						},
-						selectObject: function(){
+						clicked: function(){
 							console.log(this.object.uri+"selected");
-							this.$emit("selectObj");
+							objModel.object=this.object;
+							this.$emit("clicked");
 						}
 					}
 				});
@@ -94,6 +141,9 @@ var vm_fields = Vue
 				{
 					template : "#field-tile-template",
 					props : [ 'field', 'value' ],
+					created:function(){
+						console.log("Field:"+this.field.name);
+					},
 					computed : {
 						value : function() {
 							var propertyValue = "";
@@ -149,20 +199,19 @@ const tabPane = Vue.component('tab-pane', {
 	},
 	created : function() {
 		$('.autosize').each(autoresize);
+		console.log("Created TabPane");
 	},
 	computed : {
 		filteredFields :function(){
 			var section = this.section;
 			var fields = this.fields_json.fields;
 			return fields.filter(function(field){
-				console.log("Section: "+section);
 				return (field.section==section)
 			})
 		}
 }
 });
-const
-objDetail = Vue.component('ko-detail', {
+const objDetail = Vue.component('ko-detail', {
 	template : '#obj-detail',
 	data : function() {
 		return {
@@ -171,6 +220,11 @@ objDetail = Vue.component('ko-detail', {
 		}
 	},
 	created : function() {
+		var self = this;
+		$('ul#tabs li:first').addClass('active'); 
+	    $('ul#tab li:first').addClass('active'); 
+	},
+	mounted:function() {
 		var self = this;
 		console.log('Object URI:' + this.$route.params.uri);
 		retrieveObject(this.$route.params.uri, "complete", function(
@@ -199,10 +253,17 @@ objDetail = Vue.component('ko-detail', {
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active'); 
 		$('.autosize').each(autoresize);
+	},
+	methods:{
+		editObj:function(){
+			showObjectEditor.show=true;
+			showOverlay.show=true;
+			editObjModel.object=objModel.object;
+			this.$emit('editObj');
+		}
 	}
 });
-const
-Home = Vue.component("ko-main", {
+const Home = Vue.component("ko-main", {
 	template : '#ko-list',
 	data : function() {
 		return {
@@ -212,13 +273,19 @@ Home = Vue.component("ko-main", {
 			searchQuery : "",
 			model : {
 				koList : []
-			}
+			},
+			editObjModel:editObjModel,
+			objModel:objModel
 		}
 	},
 	created : function() {
 		var self = this;
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
+			if(self.model.koList.length>0){
+				self.objModel.object=self.model.koList[0];
+				self.editObjModel.object=self.objModel.object;
+			}
 		});
 	},
 	computed : {
@@ -262,9 +329,9 @@ Home = Vue.component("ko-main", {
 				this.order = "asc";
 			}
 		},
-		objectSelected: function(index){
-			console.log("selected index:"+index)
-			objModel.object=this.model.koList[index];
+		objectSelected: function(){
+			console.log("selected Object:"+objModel.object.uri);
+			
 		}
 	},
 	components:{'appLayout':applayout}
@@ -291,6 +358,33 @@ const router = new VueRouter({
 	history : true
 });
 const app = new Vue({
-	router : router/* ,
+	router : router,
+	data:{},
+	components:{
+		objModel:objModel,
+		editObjModel:editObjModel,
+		objeditor:objeditor
+	},
+	methods:{
+		login_click:function(){
+			console.log(showLogin.show);
+			console.log(showOverlay.show);
+			showLogin.show=true;
+			showOverlay.show=true;
+		},
+		createObj_click:function(){
+			showObjectEditor.show=true;
+			showOverlay.show=true;
+			objURI="";
+			objModel.object={};
+			editObjModel.object=objModel.object;
+		},
+		editObj_click:function(){
+			showObjectEditor.show=true;
+			showOverlay.show=true;
+			objURI=	objModel.object.uri;
+			editObjModel.object=objModel.object;
+		}
+	}/* ,
 	component : Home */
 }).$mount('#app');

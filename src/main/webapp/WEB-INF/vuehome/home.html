@@ -77,8 +77,8 @@
 
 						</ul>
 						<ul class="nav navbar-nav navbar-right ot-1">
-							<li class="login-link"><a href="#">Log In</a></li>
-							<li class="signup-link"><a id="signupBtn" href="#">Sign Up</a></li>
+							<li class="login-link1" v-on:click="login_click"><a>Log In</a></li>
+							<li class="signup-link"><a id="signupBtn">Sign Up</a></li>
 						</ul>
 					</div>
 					<!-- /.navbar-collapse -->
@@ -88,6 +88,7 @@
 		</div>
 		<router-view></router-view>
 		<loginOverlay></loginOverlay>
+		<objEditor></objEditor>
 	</div>
 	<template id="layout">
 		<div class="ot-content">
@@ -157,14 +158,14 @@
 				<div slot="maincontent">
 					<ul>
 						<li v-for="object in orderedList"><ko-tile :object="object"
-								:listsize="listSize" v-on:click="objectSelected($index)"></ko-tile></li>
+								:listsize="listSize" v-on:clicked="objectSelected"></ko-tile></li>
 					</ul>
 				</div>
 			</appLayout>
 		</div>
 	</template>
 	<template id="ko-tile-template"> 
-		<router-link v-bind:to="objLink">
+		<router-link v-bind:to="objLink" v-on:click.native="clicked">
 			<div class="container ot-tile" v-bind:id="object.uri">
 				<div class="row ot-2">
 					<div class="col-md-1 ot-type">
@@ -262,7 +263,7 @@
 					</ul>
 					<div class="inline editwrapper accessLevelOne" id="objBtns"
 						style="top: 4px; right: 40px; position: absolute;">
-						<button class="edit" id="metadataeditBtn">EDIT</button>
+						<button class="edit" id="metadataeditBtn" v-on:click="editObj">EDIT</button>
 						<button class="edit" id="deleteButton"
 							onclick="deleteObject('${fedoraObject.URI}')">DELETE</button>
 						<a class="edit" id="downloadButton" v-bind:href="downloadLink">DOWNLOAD</a>
@@ -311,12 +312,10 @@
 	</template>
 
 <template id="overlaylayout">
-<transition name="slide">
-	<div class="ol_pane" v-show="show">
+	<div class="ol_pane" v-show="showOverlay.show">
 		<div class="sidebar_close">
 			<h3>CLOSE</h3>
-			<button class="greenroundbutton" id="close_overlay"
-				@click="show=false">
+			<button class="greenroundbutton" id="close_overlay"	v-on:click="closeOverlay">
 				<img src="images/Close_Icon.png" >
 			</button>
 		</div>
@@ -344,11 +343,65 @@
 				</div>
 			</div>
 	</div>
-	</transition>
+
 </template>
+<template id="objEditor_overlay">
+<div class="layered_overlay" id="objEditor_overlay" v-show="showObjectEditor.show">
+<transition name="slide">
+	<overlaylayout v-on:slideout="olSlideout"> 
+		<div slot="ol-title"><h3>Add/Edit Object</h3>
+		<ul class="nav nav-tabs" role="tablist" id="etabs">
+						<li role="presentation" class="labels"><a
+							href="#metadata" aria-controls="metadata" role="tab"
+							data-toggle="etab">METADATA</a></li>
+						<li role="presentation" class="labels"><a href="#payload"
+							aria-controls="payload" role="tab" data-toggle="etab">PAYLOAD</a></li>
+						<li role="presentation" class="labels"><a href="#inputMessage"
+							aria-controls="input" role="tab" data-toggle="etab">INPUT</a></li>
+						<li role="presentation" class="labels"><a href="#outputMessage"
+							aria-controls="output" role="tab" data-toggle="etab">OUTPUT</a></li>
+						<li role="presentation" class="labels accessLevelOne"><a
+							href="#" aria-controls="logdata" role="tab" data-toggle="etab">
+								<div class="labels iconBtn accessLevelOne">
+									<img class="hover-out"
+										src="images/More_Icon_Light-01.png" /> <img
+										class="hover-in" style="display: none;"
+										src="images/More_Icon_Dark-01.png" />
+								</div>
+						</a></li>
+					</ul>
+					<div class="inline editwrapper accessLevelOne" id="objBtns"
+						style="top: 4px; right: 40px; position: absolute;">
+						<button class="edit" id="metadataeditBtn" v-on:click="undoEdit">UNDO</button>
+						<button class="edit" id="deleteButton"
+							v-on:click="saveObj">SAVE&CLOSE</button>
+						
+			</div>
+		
+		</div>
+		<div slot="ol-form">
+			<ul class="tab-content" id="etab">
+						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
+							class="tab-pane">
+								<tab-pane v-bind:section="section.name"></tab-pane>
+						</li>
+					</ul>
+		</div>
+		<div slot="ol-btn"></div>
+		<div slot="ol-processing">Processing...</div>
+		<div slot="ol-success">Update Successful !!!</div>
+		<div slot="ol-failure">Update Failure! </div>
+		<div slot="ol-warning">Warning !!!</div>
+		
+	</overlaylayout>
+	</transition>
+</div>
+</template>
+
 <template id="login_overlay">
-<div class="layered_overlay" id="login_overlay">
-	<overlaylayout> 
+<div class="layered_overlay" id="login_overlay" v-show="showLogin.show">
+<transition name="slide">
+	<overlaylayout v-on:slideout="olSlideout"> 
 		<div slot="ol-title"><h3>Log in</h3></div>
 		<div slot="ol-form">
 			<fieldset class="fieldcontainer" id="first">
@@ -385,10 +438,9 @@
 		<div slot="ol-warning">Warning !!!</div>
 		
 	</overlaylayout>
+	</transition>
 </div>
-
 </template>
-
 
 	<script src="js/ot-vue.js"></script>
 </body>
