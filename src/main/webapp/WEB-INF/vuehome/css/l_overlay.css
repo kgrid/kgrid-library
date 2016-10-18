@@ -11,8 +11,8 @@
     /*    color:dimgrey; */
     font-family:'Open Sans', sans-serif;
     overflow: auto;
-    display:none;
-}
+ /*    transition: opacity 1s ease;
+ */}
 
 .alert-box {
 	position:absolute;
@@ -65,7 +65,7 @@
 
 .ol_pane{
     position:absolute;
-    left:100%;
+    left:70%;
     width:1100px;
     /* 	width:60%; */
     background-color:#fff;

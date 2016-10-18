@@ -522,22 +522,17 @@ function toggleObject(uri, published) {
 	$(this).find("span").addClass("middleout");
 	$(".pri-pub .current-tab").find("span").removeClass("middleout");
 
-	// var fedoraObject = new Object();
-	// var metadata = new Object();
-	// var published ;
-	
-	// metadata.published = published;
-	// fedoraObject.metadata = metadata ;
 	$.ajax({
 		beforeSend : function(xhrObj) {
 			xhrObj.setRequestHeader("Content-Type", "application/json");
 		},
 		type : 'PUT',
 		url : "/ObjectTeller/knowledgeObject/" + uri + "/" + published,
-		// data : text,
-		dataType : "json",
 		success : function(response) {
 			location.reload();
+		},
+		error : function(response, tStatus, xhr) {
+	
 		}
 	});
 }
