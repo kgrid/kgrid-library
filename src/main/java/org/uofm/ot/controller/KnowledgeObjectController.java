@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.knowledgeObject.ArkId;
@@ -352,8 +353,9 @@ public class KnowledgeObjectController {
 
 	@PutMapping("/knowledgeObject/ark:/{naan}/{name}/{published:published|unpublished}")
 	@ResponseStatus(HttpStatus.OK)
-	public String publish(@ModelAttribute User loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException {
-
+	public String publish(ModelMap map, @ModelAttribute User loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException {
+		loggedInUser = (User) map.get("loggedInUser");
+		
 		knowledgeObjectService.publishKnowledgeObject(arkId, "published".equals(published), loggedInUser);
 
 		return String.format("User %s %s ko %s at %s", loggedInUser.getUsername(), published, arkId.getArkId(), new Date());
