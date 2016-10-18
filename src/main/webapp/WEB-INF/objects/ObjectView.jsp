@@ -87,7 +87,7 @@
 			var uri = $("#fObj").val();
 			console.log("Current URI:" + uri);
 			setURI(uri);
-			setActiveTab("metadata");
+			//setActiveTab("metadata");
 			overlaySlide('addObject', true);
 
 		});
