@@ -1,5 +1,8 @@
 package org.uofm.ot.services;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +12,9 @@ import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.uofm.ot.knowledgeObject.ArkId;
+import org.uofm.ot.model.User;
+
+
 
 /**
  * Created by pboisver on 9/15/16.
@@ -52,7 +58,7 @@ public class EzidService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
-
+        
         HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
 
         ResponseEntity<String> response = rt.postForEntity(
@@ -66,15 +72,21 @@ public class EzidService {
 
     }
     
-    private String modify(String id, String metadata){
+    private String modify(String id, List<String> metadata){
         RestTemplate rt = new RestTemplate();
 
         rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
 
+        String metadataRequestBody = "" ;
+        
+        for (String string : metadata) {
+			metadataRequestBody += string + "\n";
+		}
+        
         HttpHeaders headers = new HttpHeaders();
        headers.setContentType(MediaType.TEXT_PLAIN);
         
-        HttpEntity<String> requestEntity = new HttpEntity<>(metadata, headers);
+        HttpEntity<String> requestEntity = new HttpEntity<>(metadataRequestBody, headers);
 
         String url = EZID_BASE_URL+"id/"+id ; 
         
@@ -87,13 +99,15 @@ public class EzidService {
 
     }
     
-    public String bind(String id, String objectURL){
-    	String metadata = "_target: " + objectURL ;
+    public String bind(String id, List<String> metadata, String objectURL){
+    	String target = "_target: " + objectURL ;
+    	metadata.add(target);
     	return  modify(id, metadata);
     }
     
-    public String status(String id, ArkId.Status status){
-    	String metadata = "_status: "+status.toString() ; 
+    public String status(String id, List<String> metadata, ArkId.Status status){
+    	String statusAttribute = "_status: "+status.toString() ;
+    	metadata.add(statusAttribute);
     	return  modify(id, metadata);
     }
   

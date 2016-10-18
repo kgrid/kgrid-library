@@ -10,9 +10,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.uofm.ot.knowledgeObject.ArkId;
+import org.uofm.ot.model.User;
+import org.uofm.ot.model.UserRoles;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -36,7 +39,6 @@ public class EzidServiceTest {
 
     @Test
     public void canConnectToEzidService() throws IOException, URISyntaxException {
-
     	String arkId = ezidService.mint();
     	
         String response = ezidService.get(arkId);
@@ -49,8 +51,10 @@ public class EzidServiceTest {
     	 // Create
     	 String arkId = ezidService.mint(); 	 
     	 
+    	 ArrayList<String> metadata = new ArrayList<String>();
+    	 
     	 //Modify
-    	 ezidService.bind(arkId, "http://foo.com");
+    	 ezidService.bind(arkId, metadata,  "http://foo.com");
     	
     	 //GET
     	 String modified = ezidService.get(arkId);
@@ -85,11 +89,13 @@ public class EzidServiceTest {
 
 	 @Test
 	 public void givenReservedStatusCanChangeToPublic() {
+		 
 		 // Create
 		 String arkId = ezidService.mint(); 	 
 
+		 ArrayList<String> metadata = new ArrayList<String>();
 		 //Modify
-		 ezidService.status(arkId, ArkId.Status.PUBLIC);
+		 ezidService.status(arkId, metadata, ArkId.Status.PUBLIC);
 
 		 //GET
 		 String modified = ezidService.get(arkId);
@@ -99,14 +105,16 @@ public class EzidServiceTest {
 	 
 	 @Test
 	 public void changePublicStatusToReservedThrowsException() {
+			 
 		 // Create
 		 String arkId = ezidService.mint(); 	 
 
 		 //Modify
-		 ezidService.status(arkId, ArkId.Status.PUBLIC);
+		 ArrayList<String> metadata = new ArrayList<String>();
+		 ezidService.status(arkId, metadata, ArkId.Status.PUBLIC);
 		 
 		 try {
-			 ezidService.status(arkId, ArkId.Status.RESERVED);
+			 ezidService.status(arkId, metadata, ArkId.Status.RESERVED);
 			 assertTrue(false);
 		 } catch(HttpClientErrorException e){
 			//GET
