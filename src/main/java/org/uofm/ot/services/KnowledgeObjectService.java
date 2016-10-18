@@ -94,7 +94,7 @@ public class KnowledgeObjectService {
         String uri = arkId.getFedoraPath();
 
 		editFedoraObjectService.editObjectMetadata(newMetadata,uri);
-		editFedoraObjectService.toggleObject(uri, newMetadata.isPublished() ? "yes" : "no");
+	//	editFedoraObjectService.toggleObject(uri, newMetadata.isPublished() ? "yes" : "no");
 	
 
 
