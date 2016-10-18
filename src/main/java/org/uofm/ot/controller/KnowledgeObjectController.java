@@ -40,8 +40,8 @@ public class KnowledgeObjectController {
 //		loggedInUser = new User("nbahulek@umich.edu", "test", 48 , "Namita", "B.", UserRoles.ADMIN);
 		
 		if (loggedInUser != null ) {
-			
-			FedoraObject object= knowledgeObjectService.createKnowledgeObject(KnowledgeObject, loggedInUser);
+			String libraryURL = request.getRequestURL().toString();
+			FedoraObject object= knowledgeObjectService.createKnowledgeObject(KnowledgeObject, loggedInUser, libraryURL);
 			String uri = request.getRequestURL()+"/" +object.getURI();
 			URI location = new URI(uri);
 			HttpHeaders responseHeaders = new HttpHeaders();
@@ -102,12 +102,13 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject updateKnowledgeObjectByArkId(@RequestBody FedoraObject knowledgeObject,ArkId arkId) throws ObjectTellerException {
+	public FedoraObject updateKnowledgeObjectByArkId(@RequestBody FedoraObject knowledgeObject,ArkId arkId, HttpServletRequest request) throws ObjectTellerException {
 
 		if (knowledgeObjectService.exists(arkId)) {
 			return knowledgeObjectService.editObject(knowledgeObject,arkId);
 		} else {
-            return knowledgeObjectService.createFromExistingArkId(knowledgeObject, arkId);
+			String libraryURL = request.getRequestURI().toString();
+            return knowledgeObjectService.createFromExistingArkId(knowledgeObject,libraryURL ,arkId);
         }
 	}
 	
@@ -117,9 +118,9 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject updateKnowledgeObject(@RequestBody FedoraObject knowledgeObject,@PathVariable String objectURI) throws ObjectTellerException {
+	public FedoraObject updateKnowledgeObject(@RequestBody FedoraObject knowledgeObject,@PathVariable String objectURI,HttpServletRequest request ) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
-		return updateKnowledgeObjectByArkId(knowledgeObject,arkId);
+		return updateKnowledgeObjectByArkId(knowledgeObject,arkId, request);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}", 
@@ -353,7 +354,7 @@ public class KnowledgeObjectController {
 	@ResponseStatus(HttpStatus.OK)
 	public String publish(@ModelAttribute User loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException {
 
-		knowledgeObjectService.publishKnowledgeObject(arkId, "published".equals(published));
+		knowledgeObjectService.publishKnowledgeObject(arkId, "published".equals(published), loggedInUser);
 
 		return String.format("User %s %s ko %s at %s", loggedInUser.getUsername(), published, arkId.getArkId(), new Date());
 	}

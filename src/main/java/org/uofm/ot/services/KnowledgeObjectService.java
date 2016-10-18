@@ -142,13 +142,13 @@ public class KnowledgeObjectService {
 		return getKnowledgeObject(arkId).getMetadata() ;
 	}
 	
-	public FedoraObject createKnowledgeObject(FedoraObject fedoraObject, User loggedInUser) throws ObjectTellerException {
-		return createFedoraObjectService.createObject(fedoraObject, loggedInUser, null);
+	public FedoraObject createKnowledgeObject(FedoraObject fedoraObject, User loggedInUser, String libraryURL) throws ObjectTellerException {
+		return createFedoraObjectService.createObject(fedoraObject, loggedInUser, libraryURL, null);
 	}
 
-	public FedoraObject createFromExistingArkId(FedoraObject fedoraObject, ArkId existingArkId) throws ObjectTellerException {
+	public FedoraObject createFromExistingArkId(FedoraObject fedoraObject,String libraryURL, ArkId existingArkId) throws ObjectTellerException {
 		User loggedInUser = new User(null, null, 0, "MANUAL", "IMPORT", null);
-		return createFedoraObjectService.createObject(fedoraObject, loggedInUser, existingArkId);
+		return createFedoraObjectService.createObject(fedoraObject, loggedInUser,libraryURL ,existingArkId);
 
 	}
 
@@ -204,7 +204,7 @@ public class KnowledgeObjectService {
 		return getFedoraObjectService.checkIfObjectExists(arkId.getFedoraPath());
 	}
 
-	public void publishKnowledgeObject(ArkId arkId, boolean isToBePublished) throws ObjectTellerException {
+	public void publishKnowledgeObject(ArkId arkId, boolean isToBePublished, User loggedInUser) throws ObjectTellerException {
 
 		FedoraObject ko = getKnowledgeObject(arkId);
 
@@ -214,10 +214,11 @@ public class KnowledgeObjectService {
 
 		editFedoraObjectService.toggleObject(arkId.getFedoraPath(), isToBePublished? "yes" : "no" );
 
+		List<String> metadata = idService.createBasicMetadata(loggedInUser.getFullName(), ko.getMetadata().getTitle());
 		if(isToBePublished) {
-			idService.publish(arkId);
+			idService.publish(arkId, metadata);
 		} else {
-			idService.retract(arkId);
+			idService.retract(arkId, metadata);
 		}
 
 	}

@@ -12,6 +12,7 @@ import org.uofm.ot.services.IdService;
 import org.uofm.ot.knowledgeObject.ArkId;
 
 import java.util.Date;
+import java.util.List;
 
 public class CreateFedoraObjectService extends FedoraObjectService {
 	
@@ -22,7 +23,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 	private static final Logger logger = Logger.getLogger(CreateFedoraObjectService.class);
 
 
-	public FedoraObject createObject(FedoraObject fedoraObject, User loggedInUser, ArkId existingArkId) throws ObjectTellerException {
+	public FedoraObject createObject(FedoraObject fedoraObject, User loggedInUser, String libraryURL , ArkId existingArkId) throws ObjectTellerException {
 
 		String transactionId = null; 
 		String errorMessage = null; 
@@ -36,6 +37,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				arkId = existingArkId;
 			}
 			fedoraObject.setArkId(arkId);
+			
 
 			String uri = fedoraObject.getArkId().getFedoraPath();
 
@@ -44,6 +46,13 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				transactionId =  super.createTransaction();
 				
 				createContainer(uri , transactionId);
+				 
+				String targetUrl = libraryURL + "/" + arkId.getArkId();
+			
+				List<String> metadata = idService.createBasicMetadata(loggedInUser.getFullName(), fedoraObject.getMetadata().getTitle());
+        
+				idService.bind(fedoraObject, metadata, targetUrl);
+				
 				createContainer(uri+"/"+ChildType.LOG.getChildType()+"/"+ChildType.CREATEACTIVITY.getChildType() , transactionId);
 				addProvMetadataStart(uri,loggedInUser,transactionId);
 				
@@ -74,6 +83,8 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 				addProvMetadataEnd(uri, transactionId);
 				
 				logger.info("Successfully created object "+fedoraObject);
+				
+				
 				
 				super.commitTransaction(transactionId);
 

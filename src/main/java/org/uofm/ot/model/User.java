@@ -92,4 +92,8 @@ public class User {
 	public boolean isInformatician(){
 		return this.role == UserRoles.INFORMATICIAN ||  this.role == UserRoles.ADMIN  ;
 	}
+	
+	public String getFullName(){
+		return first_name+ " "+ last_name ; 
+	}
 }

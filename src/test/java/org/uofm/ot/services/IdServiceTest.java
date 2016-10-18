@@ -7,10 +7,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.model.User;
+import org.uofm.ot.model.UserRoles;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 
 public class IdServiceTest {
 
@@ -45,14 +49,18 @@ public class IdServiceTest {
 	@Test
 	public void publishKnowledgeObject(){
 
-		idService.publish(ArkId.FAKE_ARKID());
-		verify(ezidService).status(ARKID_STRING, ArkId.Status.PUBLIC);
+		ArrayList<String> metadata = new ArrayList<String>();
+		idService.publish(ArkId.FAKE_ARKID(), metadata);
+		
+		verify(ezidService).status(ARKID_STRING, metadata, ArkId.Status.PUBLIC);
 	}
 	
 	@Test
 	public void retractId(){
-		idService.retract(ArkId.FAKE_ARKID());
-		verify(ezidService).status(ARKID_STRING, ArkId.Status.UNAVAILABLE);
+		ArrayList<String> metadata = new ArrayList<String>(); 
+		idService.retract(ArkId.FAKE_ARKID(), metadata);
+		
+		verify(ezidService).status(ARKID_STRING, metadata, ArkId.Status.UNAVAILABLE);
 	}
 
 	@Test
@@ -61,12 +69,14 @@ public class IdServiceTest {
 		when(ezidService.mint()).thenReturn(ARKID_STRING);
 
 		FedoraObject ko = new FedoraObject(new ArkId(ARKID_STRING));
+		
+		ArrayList<String> metadata = new ArrayList<String>();
 
-		idService.bind(ko, "http://dev.umich.edu/"+ ARKID_STRING);
+		idService.bind(ko, metadata, "http://dev.umich.edu/"+ ARKID_STRING);
 
 		assertEquals(ARKID_STRING, ko.getURI());
 
-		verify(ezidService).bind(ARKID_STRING, "http://dev.umich.edu/"+ ARKID_STRING);
+		verify(ezidService).bind(ARKID_STRING, metadata, "http://dev.umich.edu/"+ ARKID_STRING);
 
 		}
 }
