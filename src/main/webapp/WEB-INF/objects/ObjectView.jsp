@@ -147,7 +147,7 @@
 			<c:when test="${fedoraObject.metadata.published}">
 				<div class="pri-pub accessLevelOne">
 					<div class="pri-pub1"
-						onclick="toggleObject('${fedoraObject.URI}','no')">
+						onclick="toggleObject('${fedoraObject.URI}','unpublished')">
 						<span><spring:message code="PRIVATE" /></span>
 					</div>
 					<div class="pri-pub2 current-tab">
@@ -164,7 +164,7 @@
 						<span class="middleout"><spring:message code="PRIVATE" /></span>
 					</div>
 					<div class="pri-pub2 "
-						onclick="toggleObject('${fedoraObject.URI}','yes')">
+						onclick="toggleObject('${fedoraObject.URI}','published')">
 						<div class="minitype-status"></div>
 						<div>
 							<span><spring:message code="PUBLIC" /></span>
