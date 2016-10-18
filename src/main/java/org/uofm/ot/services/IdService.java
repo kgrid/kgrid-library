@@ -37,11 +37,9 @@ public class IdService {
 
 	public FedoraObject bind(FedoraObject ko, String targetUrl) {
 
-		String arkId = ezidService.mint();
+		ArkId arkId = ko.getArkId();
 
-		ko.setURI(arkId);
-
-		ezidService.bind(arkId,targetUrl);
+		ezidService.bind(arkId.getArkId(),targetUrl);
 
 		return ko;
 	}
