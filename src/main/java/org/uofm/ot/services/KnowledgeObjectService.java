@@ -45,7 +45,6 @@ public class KnowledgeObjectService {
 	
 	public FedoraObject editObject(FedoraObject newObject, ArkId arkId) throws ObjectTellerException {
 
-        String objectURI = arkId.getFedoraPath();
 		addOrEditMetadata(arkId, newObject.getMetadata());
 		editPayload(arkId, newObject.getPayload());
 		editInputMessageContent(arkId, newObject.getInputMessage());
