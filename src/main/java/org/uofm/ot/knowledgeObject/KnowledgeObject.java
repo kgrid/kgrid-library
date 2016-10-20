@@ -2,7 +2,7 @@ package org.uofm.ot.knowledgeObject;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class FedoraObject {
+public class KnowledgeObject {
 
 	private Metadata metadata ;
 	
@@ -21,13 +21,13 @@ public class FedoraObject {
 	
 	
 
-	public FedoraObject(ArkId arkId) {
+	public KnowledgeObject(ArkId arkId) {
 		this.arkId = arkId;
 	}
 
-	public FedoraObject(){}
+	public KnowledgeObject(){}
 	
-    public FedoraObject(String URI) {
+    public KnowledgeObject(String URI) {
     	this.URI = URI;
     }
 

@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.uofm.ot.knowledgeObject.ArkId;
-import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.model.User;
 import org.uofm.ot.model.UserRoles;
 
@@ -68,7 +68,7 @@ public class IdServiceTest {
 
 		when(ezidService.mint()).thenReturn(ARKID_STRING);
 
-		FedoraObject ko = new FedoraObject(new ArkId(ARKID_STRING));
+		KnowledgeObject ko = new KnowledgeObject(new ArkId(ARKID_STRING));
 		
 		ArrayList<String> metadata = new ArrayList<String>();
 

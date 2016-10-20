@@ -51,8 +51,8 @@ public class FusekiService {
 	}
 	
 
-	public ArrayList<FedoraObject> getFedoraObjects(boolean published) throws ObjectTellerException {
-		ArrayList< FedoraObject> list = new ArrayList<FedoraObject>();
+	public ArrayList<KnowledgeObject> getFedoraObjects(boolean published) throws ObjectTellerException {
+		ArrayList< KnowledgeObject> list = new ArrayList<KnowledgeObject>();
 		try {
 			if(fusekiServerURL != null ) {
 				if(testIfFusekiIsRunning()) {
@@ -107,8 +107,8 @@ public class FusekiService {
 
 	}
 	
-	private ArrayList<FedoraObject> getFedoraObjects(String queryString, boolean isPublicOnly) throws ConnectException, ObjectTellerException {
-		ArrayList< FedoraObject> list = new ArrayList<FedoraObject>();
+	private ArrayList<KnowledgeObject> getFedoraObjects(String queryString, boolean isPublicOnly) throws ConnectException, ObjectTellerException {
+		ArrayList< KnowledgeObject> list = new ArrayList<KnowledgeObject>();
 		Query query = QueryFactory.create(queryString) ;
 		QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
 		ResultSet resultSet = execution.execSelect();
@@ -116,7 +116,7 @@ public class FusekiService {
 	
 		while (resultSet.hasNext()) {
 			QuerySolution binding = resultSet.nextSolution();
-			FedoraObject fedoraObject = mapQuerySolutionToFedoraObject(binding, false, isPublicOnly);
+			KnowledgeObject fedoraObject = mapQuerySolutionToFedoraObject(binding, false, isPublicOnly);
 			if(fedoraObject != null) {
 				list.add(fedoraObject);
 			}
@@ -192,8 +192,8 @@ public class FusekiService {
 		return result;
 	}
 	
-	public FedoraObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException {
-		FedoraObject fedoraObject = null ;
+	public KnowledgeObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException {
+		KnowledgeObject fedoraObject = null ;
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
@@ -417,14 +417,14 @@ public class FusekiService {
 		return query ;
 	}
 	
-	private FedoraObject mapQuerySolutionToFedoraObject(QuerySolution querySolution,boolean isSingleObject, boolean published ) throws ObjectTellerException {
+	private KnowledgeObject mapQuerySolutionToFedoraObject(QuerySolution querySolution,boolean isSingleObject, boolean published ) throws ObjectTellerException {
 
-		FedoraObject fedoraObject =null;
+		KnowledgeObject fedoraObject =null;
 		if(!isSingleObject){
 			String uri = querySolution.get("x").toString();
 			if(uri.length() > fedoraServerURL.length()){  // check for some bad triples from misconfiguration
 				if(uri.contains(fedoraServerURL)) {
-					fedoraObject = new FedoraObject();
+					fedoraObject = new KnowledgeObject();
 					uri = uri.substring(fedoraServerURL.length());
 					// setup for ark ids
 					RDFNode ark_node = querySolution.get("arkId");
@@ -436,7 +436,7 @@ public class FusekiService {
 				}
 			} 
 		} else {
-			fedoraObject = new FedoraObject();
+			fedoraObject = new KnowledgeObject();
 		}
 
 

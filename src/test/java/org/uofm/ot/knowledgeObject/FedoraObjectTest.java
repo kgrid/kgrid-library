@@ -8,7 +8,7 @@ public class FedoraObjectTest {
 
 	@Test
 	public void fedoraObjectHasArkId () {
-		FedoraObject fedoraObject = new FedoraObject(ArkId.FAKE_ARKID());
+		KnowledgeObject fedoraObject = new KnowledgeObject(ArkId.FAKE_ARKID());
 		assertNotNull(fedoraObject.getArkId());
 	}
 

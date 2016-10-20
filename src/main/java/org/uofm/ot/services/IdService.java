@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.uofm.ot.knowledgeObject.ArkId;
-import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.KnowledgeObject;
 
 @Service
 public class IdService {
@@ -38,7 +38,7 @@ public class IdService {
 		// TODO: 1. fuseki 2. ezid
 	}
 
-	public FedoraObject bind(FedoraObject ko,  List<String> metadata, String targetUrl) {
+	public KnowledgeObject bind(KnowledgeObject ko,  List<String> metadata, String targetUrl) {
 
 		ArkId arkId = ko.getArkId();
 
