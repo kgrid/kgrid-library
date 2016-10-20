@@ -58,9 +58,9 @@ public class KnowledgeObjectService {
 	}
 	
 	public List<KnowledgeObject> getKnowledgeObjects(boolean published) throws ObjectTellerException {
-		List<KnowledgeObject> fedoraObjects = null;
-		fedoraObjects = fusekiService.getFedoraObjects(published);
-		return fedoraObjects;
+		List<KnowledgeObject> knowledgeObjects = null;
+		knowledgeObjects = fusekiService.getFedoraObjects(published);
+		return knowledgeObjects;
 	}
 	
 	public Integer getNumberOfPublishedObjects() throws ObjectTellerException {
@@ -141,13 +141,13 @@ public class KnowledgeObjectService {
 		return getKnowledgeObject(arkId).getMetadata() ;
 	}
 	
-	public KnowledgeObject createKnowledgeObject(KnowledgeObject fedoraObject, User loggedInUser, String libraryURL) throws ObjectTellerException {
-		return createFedoraObjectService.createObject(fedoraObject, loggedInUser, libraryURL, null);
+	public KnowledgeObject createKnowledgeObject(KnowledgeObject knowledgeObject, User loggedInUser, String libraryURL) throws ObjectTellerException {
+		return createFedoraObjectService.createObject(knowledgeObject, loggedInUser, libraryURL, null);
 	}
 
-	public KnowledgeObject createFromExistingArkId(KnowledgeObject fedoraObject,String libraryURL, ArkId existingArkId) throws ObjectTellerException {
+	public KnowledgeObject createFromExistingArkId(KnowledgeObject knowledgeObject,String libraryURL, ArkId existingArkId) throws ObjectTellerException {
 		User loggedInUser = new User(null, null, 0, "MANUAL", "IMPORT", null);
-		return createFedoraObjectService.createObject(fedoraObject, loggedInUser,libraryURL ,existingArkId);
+		return createFedoraObjectService.createObject(knowledgeObject, loggedInUser,libraryURL ,existingArkId);
 
 	}
 
@@ -190,10 +190,10 @@ public class KnowledgeObjectService {
 		editFedoraObjectService.editPayloadMetadata(payload,arkId.getFedoraPath());
 	}
 	
-	public void patchKnowledgeObject(KnowledgeObject fedoraObject,ArkId arkId) throws ObjectTellerException {
-		if(fedoraObject != null){
-			if(fedoraObject.getMetadata() != null ) {
-				String param = fedoraObject.getMetadata().isPublished() ? "yes":"no";
+	public void patchKnowledgeObject(KnowledgeObject knowledgeObject,ArkId arkId) throws ObjectTellerException {
+		if(knowledgeObject != null){
+			if(knowledgeObject.getMetadata() != null ) {
+				String param = knowledgeObject.getMetadata().isPublished() ? "yes":"no";
 				editFedoraObjectService.toggleObject(arkId.getFedoraPath(), param);
 			}
 		}

@@ -97,12 +97,12 @@ public class EditFedoraObjectService extends FedoraObjectService {
 		 
 	} 
 	
-	public void editCitations(String fedoraObjectURI , List<Citation> citations) throws ObjectTellerException{
+	public void editCitations(String knowledgeObjectURI , List<Citation> citations) throws ObjectTellerException{
 
 		
 			for (Citation citation : citations) {
 				if(citation.getCitation_id() != null) {
-					String citationObject = "<"+super.baseURI+fedoraObjectURI+"/"+ ChildType.CITATIONS.getChildType() +"/"+citation.getCitation_id()+">" ;
+					String citationObject = "<"+super.baseURI+knowledgeObjectURI+"/"+ ChildType.CITATIONS.getChildType() +"/"+citation.getCitation_id()+">" ;
 					String data = 
 							FusekiConstants.PREFIX_OT +"\n "+		
 									"	DELETE \n" +
@@ -121,7 +121,7 @@ public class EditFedoraObjectService extends FedoraObjectService {
 									"	 "+citationObject+"   ot:citationTitle  ?o1 .\n"+
 									"	} ";
 
-					super.sendPatchRequestForUpdatingTriples(data, fedoraObjectURI+"/"+ ChildType.CITATIONS.getChildType() +"/"+citation.getCitation_id(), null);
+					super.sendPatchRequestForUpdatingTriples(data, knowledgeObjectURI+"/"+ ChildType.CITATIONS.getChildType() +"/"+citation.getCitation_id(), null);
 				}
 			}
 	}

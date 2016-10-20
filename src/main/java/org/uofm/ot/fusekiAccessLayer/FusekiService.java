@@ -116,9 +116,9 @@ public class FusekiService {
 	
 		while (resultSet.hasNext()) {
 			QuerySolution binding = resultSet.nextSolution();
-			KnowledgeObject fedoraObject = mapQuerySolutionToFedoraObject(binding, false, isPublicOnly);
-			if(fedoraObject != null) {
-				list.add(fedoraObject);
+			KnowledgeObject knowledgeObject = mapQuerySolutionToFedoraObject(binding, false, isPublicOnly);
+			if(knowledgeObject != null) {
+				list.add(knowledgeObject);
 			}
 		}
 
@@ -193,7 +193,7 @@ public class FusekiService {
 	}
 	
 	public KnowledgeObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException {
-		KnowledgeObject fedoraObject = null ;
+		KnowledgeObject knowledgeObject = null ;
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
@@ -207,8 +207,8 @@ public class FusekiService {
 				
 				if(resultSet.hasNext()) {
 					QuerySolution querySolution = resultSet.next();
-					fedoraObject = mapQuerySolutionToFedoraObject(querySolution,true, false);
-					fedoraObject.setArkId(arkId);
+					knowledgeObject = mapQuerySolutionToFedoraObject(querySolution,true, false);
+					knowledgeObject.setArkId(arkId);
 				}
 			}
 		} else {
@@ -217,7 +217,7 @@ public class FusekiService {
 			throw exception;
 		}
 
-		return fedoraObject;
+		return knowledgeObject;
 	
 	} 
 	
@@ -419,28 +419,28 @@ public class FusekiService {
 	
 	private KnowledgeObject mapQuerySolutionToFedoraObject(QuerySolution querySolution,boolean isSingleObject, boolean published ) throws ObjectTellerException {
 
-		KnowledgeObject fedoraObject =null;
+		KnowledgeObject knowledgeObject =null;
 		if(!isSingleObject){
 			String uri = querySolution.get("x").toString();
 			if(uri.length() > fedoraServerURL.length()){  // check for some bad triples from misconfiguration
 				if(uri.contains(fedoraServerURL)) {
-					fedoraObject = new KnowledgeObject();
+					knowledgeObject = new KnowledgeObject();
 					uri = uri.substring(fedoraServerURL.length());
 					// setup for ark ids
 					RDFNode ark_node = querySolution.get("arkId");
 					if (ark_node != null ) {
-						fedoraObject.setArkId(new ArkId(ark_node.toString()));
+						knowledgeObject.setArkId(new ArkId(ark_node.toString()));
 					} else {
-						fedoraObject.setArkId(new ArkId(uri));
+						knowledgeObject.setArkId(new ArkId(uri));
 					}
 				}
 			} 
 		} else {
-			fedoraObject = new KnowledgeObject();
+			knowledgeObject = new KnowledgeObject();
 		}
 
 
-		if(fedoraObject != null ) {
+		if(knowledgeObject != null ) {
 
 
 
@@ -485,8 +485,8 @@ public class FusekiService {
 			
 			metadata.setLicense(license);
 			
-			fedoraObject.setMetadata(metadata);
+			knowledgeObject.setMetadata(metadata);
 		}
-		return fedoraObject;
+		return knowledgeObject;
 	}
 }
