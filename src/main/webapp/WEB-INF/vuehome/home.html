@@ -88,7 +88,7 @@
 		</div>
 		<router-view></router-view>
 		<loginOverlay></loginOverlay>
-		<objEditor></objEditor>
+
 	</div>
 	<template id="layout">
 		<div class="ot-content">
@@ -273,7 +273,7 @@
 					<ul class="tab-content" id="tab">
 						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
 							class="tab-pane">
-								<tab-pane v-bind:section="section.name"></tab-pane>
+								<tab-pane v-bind:section="section.name" v-bind:object="objModel.object"></tab-pane>
 						</li>
 					</ul>
 				</div>
@@ -284,7 +284,7 @@
 		<div class="tab-content view-obj">
 			<ul>
 				<li class="ot-viewlist" v-for="field in filteredFields">
-					<field-tile :field="field"></field-tile>
+					<field-tile :field="field" :object="object"></field-tile>
 				</li>
 			</ul>
 		</div>
@@ -383,7 +383,7 @@
 			<ul class="tab-content" id="etab">
 						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
 							class="tab-pane">
-								<tab-pane v-bind:section="section.name"></tab-pane>
+								<tab-pane v-bind:section="section.name" v-bind:object="editObjModel.object"></tab-pane>
 						</li>
 					</ul>
 		</div>

@@ -1,6 +1,7 @@
 'use strict';
+var bus = new Vue();
 var objModel = { object : {} };
-var editObjModel = { object : {} };
+var editObjModel = { object : { metadata:{title:""}, uri:"ark"} };
 var sections = [{name:"metadata"},
                 {name:"payload"},
                 {name:"inputMessage"},
@@ -45,45 +46,8 @@ var loginOverlay = Vue.component("loginoverlay",{
 	}
 })
 
-var objeditor=Vue.component("objeditor",{
-	template:'#objEditor_overlay',
-	data:function(){
-		return {
-			objModel : objModel,
-			editObjModel:editObjModel,
-			sections:sections,
-			showObjectEditor:showObjectEditor}
-	},
-	created:function(){
-		editObjModel.object = objModel.object;
-		console.log(editObjModel.object);
-	},
-	updated : function() {
-		$('ul#etabs li:first').addClass('active'); 
-	    $('ul#etab li:first').addClass('active'); 
-		$('.autosize').each(autoresize);
-	},
-	methods: {
-		saveObj:function(response){
-			
-		},
-		undoEdit: function(){
-			editObjModel.object = objModel.object;
-		},
-		createObj: function(){
-			
-		},olSlideout:function(){
-			showObjectEditor.show=false;
-		},
-		olSlidein:function(){
-			showObjectEditor.show=true;
-		}
-	
-	}
-	
-})
-var vmcomp = Vue
-		.component(
+
+var vmcomp = Vue.component(
 				"ko-tile",
 				{
 					template : "#ko-tile-template",
@@ -131,25 +95,25 @@ var vmcomp = Vue
 						clicked: function(){
 							console.log(this.object.uri+"selected");
 							objModel.object=this.object;
+							editObjModel.object=this.object;
 							this.$emit("clicked");
 						}
 					}
 				});
-var vm_fields = Vue
-		.component(
+var vm_fields = Vue.component(
 				"field-tile",
 				{
 					template : "#field-tile-template",
-					props : [ 'field', 'value' ],
+					props : [ 'field' , 'object'],
 					created:function(){
-						console.log("Field:"+this.field.name);
+						console.log("Field:"+this.field.name+"Value:"+this.value);
 					},
 					computed : {
 						value : function() {
 							var propertyValue = "";
 							switch (this.field.section) {
 							case "metadata":
-								propertyValue = objModel.object[this.field.section][this.field.name];
+								propertyValue = editObjModel.object[this.field.section][this.field.name];
 								break;
 							case "payload":
 								propertyValue = objModel.object[this.field.section][this.field.name];
@@ -180,7 +144,7 @@ var vm_linkedfields = Vue.component("linkedfield-tile", {
 });
 const tabPane = Vue.component('tab-pane', {
 	template: "#tab-panel-template",
-	props:['section'],
+	props:['section','object'],
 	data: function(){
 		return {
 			fields_json : {
@@ -199,7 +163,7 @@ const tabPane = Vue.component('tab-pane', {
 	},
 	created : function() {
 		$('.autosize').each(autoresize);
-		console.log("Created TabPane");
+		console.log("Created TabPane for the object of "+this.object.uri);
 	},
 	computed : {
 		filteredFields :function(){
@@ -216,13 +180,16 @@ const objDetail = Vue.component('ko-detail', {
 	data : function() {
 		return {
 			objModel : objModel,
-			sections:sections
+			sections : sections
 		}
 	},
 	created : function() {
 		var self = this;
 		$('ul#tabs li:first').addClass('active'); 
-	    $('ul#tab li:first').addClass('active'); 
+	    $('ul#tab li:first').addClass('active');
+	    //this.object= this.objModel.object;
+		//editObjModel.object=objModel.object;
+		otScroll();
 	},
 	mounted:function() {
 		var self = this;
@@ -231,9 +198,13 @@ const objDetail = Vue.component('ko-detail', {
 				response) {
 			console.log(response);
 			objModel.object = response;
+			editObjModel.object=objModel.object;
 		}); 
 		$('ul#tabs li:first').addClass('active'); 
-	    $('ul#tab li:first').addClass('active'); 
+	    $('ul#tab li:first').addClass('active');
+	    $("html, body").animate({
+	        scrollTop: 0
+	    }, 200);
 	},
 	computed : {
 		formattedUpdateDate : function() {
@@ -283,10 +254,14 @@ const Home = Vue.component("ko-main", {
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
 			if(self.model.koList.length>0){
-				self.objModel.object=self.model.koList[0];
-				self.editObjModel.object=self.objModel.object;
+				objModel.object=self.model.koList[0];
+				editObjModel.object=objModel.object;
 			}
 		});
+
+	},
+	mounted:function(){
+		otScroll();
 	},
 	computed : {
 		countString : function() {
@@ -306,16 +281,14 @@ const Home = Vue.component("ko-main", {
 			return (this.order == "asc")
 		},
 		orderedList : function() {
-/* 					console.log(this.filteredList.length);
-*/					return _.orderBy(this.filteredList, this.sortKey,
+					return _.orderBy(this.filteredList, this.sortKey,
 					this.order)
 		},
 		filteredList :function(){
 			var list = this.model.koList;
 			var filterString = this.filterString;
 			return list.filter(function(field){
-/* 						console.log("Filter String: "+filterString);
-*/						return (field.metadata.title.includes(filterString) ||
+						return (field.metadata.title.includes(filterString) ||
 						field.metadata.keywords.includes(filterString) ||
 						field.metadata.owner.includes(filterString) )
 			})
@@ -335,6 +308,47 @@ const Home = Vue.component("ko-main", {
 		}
 	},
 	components:{'appLayout':applayout}
+});
+var objeditor=Vue.component("objeditor",{
+	template:'#objEditor_overlay',
+	data:function(){
+		return {
+			editObjModel:editObjModel,
+			sections:sections,
+			showObjectEditor:showObjectEditor
+			}
+	},
+	created:function(){
+		this.editObjModel.object = objModel.object;
+	},
+	mounted:function(){
+//		editObjModel.object = objModel.object;
+		console.log("objEditor Mounted... with Obj. "+this.editObjModel.object.uri);
+	},
+	updated : function() {
+		$('ul#etabs li:first').addClass('active'); 
+	    $('ul#etab li:first').addClass('active'); 
+		$('.autosize').each(autoresize);
+	},
+	methods: {
+		saveObj:function(response){
+			
+		},
+		undoEdit: function(){
+			editObjModel.object = objModel.object;
+		},
+		createObj: function(){
+			
+		},
+		olSlideout:function(){
+			showObjectEditor.show=false;
+		},
+		olSlidein:function(){
+			showObjectEditor.show=true;
+		}
+	
+	}
+	
 });
 const About = {
 	template : '<div><applayout :nothelper="true"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
@@ -357,12 +371,14 @@ const router = new VueRouter({
 	hashbang : false,
 	history : true
 });
+
 const app = new Vue({
 	router : router,
-	data:{},
-	components:{
+	data:{
 		objModel:objModel,
-		editObjModel:editObjModel,
+		editObjModel:editObjModel
+	},
+	components:{
 		objeditor:objeditor
 	},
 	methods:{

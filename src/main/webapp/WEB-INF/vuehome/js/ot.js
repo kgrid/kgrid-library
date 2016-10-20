@@ -200,7 +200,33 @@ function setBannerbkSize(){
   		}
   	}
  
- 	
+function otScroll() {
+	var padLeft = 280;
+    var navOffset = $(".header").offset().top;
+    $(".header").wrap('<div class="theadwrapper"></div>');
+	$(".theadwrapper").height($(".header").outerHeight(false));
+
+    $(window).scroll(function () {
+    	var supportPageOffset = window.pageXOffset !== undefined;
+    	var isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
+ 	    var x = supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
+    	var y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
+            var scrollPos = $(window).scrollTop();
+        if(scrollPos>60){
+        	$(".ot-backtotop").fadeIn('slow');
+        	$("#backtotop").fadeIn('slow');
+        }else{
+        	$(".ot-backtotop").fadeOut('slow');
+        	$("#backtotop").fadeOut('slow');
+        }
+       if (scrollPos >= navOffset) {
+            $(".header").addClass("fixed");
+        } else {
+            $(".header").removeClass("fixed");
+        }
+       $(".fixed").css("left",-x+"px");
+    });
+}
 $(document).ready(function() {
 	/*    var link = document.querySelector('link[rel="import"]');
 	    var content = link.import;
@@ -215,31 +241,7 @@ $(document).ready(function() {
 	    $('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active'); 
 
-		var padLeft = 280;
-	    var navOffset = $(".header").offset().top;
-	    $(".header").wrap('<div class="theadwrapper"></div>');
-		$(".theadwrapper").height($(".header").outerHeight(false));
 
-	    $(window).scroll(function () {
-	    	var supportPageOffset = window.pageXOffset !== undefined;
-	    	var isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
-	 	    var x = supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
-	    	var y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
-	            var scrollPos = $(window).scrollTop();
-	        if(scrollPos>60){
-	        	$(".ot-backtotop").fadeIn('slow');
-	        	$("#backtotop").fadeIn('slow');
-	        }else{
-	        	$(".ot-backtotop").fadeOut('slow');
-	        	$("#backtotop").fadeOut('slow');
-	        }
-	       if (scrollPos >= navOffset) {
-	            $(".header").addClass("fixed");
-	        } else {
-	            $(".header").removeClass("fixed");
-	        }
-	       $(".fixed").css("left",-x+"px");
-	    });
 	    
 	    $('.login-link').click(function() {
    			overlaySlide("login_overlay",true, "view");
