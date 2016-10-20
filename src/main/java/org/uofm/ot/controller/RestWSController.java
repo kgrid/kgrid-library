@@ -11,7 +11,7 @@ import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService;
 import org.uofm.ot.knowledgeObject.ArkId;
-import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.pythonAdapter.PythonAdapter;
 import org.uofm.ot.services.KnowledgeObjectService;
@@ -191,7 +191,7 @@ public class RestWSController {
 			objectExists= getFedoraObjectService.checkIfObjectExists(uri);
 			if ( objectExists ) {
 
-				FedoraObject object = knowledgeObjectService.getKnowledgeObject(new ArkId(uri));
+				KnowledgeObject object = knowledgeObjectService.getKnowledgeObject(new ArkId(uri));
 				title = object.getMetadata().getTitle();
 
 				CodeMetadata metadata = getFedoraObjectService.getCodemetadataFromXML(uri);

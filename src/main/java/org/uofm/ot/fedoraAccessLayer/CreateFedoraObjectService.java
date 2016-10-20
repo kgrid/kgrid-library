@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 import org.uofm.ot.knowledgeObject.Citation;
-import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.User;
 import org.uofm.ot.services.IdService;
@@ -23,7 +23,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 	private static final Logger logger = Logger.getLogger(CreateFedoraObjectService.class);
 
 
-	public FedoraObject createObject(FedoraObject fedoraObject, User loggedInUser, String libraryURL , ArkId existingArkId) throws ObjectTellerException {
+	public KnowledgeObject createObject(KnowledgeObject fedoraObject, User loggedInUser, String libraryURL , ArkId existingArkId) throws ObjectTellerException {
 
 		String transactionId = null; 
 		String errorMessage = null; 
@@ -157,7 +157,7 @@ public class CreateFedoraObjectService extends FedoraObjectService {
 	}
 
 
-	private void addHEMetadataProperties(FedoraObject fedoraObject, String uri,String transactionId) throws ObjectTellerException {
+	private void addHEMetadataProperties(KnowledgeObject fedoraObject, String uri,String transactionId) throws ObjectTellerException {
 		
 		if(fedoraObject.getMetadata() != null) {
 			String objectURI ;

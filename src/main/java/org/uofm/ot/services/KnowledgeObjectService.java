@@ -33,9 +33,9 @@ public class KnowledgeObjectService {
 	@Autowired
 	private CreateFedoraObjectService createFedoraObjectService;
 	
-	public FedoraObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException {
+	public KnowledgeObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException {
 
-		FedoraObject object = fusekiService.getKnowledgeObject(arkId);
+		KnowledgeObject object = fusekiService.getKnowledgeObject(arkId);
 		if(object != null) {
 			List<Citation> citations = fusekiService.getObjectCitations(arkId);
 			object.getMetadata().setCitations(citations);
@@ -43,13 +43,13 @@ public class KnowledgeObjectService {
 		return object;
 	}
 	
-	public FedoraObject editObject(FedoraObject newObject, ArkId arkId) throws ObjectTellerException {
+	public KnowledgeObject editObject(KnowledgeObject newObject, ArkId arkId) throws ObjectTellerException {
 
 		addOrEditMetadata(arkId, newObject.getMetadata());
 		editPayload(arkId, newObject.getPayload());
 		editInputMessageContent(arkId, newObject.getInputMessage());
 		editOutputMessageContent(arkId, newObject.getOutputMessage());
-		FedoraObject updatedObject = getCompleteKnowledgeObject(arkId);
+		KnowledgeObject updatedObject = getCompleteKnowledgeObject(arkId);
 		return updatedObject ; 
 	}
 	
@@ -57,8 +57,8 @@ public class KnowledgeObjectService {
 		deleteFedoraResourceService.deleteObject(arkId.getFedoraPath());
 	}
 	
-	public List<FedoraObject> getKnowledgeObjects(boolean published) throws ObjectTellerException {
-		List<FedoraObject> fedoraObjects = null;
+	public List<KnowledgeObject> getKnowledgeObjects(boolean published) throws ObjectTellerException {
+		List<KnowledgeObject> fedoraObjects = null;
 		fedoraObjects = fusekiService.getFedoraObjects(published);
 		return fedoraObjects;
 	}
@@ -67,11 +67,11 @@ public class KnowledgeObjectService {
 		return fusekiService.getNumberOfPublishedObjects();
 	}
 	
-	public FedoraObject getCompleteKnowledgeObject(ArkId arkId) throws ObjectTellerException {
+	public KnowledgeObject getCompleteKnowledgeObject(ArkId arkId) throws ObjectTellerException {
 
         String uri = arkId.getFedoraPath();
 		
-		FedoraObject object = getKnowledgeObject(arkId);
+		KnowledgeObject object = getKnowledgeObject(arkId);
 		
 		Payload payload = fusekiService.getPayloadProperties(uri);
 		
@@ -141,11 +141,11 @@ public class KnowledgeObjectService {
 		return getKnowledgeObject(arkId).getMetadata() ;
 	}
 	
-	public FedoraObject createKnowledgeObject(FedoraObject fedoraObject, User loggedInUser, String libraryURL) throws ObjectTellerException {
+	public KnowledgeObject createKnowledgeObject(KnowledgeObject fedoraObject, User loggedInUser, String libraryURL) throws ObjectTellerException {
 		return createFedoraObjectService.createObject(fedoraObject, loggedInUser, libraryURL, null);
 	}
 
-	public FedoraObject createFromExistingArkId(FedoraObject fedoraObject,String libraryURL, ArkId existingArkId) throws ObjectTellerException {
+	public KnowledgeObject createFromExistingArkId(KnowledgeObject fedoraObject,String libraryURL, ArkId existingArkId) throws ObjectTellerException {
 		User loggedInUser = new User(null, null, 0, "MANUAL", "IMPORT", null);
 		return createFedoraObjectService.createObject(fedoraObject, loggedInUser,libraryURL ,existingArkId);
 
@@ -190,7 +190,7 @@ public class KnowledgeObjectService {
 		editFedoraObjectService.editPayloadMetadata(payload,arkId.getFedoraPath());
 	}
 	
-	public void patchKnowledgeObject(FedoraObject fedoraObject,ArkId arkId) throws ObjectTellerException {
+	public void patchKnowledgeObject(KnowledgeObject fedoraObject,ArkId arkId) throws ObjectTellerException {
 		if(fedoraObject != null){
 			if(fedoraObject.getMetadata() != null ) {
 				String param = fedoraObject.getMetadata().isPublished() ? "yes":"no";
@@ -205,7 +205,7 @@ public class KnowledgeObjectService {
 
 	public void publishKnowledgeObject(ArkId arkId, boolean isToBePublished, User loggedInUser) throws ObjectTellerException {
 
-		FedoraObject ko = getKnowledgeObject(arkId);
+		KnowledgeObject ko = getKnowledgeObject(arkId);
 
 		if ( ko == null ) {
 			throw new ObjectTellerException("Unable to retrieve knowledge object: " + arkId.getArkId());

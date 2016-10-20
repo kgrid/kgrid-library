@@ -15,7 +15,7 @@ import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.dao.UserDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
-import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.model.Server_details;
 import org.uofm.ot.model.User;
 import org.uofm.ot.services.KnowledgeObjectService;
@@ -55,7 +55,7 @@ public class LoginController {
 	
 	private String getObjectPage( ModelMap model) {
 		try {
-			List<FedoraObject> list = objectService.getKnowledgeObjects(false);
+			List<KnowledgeObject> list = objectService.getKnowledgeObjects(false);
 			Integer publishedObjects = objectService.getNumberOfPublishedObjects();
 			model.addAttribute("objects", list);
 			model.addAttribute("TotalObjects", list.size());
@@ -118,7 +118,7 @@ public class LoginController {
 
 		if(httpSession.getAttribute("DBUser") == null){
 
-			List<FedoraObject> list;
+			List<KnowledgeObject> list;
 			try {
 				list = objectService.getKnowledgeObjects(true);
 				model.addAttribute("objects", list);

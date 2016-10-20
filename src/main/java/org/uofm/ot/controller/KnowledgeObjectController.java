@@ -10,7 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.knowledgeObject.ArkId;
-import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.User;
@@ -34,24 +34,24 @@ public class KnowledgeObjectController {
 			method=RequestMethod.POST , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<FedoraObject> createKnowledgeObject(@RequestBody FedoraObject KnowledgeObject,@ModelAttribute("loggedInUser") User loggedInUser, HttpServletRequest request ) throws ObjectTellerException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> createKnowledgeObject(@RequestBody KnowledgeObject KnowledgeObject,@ModelAttribute("loggedInUser") User loggedInUser, HttpServletRequest request ) throws ObjectTellerException, URISyntaxException {
 
-		ResponseEntity<FedoraObject> entity = null;
+		ResponseEntity<KnowledgeObject> entity = null;
 
 //		loggedInUser = new User("nbahulek@umich.edu", "test", 48 , "Namita", "B.", UserRoles.ADMIN);
 		
 		if (loggedInUser != null ) {
 			String libraryURL = request.getRequestURL().toString();
-			FedoraObject object= knowledgeObjectService.createKnowledgeObject(KnowledgeObject, loggedInUser, libraryURL);
+			KnowledgeObject object= knowledgeObjectService.createKnowledgeObject(KnowledgeObject, loggedInUser, libraryURL);
 			String uri = request.getRequestURL()+"/" +object.getURI();
 			URI location = new URI(uri);
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.setLocation(location);
-			entity = new ResponseEntity<FedoraObject>(object,responseHeaders,HttpStatus.CREATED);
+			entity = new ResponseEntity<KnowledgeObject>(object,responseHeaders,HttpStatus.CREATED);
 			
 		} else {
 			
-			entity = new ResponseEntity<FedoraObject> (HttpStatus.UNAUTHORIZED);	
+			entity = new ResponseEntity<KnowledgeObject> (HttpStatus.UNAUTHORIZED);	
 			
 		}
 		return entity ; 
@@ -60,7 +60,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject", 
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public List<FedoraObject> geKnowledgeObjects() throws ObjectTellerException {
+	public List<KnowledgeObject> geKnowledgeObjects() throws ObjectTellerException {
 		return knowledgeObjectService.getKnowledgeObjects(false);
 	}
 
@@ -68,15 +68,15 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}",
 			method=RequestMethod.GET ,
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<FedoraObject> getKnowledgeObject(ArkId arkId) throws ObjectTellerException  {
-		ResponseEntity<FedoraObject> entity = null;
+	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId) throws ObjectTellerException  {
+		ResponseEntity<KnowledgeObject> entity = null;
 
-		FedoraObject fedoraObject =  knowledgeObjectService.getKnowledgeObject(arkId);
+		KnowledgeObject fedoraObject =  knowledgeObjectService.getKnowledgeObject(arkId);
 
 		if(fedoraObject != null){
-			entity = new ResponseEntity<FedoraObject>(fedoraObject,HttpStatus.OK);
+			entity = new ResponseEntity<KnowledgeObject>(fedoraObject,HttpStatus.OK);
 		} else {
-			entity = new ResponseEntity<FedoraObject>(fedoraObject,HttpStatus.NOT_FOUND);
+			entity = new ResponseEntity<KnowledgeObject>(fedoraObject,HttpStatus.NOT_FOUND);
 		}
 
 		return entity ;
@@ -86,7 +86,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/complete",
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject getCompleteKnowledgeObjectForArkId( ArkId arkId) throws ObjectTellerException  {
+	public KnowledgeObject getCompleteKnowledgeObjectForArkId( ArkId arkId) throws ObjectTellerException  {
 		return knowledgeObjectService.getCompleteKnowledgeObject(arkId);
 	}
 	
@@ -94,7 +94,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/{objectURI}/complete",
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
+	public KnowledgeObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
 		ArkId arkId = new ArkId(objectURI);
 		return knowledgeObjectService.getCompleteKnowledgeObject(arkId);
 	}
@@ -103,7 +103,7 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject updateKnowledgeObjectByArkId(@RequestBody FedoraObject knowledgeObject,ArkId arkId, HttpServletRequest request) throws ObjectTellerException {
+	public KnowledgeObject updateKnowledgeObjectByArkId(@RequestBody KnowledgeObject knowledgeObject,ArkId arkId, HttpServletRequest request) throws ObjectTellerException {
 
 		if (knowledgeObjectService.exists(arkId)) {
 			return knowledgeObjectService.editObject(knowledgeObject,arkId);
@@ -119,7 +119,7 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public FedoraObject updateKnowledgeObject(@RequestBody FedoraObject knowledgeObject,@PathVariable String objectURI,HttpServletRequest request ) throws ObjectTellerException {
+	public KnowledgeObject updateKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject,@PathVariable String objectURI,HttpServletRequest request ) throws ObjectTellerException {
 		ArkId arkId = new ArkId(objectURI);
 		return updateKnowledgeObjectByArkId(knowledgeObject,arkId, request);
 	}
@@ -347,7 +347,7 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PATCH,
 			consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void patchKnowledgeObject(@RequestBody FedoraObject knowledgeObject, ArkId arkId) throws ObjectTellerException {
+	public void patchKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject, ArkId arkId) throws ObjectTellerException {
 		knowledgeObjectService.patchKnowledgeObject(knowledgeObject, arkId);
 	}
 

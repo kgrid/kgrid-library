@@ -14,7 +14,7 @@ import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.DeleteFedoraResourceService;
 import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
 import org.uofm.ot.knowledgeObject.ArkId;
-import org.uofm.ot.knowledgeObject.FedoraObject;
+import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.model.User;
 import org.uofm.ot.services.KnowledgeObjectService;
 
@@ -42,12 +42,12 @@ public class ObjectController {
 
 
 	@RequestMapping(value = "/object/ark:/{naan}/{name}", method = RequestMethod.GET)
-	public String getObjectForArkId(ArkId arkId, ModelMap model, FedoraObject fedoraObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
+	public String getObjectForArkId(ArkId arkId, ModelMap model, KnowledgeObject fedoraObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
 		return getObject(arkId.getArkId(), model, fedoraObject, loggedInUser);
 	}
 
 		@RequestMapping(value = "/object/{objectURI}", method = RequestMethod.GET)
-		public String getObject( @PathVariable String objectURI, ModelMap model, FedoraObject fedoraObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
+		public String getObject( @PathVariable String objectURI, ModelMap model, KnowledgeObject fedoraObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
 		String view = "objects/ObjectView";
 		try {
 			if(validateAccessToPrivateObject(objectURI, loggedInUser)) {
@@ -67,7 +67,7 @@ public class ObjectController {
 	}
 	
 	@RequestMapping(value="/publishObject.{objectURI}/{param}", method=RequestMethod.GET)
-	public ResponseEntity<String> publishObject(ModelMap model, @PathVariable String objectURI, @PathVariable String param, FedoraObject fedoraObject, @ModelAttribute("loggedInUser") User loggedInUser) {
+	public ResponseEntity<String> publishObject(ModelMap model, @PathVariable String objectURI, @PathVariable String param, KnowledgeObject fedoraObject, @ModelAttribute("loggedInUser") User loggedInUser) {
 		ResponseEntity<String> resultEntity = null;
 
 		if(validateUser(loggedInUser)) {
@@ -92,7 +92,7 @@ public class ObjectController {
 
 
 		
-		FedoraObject object = knowledgeObjectService.getCompleteKnowledgeObject(new ArkId(objectURI));
+		KnowledgeObject object = knowledgeObjectService.getCompleteKnowledgeObject(new ArkId(objectURI));
 		model.addAttribute("fedoraObject",object);
 
 		String logData = object.getLogData();
@@ -194,7 +194,7 @@ public class ObjectController {
 	
 	private boolean validateAccessToPrivateObject(String objectURI,User loggedInUser) throws ObjectTellerException{
 
-		FedoraObject object = knowledgeObjectService.getKnowledgeObject(new ArkId(objectURI));
+		KnowledgeObject object = knowledgeObjectService.getKnowledgeObject(new ArkId(objectURI));
 		
 		if(!object.getMetadata().isPublished() && loggedInUser == null)
 			return false;
