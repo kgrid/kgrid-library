@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
-public class FedoraObjectTest {
+public class KnowledgeObjectTest {
 
 	@Test
 	public void fedoraObjectHasArkId () {
