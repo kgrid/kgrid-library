@@ -721,8 +721,7 @@ function updateViewObject() {
 }
 
 function saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text) {
-	$
-			.ajax({
+	$.ajax({
 				beforeSend : function(xhrObj) {
 					xhrObj.setRequestHeader("Content-Type", "application/json");
 					xhrObj.setRequestHeader("Accept", "application/json");
@@ -756,8 +755,9 @@ function saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text) {
 						if (ajaxMethod == "POST") {
 							$("#begin_page").hide();
 							$("#end_page").show();
-						} else {
-
+							curMode="edit";
+						} else { 
+							
 						}
 						
 					} else {
@@ -776,7 +776,7 @@ function saveToServer(section, ajaxMethod, ajaxUrl, ajaxSuccess, text) {
 					// test code for
 					$("div.processing").fadeOut(200);
 					if (curMode != "new") {
-						$("div.warning").text(response.status+"   "+ response.statusText);
+						$("div.failure").text(response.status+"   "+ response.statusText);
 						$("div.faiure").fadeIn(300).delay(1500).fadeOut(400);
 						
 					}else{
