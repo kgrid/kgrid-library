@@ -71,12 +71,12 @@ public class KnowledgeObjectController {
 	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId) throws ObjectTellerException  {
 		ResponseEntity<KnowledgeObject> entity = null;
 
-		KnowledgeObject fedoraObject =  knowledgeObjectService.getKnowledgeObject(arkId);
+		KnowledgeObject knowledgeObject =  knowledgeObjectService.getKnowledgeObject(arkId);
 
-		if(fedoraObject != null){
-			entity = new ResponseEntity<KnowledgeObject>(fedoraObject,HttpStatus.OK);
+		if(knowledgeObject != null){
+			entity = new ResponseEntity<KnowledgeObject>(knowledgeObject,HttpStatus.OK);
 		} else {
-			entity = new ResponseEntity<KnowledgeObject>(fedoraObject,HttpStatus.NOT_FOUND);
+			entity = new ResponseEntity<KnowledgeObject>(knowledgeObject,HttpStatus.NOT_FOUND);
 		}
 
 		return entity ;
