@@ -86,9 +86,11 @@
 				<!-- /.container-fluid -->
 			</nav>
 		</div>
-		<router-view></router-view>
-		<loginOverlay></loginOverlay>
 
+		<router-view></router-view>
+
+		<loginOverlay></loginOverlay>
+		<objeditor></objeditor>
 	</div>
 	<template id="layout">
 		<div class="ot-content">
@@ -208,19 +210,19 @@
 			</div>
 			<div id="ko-title">
 				<div style="width: 10px; hieght: 60px; display: inline-block;">
-					<img v-if="objModel.object.metadata.published"
+					<img v-if="objModel.viewObject.metadata.published"
 						src="images/LittleGreenDot.png" width="10px"
 						height="auto" />
 				</div>
 				<h1>
-					<small id="page_title_v">{{objModel.object.metadata.title}}</small>
+					<small id="page_title_v">{{objModel.viewObject.metadata.title}}</small>
 				</h1>
 			</div>
 			<div class="date">
 				<div class="id">
 					<p class="date-title">Object ID:</p>
 					<p class="date-data">
-						<span>{{objModel.object.uri}}</span>
+						<span>{{objModel.viewObject.uri}}</span>
 					</p>
 				</div>
 				<div class="date1">
@@ -273,7 +275,7 @@
 					<ul class="tab-content" id="tab">
 						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
 							class="tab-pane">
-								<tab-pane v-bind:section="section.name" v-bind:object="objModel.object"></tab-pane>
+								<tab-pane v-bind:section="section.name" v-bind:object="objModel.viewObject" ></tab-pane>
 						</li>
 					</ul>
 				</div>
@@ -284,7 +286,7 @@
 		<div class="tab-content view-obj">
 			<ul>
 				<li class="ot-viewlist" v-for="field in filteredFields">
-					<field-tile :field="field" :object="object"></field-tile>
+					<field-tile :field="field" :object="object" :isDisabled=isDisabled></field-tile>
 				</li>
 			</ul>
 		</div>
@@ -292,9 +294,9 @@
 	<template id="field-tile-template">
 	<div class="addtext" :id="field.name">
 		<h4>{{field.title}}</h4>
-		<input :type="field.type" class="metaEdit" disabled
-			v-bind:value="value" v-if="isInput" />
-		<textarea class="metaEdit autosize" disabled v-bind:value="value"
+		<input :type="field.type" class="metaEdit" disabled v-bind:value="value" 
+			v-if="isInput" />
+		<textarea class="metaEdit autosize" disabled  v-bind:value="value"
 			v-if="isTextArea">{{value}}</textarea>
 		<linkedfield-tile v-if="isLicense" v-bind:link="value.licenseName"
 			v-bind:value="value.licenseLink"></linkedfield-tile>
@@ -325,14 +327,8 @@
 					<slot name="ol-title"></slot>
 				</div>
 				<div class="entryform" id="entry_form">
-					<form name="addObj_f" class="Add-content" id="login_f"
-							method="post">
-							<slot name="ol-form">
-							</slot>
-							<slot name="ol-btn">
-							</slot> 
-							
-					</form>
+					<slot name="ol-form"></slot>
+					<slot name="ol-btn"></slot> 
 					</div>
 					</div>
 				<div class="overlay-alert">
@@ -349,43 +345,135 @@
 <div class="layered_overlay" id="objEditor_overlay" v-show="showObjectEditor.show">
 <transition name="slide">
 	<overlaylayout v-on:slideout="olSlideout"> 
-		<div slot="ol-title"><h3>Add/Edit Object</h3>
-		<ul class="nav nav-tabs" role="tablist" id="etabs">
-						<li role="presentation" class="labels"><a
-							href="#metadata" aria-controls="metadata" role="tab"
-							data-toggle="etab">METADATA</a></li>
-						<li role="presentation" class="labels"><a href="#payload"
-							aria-controls="payload" role="tab" data-toggle="etab">PAYLOAD</a></li>
-						<li role="presentation" class="labels"><a href="#inputMessage"
-							aria-controls="input" role="tab" data-toggle="etab">INPUT</a></li>
-						<li role="presentation" class="labels"><a href="#outputMessage"
-							aria-controls="output" role="tab" data-toggle="etab">OUTPUT</a></li>
-						<li role="presentation" class="labels accessLevelOne"><a
-							href="#" aria-controls="logdata" role="tab" data-toggle="etab">
-								<div class="labels iconBtn accessLevelOne">
-									<img class="hover-out"
-										src="images/More_Icon_Light-01.png" /> <img
-										class="hover-in" style="display: none;"
-										src="images/More_Icon_Dark-01.png" />
+		<div slot="ol-title"><h3>{{editObjModel.editObject.metadata.title}}</h3>
+			<div id="barcontainer">
+				<ul class="inEdit" id="edittabs">
+					<li class="labels active">METADATA</li>
+					<li class="labels">PAYLOAD</li>
+					<li class="labels">INPUT</li>
+					<li class="labels">OUTPUT</li>
+				</ul>
+				<div id="editWrapper">
+					<button class="edit" id="cancelBtn">UNDO</button>
+					<button class="edit" id="saveObjButton" v-on:click="saveObj">SAVE&CLOSE</button>
 								</div>
-						</a></li>
-					</ul>
-					<div class="inline editwrapper accessLevelOne" id="objBtns"
-						style="top: 4px; right: 40px; position: absolute;">
-						<button class="edit" id="metadataeditBtn" v-on:click="undoEdit">UNDO</button>
-						<button class="edit" id="deleteButton"
-							v-on:click="saveObj">SAVE&CLOSE</button>
-						
 			</div>
-		
 		</div>
 		<div slot="ol-form">
-			<ul class="tab-content" id="etab">
-						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
-							class="tab-pane">
-								<tab-pane v-bind:section="section.name" v-bind:object="editObjModel.object"></tab-pane>
+		<ul class="inEdit" id="edittab">
+					<li class="active current-tab" id="metadata">
+						<fieldset class="fieldcontainer" id="first">
+							<div id="metadata_fields">
+								<div class="addtext">
+									<h4>TITLE</h4>
+									<input type="text" class="metaEdit" v-model="editObjModel.editObject.metadata.title" />
+								</div>
+							<div class="addtext">
+									<h4>DESCRIPTION</h4>
+									<input type="textarea" class="metaEdit" v-model="editObjModel.editObject.metadata.description" />
+								</div>
+								<div class="addtext">
+									<h4>KEYWORDS</h4>
+									<input type="text" class="metaEdit" v-model="editObjModel.editObject.metadata.keywords" />
+								</div>
+								<div class="addtext">
+									<h4>OWNERS</h4>
+									<input type="text" class="metaEdit" v-model="editObjModel.editObject.metadata.owner" />
+								</div>
+								<div class="addtext">
+									<h4>CONTRIBUTORS</h4>
+									<input type="text" class="metaEdit" v-model="editObjModel.editObject.metadata.contributors" />
+								</div>
+								
+						</fieldset>
+					</li>
+					<li id="payload">
+						
+							<div id="payload_fields">
+							<div class="addtext">
+								<h4> FUNCTION NAME (REQUIRED)
+								</h4>
+								<div class="addtext">
+									<input class="textbox inEdit" type="text" id="functionName"
+										placeholder="one instance only" maxlength="140"><span>140/140</span>
+								</div>
+								</div>
+								<div class="addtext">
+									<h4>ENGINE TYPE
+									</h4>
+									<select required class="options" id="engineType">
+										<option value="Python">PYTHON</option>
+									</select> <br>
+								</div>
+<!-- 								<div v-if="inputfile==false">
+							<div id="payloadDropFile" class="dropfile">
+								<div class="upload-direction">
+									<input type="file" @change="onpayloadFileChange" class="inputfile"
+										data-multiple-caption="{count} files selected" multiple /> <label
+										for="file_output" id="filecount"> <img
+										src="images/Upload_Icon.png"> <br>
+										<p class="green">CHOOSE_FILE</label>
+									</p>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div v-else>
+								<button v-on:click="removepayloadFile">Remove</button>
+								<input type="textarea" id="payloadTextArea"
+									v-model="editObjModel.editObject.inputMessage">
+								</textarea>
+						</div>
+						</div> -->
+
 						</li>
-					</ul>
+					<li id="input">
+<!-- 							<div id="input_fields">
+						<div v-if="inputfile==false">
+							<div id="inputDropFile" class="dropfile">
+								<div class="upload-direction">
+									<input type="file" @change="oninputFileChange" class="inputfile"
+										data-multiple-caption="{count} files selected" multiple /> <label
+										for="file_output" id="filecount"> <img
+										src="images/Upload_Icon.png"> <br>
+										<p class="green">CHOOSE_FILE</label>
+									</p>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div v-else>
+								<button v-on:click="removeInputFile">Remove</button>
+								<input type="textarea" id="inputTextArea"
+									v-model="editObjModel.editObject.inputMessage">
+								</textarea>
+						</div>
+						</div> -->
+					</li>
+				<li id="output">
+					<div id="output_fields">
+						<div v-if="outputfile==false">
+							<div id="outputDropFile" class="dropfile">
+								<div class="upload-direction">
+									<input type="file" @change="onFileChange" class="inputfile"
+										data-multiple-caption="{count} files selected" multiple /> <label
+										for="file_output" id="filecount"> <img
+										src="images/Upload_Icon.png"> <br>
+										<p class="green">CHOOSE_FILE</label>
+									</p>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div v-else>
+								<button v-on:click="removeFile">Remove</button>
+								<input type="textarea" id="outputTextArea"
+									v-model="editObjModel.editObject.outputMessage">
+								</textarea>
+						</div>
+					</div>
+				</li>
+			</ul>
 		</div>
 		<div slot="ol-btn"></div>
 		<div slot="ol-processing">Processing...</div>

@@ -82,21 +82,17 @@ function overlaySlide(overlayID, open, mode) {
 		overlayPane_left = (window_width * 0.27);
 	}
 	if (overlayID == "addObject") {
-		resetInputText();
 		if (mode != "new") {
 			$("#begin_page").hide();
 			$("#entry_form1").show();
 			if (open) {
 				console.log("Init Obj:" + editObj);
-				initInputTextFromObject(editObj,"overlay");
 			}
 		} else {
-			curURI="";
 			$("#begin_page").show();
 			$("#end_page").hide();
 			$("#entry_form1").hide();
 			console.log("Overlay IN with URI:" + curURI);
-
 		}
 	}
 	if (overlayID == "login_overlay") {
@@ -241,7 +237,26 @@ $(document).ready(function() {
 	    $('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active'); 
 
-
+		$("ul#tabs.inEdit  li.active").addClass("middleout");
+		
+		$("ul#edittabs li").click(function(e) {
+			var tabClass=".view";
+			if($(this).parent().hasClass("inEdit")){
+				tabClass=".inEdit";
+			}
+			if (!$(this).hasClass("active")) {
+				var tabNum = $(this).index();
+				var nthChild = tabNum + 1;
+				$("ul#edittabs"+tabClass+" li.active").removeClass("active");
+				$("ul#edittabs"+tabClass+"  li.middleout").removeClass("middleout");
+				$(this).addClass("active");
+				$(this).addClass("middleout");
+				
+				$("ul#edittab"+tabClass+"  li.active").removeClass("active");
+				$("ul#edittab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
+			}
+			$('.autosize').each(autoresize);
+		});
 	    
 	    $('.login-link').click(function() {
    			overlaySlide("login_overlay",true, "view");
