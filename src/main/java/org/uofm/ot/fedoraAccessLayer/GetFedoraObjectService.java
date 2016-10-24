@@ -1,32 +1,19 @@
 package org.uofm.ot.fedoraAccessLayer;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.NodeIterator;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.log4j.Logger;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
-import org.uofm.ot.transferobjects.CodeMetadata;
-import org.uofm.ot.transferobjects.DataType;
-import org.uofm.ot.transferobjects.ParamDescription;
+
 
 public class GetFedoraObjectService extends FedoraObjectService {
 	
@@ -82,80 +69,4 @@ public class GetFedoraObjectService extends FedoraObjectService {
 		return chunk;
 	}
 	
-	public CodeMetadata getCodemetadataFromXML(String objectId) throws ObjectTellerException  {
-
-		CodeMetadata codeMetadata = new CodeMetadata();
-
-		Model modelInput = ModelFactory.createDefaultModel();
-
-		String chunkInput = getObjectContent(objectId,ChildType.INPUT.getChildType());
-
-		InputStream streamInput = new ByteArrayInputStream(chunkInput.getBytes(StandardCharsets.UTF_8));
-
-		modelInput.read(streamInput,null);
-
-
-
-		StmtIterator iterInput = modelInput.getResource("http://uofm.org/objectteller/inputMessage").listProperties();
-		ArrayList<String> params = new ArrayList<String>();
-
-
-		while (iterInput.hasNext()) {
-
-			Statement stmt = iterInput.nextStatement(); 
-
-			if("noofparams".equals(stmt.getPredicate().getLocalName()))
-				codeMetadata.setNoOfParams(Integer.parseInt(stmt.getObject().toString()));
-
-			if("params".equals(stmt.getPredicate().getLocalName())){
-				NodeIterator props = modelInput.getSeq(stmt.getResource()).iterator();
-				while(props.hasNext()){
-					RDFNode st = props.nextNode();
-					if(st.isLiteral())
-						params.add(st.asLiteral().getString());
-				}
-			}
-		}
-
-		ArrayList<ParamDescription> paramList = new ArrayList<ParamDescription>();
-		for (String param : params) {
-			StmtIterator paramDesc = modelInput.getResource(FusekiConstants.OT_NAMESPACE+param+"/").listProperties();
-			ParamDescription description = new ParamDescription();
-			description.setName(param);
-			while(paramDesc.hasNext()){
-				Statement stmt = paramDesc.nextStatement(); 
-				if("datatype".equals(stmt.getPredicate().getLocalName()))
-					description.setDatatype(DataType.valueOf(stmt.getObject().toString()));
-				if("min".equals(stmt.getPredicate().getLocalName()))
-					description.setMin(Integer.parseInt(stmt.getObject().toString()));
-				if("max".equals(stmt.getPredicate().getLocalName()))
-					description.setMax(Integer.parseInt(stmt.getObject().toString()));
-			}
-			paramList.add(description);
-		}
-
-		codeMetadata.setParams(paramList);
-
-		Model modelOutput = ModelFactory.createDefaultModel();
-
-		String chunkOuput = getObjectContent(objectId,ChildType.OUTPUT.getChildType());
-
-		InputStream streamOutput = new ByteArrayInputStream(chunkOuput.getBytes(StandardCharsets.UTF_8));
-
-		modelOutput.read(streamOutput,null);
-
-		StmtIterator iterOutput = modelOutput.getResource("http://uofm.org/objectteller/outputMessage").listProperties();
-
-		while (iterOutput.hasNext()) {
-
-			Statement stmt = iterOutput.nextStatement(); 
-
-			if("returntype".equals(stmt.getPredicate().getLocalName()))
-				codeMetadata.setReturntype(DataType.valueOf(stmt.getObject().toString()));
-
-		}
-
-		return codeMetadata;
-	}
-
 }
