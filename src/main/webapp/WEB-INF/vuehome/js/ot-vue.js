@@ -1,8 +1,8 @@
 'use strict';
-var bus = new Vue();
+var eventBus = new Vue({});
 var raw = 9;
-var objModel = { viewObject : { metadata:{title:"View Object"}} };
-var editObjModel = { editObject : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},uri:"ark"} };
+var objModel = { object : { metadata:{title:"View Object"}} };
+var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},uri:"ark"} };
 var sections = [{name:"metadata"},
                 {name:"payload"},
                 {name:"inputMessage"},
@@ -52,7 +52,7 @@ var vmcomp = Vue.component(
 				"ko-tile",
 				{
 					template : "#ko-tile-template",
-					props : [ 'object', 'listsize' ],
+					props : [ 'object', 'listsize' ,'tileindex'],
 					computed : {
 						formattedlastModified : function() {
 							return new Date(
@@ -74,7 +74,7 @@ var vmcomp = Vue.component(
 						}
 					},
 					methods : {
-						deleteObject : function() {
+						deleteObject : function(event) {
 							var uri = this.object.uri;
 							var txt;
 							if (uri != "") {
@@ -88,6 +88,7 @@ var vmcomp = Vue.component(
 												success : function(
 														response) {
 													console.log("Deletion successful!");
+													eventBus.$emit('remove');
 												}
 											});
 								}
@@ -95,9 +96,7 @@ var vmcomp = Vue.component(
 						},
 						clicked: function(){
 							console.log(this.object.uri+"selected");
-//							objModel.object=this.object;
-//							editObjModel.object=this.object;
-							this.$emit("clicked");
+							eventBus.$emit("objectSelected", this.tileindex);
 						}
 					}
 				});
@@ -117,13 +116,13 @@ var vm_fields = Vue.component(
 							var propertyModel = "";
 							switch (this.field.section) {
 							case "metadata":
-								propertyModel = "editObjModel.editObject"+this.field.section+"."+this.field.name;
+								propertyModel = "editObjModel.object"+this.field.section+"."+this.field.name;
 								break;
 							case "payload":
-								propertyModel = "editObjModel.editObject"+this.field.section+"."+this.field.name;
+								propertyModel = "editObjModel.object"+this.field.section+"."+this.field.name;
 								break;
 							default:
-								propertyModel = "editObjModel.editObject"+this.field.section+"."+this.field.name;
+								propertyModel = "editObjModel.object"+this.field.section+"."+this.field.name;
 								break;
 							}
 							return propertyModel;
@@ -212,54 +211,62 @@ const objDetail = Vue.component('ko-detail', {
 	},
 	created : function() {
 		var self = this;
-		console.log("Object View created -> Edit Model Title: "+editObjModel.editObject.metadata.title+"  View Model Title: "+objModel.viewObject.metadata.title);
+		eventBus.$on("objSaved",function(obj){
+			console.log("obj Saved");
+			$.extend(true, objModel.object, obj);
+		});
+		var self = this;
+		console.log("Object View created -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active');
-		otScroll();
+		//
 	},
 	mounted:function() {
 		var self = this;
-		console.log("Object View mounted -> Edit Model Title: "+editObjModel.editObject.metadata.title+"  View Model Title: "+objModel.viewObject.metadata.title);
+		console.log("Object View mounted -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 		retrieveObject(this.$route.params.uri, "complete", function(
 				response) {
 			console.log(response);
-			self.objModel.viewObject = response;
-			editObjModel.editObject=response;
+			self.objModel.object = response;
 		}); 
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active');
+	    otScroll();
 	    $("html, body").animate({
 	        scrollTop: 0
 	    }, 200);
 	},
 	computed : {
 		formattedUpdateDate : function() {
-			return new Date(this.objModel.viewObject.metadata.lastModified)
+			return new Date(this.objModel.object.metadata.lastModified)
 					.format("mediumDate")
 		},
 		formattedCreateDate : function() {
-			return new Date(this.objModel.viewObject.metadata.createdOn)
+			return new Date(this.objModel.object.metadata.createdOn)
 					.format("mediumDate")
 		},
 		downloadLink : function() {
 			return '/ObjectTeller/knowledgeObject/'
-					+ this.objModel.viewObject.uri + '/complete.json'
+					+ this.objModel.object.uri + '/complete.json'
 		}
 	},
 	updated : function() {
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active'); 
 		$('.autosize').each(autoresize);
-		console.log("Object View updated -> Edit Model Title: "+editObjModel.editObject.metadata.title+"  View Model Title: "+objModel.viewObject.metadata.title);
+		console.log("Object View updated -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 	},
 	methods:{
 		editObj:function(){
 			showObjectEditor.show=true;
 			showOverlay.show=true;
-			console.log("Edit Clicked => Edit Model Title: "+editObjModel.editObject.metadata.title+"  View Model Title: "+objModel.viewObject.metadata.title);
-	//		editObjModel.object=objModel.object;
-	//		this.$emit('editObj');
+			editObjModel.object = vm.getObject();
+			console.log("Edit Clicked => Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
+
+		},
+		deleteobj:function(){
+			eventBus.$emit('deleteObj', this.$route.params.uri);
 		}
 	}
 });
@@ -281,8 +288,12 @@ const Home = Vue.component("ko-main", {
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
 			if(self.model.koList.length>0){
-				objModel.viewObject=self.model.koList[0];
+				objModel.object=self.model.koList[0];
 			}
+		});
+		eventBus.$on('objectSelected',function(index){
+			objModel.object=self.model.koList[index];
+			console.log("Object selected -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 		});
 
 	},
@@ -328,11 +339,10 @@ const Home = Vue.component("ko-main", {
 				this.order = "asc";
 			}
 		},
-		objectSelected: function(){
-			console.log("Object selected -> Edit Model Title: "+editObjModel.editObject.metadata.title+"  View Model Title: "+objModel.viewObject.metadata.title);
-
-			console.log("selected Object:"+objModel.viewObject.uri);
-			
+		objectSelected: function(index){
+			console.log("selected Object:"+objModel.object.uri);
+			objModel.object=this.model.koList[index];
+			console.log("Object selected -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 		}
 	},
 	components:{'appLayout':applayout}
@@ -349,15 +359,15 @@ var objeditor=Vue.component("objeditor",{
 			}
 	},
 	created:function(){
-		console.log("ObjEditor created -> Edit Model Title: "+editObjModel.editObject.metadata.title+"  View Model Title: "+objModel.viewObject.metadata.title);
+	//	console.log("ObjEditor created -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 	},
 	mounted:function(){
-		this.outputfile=(this.editObjModel.editObject.outputMessage!=null);
-		console.log("ObjEditor mounted -> Edit Model Title: "+editObjModel.editObject.metadata.title+"  View Model Title: "+objModel.viewObject.metadata.title);
+		//this.outputfile=(this.editObjModel.object.outputMessage!=null);
+		//console.log("ObjEditor mounted -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 	},
 	updated : function() {
 	//	this.outputfile=(this.editObjModel.object.outputMessage!=null);
-		console.log("ObjEditor updated -> Edit Model Title: "+editObjModel.editObject.metadata.title+"  View Model Title: "+objModel.viewObject.metadata.title);
+		//console.log("ObjEditor updated -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 		$('ul#etabs li:first').addClass('active'); 
 	    $('ul#etab li:first').addClass('active'); 
 		$('.autosize').each(autoresize);
@@ -373,9 +383,12 @@ var objeditor=Vue.component("objeditor",{
 		loadContent: function(file) {
 		    	
 		        var reader = new FileReader();
-		        reader.onload = (e) => {
-		        	$("#outputTextArea").val(e.target.result);
-		        };
+		        reader.onload = (function(f) {
+					return function(e) {
+						var contents = e.target.result;
+						$("#outputTextArea").val(contents);
+					};
+				})(f);
 		        reader.readAsText(file);
 		      },
 		removeFile: function (e) {
@@ -384,7 +397,8 @@ var objeditor=Vue.component("objeditor",{
 		        $("#outputTextArea").val("");
 		      },
 		saveObj:function(){
-			var text = JSON.stringify(this.editObjModel.editObject);
+			var text = JSON.stringify(this.editObjModel.object);
+			var self =this;
 			console.log(text);
 			$("div.processing").fadeIn(300);
 			$.ajax({
@@ -393,7 +407,7 @@ var objeditor=Vue.component("objeditor",{
 					xhrObj.setRequestHeader("Accept", "application/json");
 				},
 				type : "PUT",
-				url : "../knowledgeObject/"+this.editObjModel.editObject.uri,
+				url : "../knowledgeObject/"+this.editObjModel.object.uri,
 				data : text,
 				dataType : "json",
 				success : function(response) {
@@ -402,6 +416,7 @@ var objeditor=Vue.component("objeditor",{
 						var test = JSON.stringify(response);
 						var obj = JSON.parse(test);
 					}
+					eventBus.$emit("objSaved",self.editObjModel.object);
 					$("#addObj_f").find("ul#tabs li").each(function() {
 						console.log("UL li text:" + $(this).text());
 						$(this).text($(this).text().replace("*", ""));
@@ -421,7 +436,7 @@ var objeditor=Vue.component("objeditor",{
 			});
 		},
 		undoEdit: function(){
-			//editObjModel.editObject = objModel.object;
+			editObjModel.object = vm.getObject();
 		},
 		olSlideout:function(){
 			showObjectEditor.show=false;
@@ -455,10 +470,18 @@ const router = new VueRouter({
 	history : false
 });
 
-const vm = new Vue({
+var vm = new Vue({
 	router : router,
-	components:{
+	data : {
+		koModel:objModel
+	},
+/*	components:{
 		objeditor:objeditor
+	},*/
+	created: function(){
+		eventBus.$on('deleteobj',function(uri){
+			
+		});
 	},
 	methods:{
 		login_click:function(){
@@ -473,9 +496,16 @@ const vm = new Vue({
 			objURI="";
 //			objModel.object={};
 		},
+		getObject:function(){
+			return $.extend(true, {}, this.koModel.object);
+		},
+		updateObject:function(obj){
+			console.log("obj Saved");
+			$.extend(true, objModel.object, obj);
+		},
 		editObj_click:function(){
 			showObjectEditor.show=true;
 			showOverlay.show=true;
-			objURI=	objModel.viewObject.uri;
+			objURI=	objModel.object.uri;
 		}
 	}}).$mount('#app');

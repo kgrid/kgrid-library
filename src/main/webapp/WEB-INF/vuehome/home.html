@@ -86,11 +86,11 @@
 				<!-- /.container-fluid -->
 			</nav>
 		</div>
-
+		
 		<router-view></router-view>
 
 		<loginOverlay></loginOverlay>
-		<objeditor></objeditor>
+ 		<objeditor v-on:objSaved="updateObject"></objeditor>
 	</div>
 	<template id="layout">
 		<div class="ot-content">
@@ -159,8 +159,8 @@
 					</div></div>
 				<div slot="maincontent">
 					<ul>
-						<li v-for="object in orderedList"><ko-tile :object="object"
-								:listsize="listSize" v-on:clicked="objectSelected"></ko-tile></li>
+						<li v-for="(object,index) in orderedList"><ko-tile :object="object"
+								:listsize="listSize" :tileindex="index" v-on:remove="orderedList.splice(index, 1)"></ko-tile></li>
 					</ul>
 				</div>
 			</appLayout>
@@ -177,13 +177,13 @@
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
 					<div class="col-md-1 ot-empty ">
-						<button class="edit" v-on:click="deleteObject()">
+						<button class="edit" v-on:click="deleteObject">
 							<span class="glyphicon glyphicon glyphicon-trash"></span>
 						</button>
 					</div>
 				</div>
 				<div class="row ot-2">
-					<div class="col-md-1 ot-empty"></div>
+					<div class="col-md-1 ot-empty">{{tileindex}} of {{listsize}}</div>
 					<div class="col-md-11 ot-owner">{{object.metadata.owner}}</div>
 				</div>
 				<div class="row ot-2">
@@ -210,19 +210,19 @@
 			</div>
 			<div id="ko-title">
 				<div style="width: 10px; hieght: 60px; display: inline-block;">
-					<img v-if="objModel.viewObject.metadata.published"
+					<img v-if="objModel.object.metadata.published"
 						src="images/LittleGreenDot.png" width="10px"
 						height="auto" />
 				</div>
 				<h1>
-					<small id="page_title_v">{{objModel.viewObject.metadata.title}}</small>
+					<small id="page_title_v">{{objModel.object.metadata.title}}</small>
 				</h1>
 			</div>
 			<div class="date">
 				<div class="id">
 					<p class="date-title">Object ID:</p>
 					<p class="date-data">
-						<span>{{objModel.viewObject.uri}}</span>
+						<span>{{objModel.object.uri}}</span>
 					</p>
 				</div>
 				<div class="date1">
@@ -275,7 +275,7 @@
 					<ul class="tab-content" id="tab">
 						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
 							class="tab-pane">
-								<tab-pane v-bind:section="section.name" v-bind:object="objModel.viewObject" ></tab-pane>
+								<tab-pane v-bind:section="section.name" v-bind:object="objModel.object" ></tab-pane>
 						</li>
 					</ul>
 				</div>
@@ -345,7 +345,7 @@
 <div class="layered_overlay" id="objEditor_overlay" v-show="showObjectEditor.show">
 <transition name="slide">
 	<overlaylayout v-on:slideout="olSlideout"> 
-		<div slot="ol-title"><h3>{{editObjModel.editObject.metadata.title}}</h3>
+		<div slot="ol-title"><h3>{{editObjModel.object.metadata.title}}</h3>
 			<div id="barcontainer">
 				<ul class="inEdit" id="edittabs">
 					<li class="labels active">METADATA</li>
@@ -354,7 +354,7 @@
 					<li class="labels">OUTPUT</li>
 				</ul>
 				<div id="editWrapper">
-					<button class="edit" id="cancelBtn">UNDO</button>
+					<button class="edit" v-on:click="undoEdit" id="cancelBtn">UNDO</button>
 					<button class="edit" id="saveObjButton" v-on:click="saveObj">SAVE&CLOSE</button>
 								</div>
 			</div>
@@ -366,23 +366,23 @@
 							<div id="metadata_fields">
 								<div class="addtext">
 									<h4>TITLE</h4>
-									<input type="text" class="metaEdit" v-model="editObjModel.editObject.metadata.title" />
+									<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" />
 								</div>
 							<div class="addtext">
 									<h4>DESCRIPTION</h4>
-									<input type="textarea" class="metaEdit" v-model="editObjModel.editObject.metadata.description" />
+									<input type="textarea" class="metaEdit" v-model="editObjModel.object.metadata.description" />
 								</div>
 								<div class="addtext">
 									<h4>KEYWORDS</h4>
-									<input type="text" class="metaEdit" v-model="editObjModel.editObject.metadata.keywords" />
+									<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.keywords" />
 								</div>
 								<div class="addtext">
 									<h4>OWNERS</h4>
-									<input type="text" class="metaEdit" v-model="editObjModel.editObject.metadata.owner" />
+									<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.owner" />
 								</div>
 								<div class="addtext">
 									<h4>CONTRIBUTORS</h4>
-									<input type="text" class="metaEdit" v-model="editObjModel.editObject.metadata.contributors" />
+									<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" />
 								</div>
 								
 						</fieldset>
@@ -421,7 +421,7 @@
 						<div v-else>
 								<button v-on:click="removepayloadFile">Remove</button>
 								<input type="textarea" id="payloadTextArea"
-									v-model="editObjModel.editObject.inputMessage">
+									v-model="editObjModel.object.inputMessage">
 								</textarea>
 						</div>
 						</div> -->
@@ -445,7 +445,7 @@
 						<div v-else>
 								<button v-on:click="removeInputFile">Remove</button>
 								<input type="textarea" id="inputTextArea"
-									v-model="editObjModel.editObject.inputMessage">
+									v-model="editObjModel.object.inputMessage">
 								</textarea>
 						</div>
 						</div> -->
@@ -468,7 +468,7 @@
 						<div v-else>
 								<button v-on:click="removeFile">Remove</button>
 								<input type="textarea" id="outputTextArea"
-									v-model="editObjModel.editObject.outputMessage">
+									v-model="editObjModel.object.outputMessage">
 								</textarea>
 						</div>
 					</div>
