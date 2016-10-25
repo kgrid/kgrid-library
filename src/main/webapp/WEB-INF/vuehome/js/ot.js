@@ -32,7 +32,7 @@ function retrieveObject(uri, section, fillObjectContent){
 			fillObjectContent(response);
 		},
 		error : function(response) {
-			errorHandler(response);
+			//errorHandler(response);
 		}
 	});
 }

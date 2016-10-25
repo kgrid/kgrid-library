@@ -340,10 +340,6 @@ position: absolute;
     width: 480px;
 }
 
-#login_overlay .ol_pane {
-    width: 550px;
-}
-
 #login_overlay .done_btn {
 	height: 55px;
 	width: 100%;
@@ -357,13 +353,13 @@ position: absolute;
   opacity: 0
 }
 .slide-enter-active {
-  transition: left 10s ease;
+  	transition: left 20s ease;
 }
 .slide-leave-active {
-  transition: left 10s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: left 2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 .slide-enter, .slide-leave-active {
-  left: 30%;
+	left: 100%;
 }
 
 ul#edittabs {
@@ -507,8 +503,8 @@ color:#666666;
   line-height:1.5em;}
 
 .ol_pane{  
-  position: absolute;
-    left: 70%;
+	position: absolute;
+    left: 30%;
     width: 1100px;
     /* width: 60%; */
     background-color: #fff;

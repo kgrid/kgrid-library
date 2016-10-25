@@ -3,11 +3,11 @@ var eventBus = new Vue({});
 var raw = 9;
 var objModel = { object : { metadata:{title:"View Object"}} };
 var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},uri:"ark"} };
-var sections = [{name:"metadata"},
-                {name:"payload"},
-                {name:"inputMessage"},
-                {name:"outputMessage"},
-                {name:"logData"}];
+var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
+                {name:"payload",id:"#payload",label:"PAYLOAD"},
+                {name:"inputMessage",id:"#inputMessage", label:"INPUT"},
+                {name:"outputMessage",id:"#outputMessage", label:"OUTPUT"},
+                {name:"logData",id:"#logData", label:"LOG DATA"}];
 var applayout = Vue.component("applayout", {
 		template:"#layout",
 		props:['nothelper'],
@@ -15,38 +15,25 @@ var applayout = Vue.component("applayout", {
 			backToTop: backToTop
 		}
 })
-var showLogin = {show:false};
-var showOverlay ={show:false};
-var showObjectEditor ={show:false};
-var overlaylayout= Vue.component("overlaylayout",{
-	template:"#overlaylayout",
-	props:['ol_id', 'width'],
-	data:function(){
-		return {showOverlay:showOverlay}
-	},
+var olpane= Vue.component("olpane",{
+	template:"#ol-pane-template",
+	props:['ol_id', 'left'],
 	methods:{
 		closeOverlay:function(){
-			showOverlay.show=false;
-			this.$emit('slideout');
+			eventBus.$emit('slideout');
 		}
 	}
-})
+});
 
-Vue.component("loginoverlay",{
+var login= Vue.component("loginoverlay",{
 	template:'#login_overlay',
-	data:function(){
-		return {showLogin:showLogin}
-	},
-	methods:{
-		olSlideout:function(){
-			showLogin.show=false;
-		},
-		olSlidein:function(){
-			showLogin.show=true;
-		}
-	}
-})
-
+});
+var licenseEditor = Vue.component("licenseEditor",{
+	template:'#login_overlay',
+});
+var citationEditor = Vue.component("citationEditor",{
+	template:'#login_overlay',
+});
 
 var vmcomp = Vue.component(
 				"ko-tile",
@@ -80,23 +67,22 @@ var vmcomp = Vue.component(
 							if (uri != "") {
 								var r = confirm("Do you really want to delete the object ? ");
 								if (r == true) {
-									$
-											.ajax({
+									$.ajax({
 												type : 'DELETE',
 												url : "/ObjectTeller/knowledgeObject/"
 														+ uri,
 												success : function(
 														response) {
 													console.log("Deletion successful!");
-													eventBus.$emit('remove');
+													eventBus.$emit('objDeleted', uri);
 												}
 											});
 								}
 							}
 						},
-						clicked: function(){
+						selected: function(){
 							console.log(this.object.uri+"selected");
-							eventBus.$emit("objectSelected", this.tileindex);
+							eventBus.$emit("objectSelected", this.object);
 						}
 					}
 				});
@@ -106,7 +92,6 @@ var vm_fields = Vue.component(
 					template : "#field-tile-template",
 					props : [ 'field' ,'fieldmodel', 'object',"isDisabled"],
 					created:function(){
-//						console.log("Field:"+this.field.name+"Value:"+this.value);
 					},
 					data:function(){
 						return {raw:raw}
@@ -188,7 +173,6 @@ const tabPane = Vue.component('tab-pane', {
 	},
 	created : function() {
 		$('.autosize').each(autoresize);
-//		console.log("Created TabPane for the object of "+this.object.uri);
 	},
 	computed : {
 		filteredFields :function(){
@@ -217,10 +201,8 @@ const objDetail = Vue.component('ko-detail', {
 		});
 		var self = this;
 		console.log("Object View created -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
-
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active');
-		//
 	},
 	mounted:function() {
 		var self = this;
@@ -255,15 +237,11 @@ const objDetail = Vue.component('ko-detail', {
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active'); 
 		$('.autosize').each(autoresize);
-		console.log("Object View updated -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 	},
 	methods:{
 		editObj:function(){
-			showObjectEditor.show=true;
-			showOverlay.show=true;
 			editObjModel.object = vm.getObject();
-			console.log("Edit Clicked => Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
-
+			eventBus.$emit('editObj', this.$route.params.uri);
 		},
 		deleteobj:function(){
 			eventBus.$emit('deleteObj', this.$route.params.uri);
@@ -291,9 +269,8 @@ const Home = Vue.component("ko-main", {
 				objModel.object=self.model.koList[0];
 			}
 		});
-		eventBus.$on('objectSelected',function(index){
-			objModel.object=self.model.koList[index];
-			console.log("Object selected -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
+		eventBus.$on('objectSelected',function(obj){
+			objModel.object=obj;
 		});
 
 	},
@@ -312,7 +289,7 @@ const Home = Vue.component("ko-main", {
 			}
 		},
 		listSize : function() {
-			return this.model.koList.length;
+			return this.filteredList.length;
 		},
 		orderAsc : function() {
 			return (this.order == "asc")
@@ -339,11 +316,7 @@ const Home = Vue.component("ko-main", {
 				this.order = "asc";
 			}
 		},
-		objectSelected: function(index){
-			console.log("selected Object:"+objModel.object.uri);
-			objModel.object=this.model.koList[index];
-			console.log("Object selected -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
-		}
+		
 	},
 	components:{'appLayout':applayout}
 });
@@ -353,21 +326,15 @@ var objeditor=Vue.component("objeditor",{
 		return {
 			editObjModel:editObjModel,
 			sections:sections,
-			showObjectEditor:showObjectEditor,
 			isDisabled:false,
 			outputfile:false
 			}
 	},
 	created:function(){
-	//	console.log("ObjEditor created -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 	},
 	mounted:function(){
-		//this.outputfile=(this.editObjModel.object.outputMessage!=null);
-		//console.log("ObjEditor mounted -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 	},
 	updated : function() {
-	//	this.outputfile=(this.editObjModel.object.outputMessage!=null);
-		//console.log("ObjEditor updated -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 		$('ul#etabs li:first').addClass('active'); 
 	    $('ul#etab li:first').addClass('active'); 
 		$('.autosize').each(autoresize);
@@ -381,7 +348,6 @@ var objeditor=Vue.component("objeditor",{
 		      this.loadContent(files[0]);
 		    },
 		loadContent: function(file) {
-		    	
 		        var reader = new FileReader();
 		        reader.onload = (function(f) {
 					return function(e) {
@@ -439,10 +405,22 @@ var objeditor=Vue.component("objeditor",{
 			editObjModel.object = vm.getObject();
 		},
 		olSlideout:function(){
-			showObjectEditor.show=false;
+
 		},
 		olSlidein:function(){
-			showObjectEditor.show=true;
+
+		},
+		editLicense:function(){
+			
+		},
+		deleteLicense:function(){
+			
+		},
+		editcitation:function(){
+			
+		},
+		deleteCitation:function(){
+			
 		}
 	
 	}
@@ -467,34 +445,57 @@ const routes = [
 const router = new VueRouter({
 	routes : routes,
 	hashbang : false,
-	history : false
+	history : true
 });
 
 var vm = new Vue({
 	router : router,
 	data : {
-		koModel:objModel
+		currentOLView:'login',
+		currentSOLView:'',
+		koModel:objModel,
+		showOverlay:{show:false},
+		showSecOverlay:{show:false},
+		licenseModel:{license:{}},
+		citationModel:{citations:[]}
 	},
-/*	components:{
-		objeditor:objeditor
-	},*/
+	components:{
+		info:{template:"<div>Information</div>"},
+		login : login,
+/*		signup : signup,
+		requestPasswordReset : requestPasswordReset,
+		resetPassword : resetPassword,
+		createObj: creatObj,*/
+		editObj : objeditor,
+		licenseEditor: licenseEditor,
+		citationEditor:citationEditor
+		
+	},
 	created: function(){
+		var self=this;
 		eventBus.$on('deleteobj',function(uri){
 			
 		});
+		eventBus.$on('editObj', function(uri){
+			self.showOverlay.show=true;
+			self.currentOLView='editObj';
+		});
+		eventBus.$on('objSaved', function(obj){
+			self.updateObject(obj);
+			self.showOverlay.show=false;
+		});
+		eventBus.$on('slideout', function(){
+			self.showOverlay.show=false;
+		})
 	},
 	methods:{
 		login_click:function(){
-			console.log(showLogin.show);
-			console.log(showOverlay.show);
-			showLogin.show=true;
-			showOverlay.show=true;
+			this.currentOLView='login';
+			this.showOverlay.show=true;
 		},
 		createObj_click:function(){
-			showObjectEditor.show=true;
-			showOverlay.show=true;
+			this.showOverlay.show=true;
 			objURI="";
-//			objModel.object={};
 		},
 		getObject:function(){
 			return $.extend(true, {}, this.koModel.object);
@@ -504,8 +505,18 @@ var vm = new Vue({
 			$.extend(true, objModel.object, obj);
 		},
 		editObj_click:function(){
-			showObjectEditor.show=true;
-			showOverlay.show=true;
 			objURI=	objModel.object.uri;
+		},
+		editLicense:function(){
+			
+		},
+		deleteLicense:function(){
+			
+		},
+		editcitation:function(){
+			
+		},
+		deleteCitation:function(){
+			
 		}
 	}}).$mount('#app');
