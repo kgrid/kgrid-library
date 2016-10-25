@@ -86,11 +86,13 @@
 				<!-- /.container-fluid -->
 			</nav>
 		</div>
-		
 		<router-view></router-view>
-
-		<loginOverlay></loginOverlay>
- 		<objeditor v-on:objSaved="updateObject"></objeditor>
+		<div class="layered_overlay" v-show="showOverlay.show">
+			<div v-bind:is='currentOLView'></div>
+		</div>
+		<div class="layered_overlay secondary" v-show="showSecOverlay.show">
+			<div v-bind:is='currentSOLView'></div>
+		</div>
 	</div>
 	<template id="layout">
 		<div class="ot-content">
@@ -167,7 +169,7 @@
 		</div>
 	</template>
 	<template id="ko-tile-template"> 
-		<router-link v-bind:to="objLink" v-on:click.native="clicked">
+		<router-link v-bind:to="objLink" v-on:click.native="selected">
 			<div class="container ot-tile" v-bind:id="object.uri">
 				<div class="row ot-2">
 					<div class="col-md-1 ot-type">
@@ -205,7 +207,7 @@
 		<div slot="banner">
 			<div id="goback">
 				<div id="backButton">
-					<a href="/ObjectTeller/home">BACK TO THE LIBRARY</a>
+					<a href="/ObjectTeller/vuehome/home.html">BACK TO THE LIBRARY</a>
 				</div>
 			</div>
 			<div id="ko-title">
@@ -241,25 +243,12 @@
 		</div>
 		<div slot="header">
 					<ul class="nav nav-tabs" role="tablist" id="tabs">
-						<li role="presentation" class="labels"><a
-							href="#metadata" aria-controls="metadata" role="tab"
-							data-toggle="tab">METADATA</a></li>
-						<li role="presentation" class="labels"><a href="#payload"
-							aria-controls="payload" role="tab" data-toggle="tab">PAYLOAD</a></li>
-						<li role="presentation" class="labels"><a href="#inputMessage"
-							aria-controls="input" role="tab" data-toggle="tab">INPUT</a></li>
-						<li role="presentation" class="labels"><a href="#outputMessage"
-							aria-controls="output" role="tab" data-toggle="tab">OUTPUT</a></li>
-						<li role="presentation" class="labels accessLevelOne"><a
-							href="#logData" aria-controls="logdata" role="tab"
-							data-toggle="tab">LOG DATA</a></li>
+						<li v-for="section in sections" class='labels' role='presentation'><a :href="section.id" :aria-controls="section.name" role='tab' data-toggle="tab">{{section.label}}</a></li>
 						<li role="presentation" class="labels accessLevelOne"><a
 							href="#" aria-controls="logdata" role="tab" data-toggle="tab">
 								<div class="labels iconBtn accessLevelOne">
-									<img class="hover-out"
-										src="images/More_Icon_Light-01.png" /> <img
-										class="hover-in" style="display: none;"
-										src="images/More_Icon_Dark-01.png" />
+									<img class="hover-out" src="images/More_Icon_Light-01.png" /> 
+									<img class="hover-in" style="display: none;" src="images/More_Icon_Dark-01.png" />
 								</div>
 						</a></li>
 					</ul>
@@ -267,7 +256,7 @@
 						style="top: 4px; right: 40px; position: absolute;">
 						<button class="edit" id="metadataeditBtn" v-on:click="editObj">EDIT</button>
 						<button class="edit" id="deleteButton"
-							onclick="deleteObject('${fedoraObject.URI}')">DELETE</button>
+							onclick="deleteObject">DELETE</button>
 						<a class="edit" id="downloadButton" v-bind:href="downloadLink">DOWNLOAD</a>
 			</div>
 		</div>
@@ -312,39 +301,36 @@
 	<template id="linkedfield-tile-template"> 
 	   <a v-bind:href="link">{{value}}</a> 
 	</template>
-
-<template id="overlaylayout">
-	<div class="ol_pane" v-show="showOverlay.show">
+<template id="ol-pane-template">
+<transition name="slide">
+	<div class="ol_pane">
 		<div class="sidebar_close">
 			<h3>CLOSE</h3>
 			<button class="greenroundbutton" id="close_overlay"	v-on:click="closeOverlay">
 				<img src="images/Close_Icon.png" >
 			</button>
 		</div>
-		<div class="overlay-top"></div>
+		<div class="overlay-top">
+		</div>
 		<div class="overlay-board">
 				<div class="overlay-title">
 					<slot name="ol-title"></slot>
 				</div>
 				<div class="entryform" id="entry_form">
 					<slot name="ol-form"></slot>
-					<slot name="ol-btn"></slot> 
-					</div>
-					</div>
-				<div class="overlay-alert">
+				</div>
+		</div>
+		<div class="overlay-alert">
 					<div class="alert-box processing"><slot name="ol-processing"></slot></div>
 					<div class="alert-box success"><slot name="ol-success"></slot></div>
 					<div class="alert-box failure"><slot name="ol-failure"></slot></div>
 					<div class="alert-box warning"><slot name="ol-warning"></slot></div>
-				</div>
-			</div>
+		</div>
 	</div>
-
+	</transition>
 </template>
 <template id="objEditor_overlay">
-<div class="layered_overlay" id="objEditor_overlay" v-show="showObjectEditor.show">
-<transition name="slide">
-	<overlaylayout v-on:slideout="olSlideout"> 
+	<olpane> 
 		<div slot="ol-title"><h3>{{editObjModel.object.metadata.title}}</h3>
 			<div id="barcontainer">
 				<ul class="inEdit" id="edittabs">
@@ -384,7 +370,17 @@
 									<h4>CONTRIBUTORS</h4>
 									<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" />
 								</div>
-								
+								<div class="addtext">
+									<h4>LICENSE</h4>
+									<div class="row">
+									<div class="col-md-10"><linkedfield-tile v-bind:link="editObjModel.object.metadata.license.licenseLink"
+										v-bind:value="editObjModel.object.metadata.license.licenseName"></linkedfield-tile>
+			</div>
+			<div class="col-md-2"><button class="edit" id="metadataeditBtn" v-on:click="editLicense">EDIT</button>
+						<button class="edit" id="deleteButton"
+							v-on:click="deleteLicense">DELETE</button></div>
+			</div>
+								</div>
 						</fieldset>
 					</li>
 					<li id="payload">
@@ -475,21 +471,15 @@
 				</li>
 			</ul>
 		</div>
-		<div slot="ol-btn"></div>
 		<div slot="ol-processing">Processing...</div>
 		<div slot="ol-success">Update Successful !!!</div>
 		<div slot="ol-failure">Update Failure! </div>
 		<div slot="ol-warning">Warning !!!</div>
 		
-	</overlaylayout>
-	</transition>
-</div>
+	</olpane>
 </template>
-
 <template id="login_overlay">
-<div class="layered_overlay" id="login_overlay" v-show="showLogin.show">
-<transition name="slide">
-	<overlaylayout v-on:slideout="olSlideout"> 
+	<olpane> 
 		<div slot="ol-title"><h3>Log in</h3></div>
 		<div slot="ol-form">
 			<fieldset class="fieldcontainer" id="first">
@@ -515,21 +505,17 @@
 									</div>
 									<label class="errorLabel" for="password"> </label>
 								</div>
+								<div class="loginField">
+									<input class="login" name="done" id="login_btn" type="button" value="LOG IN">
+								</div>
 				</fieldset>
 		</div>
-		<div slot="ol-btn">
-			<input class="done_btn login" name="done" id="login_btn" type="button" value="LOG IN">
-		</div>
 		<div slot="ol-processing">Log in ...</div>
-		<div slot="ol-success">Update Successful !!!</div>
+		<div slot="ol-success">Login Successful !!!</div>
 		<div slot="ol-failure">Unable to login. Please check your username and password! </div>
 		<div slot="ol-warning">Warning !!!</div>
-		
-	</overlaylayout>
-	</transition>
-</div>
+	</olpane>
 </template>
-
-	<script src="js/ot-vue.js"></script>
+<script src="js/ot-vue.js"></script>
 </body>
 </html>
