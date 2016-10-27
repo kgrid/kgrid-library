@@ -1,13 +1,10 @@
 package org.uofm.ot.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.model.LibrarySetting;
 import org.uofm.ot.model.SETTING_TYPE;
@@ -16,6 +13,8 @@ import org.uofm.ot.model.User;
 import org.uofm.ot.model.UserRoles;
 
 import com.google.gson.Gson;
+
+import java.util.Properties;
 
 @RestController
 public class SystemConfController {
@@ -121,6 +120,32 @@ public class SystemConfController {
 		}
 		return resultEntity ;
 	}
+
+	@Value("${env}")
+	private String environment;
+
+	@Value("${spring.profiles.active}")
+	private String spring_profiles_active;
+
+	@Value("${app.prop.1}")
+	private String app_prop_1;
+
+	@GetMapping("/config")
+	public Properties getConfigurationProps() {
+
+		Properties properties = new Properties();
+
+		properties.setProperty("foo", "bar");
+		properties.setProperty("env", environment);
+		properties.setProperty("spring.profiles.active", spring_profiles_active);
+		properties.setProperty("app.prop.1", app_prop_1);
+
+		return properties;
+	}
+
+
+
+
 }
 	
 
