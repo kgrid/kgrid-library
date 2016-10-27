@@ -121,24 +121,15 @@ public class SystemConfController {
 		return resultEntity ;
 	}
 
-	@Value("${env}")
-	private String environment;
-
 	@Value("${spring.profiles.active}")
 	private String spring_profiles_active;
-
-	@Value("${app.prop.1}")
-	private String app_prop_1;
 
 	@GetMapping("/config")
 	public Properties getConfigurationProps() {
 
 		Properties properties = new Properties();
 
-		properties.setProperty("foo", "bar");
-		properties.setProperty("env", environment);
 		properties.setProperty("spring.profiles.active", spring_profiles_active);
-		properties.setProperty("app.prop.1", app_prop_1);
 
 		return properties;
 	}
