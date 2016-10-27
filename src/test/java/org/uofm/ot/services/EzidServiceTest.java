@@ -9,9 +9,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
+import org.uofm.ot.ObjectTellerApplication;
 import org.uofm.ot.knowledgeObject.ArkId;
-import org.uofm.ot.model.User;
-import org.uofm.ot.model.UserRoles;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -21,8 +20,8 @@ import static org.junit.Assert.*;
 
  
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"file:src/main/webapp/WEB-INF/ObjectTellerServlet-servlet.xml" })
-@TestPropertySource("/EzidServiceTest.properties")
+@ContextConfiguration(classes = {ObjectTellerApplication.class})
+@TestPropertySource("classpath:application.properties")  // Careful: loads test ezid service by default
 public class EzidServiceTest {
 
     @Autowired
