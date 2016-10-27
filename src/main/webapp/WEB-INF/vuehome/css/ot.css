@@ -447,18 +447,13 @@ ul#edittab li {
 	display: none;
 	width: 100%;
 	float: left;
-	min-height: 800px;
 	margin-top: 22px;
 	padding: 0px;
+	min-height:400px;
+	height:570px;	
 	box-sizing: border-box;
 	background-color: #ffffff;
 }
-
-ul#edittab.inEdit li {
-	min-height:400px;
-	height:570px;	
-	
-	}
 
 ul#edittab li.active {
 	display: block;
@@ -469,6 +464,18 @@ ul#edittab li h2 {
 	margin-bottom: 30px;
 	padding-bottom: 5px;
 	border-bottom: solid 5px #32c896;
+}
+
+ul#citationlist li {
+	display: block;
+	width: 100%;
+	float: left;
+	margin-top: 2px;
+	min-height:22px;
+	height:30px;
+	padding: 0px;
+	box-sizing: border-box;
+	background-color: #ffffff;
 }
 
 .inputfile {
@@ -513,4 +520,16 @@ color:#666666;
 
 #objEditor_overlay .ol_pane {
 	left: 30%;	
+}
+.mediumgreenroundbutton {
+	display:inline;
+    width:22px;
+    height:22px;
+    border-radius: 100%;
+    color:white;
+    background-color:#39b54a;
+    border:none;
+}
+.addBtn {
+	display: inline;
 }

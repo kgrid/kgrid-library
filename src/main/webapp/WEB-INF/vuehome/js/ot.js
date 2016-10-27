@@ -7,7 +7,7 @@ function retrieveObjectList(fillObjectList){
 			     withCredentials: true
 			},
 			success : function(response, tStatus, xhr) {
-				console.log(response);
+				console.log(xhr);
 				fillObjectList(response);
 			},
 			error : function(response) {
@@ -196,6 +196,27 @@ function setBannerbkSize(){
   		}
   	}
  
+function editTabNav(){
+	$("ul#edittabs li").click(function(e) {
+		var tabClass=".view";
+		if($(this).parent().hasClass("inEdit")){
+			tabClass=".inEdit";
+		}
+		if (!$(this).hasClass("active")) {
+			var tabNum = $(this).index();
+			var nthChild = tabNum + 1;
+			$("ul#edittabs"+tabClass+" li.active").removeClass("active");
+			$("ul#edittabs"+tabClass+"  li.middleout").removeClass("middleout");
+			$(this).addClass("active");
+			$(this).addClass("middleout");
+			
+			$("ul#edittab"+tabClass+"  li.active").removeClass("active");
+			$("ul#edittab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
+		}
+		$('.autosize').each(autoresize);
+	});
+}
+
 function otScroll() {
 	var padLeft = 280;
     var navOffset = $(".header").offset().top;
