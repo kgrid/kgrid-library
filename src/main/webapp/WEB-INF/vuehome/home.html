@@ -90,9 +90,7 @@
 		<div class="layered_overlay" v-show="showOverlay.show">
 			<div v-bind:is='currentOLView'></div>
 		</div>
-		<div class="layered_overlay secondary" v-show="showSecOverlay.show">
-			<div v-bind:is='currentSOLView'></div>
-		</div>
+
 	</div>
 	<template id="layout">
 		<div class="ot-content">
@@ -287,9 +285,9 @@
 			v-if="isInput" />
 		<textarea class="metaEdit autosize" disabled  v-bind:value="value"
 			v-if="isTextArea">{{value}}</textarea>
-		<linkedfield-tile v-if="isLicense" v-bind:link="value.licenseName"
-			v-bind:value="value.licenseLink"></linkedfield-tile>
-		<div class='entryArea' id='citation_entries' v-if="isCitation">
+		<linkedfield-tile v-if="isLicense" v-bind:link="value.licenseLink"
+			v-bind:value="value.licenseName"></linkedfield-tile>
+		<div class='entryDisplayArea' id='citation_entries' v-if="isCitation">
 			<ul class="list">
 				<li v-for="citation in value">
 				<linkedfield-tile :value="citation.citation_title" :link="citation.citation_at"></linkedfield-tile>
@@ -330,7 +328,8 @@
 	</transition>
 </template>
 <template id="objEditor_overlay">
-	<olpane> 
+<div>
+	<olpane layerid=0> 
 		<div slot="ol-title"><h3>{{editObjModel.object.metadata.title}}</h3>
 			<div id="barcontainer">
 				<ul class="inEdit" id="edittabs">
@@ -347,45 +346,67 @@
 		</div>
 		<div slot="ol-form">
 		<ul class="inEdit" id="edittab">
-					<li class="active current-tab" id="metadata">
-						<fieldset class="fieldcontainer" id="first">
-							<div id="metadata_fields">
-								<div class="addtext">
-									<h4>TITLE</h4>
-									<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" />
-								</div>
-							<div class="addtext">
-									<h4>DESCRIPTION</h4>
-									<input type="textarea" class="metaEdit" v-model="editObjModel.object.metadata.description" />
-								</div>
-								<div class="addtext">
-									<h4>KEYWORDS</h4>
-									<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.keywords" />
-								</div>
-								<div class="addtext">
-									<h4>OWNERS</h4>
-									<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.owner" />
-								</div>
-								<div class="addtext">
-									<h4>CONTRIBUTORS</h4>
-									<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" />
-								</div>
-								<div class="addtext">
-									<h4>LICENSE</h4>
-									<div class="row">
-									<div class="col-md-10"><linkedfield-tile v-bind:link="editObjModel.object.metadata.license.licenseLink"
+			<li class="active current-tab" id="metadata">
+				<fieldset class="fieldcontainer" id="first">
+					<div id="metadata_fields">
+						<div class="addtext">
+							<h4>TITLE</h4>
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" />
+							</div>
+						<div class="addtext">
+							<h4>DESCRIPTION</h4>
+							<input type="textarea" class="metaEdit" v-model="editObjModel.object.metadata.description" />
+						</div>
+						<div class="addtext">
+							<h4>KEYWORDS</h4>
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.keywords" />
+						</div>
+						<div class="addtext">
+							<h4>OWNERS</h4>
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.owner" />
+						</div>
+						<div class="addtext">
+							<h4>CONTRIBUTORS</h4>
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" />
+						</div>
+						<div class="addtext">
+							<h4>LICENSE</h4>
+							<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName"><button class="mediumgreenroundbutton" v-on:click="addLicense"><img src="images/Plus_Icon.png" width="12px"></button></div>
+							<div class="row" v-else>
+								<div class="col-md-10">
+									<linkedfield-tile v-bind:link="editObjModel.object.metadata.license.licenseLink"
 										v-bind:value="editObjModel.object.metadata.license.licenseName"></linkedfield-tile>
-			</div>
-			<div class="col-md-2"><button class="edit" id="metadataeditBtn" v-on:click="editLicense">EDIT</button>
-						<button class="edit" id="deleteButton"
-							v-on:click="deleteLicense">DELETE</button></div>
-			</div>
 								</div>
-						</fieldset>
-					</li>
-					<li id="payload">
+								<div class="col-md-2">
+									<button class="edit" v-on:click="selectLicense(editObjModel.object.metadata.license)">EDIT</button>
+									<button class="edit" v-on:click="deleteLicense">DELETE</button>
+								</div>
+							</div>
+						</div>
+						<div class="addtext">
+							<h4>CITATIONS</h4>
+							<button class="mediumgreenroundbutton" v-on:click="addCitation"><img src="images/Plus_Icon.png" width="12px"></button>
+							<div class='entryArea'>
+								<ul id="citationlist" class="list">
+									<li v-for="(citation,index) in editObjModel.object.metadata.citations" >
+										<div class="row">
+											<div class="col-md-10">
+												<linkedfield-tile :value="citation.citation_title" :link="citation.citation_at"></linkedfield-tile>
+											</div>
+											<div class="col-md-2">
+												<button class="edit" v-on:click="selectCitation(citation)">EDIT</button>
+												<button class="edit" v-on:click="deleteCitation(citation)">DELETE</button>
+											</div>
+										</div>	
+									</li>
+								</ul>
+							</div>
+						</div>
+					</fieldset>
+				</li>
+				<li id="payload">
 						
-							<div id="payload_fields">
+						<div id="payload_fields">
 							<div class="addtext">
 								<h4> FUNCTION NAME (REQUIRED)
 								</h4>
@@ -477,9 +498,13 @@
 		<div slot="ol-warning">Warning !!!</div>
 		
 	</olpane>
+		<div class="layered_overlay secondary" v-show="showSecOverlay.show">
+			<linkedfieldeditor v-on:slideout="update"></linkedfieldeditor>
+		</div>
+		</div>
 </template>
 <template id="login_overlay">
-	<olpane> 
+	<olpane layerid=0> 
 		<div slot="ol-title"><h3>Log in</h3></div>
 		<div slot="ol-form">
 			<fieldset class="fieldcontainer" id="first">
@@ -514,6 +539,113 @@
 		<div slot="ol-success">Login Successful !!!</div>
 		<div slot="ol-failure">Unable to login. Please check your username and password! </div>
 		<div slot="ol-warning">Warning !!!</div>
+	</olpane>
+</template>
+<template id="citation_overlay">
+	<olpane layerid=1> 
+		<div slot="ol-title"><h3>Add/Edit Citation</h3></div>
+		<div slot="ol-form">
+			<fieldset class="fieldcontainer" id="first">
+								<div class="citationField">
+									<h4 title="citation_title">TITLE, PMID or DOI</h4>
+									<div class="addtext">
+										<input type="text" class="metaEdit" v-model="citationModel.citation.citation_title" />
+										</div>
+									<label class="errorLabel" for="citation_title"> </label>
+								</div>
+								<div class="citationField">
+									<h4 title="citation_link">HYPERLINK</h4>
+									<button class="inline edit" type="button" id="preview_btn">PREVIEW</button>
+									<div class="addtext">
+										<input type="text" class="metaEdit" v-model="citationModel.citation.citation_at" spellcheck="false"
+											/>
+									</div>
+									<label class="errorLabel" for="citation_link"> </label>
+								</div>
+								<div>
+									<h4>CITATION DETAIL</h4>
+									<div class="addtext">
+										<iframe class="inEdit" id="citation_detail"></iframe>
+									</div>
+									<button class="edit" v-on:click="updateCitation">DONE</button>
+									<button class="edit" v-on:click="undoEdit">CANCEL</button>
+								</div>
+				</fieldset>
+		</div>
+	</olpane>
+</template>
+<template id="license_overlay">
+	<olpane layerid=1> 
+		<div slot="ol-title"><h3>Add/Edit License</h3></div>
+		<div slot="ol-form">
+			<fieldset class="fieldcontainer" id="first">
+								<div class="licenseField">
+									<h4 title="license_title">LICENSE TITLE</h4>
+									<div class="addtext">
+										<input class="textbox inEdit" v-model="licenseModel.license.licenseName" type="text" spellcheck="false"
+											placeholder="Enter License Title"
+											maxlength="140"/>
+										</div>
+									<label class="errorLabel" for="username"> </label>
+								</div>
+								<div class="licenseField">
+									<h4 title="citation_link">HYPERLINK</h4>
+									<button class="inline edit" type="button" id="preview_btn">PREVIEW</button>
+									<div class="addtext">
+										<input class="textbox inEdit" v-model="licenseModel.license.licenseLink"
+											type="text" spellcheck="false"
+											placeholder="Please provide the URL for the liense. "
+											maxlength="140"/><span>140/140</span>
+									</div>
+									<label class="errorLabel" for="license_link"> </label>
+								</div>
+								<div>
+									<h4>LICENSE DETAIL</h4>
+									<div class="addtext">
+										<iframe class="inEdit" id="license_detail"></iframe>
+									</div>
+									<button class="edit" v-on:click="updateLicense">DONE</button>
+									<button class="edit" v-on:click="undoEdit">CANCEL</button>
+								</div>
+				</fieldset>
+		</div>
+	</olpane>
+</template>
+<template id="linkedfield_editor">
+	<olpane layerid=1> 
+		<div slot="ol-title"><h3>Add/Edit License</h3></div>
+		<div slot="ol-form">
+			<fieldset class="fieldcontainer" id="first">
+								<div class="licenseField">
+									<h4 title="license_title">LICENSE TITLE</h4>
+									<div class="addtext">
+										<input class="textbox inEdit" v-model="linkedField.title" type="text" spellcheck="false"
+											placeholder="Enter License Title"
+											maxlength="140"/>
+										</div>
+									<label class="errorLabel" for="username"> </label>
+								</div>
+								<div class="licenseField">
+									<h4 title="citation_link">HYPERLINK</h4>
+									<button class="inline edit" type="button" id="preview_btn">PREVIEW</button>
+									<div class="addtext">
+										<input class="textbox inEdit" v-model="linkedField.link"
+											type="text" spellcheck="false"
+											placeholder="Please provide the URL for the liense. "
+											maxlength="140"/><span>140/140</span>
+									</div>
+									<label class="errorLabel" for="license_link"> </label>
+								</div>
+								<div>
+									<h4>LICENSE DETAIL</h4>
+									<div class="addtext">
+										<iframe class="inEdit" id="license_detail"></iframe>
+									</div>
+									<button class="edit" v-on:click="doneEdit">DONE</button>
+									<button class="edit" v-on:click="undoEdit">CANCEL</button>
+								</div>
+				</fieldset>
+		</div>
 	</olpane>
 </template>
 <script src="js/ot-vue.js"></script>

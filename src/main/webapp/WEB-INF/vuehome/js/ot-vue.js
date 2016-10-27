@@ -3,6 +3,9 @@ var eventBus = new Vue({});
 var raw = 9;
 var objModel = { object : { metadata:{title:"View Object"}} };
 var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},uri:"ark"} };
+var licenseModel = {license:{}};
+var citationModel = {citation:{}};
+
 var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
                 {name:"payload",id:"#payload",label:"PAYLOAD"},
                 {name:"inputMessage",id:"#inputMessage", label:"INPUT"},
@@ -17,10 +20,10 @@ var applayout = Vue.component("applayout", {
 })
 var olpane= Vue.component("olpane",{
 	template:"#ol-pane-template",
-	props:['ol_id', 'left'],
+	props:['layerid', 'left'],
 	methods:{
 		closeOverlay:function(){
-			eventBus.$emit('slideout');
+			eventBus.$emit('slideout',this.layerid);
 		}
 	}
 });
@@ -28,12 +31,7 @@ var olpane= Vue.component("olpane",{
 var login= Vue.component("loginoverlay",{
 	template:'#login_overlay',
 });
-var licenseEditor = Vue.component("licenseEditor",{
-	template:'#login_overlay',
-});
-var citationEditor = Vue.component("citationEditor",{
-	template:'#login_overlay',
-});
+
 
 var vmcomp = Vue.component(
 				"ko-tile",
@@ -200,16 +198,13 @@ const objDetail = Vue.component('ko-detail', {
 			$.extend(true, objModel.object, obj);
 		});
 		var self = this;
-		console.log("Object View created -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active');
 	},
 	mounted:function() {
 		var self = this;
-		console.log("Object View mounted -> Edit Model Title: "+editObjModel.object.metadata.title+"  View Model Title: "+objModel.object.metadata.title);
 		retrieveObject(this.$route.params.uri, "complete", function(
 				response) {
-			console.log(response);
 			self.objModel.object = response;
 		}); 
 		$('ul#tabs li:first').addClass('active'); 
@@ -240,7 +235,7 @@ const objDetail = Vue.component('ko-detail', {
 	},
 	methods:{
 		editObj:function(){
-			editObjModel.object = vm.getObject();
+			editObjModel.object = vuem.getObject();
 			eventBus.$emit('editObj', this.$route.params.uri);
 		},
 		deleteobj:function(){
@@ -327,12 +322,27 @@ var objeditor=Vue.component("objeditor",{
 			editObjModel:editObjModel,
 			sections:sections,
 			isDisabled:false,
-			outputfile:false
-			}
+			outputfile:false,		
+			citationIndex:0,
+			licenseModel:licenseModel,
+			newCitation:{},
+			showSecOverlay:{show:false},
+			srcObjectModel:{object:{title:"",link:""}},
+			inEdit:"License",
+		}
 	},
 	created:function(){
+		var self=this;
+		eventBus.$on('updateCitation',function(obj){
+			$.extend(true, self.citationModel.citation, obj);
+		});
+	},
+	updated:function(){
+	},
+	computed:{
 	},
 	mounted:function(){
+		editTabNav();
 	},
 	updated : function() {
 		$('ul#etabs li:first').addClass('active'); 
@@ -402,30 +412,95 @@ var objeditor=Vue.component("objeditor",{
 			});
 		},
 		undoEdit: function(){
-			editObjModel.object = vm.getObject();
+			editObjModel.object = vuem.getObject();
 		},
-		olSlideout:function(){
-
+		getLicense:function(){
+			return $.extend(true, {}, this.licenseModel.license)
 		},
-		olSlidein:function(){
-
+		getCitation:function(){
+			return $.extend(true, {}, this.citationModel.citation)
 		},
-		editLicense:function(){
-			
-		},
+		selectLicense:function(obj){
+			this.srcObjectModel.object.title=obj.licenseName;
+			this.srcObjectModel.object.link=obj.licenseLink;
+			this.showSecOverlay.show=true;
+			this.inEdit="License";
+			},
 		deleteLicense:function(){
-			
+			editObjModel.object.metadata.license={};
 		},
-		editcitation:function(){
-			
+		selectCitation:function(obj){
+			this.srcObjectModel.object.title=obj.citation_title;
+			this.srcObjectModel.object.link=obj.citation_at;
+			this.showSecOverlay.show=true;
+			this.inEdit="Citation";
+			this.citationIndex=editObjModel.object.metadata.citations.indexOf(obj);
+			console.log("selected index:"+this.citationIndex);
 		},
-		deleteCitation:function(){
-			
+		updateCitation:function(obj){
+			$.extend(true, this.citationModel.citation, obj);
+		},
+		deleteCitation:function(obj){
+			editObjModel.object.metadata.citations.splice(editObjModel.object.metadata.citations.indexOf(obj), 1);
+		},
+		addCitation:function(obj){
+			this.citationIndex=editObjModel.object.metadata.citations.length;
+			editObjModel.object.metadata.citations.push(obj);
+			this.newCitation = {};
+			this.srcObjectModel.object={title:"",link:""};
+			this.showSecOverlay.show=true;
+			console.log("selected index:"+this.citationIndex);
+		},
+		addLicense: function(){
+			this.srcObjectModel.object={title:"",link:""};
+			this.showSecOverlay.show=true;
+			this.inEdit="License";
+			//eventBus.$emit('editLicense', {});
+		},
+		update:function(obj){
+			this.showSecOverlay.show=false;
+			console.log(JSON.stringify(obj));
+			switch(this.inEdit){
+			case "License":
+				editObjModel.object.metadata.license.licenseName=obj.title;
+				editObjModel.object.metadata.license.licenseLink=obj.link;
+				this.srcObjectModel.object.title=obj.title;
+				this.srcObjectModel.object.link=obj.link;
+				break;
+			case "Citation":
+				editObjModel.object.metadata.citations[this.citationIndex].citation_title=obj.title;
+				editObjModel.object.metadata.citations[this.citationIndex].citation_at=obj.link;
+			}
 		}
-	
 	}
 	
 });
+
+
+var linkedfieldEditor = Vue.component("linkedfieldeditor",{
+	template:'#linkedfield_editor',
+	props:['pageTitle'],
+	data: function(){
+		return {linkedField:{},
+			beforeEdit:{}}
+	},
+	created:function(){
+		this.linkedField=this.$parent.srcObjectModel.object;
+		
+	},
+	updated:function(){
+		$.extend(true, this.beforeEdit, this.linkedField);
+	},
+	methods:{
+		undoEdit: function(){
+			$.extend(true, this.linkedField, this.$parent.srcObjectModel.object);
+		},
+		doneEdit:function(){
+			this.$emit('slideout',this.linkedField);
+		}
+	}
+});
+
 const About = {
 	template : '<div><applayout :nothelper="true"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
 };
@@ -448,16 +523,14 @@ const router = new VueRouter({
 	history : true
 });
 
-var vm = new Vue({
+var vuem = new Vue({
 	router : router,
 	data : {
 		currentOLView:'login',
-		currentSOLView:'',
+		currentSOLView:'citationEditor',
 		koModel:objModel,
 		showOverlay:{show:false},
 		showSecOverlay:{show:false},
-		licenseModel:{license:{}},
-		citationModel:{citations:[]}
 	},
 	components:{
 		info:{template:"<div>Information</div>"},
@@ -466,10 +539,8 @@ var vm = new Vue({
 		requestPasswordReset : requestPasswordReset,
 		resetPassword : resetPassword,
 		createObj: creatObj,*/
-		editObj : objeditor,
-		licenseEditor: licenseEditor,
-		citationEditor:citationEditor
-		
+		objeditor : objeditor,
+
 	},
 	created: function(){
 		var self=this;
@@ -477,15 +548,29 @@ var vm = new Vue({
 			
 		});
 		eventBus.$on('editObj', function(uri){
+			self.currentOLView='objeditor';
 			self.showOverlay.show=true;
-			self.currentOLView='editObj';
 		});
 		eventBus.$on('objSaved', function(obj){
 			self.updateObject(obj);
 			self.showOverlay.show=false;
 		});
-		eventBus.$on('slideout', function(){
-			self.showOverlay.show=false;
+		eventBus.$on('slideout', function(layerid){
+			console.log("Layer ID to slide Out"+layerid);
+			switch(layerid){
+				case '0':	self.showOverlay.show=false;
+						break;
+				case '1': self.showSecOverlay.show=false;
+						break;
+			}
+		}),
+		eventBus.$on('editLicense',function(){
+			self.currentSOLView='licenseEditor';
+			self.showSecOverlay.show=true;			
+		}),
+		eventBus.$on('editCitation',function(){
+			self.currentSOLView='citationEditor';
+			self.showSecOverlay.show=true;
 		})
 	},
 	methods:{
@@ -504,19 +589,4 @@ var vm = new Vue({
 			console.log("obj Saved");
 			$.extend(true, objModel.object, obj);
 		},
-		editObj_click:function(){
-			objURI=	objModel.object.uri;
-		},
-		editLicense:function(){
-			
-		},
-		deleteLicense:function(){
-			
-		},
-		editcitation:function(){
-			
-		},
-		deleteCitation:function(){
-			
-		}
 	}}).$mount('#app');
