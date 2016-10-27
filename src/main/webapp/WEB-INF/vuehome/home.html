@@ -355,7 +355,7 @@
 							</div>
 						<div class="addtext">
 							<h4>DESCRIPTION</h4>
-							<input type="textarea" class="metaEdit" v-model="editObjModel.object.metadata.description" />
+							<textarea class="metaEdit" v-model="editObjModel.object.metadata.description"></textarea>
 						</div>
 						<div class="addtext">
 							<h4>KEYWORDS</h4>
@@ -373,11 +373,11 @@
 							<h4>LICENSE</h4>
 							<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName"><button class="mediumgreenroundbutton" v-on:click="addLicense"><img src="images/Plus_Icon.png" width="12px"></button></div>
 							<div class="row" v-else>
-								<div class="col-md-10">
+								<div class="col-md-9">
 									<linkedfield-tile v-bind:link="editObjModel.object.metadata.license.licenseLink"
 										v-bind:value="editObjModel.object.metadata.license.licenseName"></linkedfield-tile>
 								</div>
-								<div class="col-md-2">
+								<div class="col-md-3">
 									<button class="edit" v-on:click="selectLicense(editObjModel.object.metadata.license)">EDIT</button>
 									<button class="edit" v-on:click="deleteLicense">DELETE</button>
 								</div>
@@ -411,14 +411,14 @@
 								<h4> FUNCTION NAME (REQUIRED)
 								</h4>
 								<div class="addtext">
-									<input class="textbox inEdit" type="text" id="functionName"
+									<input class="textbox inEdit" type="text" v-model="editObjModel.object.payload.functionName"
 										placeholder="one instance only" maxlength="140"><span>140/140</span>
 								</div>
 								</div>
 								<div class="addtext">
 									<h4>ENGINE TYPE
 									</h4>
-									<select required class="options" id="engineType">
+									<select required class="options" v-model="editObjModel.object.payload.engineType">
 										<option value="Python">PYTHON</option>
 									</select> <br>
 								</div>
@@ -469,7 +469,7 @@
 					</li>
 				<li id="output">
 					<div id="output_fields">
-						<div v-if="outputfile==false">
+						<div v-if="outputfile">
 							<div id="outputDropFile" class="dropfile">
 								<div class="upload-direction">
 									<input type="file" @change="onFileChange" class="inputfile"
@@ -483,10 +483,10 @@
 							</div>
 						</div>
 						<div v-else>
-								<button v-on:click="removeFile">Remove</button>
+								<button v-on:click="removeOutputFile">Remove</button>
 								<input type="textarea" id="outputTextArea"
 									v-model="editObjModel.object.outputMessage">
-								</textarea>
+								</input>
 						</div>
 					</div>
 				</li>
@@ -499,7 +499,7 @@
 		
 	</olpane>
 		<div class="layered_overlay secondary" v-show="showSecOverlay.show">
-			<linkedfieldeditor v-on:slideout="update"></linkedfieldeditor>
+			<linkedfieldeditor :inEdit="inEdit" v-on:slideout="update"></linkedfieldeditor>
 		</div>
 		</div>
 </template>
@@ -541,83 +541,22 @@
 		<div slot="ol-warning">Warning !!!</div>
 	</olpane>
 </template>
-<template id="citation_overlay">
-	<olpane layerid=1> 
-		<div slot="ol-title"><h3>Add/Edit Citation</h3></div>
-		<div slot="ol-form">
-			<fieldset class="fieldcontainer" id="first">
-								<div class="citationField">
-									<h4 title="citation_title">TITLE, PMID or DOI</h4>
-									<div class="addtext">
-										<input type="text" class="metaEdit" v-model="citationModel.citation.citation_title" />
-										</div>
-									<label class="errorLabel" for="citation_title"> </label>
-								</div>
-								<div class="citationField">
-									<h4 title="citation_link">HYPERLINK</h4>
-									<button class="inline edit" type="button" id="preview_btn">PREVIEW</button>
-									<div class="addtext">
-										<input type="text" class="metaEdit" v-model="citationModel.citation.citation_at" spellcheck="false"
-											/>
-									</div>
-									<label class="errorLabel" for="citation_link"> </label>
-								</div>
-								<div>
-									<h4>CITATION DETAIL</h4>
-									<div class="addtext">
-										<iframe class="inEdit" id="citation_detail"></iframe>
-									</div>
-									<button class="edit" v-on:click="updateCitation">DONE</button>
-									<button class="edit" v-on:click="undoEdit">CANCEL</button>
-								</div>
-				</fieldset>
-		</div>
-	</olpane>
-</template>
-<template id="license_overlay">
-	<olpane layerid=1> 
-		<div slot="ol-title"><h3>Add/Edit License</h3></div>
-		<div slot="ol-form">
-			<fieldset class="fieldcontainer" id="first">
-								<div class="licenseField">
-									<h4 title="license_title">LICENSE TITLE</h4>
-									<div class="addtext">
-										<input class="textbox inEdit" v-model="licenseModel.license.licenseName" type="text" spellcheck="false"
-											placeholder="Enter License Title"
-											maxlength="140"/>
-										</div>
-									<label class="errorLabel" for="username"> </label>
-								</div>
-								<div class="licenseField">
-									<h4 title="citation_link">HYPERLINK</h4>
-									<button class="inline edit" type="button" id="preview_btn">PREVIEW</button>
-									<div class="addtext">
-										<input class="textbox inEdit" v-model="licenseModel.license.licenseLink"
-											type="text" spellcheck="false"
-											placeholder="Please provide the URL for the liense. "
-											maxlength="140"/><span>140/140</span>
-									</div>
-									<label class="errorLabel" for="license_link"> </label>
-								</div>
-								<div>
-									<h4>LICENSE DETAIL</h4>
-									<div class="addtext">
-										<iframe class="inEdit" id="license_detail"></iframe>
-									</div>
-									<button class="edit" v-on:click="updateLicense">DONE</button>
-									<button class="edit" v-on:click="undoEdit">CANCEL</button>
-								</div>
-				</fieldset>
-		</div>
-	</olpane>
-</template>
 <template id="linkedfield_editor">
 	<olpane layerid=1> 
-		<div slot="ol-title"><h3>Add/Edit License</h3></div>
+		<div slot="ol-title"><h3>Add/Edit {{inEdit}}</h3>
+		<div classs="row">
+			<div class="col-md-9"></div>
+			<div class="col-md-3">
+				<button class="edit" v-on:click="undoEdit">UNDO</button>
+				<button class="edit" v-on:click="doneEdit">DONE</button>
+			</div>
+			</div>
+		
+		</div>
 		<div slot="ol-form">
-			<fieldset class="fieldcontainer" id="first">
+			<fieldset class="fieldcontainer" id="linkedfields">
 								<div class="licenseField">
-									<h4 title="license_title">LICENSE TITLE</h4>
+									<h4 title="license_title">{{inEdit}} TITLE</h4>
 									<div class="addtext">
 										<input class="textbox inEdit" v-model="linkedField.title" type="text" spellcheck="false"
 											placeholder="Enter License Title"
@@ -627,7 +566,7 @@
 								</div>
 								<div class="licenseField">
 									<h4 title="citation_link">HYPERLINK</h4>
-									<button class="inline edit" type="button" id="preview_btn">PREVIEW</button>
+									<button class="inline edit" v-on:click="preview">PREVIEW</button>
 									<div class="addtext">
 										<input class="textbox inEdit" v-model="linkedField.link"
 											type="text" spellcheck="false"
@@ -637,12 +576,12 @@
 									<label class="errorLabel" for="license_link"> </label>
 								</div>
 								<div>
-									<h4>LICENSE DETAIL</h4>
+									<h4>DETAIL</h4>
 									<div class="addtext">
-										<iframe class="inEdit" id="license_detail"></iframe>
-									</div>
-									<button class="edit" v-on:click="doneEdit">DONE</button>
-									<button class="edit" v-on:click="undoEdit">CANCEL</button>
+									The content will be displayed in a new window.
+<!-- 										<iframe class="inEdit" id="license_detail"></iframe>
+ -->									</div>
+									
 								</div>
 				</fieldset>
 		</div>
