@@ -157,7 +157,7 @@ body {
 
 .ot-viewlist input, .ot-viewlist div, .ot-viewlist h4{
 	background-color: #fff;
-	padding-left: 0px;
+	padding-left: 16px;
 	color: #666666;
 	font-weight: 400;
 	font-size: 14px;
@@ -171,7 +171,7 @@ min-height:60px;
 height:60px;
 resize:none;
 font-size:14px;
-padding:16px 0px 0px 0px;
+padding:16px 0px 0px 16px;
   overflow-y:auto;
   line-height:1.45em;
    	text-overflow: clip;
@@ -318,7 +318,7 @@ position: absolute;
 
 .overlay-top {
     height: 120px;
-    width: 480px;
+    width: 1030px;
     position: absolute;
     top: 0;
     left: 60px;
@@ -334,6 +334,16 @@ position: absolute;
     left: 60px;
     padding: 0px 0px;
     border-left: 1px solid #e6e6e6;
+}
+
+.overlay-alert {
+    height: 60px;
+    width: 1030px;
+    position: absolute;
+    bottom:0px;
+    left: 60px;
+    background-color: #fff;
+
 }
 
 #login_overlay .overlay-board {
@@ -449,8 +459,8 @@ ul#edittab li {
 	float: left;
 	margin-top: 22px;
 	padding: 0px;
-	min-height:400px;
-	height:570px;	
+	min-height:300px;
+	height:300px;	
 	box-sizing: border-box;
 	background-color: #ffffff;
 }
@@ -485,7 +495,9 @@ ul#citationlist li {
 
 input[type=text],
 input[type=password],
-input[type=textarea]{
+input[type=textarea],
+.addtext a 
+ {
   width:900px;
   height: 38px;
   padding: 0px 16px;
@@ -497,23 +509,36 @@ input[type=textarea]{
   font-weight:400;
 }
 
-input[type=textarea]{
+.addtext a {
+	width:100%;
+  border: 1px solid #fff;
+  	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+
+.addtext textarea {
+width: 900px;
 min-height:60px;
 resize:none;
-padding:16px 16px;
+padding:8px 16px;
 border: 1px solid #e6e6e6;
 border-radius: 10px;
 color:#666666;
   margin:2px 0;
   font-size: 14px;
   overflow-y:auto;
-  line-height:1.5em;}
+  line-height:1.4em;}
 
+
+.addtext textarea:disabled{
+		border: 1px solid #fff;
+}
 .ol_pane{  
 	position: absolute;
     left: 30%;
     width: 1100px;
-    /* width: 60%; */
     background-color: #fff;
     height: 100%;
 }
@@ -533,3 +558,11 @@ color:#666666;
 .addBtn {
 	display: inline;
 }
+
+.entryform {
+	height: 600px; 
+    padding: 16px 22px;
+    margin-top:0px;
+    }
+    #linkedfields{
+    width:100%;}

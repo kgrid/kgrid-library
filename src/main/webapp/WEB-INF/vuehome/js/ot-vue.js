@@ -60,6 +60,7 @@ var vmcomp = Vue.component(
 					},
 					methods : {
 						deleteObject : function(event) {
+							var self=this;
 							var uri = this.object.uri;
 							var txt;
 							if (uri != "") {
@@ -72,7 +73,7 @@ var vmcomp = Vue.component(
 												success : function(
 														response) {
 													console.log("Deletion successful!");
-													eventBus.$emit('objDeleted', uri);
+													self.$emit('remove');
 												}
 											});
 								}
@@ -95,7 +96,7 @@ var vm_fields = Vue.component(
 						return {raw:raw}
 					},
 					computed : {
-						fieldmodel1: function(){
+/*						fieldmodel1: function(){
 							var propertyModel = "";
 							switch (this.field.section) {
 							case "metadata":
@@ -110,7 +111,7 @@ var vm_fields = Vue.component(
 							}
 							return propertyModel;
 							
-						},
+						},*/
 						value : function() {
 							var propertyValue = "";
 							switch (this.field.section) {
@@ -197,9 +198,10 @@ const objDetail = Vue.component('ko-detail', {
 			console.log("obj Saved");
 			$.extend(true, objModel.object, obj);
 		});
-		var self = this;
-		$('ul#tabs li:first').addClass('active'); 
-	    $('ul#tab li:first').addClass('active');
+	},
+	updated: function(){
+		var textareas =  $('.autosize');
+		textareas.each(autoresize());
 	},
 	mounted:function() {
 		var self = this;
@@ -213,6 +215,7 @@ const objDetail = Vue.component('ko-detail', {
 	    $("html, body").animate({
 	        scrollTop: 0
 	    }, 200);
+	   
 	},
 	computed : {
 		formattedUpdateDate : function() {
@@ -235,8 +238,8 @@ const objDetail = Vue.component('ko-detail', {
 	},
 	methods:{
 		editObj:function(){
-			editObjModel.object = vuem.getObject();
-			eventBus.$emit('editObj', this.$route.params.uri);
+			$.extend(true, editObjModel.object, this.objModel.object);
+			eventBus.$emit('editObj', this.objModel.obj);
 		},
 		deleteobj:function(){
 			eventBus.$emit('deleteObj', this.$route.params.uri);
@@ -322,7 +325,6 @@ var objeditor=Vue.component("objeditor",{
 			editObjModel:editObjModel,
 			sections:sections,
 			isDisabled:false,
-			outputfile:false,		
 			citationIndex:0,
 			licenseModel:licenseModel,
 			newCitation:{},
@@ -333,13 +335,22 @@ var objeditor=Vue.component("objeditor",{
 	},
 	created:function(){
 		var self=this;
-		eventBus.$on('updateCitation',function(obj){
-			$.extend(true, self.citationModel.citation, obj);
+		eventBus.$on('slideout',function(id){
+			if(id==1) self.showSecOverlay.show=false;
 		});
 	},
 	updated:function(){
 	},
 	computed:{
+		outputfile:function(){
+			var outputEmpty=false;
+			if(this.editObjModel.object.outputMessage){
+				console.log("output empty:"+outputEmpty);
+				outputEmpty = (this.editObjModel.object.outputMessage=="");
+			}
+			console.log(outputEmpty);
+			return outputEmpty;
+		}
 	},
 	mounted:function(){
 		editTabNav();
@@ -367,10 +378,9 @@ var objeditor=Vue.component("objeditor",{
 				})(f);
 		        reader.readAsText(file);
 		      },
-		removeFile: function (e) {
+		removeOutputFile: function () {
 				console.log("Remove button clicked.");
-		        this.outputfile = false;
-		        $("#outputTextArea").val("");
+				$("#outputTextArea").val("");;
 		      },
 		saveObj:function(){
 			var text = JSON.stringify(this.editObjModel.object);
@@ -414,11 +424,11 @@ var objeditor=Vue.component("objeditor",{
 		undoEdit: function(){
 			editObjModel.object = vuem.getObject();
 		},
-		getLicense:function(){
-			return $.extend(true, {}, this.licenseModel.license)
-		},
-		getCitation:function(){
-			return $.extend(true, {}, this.citationModel.citation)
+		addLicense: function(){
+			this.srcObjectModel.object={title:"",link:""};
+			this.showSecOverlay.show=true;
+			this.inEdit="License";
+			//eventBus.$emit('editLicense', {});
 		},
 		selectLicense:function(obj){
 			this.srcObjectModel.object.title=obj.licenseName;
@@ -428,6 +438,15 @@ var objeditor=Vue.component("objeditor",{
 			},
 		deleteLicense:function(){
 			editObjModel.object.metadata.license={};
+		},
+		addCitation:function(obj){
+			this.citationIndex=editObjModel.object.metadata.citations.length;
+			editObjModel.object.metadata.citations.push(obj);
+			this.newCitation = {};
+			this.srcObjectModel.object={title:"",link:""};
+			this.showSecOverlay.show=true;
+			this.inEdit="Citation";
+			console.log("selected index:"+this.citationIndex);
 		},
 		selectCitation:function(obj){
 			this.srcObjectModel.object.title=obj.citation_title;
@@ -443,20 +462,7 @@ var objeditor=Vue.component("objeditor",{
 		deleteCitation:function(obj){
 			editObjModel.object.metadata.citations.splice(editObjModel.object.metadata.citations.indexOf(obj), 1);
 		},
-		addCitation:function(obj){
-			this.citationIndex=editObjModel.object.metadata.citations.length;
-			editObjModel.object.metadata.citations.push(obj);
-			this.newCitation = {};
-			this.srcObjectModel.object={title:"",link:""};
-			this.showSecOverlay.show=true;
-			console.log("selected index:"+this.citationIndex);
-		},
-		addLicense: function(){
-			this.srcObjectModel.object={title:"",link:""};
-			this.showSecOverlay.show=true;
-			this.inEdit="License";
-			//eventBus.$emit('editLicense', {});
-		},
+		
 		update:function(obj){
 			this.showSecOverlay.show=false;
 			console.log(JSON.stringify(obj));
@@ -479,7 +485,7 @@ var objeditor=Vue.component("objeditor",{
 
 var linkedfieldEditor = Vue.component("linkedfieldeditor",{
 	template:'#linkedfield_editor',
-	props:['pageTitle'],
+	props:['inEdit'],
 	data: function(){
 		return {linkedField:{},
 			beforeEdit:{}}
@@ -497,6 +503,10 @@ var linkedfieldEditor = Vue.component("linkedfieldeditor",{
 		},
 		doneEdit:function(){
 			this.$emit('slideout',this.linkedField);
+		},
+		preview: function(){
+			var myWindow = window.open(this.linkedField.link, "myWindow", "width=400,height=700");   // Opens a new window
+			myWindow.focus();
 		}
 	}
 });
@@ -526,8 +536,7 @@ const router = new VueRouter({
 var vuem = new Vue({
 	router : router,
 	data : {
-		currentOLView:'login',
-		currentSOLView:'citationEditor',
+		currentOLView:'objeditor',
 		koModel:objModel,
 		showOverlay:{show:false},
 		showSecOverlay:{show:false},
@@ -535,10 +544,6 @@ var vuem = new Vue({
 	components:{
 		info:{template:"<div>Information</div>"},
 		login : login,
-/*		signup : signup,
-		requestPasswordReset : requestPasswordReset,
-		resetPassword : resetPassword,
-		createObj: creatObj,*/
 		objeditor : objeditor,
 
 	},
@@ -547,31 +552,29 @@ var vuem = new Vue({
 		eventBus.$on('deleteobj',function(uri){
 			
 		});
-		eventBus.$on('editObj', function(uri){
+		eventBus.$on('editObj', function(obj){
 			self.currentOLView='objeditor';
 			self.showOverlay.show=true;
+			document.body.classList.toggle('noscroll', true);
 		});
 		eventBus.$on('objSaved', function(obj){
 			self.updateObject(obj);
 			self.showOverlay.show=false;
 		});
 		eventBus.$on('slideout', function(layerid){
-			console.log("Layer ID to slide Out"+layerid);
 			switch(layerid){
-				case '0':	self.showOverlay.show=false;
-						break;
-				case '1': self.showSecOverlay.show=false;
-						break;
+				case '0':
+					self.showOverlay.show=false;
+					document.body.classList.toggle('noscroll', false);
+					break;
+				case '1': 
+					self.showSecOverlay.show=false;
+					break;
 			}
-		}),
-		eventBus.$on('editLicense',function(){
-			self.currentSOLView='licenseEditor';
-			self.showSecOverlay.show=true;			
-		}),
-		eventBus.$on('editCitation',function(){
-			self.currentSOLView='citationEditor';
-			self.showSecOverlay.show=true;
-		})
+		});
+	},
+	mounted:function(){
+		overlayHeightResize();
 	},
 	methods:{
 		login_click:function(){
@@ -586,7 +589,6 @@ var vuem = new Vue({
 			return $.extend(true, {}, this.koModel.object);
 		},
 		updateObject:function(obj){
-			console.log("obj Saved");
 			$.extend(true, objModel.object, obj);
 		},
 	}}).$mount('#app');
