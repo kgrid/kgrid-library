@@ -134,6 +134,11 @@
 					</h1>
 				</div>
 				<div slot="header">
+				<div>
+					<button class="greenroundbutton ot-newobj"  v-on:click="addObject">
+						<img src="images/Plus_Icon.png"/>
+					</button>
+				</div>
 				<div class="row">
 						<div class="col-md-6 ot-search">
 							<span class="ot-glybtn glyphicon glyphicon-search"></span> <input
@@ -156,7 +161,8 @@
 									class="ot-glybtn glyphicon glyphicon-sort-by-attributes-alt"></span>
 							</button>
 						</div>
-					</div></div>
+					</div>
+					</div>
 				<div slot="maincontent">
 					<ul>
 						<li v-for="(object,index) in orderedList"><ko-tile :object="object"
@@ -167,7 +173,7 @@
 		</div>
 	</template>
 	<template id="ko-tile-template"> 
-		<router-link v-bind:to="objLink" v-on:click.native="selected">
+		<router-link v-bind:to="objLink" v-on:click="selected">
 			<div class="container ot-tile" v-bind:id="object.uri">
 				<div class="row ot-2">
 					<div class="col-md-1 ot-type">
@@ -177,7 +183,7 @@
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
 					<div class="col-md-1 ot-empty ">
-						<button class="edit" v-on:click="deleteObject">
+						<button class="edit" v-on:click.stop="deleteObject">
 							<span class="glyphicon glyphicon glyphicon-trash"></span>
 						</button>
 					</div>
@@ -327,8 +333,31 @@
 	</div>
 	</transition>
 </template>
+<template id="objcreator_overlay">
+	<olpane layerid=0>
+		<div slot="ol-title"><h3>Create New Knowledge Object</h3></div>
+		<div slot="ol-form">
+			<div class="addtext">
+				<h4>Please enter a title for the new knowledge object, then	click on "Create Object".</h4>
+					<input type="text" maxlength="140" class="metaEdit inEdit" 
+						v-model="newobjModel.object.metadata.title" /> <span>140/140</span>
+					<h4> - Or - </h4>
+				</div>
+				<div>
+					<fileuploader section="NEW_OBJECT" v-on:filechange="updatedisplay" :src='jsonobj'></fileuploader>
+				</div>
+				<div>
+					<button class="done_btn" v-on:click="createObj">Create Object</button>
+				</div>
+			</div>
+		<div slot="ol-processing">Processing...</div>
+		<div slot="ol-success">New object succesfully created!!! Object ID:{{newobjModel.object.uri}}</div>
+		<div slot="ol-failure">Creation of new object Failed! </div>
+		<div slot="ol-warning">Warning !!!</div>
+	</olpane>
+</template>
 <template id="objEditor_overlay">
-<div>
+ <div>
 	<olpane layerid=0> 
 		<div slot="ol-title"><h3>{{editObjModel.object.metadata.title}}</h3>
 			<div id="barcontainer">
@@ -442,20 +471,19 @@
 		<div slot="ol-success">Update Successful !!!</div>
 		<div slot="ol-failure">Update Failure! </div>
 		<div slot="ol-warning">Warning !!!</div>
-		
 	</olpane>
-		<div class="layered_overlay secondary" v-if="showSecOverlay.show">
+	<div class="layered_overlay secondary" v-if="showSecOverlay.show">
 		<transition name="slide">
 			<linkedfieldeditor v-bind:inedit="inEdit" v-bind:srcfield="srcFieldModel.object" v-on:slideout="update"></linkedfieldeditor>
 		</transition>
-		</div>
-		</div>
+	</div>
+ </div>
 </template>
 <template id="file_uploader"> 
 	<div v-if="!selectedfile">
 	<div class="dropfile">
 			<div class="upload-direction">
-				<input type="file" :id="selectfile" @change="onFileChange" class="inputfile"
+				<input type="file" :id="selectfile" @change="onFileChange" class="inputfile" 
 										data-multiple-caption="{count} files selected" multiple style="display: none;"/>
 				<label :for="selectfile" id="filecount"> 
 					<img src="images/Upload_Icon.png">
@@ -465,7 +493,7 @@
 	</div></div>
 	<div v-else>
 		<button v-on:click="removeOutputFile">Remove</button>
-		<textarea @change="inputchange" v-model="message.msg"></textarea>
+		<textarea @change="inputchange" spellcheck=false v-model="message.msg"></textarea>
 	</div>
 </template>  
 <template id="login_overlay">
@@ -476,8 +504,7 @@
 								<div class="loginField">
 									<h4 title="username">USERNAME</h4>
 									<div class="addtext">
-										<input class="textbox login" name="username"
-											id="username" type="text" spellcheck="false"
+										<input class="textbox login" v-model="userModel.user.username" type="text" spellcheck="false"
 											placeholder="Enter your email"
 											maxlength="140">
 <!-- 											<button class="edit_btn" >Need to create an account?</button>
@@ -487,7 +514,7 @@
 								<div class="loginField">
 									<h4 title="password">PASSWORD</h4>
 									<div class="addtext">
-										<input class="textbox login" name="password" id="password"
+										<input class="textbox login" v-model="userModel.user.passwd"
 											type="password" spellcheck="false"
 											placeholder="Enter your password"
 											maxlength="140">
@@ -496,7 +523,7 @@
 									<label class="errorLabel" for="password"> </label>
 								</div>
 								<div class="loginField">
-									<input class="login" name="done" id="login_btn" type="button" value="LOG IN">
+									<button class="login" @click="userlogin">LOG IN</button>
 								</div>
 				</fieldset>
 		</div>
