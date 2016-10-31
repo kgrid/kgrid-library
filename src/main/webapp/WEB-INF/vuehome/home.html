@@ -405,7 +405,6 @@
 					</fieldset>
 				</li>
 				<li id="payload">
-						
 						<div id="payload_fields">
 							<div class="addtext">
 								<h4> FUNCTION NAME (REQUIRED)
@@ -422,72 +421,19 @@
 										<option value="Python">PYTHON</option>
 									</select> <br>
 								</div>
-<!-- 								<div v-if="inputfile==false">
-							<div id="payloadDropFile" class="dropfile">
-								<div class="upload-direction">
-									<input type="file" @change="onpayloadFileChange" class="inputfile"
-										data-multiple-caption="{count} files selected" multiple /> <label
-										for="file_output" id="filecount"> <img
-										src="images/Upload_Icon.png"> <br>
-										<p class="green">CHOOSE_FILE</label>
-									</p>
-									</label>
+								<fileuploader section="payload" v-on:filechange="updatedisplay" :src='editObjModel.object.payload.content'></fileuploader>
 								</div>
-							</div>
-						</div>
-						<div v-else>
-								<button v-on:click="removepayloadFile">Remove</button>
-								<input type="textarea" id="payloadTextArea"
-									v-model="editObjModel.object.inputMessage">
-								</textarea>
-						</div>
-						</div> -->
+
 
 						</li>
 					<li id="input">
-<!-- 							<div id="input_fields">
-						<div v-if="inputfile==false">
-							<div id="inputDropFile" class="dropfile">
-								<div class="upload-direction">
-									<input type="file" @change="oninputFileChange" class="inputfile"
-										data-multiple-caption="{count} files selected" multiple /> <label
-										for="file_output" id="filecount"> <img
-										src="images/Upload_Icon.png"> <br>
-										<p class="green">CHOOSE_FILE</label>
-									</p>
-									</label>
-								</div>
+ 							<div id="input_fields">
+								<fileuploader section="inputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.inputMessage'></fileuploader>
 							</div>
-						</div>
-						<div v-else>
-								<button v-on:click="removeInputFile">Remove</button>
-								<input type="textarea" id="inputTextArea"
-									v-model="editObjModel.object.inputMessage">
-								</textarea>
-						</div>
-						</div> -->
 					</li>
-				<li id="output">
+					<li id="output">
 					<div id="output_fields">
-						<div v-if="outputfile">
-							<div id="outputDropFile" class="dropfile">
-								<div class="upload-direction">
-									<input type="file" @change="onFileChange" class="inputfile"
-										data-multiple-caption="{count} files selected" multiple /> <label
-										for="file_output" id="filecount"> <img
-										src="images/Upload_Icon.png"> <br>
-										<p class="green">CHOOSE_FILE</label>
-									</p>
-									</label>
-								</div>
-							</div>
-						</div>
-						<div v-else>
-								<button v-on:click="removeOutputFile">Remove</button>
-								<input type="textarea" id="outputTextArea"
-									v-model="editObjModel.object.outputMessage">
-								</input>
-						</div>
+							<fileuploader section="outputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.outputMessage'></fileuploader>
 					</div>
 				</li>
 			</ul>
@@ -498,11 +444,30 @@
 		<div slot="ol-warning">Warning !!!</div>
 		
 	</olpane>
-		<div class="layered_overlay secondary" v-show="showSecOverlay.show">
-			<linkedfieldeditor :inEdit="inEdit" v-on:slideout="update"></linkedfieldeditor>
+		<div class="layered_overlay secondary" v-if="showSecOverlay.show">
+		<transition name="slide">
+			<linkedfieldeditor v-bind:inedit="inEdit" v-bind:srcfield="srcFieldModel.object" v-on:slideout="update"></linkedfieldeditor>
+		</transition>
 		</div>
 		</div>
 </template>
+<template id="file_uploader"> 
+	<div v-if="!selectedfile">
+	<div class="dropfile">
+			<div class="upload-direction">
+				<input type="file" :id="selectfile" @change="onFileChange" class="inputfile"
+										data-multiple-caption="{count} files selected" multiple style="display: none;"/>
+				<label :for="selectfile" id="filecount"> 
+					<img src="images/Upload_Icon.png">
+					<p class="green">CHOOSE_FILE_FOR_{{section}}</p>
+				</label>
+			</div>
+	</div></div>
+	<div v-else>
+		<button v-on:click="removeOutputFile">Remove</button>
+		<textarea @change="inputchange" v-model="message.msg"></textarea>
+	</div>
+</template>  
 <template id="login_overlay">
 	<olpane layerid=0> 
 		<div slot="ol-title"><h3>Log in</h3></div>
@@ -543,7 +508,7 @@
 </template>
 <template id="linkedfield_editor">
 	<olpane layerid=1> 
-		<div slot="ol-title"><h3>Add/Edit {{inEdit}}</h3>
+		<div slot="ol-title"><h3>Add/Edit {{inedit}}</h3>
 		<div classs="row">
 			<div class="col-md-9"></div>
 			<div class="col-md-3">
@@ -556,10 +521,10 @@
 		<div slot="ol-form">
 			<fieldset class="fieldcontainer" id="linkedfields">
 								<div class="licenseField">
-									<h4 title="license_title">{{inEdit}} TITLE</h4>
+									<h4 title="license_title">{{inedit}} TITLE</h4>
 									<div class="addtext">
 										<input class="textbox inEdit" v-model="linkedField.title" type="text" spellcheck="false"
-											placeholder="Enter License Title"
+											placeholder="Enter Title"
 											maxlength="140"/>
 										</div>
 									<label class="errorLabel" for="username"> </label>
@@ -570,7 +535,7 @@
 									<div class="addtext">
 										<input class="textbox inEdit" v-model="linkedField.link"
 											type="text" spellcheck="false"
-											placeholder="Please provide the URL for the liense. "
+											placeholder="Please provide the URL. "
 											maxlength="140"/><span>140/140</span>
 									</div>
 									<label class="errorLabel" for="license_link"> </label>
@@ -579,9 +544,7 @@
 									<h4>DETAIL</h4>
 									<div class="addtext">
 									The content will be displayed in a new window.
-<!-- 										<iframe class="inEdit" id="license_detail"></iframe>
- -->									</div>
-									
+
 								</div>
 				</fieldset>
 		</div>
