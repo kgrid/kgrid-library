@@ -2,9 +2,7 @@
 var eventBus = new Vue({});
 var raw = 9;
 var objModel = { object : { metadata:{title:"View Object"}} };
-var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},uri:"ark"} };
-var licenseModel = {license:{}};
-var citationModel = {citation:{}};
+var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"ark"} };
 
 var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
                 {name:"payload",id:"#payload",label:"PAYLOAD"},
@@ -239,6 +237,12 @@ const objDetail = Vue.component('ko-detail', {
 	methods:{
 		editObj:function(){
 			$.extend(true, editObjModel.object, this.objModel.object);
+			if(editObjModel.object.outputMessage==null){
+				editObjModel.object.outputMessage="";
+			}
+			if(editObjModel.object.inputMessage==null){
+				editObjModel.object.inputMessage="";
+			}
 			eventBus.$emit('editObj', this.objModel.obj);
 		},
 		deleteobj:function(){
@@ -326,10 +330,8 @@ var objeditor=Vue.component("objeditor",{
 			sections:sections,
 			isDisabled:false,
 			citationIndex:0,
-			licenseModel:licenseModel,
-			newCitation:{},
 			showSecOverlay:{show:false},
-			srcObjectModel:{object:{title:"",link:""}},
+			srcFieldModel:{object:{title:"",link:""},originalObject:{title:"",link:""}},
 			inEdit:"License",
 		}
 	},
@@ -337,20 +339,13 @@ var objeditor=Vue.component("objeditor",{
 		var self=this;
 		eventBus.$on('slideout',function(id){
 			if(id==1) self.showSecOverlay.show=false;
+			self.resetSrcField();
 		});
 	},
 	updated:function(){
 	},
 	computed:{
-		outputfile:function(){
-			var outputEmpty=false;
-			if(this.editObjModel.object.outputMessage){
-				console.log("output empty:"+outputEmpty);
-				outputEmpty = (this.editObjModel.object.outputMessage=="");
-			}
-			console.log(outputEmpty);
-			return outputEmpty;
-		}
+
 	},
 	mounted:function(){
 		editTabNav();
@@ -360,28 +355,25 @@ var objeditor=Vue.component("objeditor",{
 	    $('ul#etab li:first').addClass('active'); 
 		$('.autosize').each(autoresize);
 	},
+	component:{
+		  fileuploader:fileuploader
+	  },
 	methods: {
-		 onFileChange: function(e) {
-		      var files = e.target.files || e.dataTransfer.files;
-		      this.outputfile=true;
-		      if (!files.length)
-		        return;
-		      this.loadContent(files[0]);
-		    },
-		loadContent: function(file) {
-		        var reader = new FileReader();
-		        reader.onload = (function(f) {
-					return function(e) {
-						var contents = e.target.result;
-						$("#outputTextArea").val(contents);
-					};
-				})(f);
-		        reader.readAsText(file);
-		      },
-		removeOutputFile: function () {
-				console.log("Remove button clicked.");
-				$("#outputTextArea").val("");;
-		      },
+		 updatedisplay : function(sec, msg){
+			    	console.log("Section:"+sec+" Msg:"+msg);
+			    	switch(sec) {
+			    		case "payload":
+			    			this.editObjModel.object.payload.content=msg;
+			    			break;
+			    		case "inputMessage":
+			    			this.editObjModel.object.inputMessage=msg;
+			    			break;
+			    		case "outputMseeage":
+			    			this.editObjModel.object.outputMessage=msg;
+			    			break;
+			    		
+			    	}
+			    },
 		saveObj:function(){
 			var text = JSON.stringify(this.editObjModel.object);
 			var self =this;
@@ -409,8 +401,9 @@ var objeditor=Vue.component("objeditor",{
 					});
 					$("div.processing").fadeOut(200);
 					$("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
-							overlaySlide("addObject", false, "edit");
+							//overlaySlide("addObject", false, "edit");
 						});
+					
 				},
 				error : function(response) {
 					console.log(response);
@@ -422,60 +415,85 @@ var objeditor=Vue.component("objeditor",{
 			});
 		},
 		undoEdit: function(){
-			editObjModel.object = vuem.getObject();
+			editObjModel.object = this.$parent.getObject();
+			if(editObjModel.object.outputMessage==null){
+				editObjModel.object.outputMessage="";
+			}
+			if(editObjModel.object.inputMessage==null){
+				editObjModel.object.inputMessage="";
+			}
+		},
+		setSrcField:function(obj){
+			$.extend(true, this.srcFieldModel.object, obj);
+			$.extend(true, this.srcFieldModel.originalObject,obj);
+		},
+		getOriginalField:function(){
+			return $.extend(true, {}, this.srcFieldModel.originalObject);
+		},
+		resetSrcField:function(){
+			this.srcFieldModel.object={title:"",link:""};
 		},
 		addLicense: function(){
-			this.srcObjectModel.object={title:"",link:""};
+			var srcObj = {title:"",link:""};
+			this.setSrcField(srcObj);
 			this.showSecOverlay.show=true;
 			this.inEdit="License";
-			//eventBus.$emit('editLicense', {});
 		},
 		selectLicense:function(obj){
-			this.srcObjectModel.object.title=obj.licenseName;
-			this.srcObjectModel.object.link=obj.licenseLink;
+			var srcObj = {title:"",link:""};
+			srcObj.title=obj.licenseName;
+			srcObj.link=obj.licenseLink;
+			this.setSrcField(srcObj);
 			this.showSecOverlay.show=true;
 			this.inEdit="License";
 			},
 		deleteLicense:function(){
 			editObjModel.object.metadata.license={};
 		},
-		addCitation:function(obj){
+		addCitation:function(){
+			if(!editObjModel.object.metadata.citations){
+				editObjModel.object.metadata.citations=[];
+			}
 			this.citationIndex=editObjModel.object.metadata.citations.length;
-			editObjModel.object.metadata.citations.push(obj);
-			this.newCitation = {};
-			this.srcObjectModel.object={title:"",link:""};
+//			editObjModel.object.metadata.citations.push({citation_title:"",citation_at:""});
+			this.srcFieldModel.object={title:"",link:""};
 			this.showSecOverlay.show=true;
 			this.inEdit="Citation";
-			console.log("selected index:"+this.citationIndex);
+			
+//			console.log("selected index:"+this.citationIndex);
 		},
 		selectCitation:function(obj){
-			this.srcObjectModel.object.title=obj.citation_title;
-			this.srcObjectModel.object.link=obj.citation_at;
+			var srcObj = {title:"",link:""};
+			srcObj.title=obj.citation_title;
+			srcObj.link=obj.citation_at;
+			this.setSrcField(srcObj);
 			this.showSecOverlay.show=true;
 			this.inEdit="Citation";
 			this.citationIndex=editObjModel.object.metadata.citations.indexOf(obj);
 			console.log("selected index:"+this.citationIndex);
 		},
-		updateCitation:function(obj){
-			$.extend(true, this.citationModel.citation, obj);
-		},
 		deleteCitation:function(obj){
 			editObjModel.object.metadata.citations.splice(editObjModel.object.metadata.citations.indexOf(obj), 1);
 		},
-		
 		update:function(obj){
+			
 			this.showSecOverlay.show=false;
+			this.setSrcField(obj);
 			console.log(JSON.stringify(obj));
 			switch(this.inEdit){
 			case "License":
 				editObjModel.object.metadata.license.licenseName=obj.title;
 				editObjModel.object.metadata.license.licenseLink=obj.link;
-				this.srcObjectModel.object.title=obj.title;
-				this.srcObjectModel.object.link=obj.link;
 				break;
 			case "Citation":
-				editObjModel.object.metadata.citations[this.citationIndex].citation_title=obj.title;
-				editObjModel.object.metadata.citations[this.citationIndex].citation_at=obj.link;
+				if(editObjModel.object.metadata.citations.length==0){
+//					editObjModel.object.metadata.citations=[];
+					editObjModel.object.metadata.citations.push({citation_title:obj.title,citation_at:obj.lnk});
+				}else{			
+					editObjModel.object.metadata.citations[this.citationIndex].citation_title=obj.title;
+					editObjModel.object.metadata.citations[this.citationIndex].citation_at=obj.link;
+				}
+				break;
 			}
 		}
 	}
@@ -485,21 +503,21 @@ var objeditor=Vue.component("objeditor",{
 
 var linkedfieldEditor = Vue.component("linkedfieldeditor",{
 	template:'#linkedfield_editor',
-	props:['inEdit'],
+	props:['inedit', 'srcfield'],
 	data: function(){
-		return {linkedField:{},
-			beforeEdit:{}}
+		return {linkedField:{}}
 	},
-	created:function(){
-		this.linkedField=this.$parent.srcObjectModel.object;
-		
+	mounted:function(){
+		this.linkedField=this.srcfield;
 	},
-	updated:function(){
-		$.extend(true, this.beforeEdit, this.linkedField);
+	watch:{
+		srcfield:function(){
+			this.linkedField=this.srcfield;
+		}
 	},
 	methods:{
 		undoEdit: function(){
-			$.extend(true, this.linkedField, this.$parent.srcObjectModel.object);
+			this.linkedField= this.$parent.getOriginalField();
 		},
 		doneEdit:function(){
 			this.$emit('slideout',this.linkedField);
@@ -510,6 +528,74 @@ var linkedfieldEditor = Vue.component("linkedfieldeditor",{
 		}
 	}
 });
+
+var fileuploader = Vue.component("fileuploader",{
+	template:"#file_uploader",
+	props:['section','src'],
+	data: function(){
+	   return { selectedfile:false,
+	    		message:{msg:""},
+	  }},
+	  computed:{
+		  selectfile:function(){
+			  return this.section+"file";
+		  }
+	  },
+	  created:function(){
+		  if(this.src!=null){
+			  this.selectedfile=(this.src!="");
+		  }else{
+			  this.selectedfile=false;
+		  }
+		  this.message.msg=this.src;
+	  },
+	  watch:{
+		  src:function(){
+			  if(this.src!=null){
+				  this.selectedfile=(this.src!="");
+				  this.message.msg=this.src;
+			  }else{
+				  this.selectedfile=false;
+				  this.message.msg='';
+			  }
+		  }
+	  },
+	methods:{
+		inputchange:function(){
+			this.$emit("filechange",this.section,this.message.msg);
+		},
+		loadContent: function(file) {
+	    	var self=this;
+	        var reader = new FileReader();
+	        reader.onload = (function(f) {
+				return function(e) {
+					var contents = e.target.result;
+					self.message.msg=contents;
+					console.log("Section:"+self.section+" Msg:"+self.message.msg);
+					self.$emit("filechange",self.section,self.message.msg);
+				};
+			})(file);
+	        reader.readAsText(file);
+	      },
+		 onFileChange: function(e) {
+		      var files = e.target.files || e.dataTransfer.files;
+		      this.selectedfile=true;
+		      if (!files.length)
+		        return;
+		      this.loadContent(files[0]);
+		      //console.log("Section:"+this.section+" Msg:"+this.message.msg);
+		      
+		      },
+	    removeOutputFile: function (e) {
+		      this.selectedfile = '';
+		      this.message.msg="";
+		      this.$emit("filechange",this.section,this.message.msg);
+		    }
+	    
+		
+	}
+});
+
 
 const About = {
 	template : '<div><applayout :nothelper="true"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
@@ -533,7 +619,7 @@ const router = new VueRouter({
 	history : true
 });
 
-var vuem = new Vue({
+var vm = new Vue({
 	router : router,
 	data : {
 		currentOLView:'objeditor',
@@ -549,9 +635,6 @@ var vuem = new Vue({
 	},
 	created: function(){
 		var self=this;
-		eventBus.$on('deleteobj',function(uri){
-			
-		});
 		eventBus.$on('editObj', function(obj){
 			self.currentOLView='objeditor';
 			self.showOverlay.show=true;
@@ -560,6 +643,7 @@ var vuem = new Vue({
 		eventBus.$on('objSaved', function(obj){
 			self.updateObject(obj);
 			self.showOverlay.show=false;
+			document.body.classList.toggle('noscroll', false);
 		});
 		eventBus.$on('slideout', function(layerid){
 			switch(layerid){
