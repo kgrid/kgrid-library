@@ -251,6 +251,14 @@ span.ot-right{
     z-index:500;
 }
 
+.ot-newobj{
+		position:absolute;
+    bottom:-30px;
+    right:-30px;
+    margin:0 auto;
+    z-index:500;
+}
+
 
 #ko-title h1{
 position: absolute;
@@ -350,10 +358,14 @@ position: absolute;
     width: 480px;
 }
 
-#login_overlay .done_btn {
+.done_btn {
 	height: 55px;
-	width: 100%;
-	right:50px;
+	width: 910px;
+	right:100px;
+	margin: 15px auto;
+	background-color:#39b45a;
+	color:#fff;
+	border-radius:10px;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -566,3 +578,8 @@ color:#666666;
     }
     #linkedfields{
     width:100%;}
+    
+    .ol-slot {
+    	width: 96%;
+    	margin: 0 auto;
+    }
