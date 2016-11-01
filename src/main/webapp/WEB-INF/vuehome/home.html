@@ -76,10 +76,27 @@
 							<li><router-link to="/contactus">Contact Us</router-link></li>
 
 						</ul>
+						<div v-if="!isLoggedIn">
 						<ul class="nav navbar-nav navbar-right ot-1">
 							<li class="login-link1" v-on:click="login_click"><a>Log In</a></li>
 							<li class="signup-link"><a id="signupBtn">Sign Up</a></li>
 						</ul>
+						</div>
+						<div v-else>
+							<ul class="nav navbar-nav navbar-right ot-1">
+								<li class="login-link1">
+									<div class="dropdown">
+										<a id="dLabel" data-target="#" data-toggle="dropdown" role="button">Hello,
+											{{userModel.user.first_name}}<span><img
+											id="dropdowniconimg" class="down"
+											src="images/Chevron_Icon.png" width="12px" /></span></a> 
+										<ul class="dropdown-menu" aria-labelledby="dLabel">
+											<li><a v-on:click="userlogout">LOGOUT</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</div>
 					</div>
 					<!-- /.navbar-collapse -->
 				</div>

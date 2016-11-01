@@ -45,7 +45,7 @@ body {
 	height:40px;
 }
 
-.ot-1 .navbar-nav>li>a:hover {
+.ot-1 .navbar-nav>li a:hover {
     color: #fff;
     background-color: transparent;
 }
@@ -54,7 +54,7 @@ body {
 	padding: 0px 0px 0px 220px;
 }
 
-.ot-1 .navbar-nav>li>a:focus {
+.ot-1 .navbar-nav>li a:focus {
     color: #fff;
 }
 
@@ -583,3 +583,25 @@ color:#666666;
     	width: 96%;
     	margin: 0 auto;
     }
+    
+    img#dropdowniconimg.up {
+   -moz-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+}
+
+img#dropdowniconimg.down {
+   -moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+}
+
+.dropdown ul{
+	background-color:#39b45a;
+}
+
+.dropdown a{
+	color: #fff;
+}
