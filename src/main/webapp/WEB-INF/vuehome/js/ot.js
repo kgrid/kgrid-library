@@ -16,6 +16,25 @@ function retrieveObjectList(fillObjectList){
 		});
 }
 
+function toggleObject(uri, published) {
+	$(this).find("span").addClass("middleout");
+	$(".pri-pub .current-tab").find("span").removeClass("middleout");
+
+	$.ajax({
+		beforeSend : function(xhrObj) {
+			xhrObj.setRequestHeader("Content-Type", "application/json");
+		},
+		type : 'PUT',
+		url : "/ObjectTeller/knowledgeObject/" + uri + "/" + published,
+		success : function(response) {
+			location.reload();
+		},
+		error : function(response, tStatus, xhr) {
+	
+		}
+	});
+}
+
 function retrieveObject(uri, section, fillObjectContent){
 	var endPoint = uri; 
 	if(section!=""){
@@ -175,6 +194,8 @@ $(document).ready(function() {
 	    var el = content.querySelector('.ot-nav');
 	    document.body.appendChild(el.cloneNode(true));
 	*/
+	 $( "#startdatepicker" ).datepicker();
+	    $( "#enddatepicker" ).datepicker();
 	    $('[data-toggle="tooltip"]').tooltip();
 		$(window).resize(function(){setBannerbkSize()});
 	 	setBannerbkSize();

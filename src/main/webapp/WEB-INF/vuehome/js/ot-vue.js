@@ -238,7 +238,8 @@ const objDetail = Vue.component('ko-detail', {
 		return {
 			objModel : objModel,
 			sections : sections,
-			isDisabled: 1
+			isDisabled: 1,
+			isPublic:false
 		}
 	},
 	created : function() {
@@ -252,11 +253,32 @@ const objDetail = Vue.component('ko-detail', {
 		var textareas =  $('.autosize');
 		textareas.each(autoresize());
 	},
+	watch:{
+		isPublic:function(){
+			var uri=this.objModel.object.uri;
+			var published=this.isPublic;
+			$.ajax({
+				beforeSend : function(xhrObj) {
+					xhrObj.setRequestHeader("Content-Type", "application/json");
+				},
+				type : 'PUT',
+				url : "/ObjectTeller/knowledgeObject/" + uri + "/" + published,
+				success : function(response) {
+					location.reload();
+				},
+				error : function(response, tStatus, xhr) {
+			
+				}
+			});
+			console.log("Private/Public changed"+this.isPublic);
+		}
+	},
 	mounted:function() {
 		var self = this;
 		retrieveObject(this.$route.params.uri, "complete", function(
 				response) {
 			self.objModel.object = response;
+			self.isPublic = self.objModel.object.metadata.published;
 		}); 
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active');
@@ -298,7 +320,27 @@ const objDetail = Vue.component('ko-detail', {
 		},
 		deleteobj:function(){
 			eventBus.$emit('deleteObj', this.$route.params.uri);
-		}
+		},
+		deleteObject : function() {
+			var self=this;
+			var uri = this.objModel.object.uri;
+			var txt;
+			if (uri != "") {
+				var r = confirm("Do you really want to delete the object ? ");
+				if (r == true) {
+					$.ajax({
+								type : 'DELETE',
+								url : "/ObjectTeller/knowledgeObject/"
+										+ uri,
+								success : function(
+										response) {
+									console.log("Deletion successful!");
+									window.location.href = "/ObjectTeller/vuehome/home.html";
+								}
+							});
+				}
+			}
+		},
 	}
 });
 const Home = Vue.component("ko-main", {
@@ -307,15 +349,23 @@ const Home = Vue.component("ko-main", {
 		return {
 			sortKey : "metadata.lastModified",
 			order : "asc",
-			filterString : "",
+
 			searchQuery : "",
 			model : {
 				koList : []
 			},
-		}
+			check:{keywords:true,owners:true,title:true,citations:false,contributors:false},
+ 			showmyobj:false,
+ 			filterStrings:[],
+ 			newstring:'',
+ 			datetype:'',
+ 			startdate:0,
+			enddate:0,
+ 		}
 	},
 	created : function() {
 		var self = this;
+		//this.enddate=new Date();
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
 			if(self.model.koList.length>0){
@@ -352,12 +402,42 @@ const Home = Vue.component("ko-main", {
 					this.order)
 		},
 		filteredList :function(){
+			var self = this;
 			var list = this.model.koList;
-			var filterString = this.filterString;
 			return list.filter(function(field){
-						return (field.metadata.title.includes(filterString) ||
-						field.metadata.keywords.includes(filterString) ||
-						field.metadata.owner.includes(filterString) )
+				var customFilter = false;
+				var filterString = {id:0,title:''};
+				if(self.filterStrings.length>0){
+					filterString = self.filterStrings[0];
+				};
+				if(filterString.title==='') {
+					customFilter=true;
+				}else{
+					if(self.check.title){
+						customFilter = (customFilter || field.metadata.title.includes(filterString.title));
+					}
+					if(self.check.keywords){
+						customFilter = (customFilter ||	field.metadata.keywords.includes(filterString.title));
+					}
+					if(self.check.owners){
+						customFilter = (customFilter ||	field.metadata.owner.includes(filterString.title));
+					}
+					if(self.check.contributors){
+						customFilter = (customFilter || field.metadata.contributors.includes(filterString.title));
+					}
+					if(self.check.citations){
+						if(field.metadata.citations!=null){
+							if(field.metadata.citations.length>0){
+								for(var i=0;i<field.metadata.citations.length;i++)
+								customFilter = (customFilter ||	field.metadata.citations[i].citation_title.includes(filterString.title));
+							}
+						}
+						
+					}
+					
+				}
+
+				return customFilter;
 			})
 		}
 	},
@@ -371,7 +451,29 @@ const Home = Vue.component("ko-main", {
 		},
 		addObject:function(){
 			eventBus.$emit("addobj","");
-		}
+		},
+		 addFilterString: function () {
+			   var value = this.newstring && this.newstring.trim()
+			   if (!value) {
+			     return
+			   }
+			   var uid=this.filterStrings.length;
+			   this.filterStrings.push({
+			     id: uid++,
+			     title: value,
+			   })
+			   this.newstring = '';
+			 },
+		 
+			 removeString: function (s) {
+				   this.filterStrings.splice(this.filterStrings.indexOf(s), 1)
+				 },
+		setstartdate:function(value){
+			this.startdate=value;
+		 },
+				 setenddate:function(value){
+						this.enddate=value;
+					 }
 	},
 	components:{'appLayout':applayout}
 });
@@ -812,6 +914,11 @@ var vm = new Vue({
 			}
 
 		});
+		eventBus.$on("deleteObj", function(s){
+			self.currentOLView="objcreator";
+			self.showOverlay.show=true;
+		});
+		
 		eventBus.$on("addobj", function(s){
 			self.currentOLView="objcreator";
 			self.showOverlay.show=true;
