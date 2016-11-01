@@ -57,7 +57,11 @@ var login= Vue.component("loginoverlay",{
 						 if(response!='empty') {
 								  var test = JSON.stringify(response);
 							      var obj = JSON.parse(test);
-							      location.reload();
+							      $("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
+							    	  eventBus.$emit("userloggedin",obj);
+								});
+							     
+							      //location.reload();
 						    }
 						} ,
 						
@@ -760,6 +764,7 @@ var vm = new Vue({
 		koModel:objModel,
 		showOverlay:{show:false},
 		showSecOverlay:{show:false},
+		userModel:{user:{username:"",passwd:""}}
 	},
 	components:{
 		info:{template:"<div>Information</div>"},
@@ -767,6 +772,13 @@ var vm = new Vue({
 		objeditor : objeditor,
 		objcreator :objcreator
 
+	},
+	computed:{
+		isLoggedIn:function(){
+			var loggedin =false;
+			loggedin = (this.userModel.user.username!="");
+			return loggedin;
+		}
 	},
 	created: function(){
 		var self=this;
@@ -804,6 +816,11 @@ var vm = new Vue({
 			self.currentOLView="objcreator";
 			self.showOverlay.show=true;
 		});
+		 eventBus.$on("userloggedin",function(obj){
+			 $.extend(true, self.userModel.user,obj);
+			 self.showOverlay.show=false;
+			 
+		 });
 	},
 	mounted:function(){
 		overlayHeightResize();
@@ -812,6 +829,17 @@ var vm = new Vue({
 		login_click:function(){
 			this.currentOLView='login';
 			this.showOverlay.show=true;
+		},
+		userlogout:function(){
+			var self=this;
+			$.ajax({
+				type : 'POST',
+				url : "/ObjectTeller/logout" ,
+				success : function(response) {
+					 $.extend(true, self.userModel.user,{username:"",passwd:""});
+					location.reload();
+				}
+			});
 		},
 		createObj_click:function(){
 			this.showOverlay.show=true;
