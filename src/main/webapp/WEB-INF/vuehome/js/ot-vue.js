@@ -1,7 +1,7 @@
 'use strict';
 var eventBus = new Vue({});
 var raw = 9;
-var objModel = { object : { metadata:{title:"View Object"}} };
+var objModel = { object : { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} };
 var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"ark"} };
 
 var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
@@ -253,26 +253,6 @@ const objDetail = Vue.component('ko-detail', {
 		var textareas =  $('.autosize');
 		textareas.each(autoresize());
 	},
-	watch:{
-		isPublic:function(){
-			var uri=this.objModel.object.uri;
-			var published=this.isPublic;
-			$.ajax({
-				beforeSend : function(xhrObj) {
-					xhrObj.setRequestHeader("Content-Type", "application/json");
-				},
-				type : 'PUT',
-				url : "/ObjectTeller/knowledgeObject/" + uri + "/" + published,
-				success : function(response) {
-					location.reload();
-				},
-				error : function(response, tStatus, xhr) {
-			
-				}
-			});
-			console.log("Private/Public changed"+this.isPublic);
-		}
-	},
 	mounted:function() {
 		var self = this;
 		retrieveObject(this.$route.params.uri, "complete", function(
@@ -290,8 +270,12 @@ const objDetail = Vue.component('ko-detail', {
 	},
 	computed : {
 		formattedUpdateDate : function() {
-			return new Date(this.objModel.object.metadata.lastModified)
-					.format("mediumDate")
+			if(!this.objModel.object.metadata.lastModified || this.objModel.object.metadata.lastModified=="" ){
+				return ""
+				}
+			else
+				{return new Date(this.objModel.object.metadata.lastModified)
+				.format("mediumDate")}
 		},
 		formattedCreateDate : function() {
 			return new Date(this.objModel.object.metadata.createdOn)
@@ -318,8 +302,36 @@ const objDetail = Vue.component('ko-detail', {
 			}
 			eventBus.$emit('editObj', this.objModel.obj);
 		},
-		deleteobj:function(){
-			eventBus.$emit('deleteObj', this.$route.params.uri);
+		publish:function(){
+			this.toggleObject(true);
+		},
+		unpublish:function(){
+			this.toggleObject(false);
+		},
+		toggleObject:function(pub){
+			var uri=this.objModel.object.uri;
+			var published='';
+			var self=this;
+			if(pub){
+				published='published';
+			}else{
+				published='unpublished';
+			}
+			$.ajax({
+				beforeSend : function(xhrObj) {
+					xhrObj.setRequestHeader("Content-Type", "application/json");
+				},
+				type : 'PUT',
+				url : "/ObjectTeller/knowledgeObject/" + uri + "/" + published,
+				success : function(response) {
+					self.isPublic=pub;
+					objModel.object.metadata.published=true;
+				},
+				error : function(response, tStatus, xhr) {
+					console.log(response);
+				}
+			});
+			console.log("Private/Public changed"+this.isPublic);
 		},
 		deleteObject : function() {
 			var self=this;
@@ -365,7 +377,6 @@ const Home = Vue.component("ko-main", {
 	},
 	created : function() {
 		var self = this;
-		//this.enddate=new Date();
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
 			if(self.model.koList.length>0){
@@ -405,39 +416,54 @@ const Home = Vue.component("ko-main", {
 			var self = this;
 			var list = this.model.koList;
 			return list.filter(function(field){
-				var customFilter = false;
-				var filterString = {id:0,title:''};
-				if(self.filterStrings.length>0){
-					filterString = self.filterStrings[0];
-				};
-				if(filterString.title==='') {
-					customFilter=true;
-				}else{
-					if(self.check.title){
-						customFilter = (customFilter || field.metadata.title.includes(filterString.title));
-					}
-					if(self.check.keywords){
-						customFilter = (customFilter ||	field.metadata.keywords.includes(filterString.title));
-					}
-					if(self.check.owners){
-						customFilter = (customFilter ||	field.metadata.owner.includes(filterString.title));
-					}
-					if(self.check.contributors){
-						customFilter = (customFilter || field.metadata.contributors.includes(filterString.title));
-					}
-					if(self.check.citations){
-						if(field.metadata.citations!=null){
-							if(field.metadata.citations.length>0){
-								for(var i=0;i<field.metadata.citations.length;i++)
-								customFilter = (customFilter ||	field.metadata.citations[i].citation_title.includes(filterString.title));
-							}
-						}
-						
-					}
-					
-				}
+										var customFilter = true;
+										var filterString = {
+											id : 0,
+											title : ''
+										};
+										if (self.filterStrings.length <= 0) {
+											customFilter = true;
+										} else {
+											for (var i = 0; i < self.filterStrings.length; i++) {
+												var filterResult = false;
+												filterString = self.filterStrings[i];
+												if (filterString.title === '') {
+													filterResult = true;
+												} else {
+													if (self.check.title) {
+														filterResult = (filterResult || field.metadata.title
+																.includes(filterString.title));
+													}
+													if (self.check.keywords) {
+														filterResult = (filterResult || field.metadata.keywords
+																.includes(filterString.title));
+													}
+													if (self.check.owners) {
+														filterResult = (filterResult || field.metadata.owner
+																.includes(filterString.title));
+													}
+													if (self.check.contributors) {
+														filterResult = (filterResult || field.metadata.contributors
+																.includes(filterString.title));
+													}
+													/*
+													 * if(self.check.citations){
+													 * if(field.metadata.citations!=null){
+													 * if(field.metadata.citations.length>0){
+													 * for(var i=0;i<field.metadata.citations.length;i++)
+													 * customFilter =
+													 * (customFilter ||
+													 * field.metadata.citations[i].citation_title.includes(filterString.title)); } }
+													 *  }
+													 */
+												}
+												console.log("Filter string:"+filterString+"Result"+customFilter);
+												customFilter = customFilter	&& filterResult;
+												console.log("Filter string:"+filterString+"Result"+customFilter);
+											}
 
-				return customFilter;
+										}
+										return customFilter;
 			})
 		}
 	},

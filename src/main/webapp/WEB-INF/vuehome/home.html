@@ -269,7 +269,7 @@
 		</div>
 	</template>
 	<template id="ko-tile-template"> 
-		<router-link v-bind:to="objLink" v-on:click="selected">
+		<router-link v-bind:to="objLink" v-on:click.self.native="selected">
 			<div class="container ot-tile" v-bind:id="object.uri">
 				<div class="row ot-2">
 					<div class="col-md-1 ot-type">
@@ -316,13 +316,13 @@
 			</div>
 			<div class="col-md-6"></div>
 			<div class="col-md-3">
-						<label class="ot-pub radio-inline"><input type="radio" value="false" v-model="isPublic"/>
+						<label class="ot-pub radio-inline"><input type="radio" value="false" v-on:click="unpublish"/>
 							<span v-if="isPublic">PRIVATE</span>
-							<span class="active middleout" v-else="isPublic">PRIVATE</span>
+							<span class="active middleout" v-else>PRIVATE</span>
 						</label>
-						<label class="ot-pub radio-inline"><input type="radio" value="true" v-model="isPublic"/><img src="images/LittleGreenDot.png">
+						<label class="ot-pub radio-inline"><input type="radio" value="true" v-on:click="publish"/><img src="images/LittleGreenDot.png">
 							<span class="active middleout"  v-if="isPublic">PUBLIC</span>
-							<span v-else="isPublic">PUBLIC</span>
+							<span v-else>PUBLIC</span>
 						</label>
 			
 <!-- 			<div class="pri-pub accessLevelOne">
