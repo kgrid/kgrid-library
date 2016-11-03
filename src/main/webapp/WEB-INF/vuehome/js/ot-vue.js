@@ -361,7 +361,7 @@ const Home = Vue.component("ko-main", {
 		return {
 			sortKey : "metadata.lastModified",
 			order : "asc",
-
+			isLoggedIn:false,
 			searchQuery : "",
 			model : {
 				koList : []
@@ -370,13 +370,16 @@ const Home = Vue.component("ko-main", {
  			showmyobj:false,
  			filterStrings:[],
  			newstring:'',
- 			datetype:'',
+ 			datetype:'lastModified',
  			startdate:0,
 			enddate:0,
+			userModel:{user:{username:"",passwd:""}}
  		}
 	},
 	created : function() {
 		var self = this;
+		this.startdate = new Date("March 1, 2016").getTime();
+		this.enddate=new Date().getTime();
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
 			if(self.model.koList.length>0){
@@ -386,7 +389,18 @@ const Home = Vue.component("ko-main", {
 		eventBus.$on('objectSelected',function(obj){
 			objModel.object=obj;
 		});
-
+		eventBus.$on("startdate",function(date){
+			console.log("StartDateCHanged"+date);
+			self.startdate=date;
+		});
+		eventBus.$on("enddate",function(date){
+			console.log("EndDateCHanged"+date);
+			self.enddate=date;
+		});
+		eventBus.$on("userloggedin",function(obj){
+			self.isLoggedIn=true;
+			$.extend(true, self.userModel.user,obj);
+		});
 	},
 	mounted:function(){
 		otScroll();
@@ -421,8 +435,9 @@ const Home = Vue.component("ko-main", {
 											id : 0,
 											title : ''
 										};
+										customFilter=customFilter&&(field.metadata[self.datetype]>=self.startdate && field.metadata[self.datetype]<=self.enddate );
 										if (self.filterStrings.length <= 0) {
-											customFilter = true;
+											
 										} else {
 											for (var i = 0; i < self.filterStrings.length; i++) {
 												var filterResult = false;
@@ -494,12 +509,7 @@ const Home = Vue.component("ko-main", {
 			 removeString: function (s) {
 				   this.filterStrings.splice(this.filterStrings.indexOf(s), 1)
 				 },
-		setstartdate:function(value){
-			this.startdate=value;
-		 },
-				 setenddate:function(value){
-						this.enddate=value;
-					 }
+		
 	},
 	components:{'appLayout':applayout}
 });
