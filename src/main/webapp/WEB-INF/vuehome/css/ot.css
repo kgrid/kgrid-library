@@ -32,8 +32,9 @@ body {
 	z-index:50;
 }
 #signupBtn {
-	border: 1px solid #fff;
+	border: 1px solid #e3e3e3;
     border-radius: 10px;
+    color: #e3e3e3;
 }
 
 .ot-1 .navbar-nav>li{
@@ -694,3 +695,26 @@ input[id$="datepicker"]{
 	.datetype {
 	 margin:0px 0px 10px 0px;
 	}
+	
+	.login-link {
+		cursor:pointer;
+	}
+	
+	.signup-link {
+		cursor: default;
+		color: #333333;
+	}
+	
+#dLabel{
+	font-size: 16px;
+    line-height: 3.4em;
+    margin: 20px 30px 0px 30px;
+}
+
+.login-link1 .dropdown{
+	height:55px;
+}
+.dropdown-menu>li> a {
+	color:#fff;
+}
+	

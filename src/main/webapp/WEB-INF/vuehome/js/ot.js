@@ -222,9 +222,4 @@ $(document).ready(function() {
 			$('.autosize').each(autoresize);
 		});
 	    
-	    $('.login-link').click(function() {
-   			overlaySlide("login_overlay",true, "view");
-  			return false;
-   		});
-
 })

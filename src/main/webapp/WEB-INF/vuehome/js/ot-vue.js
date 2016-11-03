@@ -57,7 +57,8 @@ var login= Vue.component("loginoverlay",{
 						 if(response!='empty') {
 								  var test = JSON.stringify(response);
 							      var obj = JSON.parse(test);
-							      $("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
+							      $( "div.processing" ).fadeOut( 200 );
+							      $("div.success").fadeIn(300).delay(500).fadeOut(400, function(){
 							    	  eventBus.$emit("userloggedin",obj);
 								});
 							     
@@ -69,7 +70,7 @@ var login= Vue.component("loginoverlay",{
 							// TODO: Handle Error Message
 							
 							$( "div.processing" ).fadeOut( 200 );
-							 $( "div.failure" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+							 $( "div.failure" ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 );
 						}
 					});
 			}else{
@@ -373,7 +374,8 @@ const Home = Vue.component("ko-main", {
  			datetype:'lastModified',
  			startdate:0,
 			enddate:0,
-			userModel:{user:{username:"",passwd:""}}
+			userModel:{user:{username:"",passwd:""}},
+			isAdmin:true
  		}
 	},
 	created : function() {
@@ -400,6 +402,7 @@ const Home = Vue.component("ko-main", {
 		eventBus.$on("userloggedin",function(obj){
 			self.isLoggedIn=true;
 			$.extend(true, self.userModel.user,obj);
+			self.isAdmin = (self.userModel.user.role=="ADMIN");
 		});
 	},
 	mounted:function(){
@@ -429,6 +432,11 @@ const Home = Vue.component("ko-main", {
 		filteredList :function(){
 			var self = this;
 			var list = this.model.koList;
+			if(!this.isLoggedIn){
+				list=list.filter(function(field){
+					return (field.metadata.published)
+				});
+			}
 			return list.filter(function(field){
 										var customFilter = true;
 										var filterString = {
@@ -592,12 +600,6 @@ var objcreator = Vue.component("objcreator",{
 	}
 });
 
-
-
-
-
-
-
 var objeditor=Vue.component("objeditor",{
 	template:'#objEditor_overlay',
 	data:function(){
@@ -644,7 +646,7 @@ var objeditor=Vue.component("objeditor",{
 			    		case "inputMessage":
 			    			this.editObjModel.object.inputMessage=msg;
 			    			break;
-			    		case "outputMseeage":
+			    		case "outputMessage":
 			    			this.editObjModel.object.outputMessage=msg;
 			    			break;
 			    		
@@ -874,7 +876,7 @@ var fileuploader = Vue.component("fileuploader",{
 
 
 const About = {
-	template : '<div><applayout :nothelper="true"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
+	template : '<div><applayout :nothelper="false"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
 };
 const Faq = {
 	template : '<div><applayout :nothelper="false"><div slot="banner">FAQ BANNER</div><div slot="header">FAQ HEADER</div><div slot="maincontent">FAQ CONTENT</div></applayout><div>'
