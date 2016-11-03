@@ -80,7 +80,7 @@
 						</ul>
 						<div v-if="!isLoggedIn">
 						<ul class="nav navbar-nav navbar-right ot-1">
-							<li class="login-link1" v-on:click="login_click"><a>Log In</a></li>
+							<li class="login-link" v-on:click="login_click"><a>Log In</a></li>
 							<li class="signup-link"><a id="signupBtn">Sign Up</a></li>
 						</ul>
 						</div>
@@ -215,7 +215,7 @@
 								for="keywordcheck">Keywords</label> 
 						</div>
 						<div class="col-md-7">
-							<input type="checkbox" v-model="check.citations" /> <label
+							<input type="checkbox" disabled v-model="check.citations" /> <label
 								for="keywordcheck">Citations</label> 
 						</div>
 					</div>
@@ -236,7 +236,7 @@
 					
 					</div>
 					<div class="col-md-7">
-							<input type="checkbox" v-model="showmyobj" /> <label
+							<input type="checkbox" disabled v-model="showmyobj" /> <label
 								for="keywordcheck">View only My Knowledge Objects</label>
 								</div>		
 					</div>
@@ -286,13 +286,15 @@
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
 					<div class="col-md-1 ot-empty ">
-						<button class="edit" v-on:click.stop="deleteObject">
+						<!-- <button class="edit" v-on:click.stop="deleteObject">
 							<span class="glyphicon glyphicon glyphicon-trash"></span>
-						</button>
+						</button> -->
 					</div>
 				</div>
 				<div class="row ot-2">
-					<div class="col-md-1 ot-empty">{{tileindex}} of {{listsize}}</div>
+					<div class="col-md-1 ot-empty">
+<!-- 					{{tileindex}} of {{listsize}} -->
+					</div>
 					<div class="col-md-11 ot-owner">{{object.metadata.owner}}</div>
 				</div>
 				<div class="row ot-2">
@@ -321,8 +323,8 @@
 				</div>
 			</div>
 			</div>
-			<div class="col-md-6"></div>
-			<div class="col-md-3">
+			<div class="col-md-5"></div>
+			<div class="col-md-4">
 			<div class="col-md-4"></div>
 			<div class="col-md-4">
 						<label class="ot-pub radio-inline"><input type="radio" value="false" v-on:click="unpublish"/>
