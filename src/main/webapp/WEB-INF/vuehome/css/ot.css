@@ -663,6 +663,7 @@ input[id$="datepicker"]{
 	}
 	p {
 		margin-left:20px;
+		margin-bottom:6px;
 	}
 	
 	.ot-detail-smallrow {
@@ -687,5 +688,9 @@ input[id$="datepicker"]{
 	.ot-pub {
 	width:80px;}
 	.ot-pub .active {
-	border-bottom: 3px solid #39b45a;
+	border-bottom: 2px solid #39b45a;
+	}
+	
+	.datetype {
+	 margin:0px 0px 10px 0px;
 	}
