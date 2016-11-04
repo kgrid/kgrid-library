@@ -141,6 +141,20 @@ function editTabNav(){
 	});
 }
 
+function setstartdate(){
+	 var startdate=$("#startdatepicker").val();
+	 var sstamp=new Date(startdate).getTime();
+	 eventBus.$emit("startdate",sstamp);
+	console.log("Start date:"+ sstamp);
+ }
+
+function setenddate(){
+				var enddate=$("#enddatepicker").val();
+				 var estamp=new Date(enddate).getTime();
+				eventBus.$emit("enddate",estamp);
+				console.log("End date:"+ estamp);
+			 }
+ 
 function otScroll() {
 	var padLeft = 280;
     var navOffset = $(".header").offset().top;
@@ -175,6 +189,11 @@ $(document).ready(function() {
 	    var el = content.querySelector('.ot-nav');
 	    document.body.appendChild(el.cloneNode(true));
 	*/
+	$("#startdatepicker").datepicker();
+	$("#enddatepicker").datepicker();
+	$("#startdatepicker").val("03/01/2016");
+	$("#enddatepicker").val(new Date().format("shortDate"));
+	    
 	    $('[data-toggle="tooltip"]').tooltip();
 		$(window).resize(function(){setBannerbkSize()});
 	 	setBannerbkSize();
@@ -203,9 +222,4 @@ $(document).ready(function() {
 			$('.autosize').each(autoresize);
 		});
 	    
-	    $('.login-link').click(function() {
-   			overlaySlide("login_overlay",true, "view");
-  			return false;
-   		});
-
 })

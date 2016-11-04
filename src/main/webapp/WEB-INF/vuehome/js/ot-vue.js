@@ -1,7 +1,7 @@
 'use strict';
 var eventBus = new Vue({});
 var raw = 9;
-var objModel = { object : { metadata:{title:"View Object"}} };
+var objModel = { object : { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} };
 var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"ark"} };
 
 var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
@@ -57,7 +57,12 @@ var login= Vue.component("loginoverlay",{
 						 if(response!='empty') {
 								  var test = JSON.stringify(response);
 							      var obj = JSON.parse(test);
-							      location.reload();
+							      $( "div.processing" ).fadeOut( 200 );
+							      $("div.success").fadeIn(300).delay(500).fadeOut(400, function(){
+							    	  eventBus.$emit("userloggedin",obj);
+								});
+							     
+							      //location.reload();
 						    }
 						} ,
 						
@@ -65,7 +70,7 @@ var login= Vue.component("loginoverlay",{
 							// TODO: Handle Error Message
 							
 							$( "div.processing" ).fadeOut( 200 );
-							 $( "div.failure" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+							 $( "div.failure" ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 );
 						}
 					});
 			}else{
@@ -234,7 +239,8 @@ const objDetail = Vue.component('ko-detail', {
 		return {
 			objModel : objModel,
 			sections : sections,
-			isDisabled: 1
+			isDisabled: 1,
+			isPublic:false
 		}
 	},
 	created : function() {
@@ -253,6 +259,7 @@ const objDetail = Vue.component('ko-detail', {
 		retrieveObject(this.$route.params.uri, "complete", function(
 				response) {
 			self.objModel.object = response;
+			self.isPublic = self.objModel.object.metadata.published;
 		}); 
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active');
@@ -264,8 +271,12 @@ const objDetail = Vue.component('ko-detail', {
 	},
 	computed : {
 		formattedUpdateDate : function() {
-			return new Date(this.objModel.object.metadata.lastModified)
-					.format("mediumDate")
+			if(!this.objModel.object.metadata.lastModified || this.objModel.object.metadata.lastModified=="" ){
+				return ""
+				}
+			else
+				{return new Date(this.objModel.object.metadata.lastModified)
+				.format("mediumDate")}
 		},
 		formattedCreateDate : function() {
 			return new Date(this.objModel.object.metadata.createdOn)
@@ -292,9 +303,57 @@ const objDetail = Vue.component('ko-detail', {
 			}
 			eventBus.$emit('editObj', this.objModel.obj);
 		},
-		deleteobj:function(){
-			eventBus.$emit('deleteObj', this.$route.params.uri);
-		}
+		publish:function(){
+			this.toggleObject(true);
+		},
+		unpublish:function(){
+			this.toggleObject(false);
+		},
+		toggleObject:function(pub){
+			var uri=this.objModel.object.uri;
+			var published='';
+			var self=this;
+			if(pub){
+				published='published';
+			}else{
+				published='unpublished';
+			}
+			$.ajax({
+				beforeSend : function(xhrObj) {
+					xhrObj.setRequestHeader("Content-Type", "application/json");
+				},
+				type : 'PUT',
+				url : "/ObjectTeller/knowledgeObject/" + uri + "/" + published,
+				success : function(response) {
+					self.isPublic=pub;
+					objModel.object.metadata.published=true;
+				},
+				error : function(response, tStatus, xhr) {
+					console.log(response);
+				}
+			});
+			console.log("Private/Public changed"+this.isPublic);
+		},
+		deleteObject : function() {
+			var self=this;
+			var uri = this.objModel.object.uri;
+			var txt;
+			if (uri != "") {
+				var r = confirm("Do you really want to delete the object ? ");
+				if (r == true) {
+					$.ajax({
+								type : 'DELETE',
+								url : "/ObjectTeller/knowledgeObject/"
+										+ uri,
+								success : function(
+										response) {
+									console.log("Deletion successful!");
+									window.location.href = "/ObjectTeller/vuehome/home.html";
+								}
+							});
+				}
+			}
+		},
 	}
 });
 const Home = Vue.component("ko-main", {
@@ -303,15 +362,26 @@ const Home = Vue.component("ko-main", {
 		return {
 			sortKey : "metadata.lastModified",
 			order : "asc",
-			filterString : "",
+			isLoggedIn:false,
 			searchQuery : "",
 			model : {
 				koList : []
 			},
-		}
+			check:{keywords:true,owners:true,title:true,citations:false,contributors:false},
+ 			showmyobj:false,
+ 			filterStrings:[],
+ 			newstring:'',
+ 			datetype:'lastModified',
+ 			startdate:0,
+			enddate:0,
+			userModel:{user:{username:"",passwd:""}},
+			isAdmin:true
+ 		}
 	},
 	created : function() {
 		var self = this;
+		this.startdate = new Date("March 1, 2016").getTime();
+		this.enddate=new Date().getTime();
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
 			if(self.model.koList.length>0){
@@ -321,7 +391,19 @@ const Home = Vue.component("ko-main", {
 		eventBus.$on('objectSelected',function(obj){
 			objModel.object=obj;
 		});
-
+		eventBus.$on("startdate",function(date){
+			console.log("StartDateCHanged"+date);
+			self.startdate=date;
+		});
+		eventBus.$on("enddate",function(date){
+			console.log("EndDateCHanged"+date);
+			self.enddate=date;
+		});
+		eventBus.$on("userloggedin",function(obj){
+			self.isLoggedIn=true;
+			$.extend(true, self.userModel.user,obj);
+			self.isAdmin = (self.userModel.user.role=="ADMIN");
+		});
 	},
 	mounted:function(){
 		otScroll();
@@ -348,12 +430,63 @@ const Home = Vue.component("ko-main", {
 					this.order)
 		},
 		filteredList :function(){
+			var self = this;
 			var list = this.model.koList;
-			var filterString = this.filterString;
+			if(!this.isLoggedIn){
+				list=list.filter(function(field){
+					return (field.metadata.published)
+				});
+			}
 			return list.filter(function(field){
-						return (field.metadata.title.includes(filterString) ||
-						field.metadata.keywords.includes(filterString) ||
-						field.metadata.owner.includes(filterString) )
+										var customFilter = true;
+										var filterString = {
+											id : 0,
+											title : ''
+										};
+										customFilter=customFilter&&(field.metadata[self.datetype]>=self.startdate && field.metadata[self.datetype]<=self.enddate );
+										if (self.filterStrings.length <= 0) {
+											
+										} else {
+											for (var i = 0; i < self.filterStrings.length; i++) {
+												var filterResult = false;
+												filterString = self.filterStrings[i];
+												if (filterString.title === '') {
+													filterResult = true;
+												} else {
+													if (self.check.title) {
+														filterResult = (filterResult || field.metadata.title
+																.includes(filterString.title));
+													}
+													if (self.check.keywords) {
+														filterResult = (filterResult || field.metadata.keywords
+																.includes(filterString.title));
+													}
+													if (self.check.owners) {
+														filterResult = (filterResult || field.metadata.owner
+																.includes(filterString.title));
+													}
+													if (self.check.contributors) {
+														filterResult = (filterResult || field.metadata.contributors
+																.includes(filterString.title));
+													}
+													/*
+													 * if(self.check.citations){
+													 * if(field.metadata.citations!=null){
+													 * if(field.metadata.citations.length>0){
+													 * for(var i=0;i<field.metadata.citations.length;i++)
+													 * customFilter =
+													 * (customFilter ||
+													 * field.metadata.citations[i].citation_title.includes(filterString.title)); } }
+													 *  }
+													 */
+												}
+												console.log("Filter string:"+filterString+"Result"+customFilter);
+												customFilter = customFilter	&& filterResult;
+												console.log("Filter string:"+filterString+"Result"+customFilter);
+											}
+
+										}
+										return customFilter;
 			})
 		}
 	},
@@ -367,7 +500,24 @@ const Home = Vue.component("ko-main", {
 		},
 		addObject:function(){
 			eventBus.$emit("addobj","");
-		}
+		},
+		 addFilterString: function () {
+			   var value = this.newstring && this.newstring.trim()
+			   if (!value) {
+			     return
+			   }
+			   var uid=this.filterStrings.length;
+			   this.filterStrings.push({
+			     id: uid++,
+			     title: value,
+			   })
+			   this.newstring = '';
+			 },
+		 
+			 removeString: function (s) {
+				   this.filterStrings.splice(this.filterStrings.indexOf(s), 1)
+				 },
+		
 	},
 	components:{'appLayout':applayout}
 });
@@ -450,12 +600,6 @@ var objcreator = Vue.component("objcreator",{
 	}
 });
 
-
-
-
-
-
-
 var objeditor=Vue.component("objeditor",{
 	template:'#objEditor_overlay',
 	data:function(){
@@ -502,7 +646,7 @@ var objeditor=Vue.component("objeditor",{
 			    		case "inputMessage":
 			    			this.editObjModel.object.inputMessage=msg;
 			    			break;
-			    		case "outputMseeage":
+			    		case "outputMessage":
 			    			this.editObjModel.object.outputMessage=msg;
 			    			break;
 			    		
@@ -732,7 +876,7 @@ var fileuploader = Vue.component("fileuploader",{
 
 
 const About = {
-	template : '<div><applayout :nothelper="true"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
+	template : '<div><applayout :nothelper="false"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
 };
 const Faq = {
 	template : '<div><applayout :nothelper="false"><div slot="banner">FAQ BANNER</div><div slot="header">FAQ HEADER</div><div slot="maincontent">FAQ CONTENT</div></applayout><div>'
@@ -760,6 +904,7 @@ var vm = new Vue({
 		koModel:objModel,
 		showOverlay:{show:false},
 		showSecOverlay:{show:false},
+		userModel:{user:{username:"",passwd:""}}
 	},
 	components:{
 		info:{template:"<div>Information</div>"},
@@ -767,6 +912,13 @@ var vm = new Vue({
 		objeditor : objeditor,
 		objcreator :objcreator
 
+	},
+	computed:{
+		isLoggedIn:function(){
+			var loggedin =false;
+			loggedin = (this.userModel.user.username!="");
+			return loggedin;
+		}
 	},
 	created: function(){
 		var self=this;
@@ -800,10 +952,20 @@ var vm = new Vue({
 			}
 
 		});
+		eventBus.$on("deleteObj", function(s){
+			self.currentOLView="objcreator";
+			self.showOverlay.show=true;
+		});
+		
 		eventBus.$on("addobj", function(s){
 			self.currentOLView="objcreator";
 			self.showOverlay.show=true;
 		});
+		 eventBus.$on("userloggedin",function(obj){
+			 $.extend(true, self.userModel.user,obj);
+			 self.showOverlay.show=false;
+			 
+		 });
 	},
 	mounted:function(){
 		overlayHeightResize();
@@ -812,6 +974,17 @@ var vm = new Vue({
 		login_click:function(){
 			this.currentOLView='login';
 			this.showOverlay.show=true;
+		},
+		userlogout:function(){
+			var self=this;
+			$.ajax({
+				type : 'POST',
+				url : "/ObjectTeller/logout" ,
+				success : function(response) {
+					 $.extend(true, self.userModel.user,{username:"",passwd:""});
+					location.reload();
+				}
+			});
 		},
 		createObj_click:function(){
 			this.showOverlay.show=true;

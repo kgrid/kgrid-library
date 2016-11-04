@@ -2,6 +2,7 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
+  color:#777;
 }
 
 .ot-1 {
@@ -31,8 +32,9 @@ body {
 	z-index:50;
 }
 #signupBtn {
-	border: 1px solid #fff;
+	border: 1px solid #e3e3e3;
     border-radius: 10px;
+    color: #e3e3e3;
 }
 
 .ot-1 .navbar-nav>li{
@@ -45,7 +47,7 @@ body {
 	height:40px;
 }
 
-.ot-1 .navbar-nav>li>a:hover {
+.ot-1 .navbar-nav>li a:hover {
     color: #fff;
     background-color: transparent;
 }
@@ -54,7 +56,7 @@ body {
 	padding: 0px 0px 0px 220px;
 }
 
-.ot-1 .navbar-nav>li>a:focus {
+.ot-1 .navbar-nav>li a:focus {
     color: #fff;
 }
 
@@ -207,6 +209,15 @@ span.ot-right{
 	background-color: #fff;	
 }
 
+.ot-small-glybtn{
+	top:0px;
+	line-height:1em;
+	font-size:small;
+	color:#39b54a;
+	background-color: #fff;	
+	font-weight:200;
+}
+
 .ot-banner {
 	background-color:transparent;
 	position:relative;
@@ -288,6 +299,7 @@ position: absolute;
 	width:1584px;
 	border:none;
 	box-shadow: none;
+	overflow:visible;
 }
 .header{
 	width:100%;
@@ -583,3 +595,126 @@ color:#666666;
     	width: 96%;
     	margin: 0 auto;
     }
+    
+    img#dropdowniconimg.up {
+   -moz-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+}
+
+img#dropdowniconimg.down {
+   -moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+}
+
+.dropdown ul{
+	background-color:#39b45a;
+}
+
+.dropdown a{
+	color: #fff;
+}
+
+
+.filterlist li{
+display:inline-block;
+background-color:#fff;
+margin:12px;
+padding:5px 12px;
+}
+
+.destroy {
+	width:25px;
+	height: 25px;
+	border-radius:100%;
+	border: 1px solid #39b45a;
+	background-color:#fff;
+	margin: 0px 5px 0px 0px;
+	color:#39b45a;
+}
+input[id$="datepicker"]{
+		width:150px;
+	}
+	
+	#filterBtn, #filterBtn a {
+		background-color:#fff;
+		text-decoration:none;
+		margin: 12px 0px 0px 0px;
+		padding: 12px;
+	}
+	
+	#filterpanel {
+		background-color:#fff;
+		margin: 0px 0px 12px 0px;
+		padding: 12px;
+			
+			
+	}
+	
+	label {
+		font-weight: 400;
+		margin:10px 0px;
+	}
+	
+	input[type=radio] {
+		display: inline-block;
+	}
+	p {
+		margin-left:20px;
+		margin-bottom:6px;
+	}
+	
+	.ot-detail-smallrow {
+		height: 40px;
+	}
+	.ot-detail-spacer {
+		height: 40px;
+	}
+	.ot-detail-titlerow {
+		height: 140px;
+	}
+	.ot-detail-daterow {
+		height: 60px;
+	}
+	.date2 {
+	padding: 0px;
+	}
+	
+	.ot-pub input[type=radio]{
+	  display: none;
+	}
+	.ot-pub {
+	width:80px;}
+	.ot-pub .active {
+	border-bottom: 2px solid #39b45a;
+	}
+	
+	.datetype {
+	 margin:0px 0px 10px 0px;
+	}
+	
+	.login-link {
+		cursor:pointer;
+	}
+	
+	.signup-link {
+		cursor: default;
+		color: #333333;
+	}
+	
+#dLabel{
+	font-size: 16px;
+    line-height: 3.4em;
+    margin: 20px 30px 0px 30px;
+}
+
+.login-link1 .dropdown{
+	height:55px;
+}
+.dropdown-menu>li> a {
+	color:#fff;
+}
+	
