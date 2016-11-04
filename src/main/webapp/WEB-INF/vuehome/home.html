@@ -34,9 +34,11 @@
 	type="text/css" />
 <link rel="stylesheet" href="css/tab.css" type="text/css" />
 <link rel="stylesheet" href="css/ot.css" type="text/css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <title>OBJECT TELLER in Vue </title>
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -76,10 +78,27 @@
 							<li><router-link to="/contactus">Contact Us</router-link></li>
 
 						</ul>
+						<div v-if="!isLoggedIn">
 						<ul class="nav navbar-nav navbar-right ot-1">
-							<li class="login-link1" v-on:click="login_click"><a>Log In</a></li>
+							<li class="login-link" v-on:click="login_click"><a>Log In</a></li>
 							<li class="signup-link"><a id="signupBtn">Sign Up</a></li>
 						</ul>
+						</div>
+						<div v-else>
+							<ul class="nav navbar-nav navbar-right ot-1">
+								<li class="login-link1">
+									<div class="dropdown">
+										<a id="dLabel" data-target="#" data-toggle="dropdown" role="button">Hello,
+											{{userModel.user.first_name}}<span><img
+											id="dropdowniconimg" class="down"
+											src="images/Chevron_Icon.png" width="12px" /></span></a> 
+										<ul class="dropdown-menu" aria-labelledby="dLabel">
+											<li><a v-on:click="userlogout">LOGOUT</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</div>
 					</div>
 					<!-- /.navbar-collapse -->
 				</div>
@@ -134,7 +153,7 @@
 					</h1>
 				</div>
 				<div slot="header">
-				<div>
+				<div v-show="isLoggedIn">
 					<button class="greenroundbutton ot-newobj"  v-on:click="addObject">
 						<img src="images/Plus_Icon.png"/>
 					</button>
@@ -142,7 +161,7 @@
 				<div class="row">
 						<div class="col-md-6 ot-search">
 							<span class="ot-glybtn glyphicon glyphicon-search"></span> <input
-								placeholder="Search" v-model="filterString" />
+								placeholder="Search" v-model="newstring"  @keyup.enter="addFilterString"/>
 						</div>
 						<div class="col-md-1"></div>
 						<div class="col-md-2 ot-count">{{countString}}</div>
@@ -164,6 +183,90 @@
 					</div>
 					</div>
 				<div slot="maincontent">
+
+		<div id="filtercontrol">
+		<div class="row">
+			<div class="col-md-2">
+				<div id="filterBtn">
+				<a href="#filterpanel" data-toggle="collapse"> Filter </a></div>
+			</div>
+			<div class="col-md-10">
+				<section class="main" v-show="filterStrings.length">
+					<ul class="filterlist">
+						<li v-for="filterstring in filterStrings" class="todo" :key="filterstring.id">
+							<div class="view">
+								<button class="destroy" @click="removeString(filterstring)">
+								<span class="ot-small-glybtn glyphicon glyphicon-remove"></span>
+								</button>
+								<label>{{ filterstring.title }}</label>
+							</div> 
+						</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+		<div id="filterpanel" class="collapse">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row"><p>Search only within the following:</p></div>
+					<div class="row">
+						<div class="col-md-5">
+							<input type="checkbox" v-model="check.keywords" /> <label
+								for="keywordcheck">Keywords</label> 
+						</div>
+						<div class="col-md-7">
+							<input type="checkbox" disabled v-model="check.citations" /> <label
+								for="keywordcheck">Citations</label> 
+						</div>
+					</div>
+					<div class="row">
+					<div class="col-md-5">
+					<input type="checkbox" v-model="check.owners" /> 
+					<label for="keywordcheck">Owners</label></div>
+					<div class="col-md-7">
+							<input type="checkbox"
+								v-model="check.contributors" /> <label for="keywordcheck">Contributors</label>
+								</div>
+					</div>				
+					<div class="row">
+					<div class="col-md-5">
+						
+					<input type="checkbox" v-model="check.title" /> <label
+								for="keywordcheck">Title</label>
+					
+					</div>
+					<div class="col-md-7">
+							<input type="checkbox" disabled v-model="showmyobj" /> <label
+								for="keywordcheck">View only My Knowledge Objects</label>
+								</div>		
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="row"><p>Select the type of date:</p></div>
+					<div class="row datetype">
+					<div class="col-md-1"></div>
+					<div class="col-md-4">
+						<label class="radio-inline"><input type="radio" value="lastModified" v-model="datetype">Last Updated</label>
+					</div>
+					<div class="col-md-2"></div>
+					<div class="col-md-4">
+						<label class="radio-inline"><input type="radio" value="createdOn" v-model="datetype">Created</label>
+					</div>
+					<div class="col-md-1"></div>
+					</div>
+					<div class="row"><p>Search within the following date range:</p></div>
+					<div class="row">
+						<div class="col-md-6">
+							<p>Start <input type="text" onchange="setstartdate()" id="startdatepicker"></p>
+						</div>
+						<div class="col-md-6">
+							<p>End <input type="text" onchange="setenddate()" id="enddatepicker"></p>
+						</div>
+					</div>
+			</div>
+		</div>
+</div>
+</div>				
 					<ul>
 						<li v-for="(object,index) in orderedList"><ko-tile :object="object"
 								:listsize="listSize" :tileindex="index" v-on:remove="orderedList.splice(index, 1)"></ko-tile></li>
@@ -173,7 +276,7 @@
 		</div>
 	</template>
 	<template id="ko-tile-template"> 
-		<router-link v-bind:to="objLink" v-on:click="selected">
+		<router-link v-bind:to="objLink" v-on:click.self.native="selected">
 			<div class="container ot-tile" v-bind:id="object.uri">
 				<div class="row ot-2">
 					<div class="col-md-1 ot-type">
@@ -183,13 +286,15 @@
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
 					<div class="col-md-1 ot-empty ">
-						<button class="edit" v-on:click.stop="deleteObject">
+						<!-- <button class="edit" v-on:click.stop="deleteObject">
 							<span class="glyphicon glyphicon glyphicon-trash"></span>
-						</button>
+						</button> -->
 					</div>
 				</div>
 				<div class="row ot-2">
-					<div class="col-md-1 ot-empty">{{tileindex}} of {{listsize}}</div>
+					<div class="col-md-1 ot-empty">
+<!-- 					{{tileindex}} of {{listsize}} -->
+					</div>
 					<div class="col-md-11 ot-owner">{{object.metadata.owner}}</div>
 				</div>
 				<div class="row ot-2">
@@ -209,11 +314,34 @@
 	<div class="content">
 		<appLayout :nothelper="true">
 		<div slot="banner">
+		<div class="row ot-detail-spacer"></div>
+		<div class="row ot-detail-smallrow">
+			<div class="col-md-3">
 			<div id="goback">
 				<div id="backButton">
 					<a href="/ObjectTeller/vuehome/home.html">BACK TO THE LIBRARY</a>
 				</div>
 			</div>
+			</div>
+			<div class="col-md-5"></div>
+			<div class="col-md-4">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+						<label class="ot-pub radio-inline"><input type="radio" value="false" v-on:click="unpublish"/>
+							<span v-if="isPublic">PRIVATE</span>
+							<span class="active middleout" v-else>PRIVATE</span>
+						</label>
+			</div>
+			<div class="col-md-4">
+						<label class="ot-pub radio-inline"><input type="radio" value="true" v-on:click="publish"/><img src="images/LittleGreenDot.png">
+							<span class="active middleout"  v-if="isPublic">PUBLIC</span>
+							<span v-else>PUBLIC</span>
+						</label>
+			</div>
+				
+			</div>
+			</div>
+					<div class="row ot-detail-titlerow">
 			<div id="ko-title">
 				<div style="width: 10px; hieght: 60px; display: inline-block;">
 					<img v-if="objModel.object.metadata.published"
@@ -224,26 +352,29 @@
 					<small id="page_title_v">{{objModel.object.metadata.title}}</small>
 				</h1>
 			</div>
-			<div class="date">
-				<div class="id">
+			</div>
+					<div class="row ot-detail-daterow">
+							<div class="col-md-3">
 					<p class="date-title">Object ID:</p>
 					<p class="date-data">
 						<span>{{objModel.object.uri}}</span>
 					</p>
 				</div>
-				<div class="date1">
+				<div class="col-md-2">
 					<p class="date-title">Last Updated:</p>
 					<p class="date-data">
 						<span v-text="formattedUpdateDate"></span>
 					</p>
 				</div>
-				<div class="date2">
+				<div class="col-md-2">
 					<p class="date-title">Created On:</p>
 					<p class="date-data">
 						<span v-text="formattedCreateDate"></span>
 					</p>
 				</div>
-			</div>
+				<div class="col-md-5">
+				</div>
+						</div>
 		</div>
 		<div slot="header">
 					<ul class="nav nav-tabs" role="tablist" id="tabs">
@@ -260,7 +391,7 @@
 						style="top: 4px; right: 40px; position: absolute;">
 						<button class="edit" id="metadataeditBtn" v-on:click="editObj">EDIT</button>
 						<button class="edit" id="deleteButton"
-							onclick="deleteObject">DELETE</button>
+							v-on:click="deleteObject">DELETE</button>
 						<a class="edit" id="downloadButton" v-bind:href="downloadLink">DOWNLOAD</a>
 			</div>
 		</div>
