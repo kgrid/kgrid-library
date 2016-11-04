@@ -207,6 +207,22 @@ public class KnowledgeObjectController {
 		return payload;
 	}
 	
+	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/payload/content", 
+			method=RequestMethod.GET )
+	public ResponseEntity<String> getPayloadContentByArkId( ArkId arkId) {
+		ResponseEntity<String> content = null;
+		try {
+			Payload payloadObj = knowledgeObjectService.getPayload(arkId);
+			if(payloadObj != null)
+				content = new ResponseEntity<String> (payloadObj.getContent(),HttpStatus.OK);
+			else
+				content = new ResponseEntity<String> (HttpStatus.NOT_FOUND);
+		} catch (ObjectTellerException e) {
+			content = new ResponseEntity<String> (HttpStatus.NOT_FOUND);
+		}
+		return content;
+	}
+	
 	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage", 
 			method=RequestMethod.GET )
