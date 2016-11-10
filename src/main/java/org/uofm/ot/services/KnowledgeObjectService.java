@@ -8,6 +8,7 @@ import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.*;
 import org.uofm.ot.model.OTUser;
 import org.uofm.ot.model.User;
+import org.uofm.ot.model.UserProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,8 +148,10 @@ public class KnowledgeObjectService {
 	}
 
 	public KnowledgeObject createFromExistingArkId(KnowledgeObject knowledgeObject,String libraryURL, ArkId existingArkId) throws ObjectTellerException {
-		// TODO: Fix this , Create dummy loggedInUser 
-		OTUser loggedInUser = null ; 
+		
+		// TODO: Check other option for Dummy User
+		UserProfile profile = new UserProfile("MANUAL", "IMPORT");
+		OTUser loggedInUser = new OTUser(null, null, null, profile); 
 		return createFedoraObjectService.createObject(knowledgeObject, loggedInUser,libraryURL ,existingArkId);
 
 	}
