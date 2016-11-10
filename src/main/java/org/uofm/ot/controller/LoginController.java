@@ -81,13 +81,13 @@ public class LoginController {
 		return "login/home";
 	}
 	
-	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+//	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public String logout( ModelMap model, HttpSession session ){
 		session.removeAttribute("DBUser");
 		return newLogin(model,session) ; 
 	}
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST , consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
+//	@RequestMapping(value="/login", method=RequestMethod.POST , consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> onlyLogin(@RequestBody String string, HttpSession httpSession) {		
 		
 		ResponseEntity<String> resultEntity = null;
@@ -115,6 +115,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value={"/home","/"})
 	public String newLogin(ModelMap model,  HttpSession httpSession ) {		
+	
 
 		if(httpSession.getAttribute("DBUser") == null){
 

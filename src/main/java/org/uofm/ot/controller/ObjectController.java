@@ -15,6 +15,7 @@ import org.uofm.ot.fedoraAccessLayer.DeleteFedoraResourceService;
 import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
+import org.uofm.ot.model.OTUser;
 import org.uofm.ot.model.User;
 import org.uofm.ot.services.KnowledgeObjectService;
 
@@ -42,12 +43,12 @@ public class ObjectController {
 
 
 	@RequestMapping(value = "/object/ark:/{naan}/{name}", method = RequestMethod.GET)
-	public String getObjectForArkId(ArkId arkId, ModelMap model, KnowledgeObject knowledgeObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
+	public String getObjectForArkId(ArkId arkId, ModelMap model, KnowledgeObject knowledgeObject,  @ModelAttribute("loggedInUser") OTUser loggedInUser) {
 		return getObject(arkId.getArkId(), model, knowledgeObject, loggedInUser);
 	}
 
 		@RequestMapping(value = "/object/{objectURI}", method = RequestMethod.GET)
-		public String getObject( @PathVariable String objectURI, ModelMap model, KnowledgeObject knowledgeObject,  @ModelAttribute("loggedInUser") User loggedInUser) {
+		public String getObject( @PathVariable String objectURI, ModelMap model, KnowledgeObject knowledgeObject,  @ModelAttribute("loggedInUser") OTUser loggedInUser) {
 		String view = "objects/ObjectView";
 		try {
 			if(validateAccessToPrivateObject(objectURI, loggedInUser)) {
@@ -67,7 +68,7 @@ public class ObjectController {
 	}
 	
 	@RequestMapping(value="/publishObject.{objectURI}/{param}", method=RequestMethod.GET)
-	public ResponseEntity<String> publishObject(ModelMap model, @PathVariable String objectURI, @PathVariable String param, KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") User loggedInUser) {
+	public ResponseEntity<String> publishObject(ModelMap model, @PathVariable String objectURI, @PathVariable String param, KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") OTUser loggedInUser) {
 		ResponseEntity<String> resultEntity = null;
 
 		if(validateUser(loggedInUser)) {
@@ -99,11 +100,11 @@ public class ObjectController {
 	}
 
 
-	private boolean validateUser(User loggedInUser) {
+	private boolean validateUser(OTUser loggedInUser) {
 		return loggedInUser != null;
 	}
 	
-	private boolean validateAccessToPrivateObject(String objectURI,User loggedInUser) throws ObjectTellerException{
+	private boolean validateAccessToPrivateObject(String objectURI,OTUser loggedInUser) throws ObjectTellerException{
 
 		KnowledgeObject object = knowledgeObjectService.getKnowledgeObject(new ArkId(objectURI));
 		
