@@ -27,10 +27,12 @@ $(document).ready(function(){
 	
 		var user = new Object();
 		user.username = document.getElementById("username").value;
-		user.passwd = document.getElementById("password").value;
+		user.password = document.getElementById("password").value;
 
 		var text = JSON.stringify(user);
 		console.log(text);
+		
+	//	text = { "username":"user","password":"user" } ;
 		
 		var validForm=login_validator.form();
 		if(validForm){
@@ -38,26 +40,27 @@ $(document).ready(function(){
 			$( "div.processing" ).fadeIn( 300 );
 			$.ajax({
 					beforeSend : function(xhrObj) {
-						xhrObj.setRequestHeader("Content-Type",
-								"application/json");
-						xhrObj.setRequestHeader("Accept", "application/json");
+						//xhrObj.setRequestHeader("Content-Type",
+							//	"application/x-www-form-urlencoded");
+						//xhrObj.setRequestHeader("Accept", "application/json");
 					},
 					type : 'POST',
 					url : "/ObjectTeller/login",
-					data : text,
-					dataType : "json",
+					data : user,
+				//	dataType : "json",
 
 					success : function(response) {
+						alert("Inside success "+ response); 
 					 if(response!='empty') {
-							  var test = JSON.stringify(response);
-						      var obj = JSON.parse(test);
+						//	  var test = JSON.stringify(response);
+						 //    var obj = JSON.parse(test);
 						      location.reload();
 					    }
 					} ,
 					
 					error : function(response) {
 						// TODO: Handle Error Message
-						
+						alert("Inside failure  "+response); 
 						$( "div.processing" ).fadeOut( 200 );
 						 $( "div.failure" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 					}

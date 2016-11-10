@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.uofm.ot.dao.SystemConfigurationDAO;
 import org.uofm.ot.model.LibrarySetting;
+import org.uofm.ot.model.OTUser;
 import org.uofm.ot.model.SETTING_TYPE;
 import org.uofm.ot.model.Server_details;
 import org.uofm.ot.model.User;
@@ -29,12 +30,12 @@ public class SystemConfController {
 
 	
 	@RequestMapping(value = "/getLibSettings", method = RequestMethod.GET,produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> getLibSettings( @ModelAttribute("loggedInUser") User loggedInUser) {
+	public ResponseEntity<String> getLibSettings( @ModelAttribute("loggedInUser") OTUser loggedInUser) {
 		ResponseEntity<String> resultEntity = null;
 
 		if(loggedInUser != null ) {
 
-			if(loggedInUser.getRole() == UserRoles.ADMIN) {
+			if(loggedInUser.getRole().equals(UserRoles.ADMIN.toString())) {
 				Server_details fedoraConf = sysConfDao.getFedoraServerConfiguration();
 				if(fedoraConf == null){
 					fedoraConf = new Server_details();

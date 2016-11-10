@@ -6,6 +6,7 @@ import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.*;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.*;
+import org.uofm.ot.model.OTUser;
 import org.uofm.ot.model.User;
 
 import java.util.ArrayList;
@@ -141,12 +142,13 @@ public class KnowledgeObjectService {
 		return getKnowledgeObject(arkId).getMetadata() ;
 	}
 	
-	public KnowledgeObject createKnowledgeObject(KnowledgeObject knowledgeObject, User loggedInUser, String libraryURL) throws ObjectTellerException {
+	public KnowledgeObject createKnowledgeObject(KnowledgeObject knowledgeObject, OTUser loggedInUser, String libraryURL) throws ObjectTellerException {
 		return createFedoraObjectService.createObject(knowledgeObject, loggedInUser, libraryURL, null);
 	}
 
 	public KnowledgeObject createFromExistingArkId(KnowledgeObject knowledgeObject,String libraryURL, ArkId existingArkId) throws ObjectTellerException {
-		User loggedInUser = new User(null, null, 0, "MANUAL", "IMPORT", null);
+		// TODO: Fix this , Create dummy loggedInUser 
+		OTUser loggedInUser = null ; 
 		return createFedoraObjectService.createObject(knowledgeObject, loggedInUser,libraryURL ,existingArkId);
 
 	}
