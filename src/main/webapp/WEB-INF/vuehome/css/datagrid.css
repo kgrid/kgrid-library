@@ -455,6 +455,7 @@ h3 {
 	vertical-align:middle;
 	color: #b3b3b3;
 	line-height: 1.8em;
+	cursor:pointer;
 }
 
 #backButton:hover{
@@ -466,6 +467,7 @@ h3 {
 
 #backButton a:hover{
 	color:#666666;
+	text-decoration:none;
 }
 
 

@@ -87,7 +87,7 @@
 						<div v-else>
 							<ul class="nav navbar-nav navbar-right ot-1">
 								<li class="login-link1">
-									<div class="dropdown">
+									<div class="dropdown" style="height:55px;">
 										<a id="dLabel" data-target="#" data-toggle="dropdown" role="button">Hello,
 											{{userModel.user.first_name}}<span><img
 											id="dropdowniconimg" class="down"
@@ -106,9 +106,7 @@
 			</nav>
 		</div>
 		<router-view></router-view>
-		<div class="layered_overlay" v-show="showOverlay.show">
-			<div v-bind:is='currentOLView'></div>
-		</div>
+			<div v-bind:is='currentOLView'  v-if="showOverlay.show"></div>
 
 	</div>
 	<template id="layout">
@@ -319,7 +317,7 @@
 			<div class="col-md-3">
 			<div id="goback">
 				<div id="backButton">
-					<a href="/ObjectTeller/vuehome/home.html">BACK TO THE LIBRARY</a>
+					<a @click="returntolibrary">BACK TO THE LIBRARY</a>
 				</div>
 			</div>
 			</div>
@@ -437,7 +435,8 @@
 	   <a v-bind:href="link">{{value}}</a> 
 	</template>
 <template id="ol-pane-template">
-<transition name="slide">
+<transition name="modal">
+	<div class="modal-mask">
 	<div class="ol_pane">
 		<div class="sidebar_close">
 			<h3>CLOSE</h3>
@@ -461,6 +460,7 @@
 					<div class="alert-box failure"><slot name="ol-failure"></slot></div>
 					<div class="alert-box warning"><slot name="ol-warning"></slot></div>
 		</div>
+	</div>
 	</div>
 	</transition>
 </template>
