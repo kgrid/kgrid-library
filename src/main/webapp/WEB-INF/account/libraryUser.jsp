@@ -282,13 +282,17 @@ function addOrUpdateUser(){
 	var userObject = new Object();
 
 	userObject.role = document.getElementById("role_data").value;
-	userObject.first_name = document.getElementById("fname_data").value;
-	userObject.last_name = document.getElementById("lname_data").value;
 	userObject.username = document.getElementById("email_data").value;
+	
+	var profile = new Object();
+	profile.first_name = document.getElementById("fname_data").value;
+	profile.last_name = document.getElementById("lname_data").value;
+	
+	userObject.profile = profile ; 
 
 	if (act == "ADD USER") {
 		if(addUserValidation()) {
-		userObject.passwd = document.getElementById("pwd_data").value;
+		userObject.password = document.getElementById("pwd_data").value;
 		var text = JSON.stringify(userObject);
 		
 		$.ajax({
@@ -297,7 +301,7 @@ function addOrUpdateUser(){
 						xhrObj.setRequestHeader("Accept","application/json");
 					},
 					type : 'POST',
-					url : "addUser",
+					url : "user",
 					data : text,
 					dataType : "json",
 
