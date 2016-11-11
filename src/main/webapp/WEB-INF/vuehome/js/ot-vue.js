@@ -3,7 +3,7 @@ var eventBus = new Vue({});
 var raw = 9;
 var objModel = { object : { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} };
 var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"ark"} };
-
+var userModel= {user:{username:"",passwd:""}};
 var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
                 {name:"payload",id:"#payload",label:"PAYLOAD"},
                 {name:"inputMessage",id:"#inputMessage", label:"INPUT"},
@@ -19,9 +19,24 @@ var applayout = Vue.component("applayout", {
 var olpane= Vue.component("olpane",{
 	template:"#ol-pane-template",
 	props:['layerid', 'left'],
+	created:function(){
+		var self=this;
+		eventBus.$on("open",function(x){
+			console.log(x);
+			$(".modal-mask").css('opacity',1);
+			$(".ol_pane").animate({
+			'left' : x
+		}, 1000);
+		});
+	},
 	methods:{
 		closeOverlay:function(){
 			eventBus.$emit('slideout',this.layerid);
+		},
+		openOverlay:function(){
+			this.find(".ol_pane").animate({
+				'left' : '30%'
+			}, 1000);
 		}
 	}
 });
@@ -354,6 +369,9 @@ const objDetail = Vue.component('ko-detail', {
 				}
 			}
 		},
+		returntolibrary: function(){
+			eventBus.$emit("return");
+		},
 	}
 });
 const Home = Vue.component("ko-main", {
@@ -382,6 +400,8 @@ const Home = Vue.component("ko-main", {
 		var self = this;
 		this.startdate = new Date("March 1, 2016").getTime();
 		this.enddate=new Date().getTime();
+		$.extend(true,this.userModel,userModel);
+		this.isLoggedIn = (this.userModel.user.username!="");
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
 			if(self.model.koList.length>0){
@@ -615,6 +635,7 @@ var objeditor=Vue.component("objeditor",{
 	},
 	created:function(){
 		var self=this;
+		$(".ol_pane").css("width","1100px");
 		eventBus.$on('slideout',function(id){
 			if(id==1) self.showSecOverlay.show=false;
 			self.resetSrcField();
@@ -904,7 +925,7 @@ var vm = new Vue({
 		koModel:objModel,
 		showOverlay:{show:false},
 		showSecOverlay:{show:false},
-		userModel:{user:{username:"",passwd:""}}
+		userModel:userModel
 	},
 	components:{
 		info:{template:"<div>Information</div>"},
@@ -966,6 +987,9 @@ var vm = new Vue({
 			 self.showOverlay.show=false;
 			 
 		 });
+		 eventBus.$on("return", function(){
+			router.push({ path: '/' }); 
+		 });
 	},
 	mounted:function(){
 		overlayHeightResize();
@@ -974,6 +998,7 @@ var vm = new Vue({
 		login_click:function(){
 			this.currentOLView='login';
 			this.showOverlay.show=true;
+			eventBus.$emit("open","500px");
 		},
 		userlogout:function(){
 			var self=this;
