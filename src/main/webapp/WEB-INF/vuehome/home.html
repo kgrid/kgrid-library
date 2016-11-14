@@ -26,8 +26,8 @@
 	type="text/css" />
 <link rel="stylesheet" href="css/l_overlay.css"
 	type="text/css" />
-<link rel="stylesheet" href="css/navigation.css"
-	type="text/css" />
+<!-- <link rel="stylesheet" href="css/navigation.css"
+	type="text/css" /> -->
 <link rel="stylesheet" href="css/librarysetting.css"
 	type="text/css" />
 <link rel="stylesheet" href="css/formstyle.css"
@@ -93,7 +93,7 @@
 											id="dropdowniconimg" class="down"
 											src="images/Chevron_Icon.png" width="12px" /></span></a> 
 										<ul class="dropdown-menu" aria-labelledby="dLabel">
-											<li><a v-on:click="userlogout">LOGOUT</a></li>
+											<li><a id="logoutBtn" v-on:click="userlogout">Logout</a></li>
 										</ul>
 									</div>
 								</li>
@@ -106,8 +106,7 @@
 			</nav>
 		</div>
 		<router-view></router-view>
-			<div v-bind:is='currentOLView'  v-if="showOverlay.show"></div>
-
+		<div v-bind:is='currentOLView'  v-if="showOverlay.show"></div>
 	</div>
 	<template id="layout">
 		<div class="ot-content">
@@ -213,18 +212,19 @@
 								for="keywordcheck">Keywords</label> 
 						</div>
 						<div class="col-md-7">
-							<input type="checkbox" disabled v-model="check.citations" /> <label
-								for="keywordcheck">Citations</label> 
+							<input type="checkbox" v-model="check.objectID" /> <label
+								for="keywordcheck">Object ID</label> 
 						</div>
+						
 					</div>
 					<div class="row">
 					<div class="col-md-5">
 					<input type="checkbox" v-model="check.owners" /> 
 					<label for="keywordcheck">Owners</label></div>
 					<div class="col-md-7">
-							<input type="checkbox"
-								v-model="check.contributors" /> <label for="keywordcheck">Contributors</label>
-								</div>
+							<input type="checkbox" v-model="check.citations" /> <label
+								for="keywordcheck">Citations</label> 
+						</div>
 					</div>				
 					<div class="row">
 					<div class="col-md-5">
@@ -234,12 +234,34 @@
 					
 					</div>
 					<div class="col-md-7">
+							<input type="checkbox"
+								v-model="check.contributors" /> <label for="keywordcheck">Contributors</label>
+								</div>
+						</div>
+											<div class="row">
+					
+					<div class="col-md-7">
 							<input type="checkbox" disabled v-model="showmyobj" /> <label
 								for="keywordcheck">View only My Knowledge Objects</label>
 								</div>		
+								<div class="col-md-5">				
+					</div>
 					</div>
 				</div>
 				<div class="col-md-6">
+					<div class="row">
+							<p>Show Knowledge Object:</p></div>
+						<div class="row">
+							
+							<div class="col-md-1"></div>
+					<div class="col-md-4"><input type="checkbox" id="pub" v-model="check.pub" /> <label
+								for="pub">Public</label> </div>
+							<div class="col-md-21"></div>
+					<div class="col-md-4">
+								<input type="checkbox" v-if="isLoggedIn"  id = "pri" v-model="check.pri" /> <label
+								v-if="isLoggedIn" for="pri">Private</label></div>
+								<div class="col-md-1"></div>
+								</div>
 					<div class="row"><p>Select the type of date:</p></div>
 					<div class="row datetype">
 					<div class="col-md-1"></div>
@@ -464,6 +486,36 @@
 	</div>
 	</transition>
 </template>
+<template id="ol-narrow-pane-template">
+<transition name="modal">
+	<div class="modal-mask">
+	<div class="ol_narrow_pane">
+		<div class="sidebar_close">
+			<h3>CLOSE</h3>
+			<button class="greenroundbutton" id="close_overlay"	v-on:click="closeOverlay">
+				<img src="images/Close_Icon.png" >
+			</button>
+		</div>
+		<div class="overlay-top">
+		</div>
+		<div class="overlay-board">
+				<div class="overlay-title">
+					<slot name="ol-title"></slot>
+				</div>
+				<div class="entryform" id="entry_form">
+					<slot name="ol-form"></slot>
+				</div>
+		</div>
+		<div class="overlay-alert">
+					<div class="alert-box processing"><slot name="ol-processing"></slot></div>
+					<div class="alert-box success"><slot name="ol-success"></slot></div>
+					<div class="alert-box failure"><slot name="ol-failure"></slot></div>
+					<div class="alert-box warning"><slot name="ol-warning"></slot></div>
+		</div>
+	</div>
+	</div>
+	</transition>
+</template>
 <template id="objcreator_overlay">
 	<olpane layerid=0>
 		<div slot="ol-title"><h3>Create New Knowledge Object</h3></div>
@@ -628,7 +680,7 @@
 	</div>
 </template>  
 <template id="login_overlay">
-	<olpane layerid=0> 
+	<olnarrowpane layerid=0> 
 		<div slot="ol-title"><h3>Log in</h3></div>
 		<div slot="ol-form">
 			<fieldset class="fieldcontainer" id="first">
@@ -636,7 +688,7 @@
 									<h4 title="username">USERNAME</h4>
 									<div class="addtext">
 										<input class="textbox login" v-model="userModel.user.username" type="text" spellcheck="false"
-											placeholder="Enter your email"
+											placeholder="Enter your email" autofocus
 											maxlength="140">
 <!-- 											<button class="edit_btn" >Need to create an account?</button>
  -->									</div>
@@ -647,7 +699,7 @@
 									<div class="addtext">
 										<input class="textbox login" v-model="userModel.user.passwd"
 											type="password" spellcheck="false"
-											placeholder="Enter your password"
+											placeholder="Enter your password"  @keyup.enter="userlogin"
 											maxlength="140">
 											<!-- <button class="edit_btn">Forgot Password?</button> -->
 									</div>

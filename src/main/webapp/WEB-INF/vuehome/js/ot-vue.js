@@ -41,6 +41,31 @@ var olpane= Vue.component("olpane",{
 	}
 });
 
+var olnarrowpane= Vue.component("olnarrowpane",{
+	template:"#ol-narrow-pane-template",
+	props:['layerid', 'left'],
+	created:function(){
+		var self=this;
+		eventBus.$on("open",function(x){
+			console.log(x);
+			$(".modal-mask").css('opacity',1);
+			$(".ol_pane").animate({
+			'left' : x
+		}, 1000);
+		});
+	},
+	methods:{
+		closeOverlay:function(){
+			eventBus.$emit('slideout',this.layerid);
+		},
+		openOverlay:function(){
+			this.find(".ol_pane").animate({
+				'left' : '30%'
+			}, 1000);
+		}
+	}
+});
+
 var login= Vue.component("loginoverlay",{
 	template:'#login_overlay',
 	data:function(){
@@ -385,7 +410,7 @@ const Home = Vue.component("ko-main", {
 			model : {
 				koList : []
 			},
-			check:{keywords:true,owners:true,title:true,citations:false,contributors:false},
+			check:{keywords:true,owners:true,title:true,citations:false,contributors:false,objectID:false, pub:true,pri:false},
  			showmyobj:false,
  			filterStrings:[],
  			newstring:'',
@@ -464,6 +489,12 @@ const Home = Vue.component("ko-main", {
 											title : ''
 										};
 										customFilter=customFilter&&(field.metadata[self.datetype]>=self.startdate && field.metadata[self.datetype]<=self.enddate );
+										if(!self.check.pub){
+											customFilter=customFilter&&(!field.metadata.published);
+										}
+										if(!self.check.pri){
+											customFilter=customFilter&&(field.metadata.published);
+										}
 										if (self.filterStrings.length <= 0) {
 											
 										} else {
@@ -473,36 +504,39 @@ const Home = Vue.component("ko-main", {
 												if (filterString.title === '') {
 													filterResult = true;
 												} else {
+													var fString = new RegExp(filterString.title,"i");
+													
 													if (self.check.title) {
-														filterResult = (filterResult || field.metadata.title
-																.includes(filterString.title));
+														filterResult = (filterResult || ((field.metadata.title
+																.search(fString))!=-1));
 													}
+													console.log(fString.toString()+" "+filterResult);
 													if (self.check.keywords) {
-														filterResult = (filterResult || field.metadata.keywords
-																.includes(filterString.title));
-													}
+														filterResult = (filterResult || ((field.metadata.keywords
+																.search(fString))!=-1));													}
 													if (self.check.owners) {
-														filterResult = (filterResult || field.metadata.owner
-																.includes(filterString.title));
+														filterResult = (filterResult || ((field.metadata.owner
+																.search(fString))!=-1));
 													}
 													if (self.check.contributors) {
-														filterResult = (filterResult || field.metadata.contributors
-																.includes(filterString.title));
+														filterResult = (filterResult || ((field.metadata.contributors
+																.search(fString))!=-1));
 													}
-													/*
-													 * if(self.check.citations){
-													 * if(field.metadata.citations!=null){
-													 * if(field.metadata.citations.length>0){
-													 * for(var i=0;i<field.metadata.citations.length;i++)
-													 * customFilter =
-													 * (customFilter ||
-													 * field.metadata.citations[i].citation_title.includes(filterString.title)); } }
-													 *  }
-													 */
+													if (self.check.objectID) {
+														filterResult = (filterResult || ((field.uri
+																.search(fString))!=-1));
+													}
+													if(self.check.citations){
+													  if(field.metadata.citations!=null){
+														  if(field.metadata.citations.length>0){
+															  for(var i=0;i<field.metadata.citations.length;i++){
+																  filterResult = (filterResult || ((field.metadata.citations[i].citation_title
+																		  .search(fString))!=-1) || ((field.metadata.citations[i].citation_at.search(fString))!=-1));
+																  } } }
+													   }
+													 
 												}
-												console.log("Filter string:"+filterString+"Result"+customFilter);
-												customFilter = customFilter	&& filterResult;
-												console.log("Filter string:"+filterString+"Result"+customFilter);
+													customFilter = customFilter	&& filterResult;
 											}
 
 										}
@@ -981,11 +1015,12 @@ var vm = new Vue({
 		eventBus.$on("addobj", function(s){
 			self.currentOLView="objcreator";
 			self.showOverlay.show=true;
+			document.body.classList.toggle('noscroll', true);
 		});
 		 eventBus.$on("userloggedin",function(obj){
 			 $.extend(true, self.userModel.user,obj);
 			 self.showOverlay.show=false;
-			 
+			 document.body.classList.toggle('noscroll', false);
 		 });
 		 eventBus.$on("return", function(){
 			router.push({ path: '/' }); 
@@ -998,6 +1033,7 @@ var vm = new Vue({
 		login_click:function(){
 			this.currentOLView='login';
 			this.showOverlay.show=true;
+			document.body.classList.toggle('noscroll', true);
 			eventBus.$emit("open","500px");
 		},
 		userlogout:function(){
