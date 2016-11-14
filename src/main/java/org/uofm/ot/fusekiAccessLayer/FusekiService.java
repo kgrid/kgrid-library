@@ -117,6 +117,7 @@ public class FusekiService {
 		while (resultSet.hasNext()) {
 			QuerySolution binding = resultSet.nextSolution();
 			KnowledgeObject knowledgeObject = mapQuerySolutionToFedoraObject(binding, false, isPublicOnly);
+			knowledgeObject.getMetadata().setCitations(getObjectCitations(knowledgeObject.getArkId()));
 			if(knowledgeObject != null) {
 				list.add(knowledgeObject);
 			}
