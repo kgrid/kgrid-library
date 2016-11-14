@@ -448,6 +448,7 @@ const Home = Vue.component("ko-main", {
 			self.isLoggedIn=true;
 			$.extend(true, self.userModel.user,obj);
 			self.isAdmin = (self.userModel.user.role=="ADMIN");
+			self.check.pri=true;
 		});
 	},
 	mounted:function(){

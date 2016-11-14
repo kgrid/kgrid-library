@@ -222,7 +222,7 @@
 					<input type="checkbox" v-model="check.owners" /> 
 					<label for="keywordcheck">Owners</label></div>
 					<div class="col-md-7">
-							<input type="checkbox" v-model="check.citations" /> <label
+							<input type="checkbox" disabled v-model="check.citations" /> <label
 								for="keywordcheck">Citations</label> 
 						</div>
 					</div>				
@@ -288,7 +288,7 @@
 </div>
 </div>				
 					<ul>
-						<li v-for="(object,index) in orderedList"><ko-tile :object="object"
+						<li v-for="(object,index) in orderedList" v-bind:key="index"><ko-tile :object="object"
 								:listsize="listSize" :tileindex="index" v-on:remove="orderedList.splice(index, 1)"></ko-tile></li>
 					</ul>
 				</div>
