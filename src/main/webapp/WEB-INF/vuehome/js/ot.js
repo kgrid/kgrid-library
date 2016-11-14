@@ -51,6 +51,7 @@ function overlayHeightResize() {
 	$('.overlay-board').css("height", boardHeight + "px");
 	$('.entryform').css("height", formHeight + "px");
 	$('ul#edittab li').css("height", liHeight + "px");
+	console.log("Heights:Pane="+ol_pane_height+" Board="+boardHeight+" Form="+formHeight+"Li="+liHeight);
 	return ol_pane_height;
 }
 
@@ -191,11 +192,13 @@ $(document).ready(function() {
 	*/
 	$("#startdatepicker").datepicker();
 	$("#enddatepicker").datepicker();
-	$("#startdatepicker").val("03/01/2016");
+	$("#startdatepicker").val("03/01/16");
 	$("#enddatepicker").val(new Date().format("shortDate"));
-	    
+	overlayHeightResize();
 	    $('[data-toggle="tooltip"]').tooltip();
-		$(window).resize(function(){setBannerbkSize()});
+		$(window).resize(function(){
+			overlayHeightResize();
+			setBannerbkSize()});
 	 	setBannerbkSize();
 	    $('.autosize').each(autoresize);
 	    $('ul#tabs li:first').addClass('active'); 

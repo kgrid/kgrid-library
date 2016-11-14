@@ -269,12 +269,6 @@ input[type=submit], input[type=button] {
 	font-weight: 500;
 }
 
-.next_btn, #addObjButton, .done_btn {
-	position: absolute;
-	right: 50px;
-	bottom: 0px;
-}
-
 .done_btn.login {
 	right:545px;
 	bottom:430px;
