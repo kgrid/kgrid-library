@@ -3,7 +3,7 @@ var eventBus = new Vue({});
 var raw = 9;
 var objModel = { object : { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} };
 var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"ark"} };
-var userModel= {user:{username:"",passwd:""}};
+var userModel= {user:{username:"",passwd:"",id:-1,first_name:"",last_name:"",role:""}};
 var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
                 {name:"payload",id:"#payload",label:"PAYLOAD"},
                 {name:"inputMessage",id:"#inputMessage", label:"INPUT"},
@@ -140,13 +140,10 @@ var vmcomp = Vue.component(
 									.format("mediumDate")
 						},
 						objLink : function() {
-							return {
-								name : 'object',
-								params : {
-									uri : this.object.uri
-								}
-							};
-						}
+							return 'home.html#object/'+encodeURIComponent(this.object.uri)
+								
+							
+						},
 					},
 					methods : {
 						deleteObject : function(event) {
@@ -172,6 +169,7 @@ var vmcomp = Vue.component(
 						selected: function(){
 							console.log(this.object.uri+"selected");
 							eventBus.$emit("objectSelected", this.object);
+							return false;
 						}
 					}
 				});
@@ -272,6 +270,10 @@ const objDetail = Vue.component('ko-detail', {
 		eventBus.$on("objSaved",function(obj){
 			console.log("obj Saved");
 			$.extend(true, objModel.object, obj);
+		});
+		eventBus.$on('objectSelected',function(obj){
+			console.log("obj Selected");
+			$.extend(true, objModel.object, obj);	
 		});
 	},
 	updated: function(){
@@ -411,14 +413,17 @@ const Home = Vue.component("ko-main", {
 		this.enddate=new Date().getTime();
 		$.extend(true,this.userModel,userModel);
 		this.isLoggedIn = (this.userModel.user.username!="");
+		this.check.pri=this.isLoggedIn;
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
 			if(self.model.koList.length>0){
-				objModel.object=self.model.koList[0];
+				$.extend(true,objModel.object,self.model.koList[0]);
 			}
 		});
 		eventBus.$on('objectSelected',function(obj){
 			objModel.object=obj;
+			console.log("Selected:"+obj.uri)
+		//	router.push({ name:'object', params: { uri:obj.uri }}); 
 		});
 		eventBus.$on("startdate",function(date){
 			console.log("StartDateCHanged"+date);
@@ -951,7 +956,7 @@ var navbar = Vue.component("navbar",{
 				type : 'POST',
 				url : "/ObjectTeller/logout" ,
 				success : function(response) {
-					 $.extend(true, self.userModel.user,{username:"",passwd:""});
+					 $.extend(true, self.userModel.user,{username:"",passwd:"",id:-1,first_name:"",last_name:"",role:""});
 					 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
 					 eventBus.$emit("logout");
 				}
