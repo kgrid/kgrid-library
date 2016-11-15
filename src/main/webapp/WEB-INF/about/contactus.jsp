@@ -69,10 +69,10 @@
 						Medical School<br> Ann Arbor, MI 48109<br>
 					</div>
 					<div class="block_info" id="contactus">
-						<span class="firstline">ObjectTeller Development Team</span><br>
+						<span class="firstline">Knowledge Grid Development Team</span><br>
 						<!--  300 North Ingalls Building<br>
 						Suite 1161-A<br> Ann Arbor, MI 48109<br> 734 936 1644<br> -->
-						objectteller@med.umich.edu
+						dlhs.knowledge.grid@umich.edu
 					</div>
 				</div>
 			</div>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="css/style.css"	type="text/css" />
+<link rel="stylesheet"	href="css/infogrid.css" type="text/css" />
+<link rel="stylesheet"	href="css/datagrid.css" type="text/css" />
+<link rel="stylesheet"	href="css/button.css" type="text/css" />
+<link rel="stylesheet"	href="css/formstyle.css"  type="text/css" />
+<link rel="stylesheet" href="css/l_overlay.css"
+	type="text/css" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="css/ot.css" type="text/css" />	
+<link rel="shortcut icon"	href="images/MiniIconObjectTeller.ico" />
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="js/info.js"></script>
+<!-- <script type="text/javascript"	src="js/dropdown.js"></script> -->
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+<script
+	src="https://unpkg.com/vue@2.0.2/dist/vue.js"></script>
+<script type="text/javascript" src="https://unpkg.com/vue-router@2.0.0"></script>
+<script type="text/javascript" src="js/lodash.js"></script>
+<!-- <script src="js/multi_step_form.js"></script> -->
+<script>
+$(document)
+.ready(
+		function() {
+			var navItemID ="#faq";
+
+			var title = [ "What is ObjectTeller?",
+					"Is ObjectTeller free?",
+					"Who built ObjectTeller?",
+					"Can I help further develop ObjectTeller?" ];
+			var info = [
+					"It's an app for managing computable health knowledge.",
+					"Yes. Download it and put it to use!",
+					"A team of dedicated professioinals  at the University of Michigan.",
+					"Yes! Join our technical community by sending us an email to objectteller@umich.edu." ];
+			var description = [ "", "", "", "", "" ];
+			var blockNumber = title.length;
+			$(window).resize(function(){setIconPos()});
+			setIconPos();
+			loadContent(blockNumber, title, description, info);
+			setActiveNavItem(navItemID);
+		});
+</script>
+<title> Knowledge Grid - FAQ </title>
+</head>
+<body>
+<div id="app">
+	<navbar></navbar>
+	<div v-bind:is='currentOLView'  v-if="showOverlay.show"></div>
+	<div class="infocontentwrapper">
+		<div class="info-content">
+			<div class="infogrid" id="about_grid">
+			</div>
+		</div>
+
+		<div id="m_logo_footer">
+		<img src="images/blue-transparentbg.png" width="60px"
+						height="auto" />
+		</div>
+	
+	</div>
+</div>
+<template id="navbar">
+		<div class="ot-nav">
+			<a class="navbar-brand ot-1 .router-link-active" href="home.html">
+				<img alt="Brand" src="images/logo.png">
+			</a>
+			<nav class="navbar navbar-default navbar-fixed-top ot-1">
+				<div class="container-fluid ot-1">
+					<div class="navbar-header ot-1">
+						<button type="button" class="navbar-toggle collapsed ot-1"
+							data-toggle="collapse"
+							data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="collapse navbar-collapse ot-1"
+						id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li><a href="about.html">About</a></li>
+							<li><a href="faq.html">FAQ</a></li>
+							<li><a href="contactus.html">Contact Us</a></li>
+
+						</ul>
+						<div v-if="!isLoggedIn">
+						<ul class="nav navbar-nav navbar-right ot-1">
+							<li class="login-link" v-on:click="login_click"><a>Log In</a></li>
+							<li class="signup-link"><a id="signupBtn">Sign Up</a></li>
+						</ul>
+						</div>
+						<div v-else>
+							<ul class="nav navbar-nav navbar-right ot-1">
+								<li class="login-link1">
+									<div class="dropdown" style="height:55px;">
+										<a id="dLabel" data-target="#" data-toggle="dropdown" role="button">Hello,
+											{{userModel.user.first_name}}<span><img
+											id="dropdowniconimg" class="down"
+											src="images/Chevron_Icon.png" width="12px" /></span></a> 
+										<ul class="dropdown-menu" aria-labelledby="dLabel">
+											<li><a id="logoutBtn" v-on:click="userlogout">Logout</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+		</div>
+		
+</template>
+<template id="ol-narrow-pane-template">
+<transition name="modal">
+	<div class="modal-mask">
+	<div class="ol_narrow_pane">
+		<div class="sidebar_close">
+			<h3>CLOSE</h3>
+			<button class="greenroundbutton" id="close_overlay"	v-on:click="closeOverlay">
+				<img src="images/Close_Icon.png" >
+			</button>
+		</div>
+		<div class="overlay-top">
+		</div>
+		<div class="overlay-board">
+				<div class="overlay-title">
+					<slot name="ol-title"></slot>
+				</div>
+				<div class="entryform" id="entry_form">
+					<slot name="ol-form"></slot>
+				</div>
+		</div>
+		<div class="overlay-alert">
+					<div class="alert-box processing"><slot name="ol-processing"></slot></div>
+					<div class="alert-box success"><slot name="ol-success"></slot></div>
+					<div class="alert-box failure"><slot name="ol-failure"></slot></div>
+					<div class="alert-box warning"><slot name="ol-warning"></slot></div>
+		</div>
+	</div>
+	</div>
+	</transition>
+</template>
+<template id="login_overlay">
+	<olnarrowpane layerid=0> 
+		<div slot="ol-title"><h3>Log in</h3></div>
+		<div slot="ol-form">
+			<fieldset class="fieldcontainer" id="first">
+								<div class="loginField">
+									<h4 title="username">USERNAME</h4>
+									<div class="addtext">
+										<input class="textbox login" v-model="userModel.user.username" type="text" spellcheck="false"
+											placeholder="Enter your email" autofocus
+											maxlength="140">
+<!-- 											<button class="edit_btn" >Need to create an account?</button>
+ -->									</div>
+									<label class="errorLabel" for="username"> </label>
+								</div>
+								<div class="loginField">
+									<h4 title="password">PASSWORD</h4>
+									<div class="addtext">
+										<input class="textbox login" v-model="userModel.user.passwd"
+											type="password" spellcheck="false"
+											placeholder="Enter your password"  @keyup.enter="userlogin"
+											maxlength="140">
+											<!-- <button class="edit_btn">Forgot Password?</button> -->
+									</div>
+									<label class="errorLabel" for="password"> </label>
+								</div>
+								<div class="loginField">
+									<button class="login" @click="userlogin">LOG IN</button>
+								</div>
+				</fieldset>
+		</div>
+		<div slot="ol-processing">Log in ...</div>
+		<div slot="ol-success">Login Successful !!!</div>
+		<div slot="ol-failure">Unable to login. Please check your username and password! </div>
+		<div slot="ol-warning">Warning !!!</div>
+	</olpane>
+</template>
+<script>
+var eventBus = new Vue();
+var userModel= {user:{username:"",passwd:""}};
+var navbar = Vue.component("navbar",{
+	template:"#navbar",
+	data:function(){
+		return {
+			userModel:userModel
+		}
+	},
+	computed:{
+		isLoggedIn:function(){
+			var loggedin =false;
+			loggedin = (this.userModel.user.username!="");
+			return loggedin;
+		}
+	},	
+	methods:{
+		login_click:function(){
+			eventBus.$emit("open","500px");
+		},
+		userlogout:function(){
+			var self=this;
+			$.ajax({
+				type : 'POST',
+				url : "/ObjectTeller/logout" ,
+				success : function(response) {
+					 $.extend(true, self.userModel.user,{username:"",passwd:""});
+					 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
+				}
+			});
+		},
+	},
+});
+
+var olnarrowpane= Vue.component("olnarrowpane",{
+	template:"#ol-narrow-pane-template",
+	props:['layerid', 'left'],
+	created:function(){
+		var self=this;
+		eventBus.$on("open",function(x){
+			console.log(x);
+			$(".modal-mask").css('opacity',1);
+			$(".ol_pane").animate({
+			'left' : x
+		}, 1000);
+		});
+	},
+	methods:{
+		closeOverlay:function(){
+			eventBus.$emit('slideout',this.layerid);
+		},
+		openOverlay:function(){
+			this.find(".ol_pane").animate({
+				'left' : '30%'
+			}, 1000);
+		}
+	}
+});
+var login= Vue.component("loginoverlay",{
+	template:'#login_overlay',
+	data:function(){
+		return {
+			userModel:{user:{username:"",passwd:""}},
+			role:"default",
+		}
+	},
+	methods:{
+		userlogin:function(){
+			var self = this;
+			var text = JSON.stringify(this.userModel.user);
+			console.log(text);
+			if(true){
+//				console.log("validation result: " +validForm);
+				$( "div.processing" ).fadeIn( 300 );
+				$.ajax({
+						beforeSend : function(xhrObj) {
+							xhrObj.setRequestHeader("Content-Type",
+									"application/json");
+							xhrObj.setRequestHeader("Accept", "application/json");
+						},
+						type : 'POST',
+						url : "/ObjectTeller/login",
+						data : text,
+						dataType : "json",
+
+						success : function(response) {
+						 if(response!='empty') {
+								  var test = JSON.stringify(response);
+							      var obj = JSON.parse(test);
+							      $( "div.processing" ).fadeOut( 200 );
+							      $("div.success").fadeIn(300).delay(500).fadeOut(400, function(){
+							    	  eventBus.$emit("userloggedin",obj);
+								});
+							     
+							      //location.reload();
+						    }
+						} ,
+						
+						error : function(response) {
+							// TODO: Handle Error Message
+							
+							$( "div.processing" ).fadeOut( 200 );
+							 $( "div.failure" ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 );
+						}
+					});
+			}else{
+				}
+			
+			}, 
+		}
+	
+	
+});
+
+var vm = new Vue({
+	el:"#app",
+	data : {
+		currentOLView:'login',
+		showOverlay:{show:false},
+		userModel:userModel
+	},
+	created: function(){
+		var self = this;
+		var sessionUser = sessionStorage.getItem("otUser");
+		if(sessionUser){
+			console.log("Current User: "+ sessionUser);
+			 $.extend(true, self.userModel.user, JSON.parse(sessionUser));
+		}
+		eventBus.$on("open", function(x){
+			self.showOverlay.show=true;
+			self.currentOLView='login';
+			document.body.classList.toggle('noscroll', true);
+		});
+		eventBus.$on('slideout', function(layerid){
+			switch(layerid){
+				case '0':
+					self.showOverlay.show=false;
+					document.body.classList.toggle('noscroll', false);
+					break;
+				case '1': 
+					self.showSecOverlay.show=false;
+					break;
+			}
+		});
+		 eventBus.$on("userloggedin",function(obj){
+			 $.extend(true, self.userModel.user,obj);
+			 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
+			 self.showOverlay.show=false;
+			 document.body.classList.toggle('noscroll', false);
+			 
+		 });
+	},
+	components:{
+		navbar:navbar,
+		login:login,
+		
+	},
+});
+
+</script>
+
+
+</body>
+
+</html>
