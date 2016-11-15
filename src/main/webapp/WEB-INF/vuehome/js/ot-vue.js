@@ -186,22 +186,6 @@ var vm_fields = Vue.component(
 						return {raw:raw}
 					},
 					computed : {
-/*						fieldmodel1: function(){
-							var propertyModel = "";
-							switch (this.field.section) {
-							case "metadata":
-								propertyModel = "editObjModel.object"+this.field.section+"."+this.field.name;
-								break;
-							case "payload":
-								propertyModel = "editObjModel.object"+this.field.section+"."+this.field.name;
-								break;
-							default:
-								propertyModel = "editObjModel.object"+this.field.section+"."+this.field.name;
-								break;
-							}
-							return propertyModel;
-							
-						},*/
 						value : function() {
 							var propertyValue = "";
 							switch (this.field.section) {
@@ -450,6 +434,11 @@ const Home = Vue.component("ko-main", {
 			self.isAdmin = (self.userModel.user.role=="ADMIN");
 			self.check.pri=true;
 		});
+		eventBus.$on("logout", function(){
+			$.extend(true, self.userModel.user, {username:"",passwd:""});
+			self.isLoggedIn=false;
+			self.isAdmin=false;
+		});	
 	},
 	mounted:function(){
 		otScroll();
@@ -917,8 +906,6 @@ var fileuploader = Vue.component("fileuploader",{
 		      if (!files.length)
 		        return;
 		      this.loadContent(files[0]);
-		      //console.log("Section:"+this.section+" Msg:"+this.message.msg);
-		      
 		      },
 	    removeOutputFile: function (e) {
 		      this.selectedfile = '';
@@ -931,20 +918,8 @@ var fileuploader = Vue.component("fileuploader",{
 });
 
 
-const About = {
-	template : '<div><applayout :nothelper="false"><div slot="banner">BANNER</div><div slot="header">HEADER</div><div slot="maincontent">About CONTENT</div></applayout><div>'
-};
-const Faq = {
-	template : '<div><applayout :nothelper="false"><div slot="banner">FAQ BANNER</div><div slot="header">FAQ HEADER</div><div slot="maincontent">FAQ CONTENT</div></applayout><div>'
-};
-const Contactus = {
-	template : '<div><applayout :nothelper="false"><div slot="banner">Contactu Banner</div><div slot="header">Contact HEADER</div><div slot="maincontent">Contact Us CONTENT</div></applayout><div>'
-};
 const routes = [ 
     { path : '/', component : Home	}, 
-    { path : '/about',	component : About }, 
-    { path : '/faq',	component : Faq	}, 
-    { path : '/contactus',	component : Contactus}, 
     { path : '/object/:uri', name : 'object', component : objDetail	} 
     ];
 const router = new VueRouter({
@@ -952,7 +927,38 @@ const router = new VueRouter({
 	hashbang : false,
 	history : true
 });
-
+var navbar = Vue.component("navbar",{
+	template:"#navbar",
+	data:function(){
+		return {
+			userModel:userModel
+		}
+	},
+	computed:{
+		isLoggedIn:function(){
+			var loggedin =false;
+			loggedin = (this.userModel.user.username!="");
+			return loggedin;
+		}
+	},	
+	methods:{
+		login_click:function(){
+			eventBus.$emit("open","500px");
+		},
+		userlogout:function(){
+			var self=this;
+			$.ajax({
+				type : 'POST',
+				url : "/ObjectTeller/logout" ,
+				success : function(response) {
+					 $.extend(true, self.userModel.user,{username:"",passwd:""});
+					 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
+					 eventBus.$emit("logout");
+				}
+			});
+		},
+	},
+});
 var vm = new Vue({
 	router : router,
 	data : {
@@ -978,6 +984,11 @@ var vm = new Vue({
 	},
 	created: function(){
 		var self=this;
+		var sessionUser = sessionStorage.getItem("otUser");
+		if(sessionUser){
+			console.log("Current User: "+ sessionUser);
+			 $.extend(true, self.userModel.user, JSON.parse(sessionUser));
+		}
 		eventBus.$on('editObj', function(obj){
 			self.currentOLView='objeditor';
 			self.showOverlay.show=true;
@@ -1020,34 +1031,24 @@ var vm = new Vue({
 		});
 		 eventBus.$on("userloggedin",function(obj){
 			 $.extend(true, self.userModel.user,obj);
+			 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
 			 self.showOverlay.show=false;
 			 document.body.classList.toggle('noscroll', false);
+			 
 		 });
 		 eventBus.$on("return", function(){
 			router.push({ path: '/' }); 
 		 });
+			eventBus.$on("open", function(x){
+				self.showOverlay.show=true;
+				self.currentOLView='login';
+				document.body.classList.toggle('noscroll', true);
+			});
 	},
 	mounted:function(){
 		overlayHeightResize();
 	},
 	methods:{
-		login_click:function(){
-			this.currentOLView='login';
-			this.showOverlay.show=true;
-			document.body.classList.toggle('noscroll', true);
-			eventBus.$emit("open","500px");
-		},
-		userlogout:function(){
-			var self=this;
-			$.ajax({
-				type : 'POST',
-				url : "/ObjectTeller/logout" ,
-				success : function(response) {
-					 $.extend(true, self.userModel.user,{username:"",passwd:""});
-					location.reload();
-				}
-			});
-		},
 		createObj_click:function(){
 			this.showOverlay.show=true;
 			objURI="";
