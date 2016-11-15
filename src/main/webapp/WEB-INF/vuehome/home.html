@@ -247,7 +247,7 @@
 		</div>
 	</template>
 	<template id="ko-tile-template"> 
-		<router-link v-bind:to="objLink" v-on:click.self.native="selected">
+		<a :href="objLink" v-on:click="return selected();">
 			<div class="container ot-tile" v-bind:id="object.uri">
 				<div class="row ot-2">
 					<div class="col-md-1 ot-type">
@@ -279,7 +279,7 @@
 					</div>
 				</div>
 			</div>
-		</router-link> 
+		</a> 
 	</template>
 	<template id="obj-detail">
 	<div class="content">
@@ -359,7 +359,7 @@
 						</a></li>
 					</ul>
 					<div class="inline editwrapper accessLevelOne" id="objBtns"
-						style="top: 4px; right: 40px; position: absolute;">
+						style="top: 10px; right: 10px; position: absolute;">
 						<button class="edit" id="metadataeditBtn" v-on:click="editObj">EDIT</button>
 						<button class="edit" id="deleteButton"
 							v-on:click="deleteObject">DELETE</button>
