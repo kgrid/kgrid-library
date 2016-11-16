@@ -606,10 +606,8 @@
 		<div slot="ol-failure">Update Failure! </div>
 		<div slot="ol-warning">Warning !!!</div>
 	</olpane>
-	<div class="layered_overlay secondary" v-if="showSecOverlay.show">
-		<transition name="slide">
+	<div v-if="showSecOverlay.show">
 			<linkedfieldeditor v-bind:inedit="inEdit" v-bind:srcfield="srcFieldModel.object" v-on:slideout="update"></linkedfieldeditor>
-		</transition>
 	</div>
  </div>
 </template>
