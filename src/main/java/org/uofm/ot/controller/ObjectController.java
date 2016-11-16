@@ -16,7 +16,6 @@ import org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.model.OTUser;
-import org.uofm.ot.model.User;
 import org.uofm.ot.services.KnowledgeObjectService;
 
 @Controller

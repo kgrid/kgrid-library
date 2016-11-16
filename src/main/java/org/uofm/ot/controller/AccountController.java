@@ -28,10 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.uofm.ot.AppSecurityConfig;
 import org.uofm.ot.CustomizedUserManager;
-import org.uofm.ot.dao.UserDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.model.OTUser;
-import org.uofm.ot.model.User;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.gson.Gson;

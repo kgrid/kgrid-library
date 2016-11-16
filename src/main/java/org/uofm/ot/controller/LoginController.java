@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.uofm.ot.dao.SystemConfigurationDAO;
-import org.uofm.ot.dao.UserDAO;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.model.Server_details;
-import org.uofm.ot.model.User;
 import org.uofm.ot.services.KnowledgeObjectService;
 
 import javax.servlet.http.HttpSession;

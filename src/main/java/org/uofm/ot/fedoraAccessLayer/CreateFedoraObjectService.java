@@ -8,7 +8,6 @@ import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.OTUser;
-import org.uofm.ot.model.User;
 import org.uofm.ot.services.IdService;
 import org.uofm.ot.knowledgeObject.ArkId;
 

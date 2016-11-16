@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
-import org.uofm.ot.model.User;
 import org.uofm.ot.model.UserRoles;
 
 import static org.junit.Assert.assertEquals;
