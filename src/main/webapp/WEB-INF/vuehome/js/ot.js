@@ -100,11 +100,11 @@ function login() {
 	}
 
 function autoresize() {
-	var eid= $(this).attr("value");
+	var eid= $(this).text();
 	var sh = $(this)[0].scrollHeight;
 	$(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
 	$(this).css('height',sh+ 'px');    //Set new height
-//	console.log(eid+" "+sh);
+	console.log(this+ "Text:["+ eid+"] "+sh);
 }
 
 function backToTop() {
@@ -195,12 +195,26 @@ $(document).ready(function() {
 	$("#startdatepicker").val("03/01/16");
 	$("#enddatepicker").val(new Date().format("shortDate"));
 	overlayHeightResize();
-	    $('[data-toggle="tooltip"]').tooltip();
-		$(window).resize(function(){
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		  var target = $(e.target).attr("href") // activated tab
+		  $(".autosize").each(autoresize);
+	});	
+	$('[data-toggle="tooltip"]').tooltip();
+	$('#userDropdown').on('show.bs.dropdown', function(e){
+		  var target = $(e.target).attr("id"); // activated tab
+		  $("img#dropdowniconimg").removeClass('down');
+		  $("img#dropdowniconimg").addClass('up');	
+	});
+	$('#userDropdown').on('hide.bs.dropdown', function(e){
+		  var target = $(e.target).attr("id"); // activated tab
+		  $("img#dropdowniconimg").removeClass('up');
+		  $("img#dropdowniconimg").addClass('down');		  
+	});
+	$(window).resize(function(){
 			overlayHeightResize();
 			setBannerbkSize()});
 	 	setBannerbkSize();
-	    $('.autosize').each(autoresize);
+/*	    $('.autosize').each(autoresize);*/
 	    $('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active'); 
 
@@ -222,7 +236,7 @@ $(document).ready(function() {
 				$("ul#edittab"+tabClass+"  li.active").removeClass("active");
 				$("ul#edittab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
 			}
-			$('.autosize').each(autoresize);
+/*			$('.autosize').each(autoresize);*/
 		});
 	    
 })

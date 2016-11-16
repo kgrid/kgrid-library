@@ -169,6 +169,7 @@ var vmcomp = Vue.component(
 						selected: function(){
 							console.log(this.object.uri+"selected");
 							eventBus.$emit("objectSelected", this.object);
+							sessionStorage.setItem("otObj", JSON.stringify(this.object));
 							return false;
 						}
 					}
@@ -240,10 +241,10 @@ const tabPane = Vue.component('tab-pane', {
 		});
 	},
 	updated : function() {
-		$('.autosize').each(autoresize);
-	},
+/*		$('.autosize').each(autoresize);
+*/	},
 	created : function() {
-		$('.autosize').each(autoresize);
+/*		$('.autosize').each(autoresize);*/
 	},
 	computed : {
 		filteredFields :function(){
@@ -268,17 +269,15 @@ const objDetail = Vue.component('ko-detail', {
 	created : function() {
 		var self = this;
 		eventBus.$on("objSaved",function(obj){
-			console.log("obj Saved");
 			$.extend(true, objModel.object, obj);
 		});
 		eventBus.$on('objectSelected',function(obj){
-			console.log("obj Selected");
 			$.extend(true, objModel.object, obj);	
 		});
-	},
-	updated: function(){
-		var textareas =  $('.autosize');
-		textareas.each(autoresize());
+		var sessionObj = sessionStorage.getItem("otObj");
+		if(sessionObj){
+			 $.extend(true, self.objModel.object, JSON.parse(sessionObj));
+		}
 	},
 	mounted:function() {
 		var self = this;
@@ -286,6 +285,7 @@ const objDetail = Vue.component('ko-detail', {
 				response) {
 			self.objModel.object = response;
 			self.isPublic = self.objModel.object.metadata.published;
+			
 		}); 
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active');
@@ -293,7 +293,6 @@ const objDetail = Vue.component('ko-detail', {
 	    $("html, body").animate({
 	        scrollTop: 0
 	    }, 200);
-	   
 	},
 	computed : {
 		formattedUpdateDate : function() {
@@ -316,7 +315,7 @@ const objDetail = Vue.component('ko-detail', {
 	updated : function() {
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active'); 
-		$('.autosize').each(autoresize);
+//		$('.autosize').each(autoresize);
 	},
 	methods:{
 		editObj:function(){
@@ -681,7 +680,7 @@ var objeditor=Vue.component("objeditor",{
 	updated : function() {
 		$('ul#etabs li:first').addClass('active'); 
 	    $('ul#etab li:first').addClass('active'); 
-		$('.autosize').each(autoresize);
+/*		$('.autosize').each(autoresize);*/
 	},
 	component:{
 		  fileuploader:fileuploader
@@ -925,7 +924,9 @@ var fileuploader = Vue.component("fileuploader",{
 
 const routes = [ 
     { path : '/', component : Home	}, 
-    { path : '/object/:uri', name : 'object', component : objDetail	} 
+    { path : '/object/:uri', name : 'object', component : objDetail, data: function(){
+    	console.log("current URI"+ this.$route.params.uri);
+    }	} 
     ];
 const router = new VueRouter({
 	routes : routes,
@@ -938,6 +939,9 @@ var navbar = Vue.component("navbar",{
 		return {
 			userModel:userModel
 		}
+	},
+	created:function(){
+
 	},
 	computed:{
 		isLoggedIn:function(){
@@ -974,11 +978,9 @@ var vm = new Vue({
 		userModel:userModel
 	},
 	components:{
-		info:{template:"<div>Information</div>"},
 		login : login,
 		objeditor : objeditor,
 		objcreator :objcreator
-
 	},
 	computed:{
 		isLoggedIn:function(){
@@ -986,6 +988,9 @@ var vm = new Vue({
 			loggedin = (this.userModel.user.username!="");
 			return loggedin;
 		}
+	},
+	updated:function(){
+//		$('.autosize').each(autoresize);
 	},
 	created: function(){
 		var self=this;
@@ -1024,11 +1029,6 @@ var vm = new Vue({
 			}
 
 		});
-		eventBus.$on("deleteObj", function(s){
-			self.currentOLView="objcreator";
-			self.showOverlay.show=true;
-		});
-		
 		eventBus.$on("addobj", function(s){
 			self.currentOLView="objcreator";
 			self.showOverlay.show=true;
