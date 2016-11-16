@@ -89,4 +89,8 @@ public class OTUser extends User {
 		}
 		return success;
 	}
+	
+	public int getId() {
+		return profile.getId();
+	}
 }

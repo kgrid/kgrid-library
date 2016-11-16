@@ -130,7 +130,7 @@
 			var selectedUser = getUserIndexForId(id);
 			$.ajax({
 				type : 'DELETE',
-				url : "deleteUser/" + users[selectedUser].id,
+				url : "user/" + users[selectedUser].id,
 
 				success : function(response) {
 					removeUsercard(divID);
@@ -345,7 +345,9 @@ function addOrUpdateUser(){
 	}
 	if (act == "UPDATE") {
 		if(updateUserValidation()) {
-		userObject.id = users[selectedCard].id;
+		var id = users[selectedCard].id ; 
+		userObject.password = users[selectedCard].password ; 
+		userObject.profile.id = users[selectedCard].id;
 		var text = JSON.stringify(userObject);
 
 		$
@@ -361,8 +363,8 @@ function addOrUpdateUser(){
 										"Accept",
 										"application/json");
 					},
-					type : 'POST',
-					url : "saveUser",
+					type : 'PUT',
+					url : "user/"+id,
 					data : text,
 					dataType : "json",
 
