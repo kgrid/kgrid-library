@@ -1,6 +1,5 @@
 package org.uofm.ot.services;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -12,9 +11,6 @@ import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.uofm.ot.knowledgeObject.ArkId;
-import org.uofm.ot.model.User;
-
-
 
 /**
  * Created by pboisver on 9/15/16.

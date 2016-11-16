@@ -14,7 +14,6 @@ import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.OTUser;
-import org.uofm.ot.model.User;
 import org.uofm.ot.services.KnowledgeObjectService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -370,8 +369,8 @@ public class KnowledgeObjectController {
 
 	@PutMapping("/knowledgeObject/ark:/{naan}/{name}/{published:published|unpublished}")
 	@ResponseStatus(HttpStatus.OK)
-	public String publish(ModelMap map, @ModelAttribute User loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException {
-		loggedInUser = (User) map.get("loggedInUser");
+	public String publish(ModelMap map, @ModelAttribute OTUser loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException {
+		loggedInUser = (OTUser) map.get("loggedInUser");
 		
 		knowledgeObjectService.publishKnowledgeObject(arkId, "published".equals(published), loggedInUser);
 

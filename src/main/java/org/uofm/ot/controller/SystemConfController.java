@@ -10,7 +10,6 @@ import org.uofm.ot.model.LibrarySetting;
 import org.uofm.ot.model.OTUser;
 import org.uofm.ot.model.SETTING_TYPE;
 import org.uofm.ot.model.Server_details;
-import org.uofm.ot.model.User;
 import org.uofm.ot.model.UserRoles;
 
 import com.google.gson.Gson;
@@ -80,7 +79,7 @@ public class SystemConfController {
 	}
 	
 	@RequestMapping(value = "/saveLibSettings", method = RequestMethod.POST,consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> saveLibSettings(@RequestBody String content, @ModelAttribute("loggedInUser") User loggedInUser) {
+	public ResponseEntity<String> saveLibSettings(@RequestBody String content, @ModelAttribute("loggedInUser") OTUser loggedInUser) {
 		ResponseEntity<String> resultEntity = null ;
 		if(loggedInUser != null) {
 			if(loggedInUser.isAdmin() ) {

@@ -7,7 +7,6 @@ import org.uofm.ot.fedoraAccessLayer.*;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.*;
 import org.uofm.ot.model.OTUser;
-import org.uofm.ot.model.User;
 import org.uofm.ot.model.UserProfile;
 
 import java.util.ArrayList;
@@ -208,7 +207,7 @@ public class KnowledgeObjectService {
 		return getFedoraObjectService.checkIfObjectExists(arkId.getFedoraPath());
 	}
 
-	public void publishKnowledgeObject(ArkId arkId, boolean isToBePublished, User loggedInUser) throws ObjectTellerException {
+	public void publishKnowledgeObject(ArkId arkId, boolean isToBePublished, OTUser loggedInUser) throws ObjectTellerException {
 
 		KnowledgeObject ko = getKnowledgeObject(arkId);
 
