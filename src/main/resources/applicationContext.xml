@@ -32,9 +32,9 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="userDao" class="org.uofm.ot.dao.impl.UserDAOImpl">
+    <!-- <bean id="userDao" class="org.uofm.ot.dao.impl.UserDAOImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
+    </bean> -->
 
     <bean id="sysConfDao" class="org.uofm.ot.dao.impl.SystemConfigurationDAOImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
@@ -66,12 +66,10 @@
 
     <bean id="loginController" class="org.uofm.ot.controller.LoginController">
         <property name="sysConfDao" ref="sysConfDao"/>
-        <property name="userDao" ref="userDao"/>
         <property name="fusekiService" ref="fusekiService"/>
     </bean>
 
     <bean id="accountController" class="org.uofm.ot.controller.AccountController">
-        <property name="userDao" ref="userDao"/>
     </bean>
 
     <bean id="objectController" class="org.uofm.ot.controller.ObjectController">

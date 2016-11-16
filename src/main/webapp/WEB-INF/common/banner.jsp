@@ -50,7 +50,6 @@ $(document).ready(function(){
 				//	dataType : "json",
 
 					success : function(response) {
-						alert("Inside success "+ response); 
 					 if(response!='empty') {
 						//	  var test = JSON.stringify(response);
 						 //    var obj = JSON.parse(test);
@@ -59,8 +58,7 @@ $(document).ready(function(){
 					} ,
 					
 					error : function(response) {
-						// TODO: Handle Error Message
-						alert("Inside failure  "+response); 
+						// TODO: Handle Error Message 
 						$( "div.processing" ).fadeOut( 200 );
 						 $( "div.failure" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 					}

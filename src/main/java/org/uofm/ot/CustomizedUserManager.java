@@ -30,6 +30,8 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 	
 	private static final String GET_ALL_USERS = "select * from users"; 
 	
+	private static final String GET_USERNAME_BY_ID = "select users.username from users, user_profiles where users.username = user_profiles.username and user_profiles.id = ? ;" ; 
+	
 	
 	@Override
 	public OTUser loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -103,4 +105,9 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 	public void updateUserName(String oldUserName, String newUserName) {
 		getJdbcTemplate().update(UPDATE_USER_NAME,new Object[]{newUserName,oldUserName});
 	}
+	
+	public String getUsernameById(int id) {
+		return getJdbcTemplate().queryForObject(GET_USERNAME_BY_ID,new Object[]{id} ,String.class); 
+	}
 }
+

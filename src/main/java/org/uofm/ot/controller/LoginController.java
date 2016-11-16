@@ -32,7 +32,7 @@ public class LoginController {
 
 	private static final Logger logger = Logger.getLogger(LoginController.class);
 	
-	private UserDAO userDao;
+	
 	
 	private FusekiService fusekiService;
 	
@@ -44,10 +44,12 @@ public class LoginController {
 	public void setSysConfDao(SystemConfigurationDAO sysConfDao) {
 		this.sysConfDao = sysConfDao;
 	}
-		
+	
+	/*private UserDAO userDao;
+	
 	public void setUserDao(UserDAO userDao) {
 		this.userDao = userDao;
-	}
+	}*/
 
 	public void setFusekiService(FusekiService fusekiService) {
 		this.fusekiService = fusekiService;
@@ -81,7 +83,7 @@ public class LoginController {
 		return "login/home";
 	}
 	
-//	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+/*//	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public String logout( ModelMap model, HttpSession session ){
 		session.removeAttribute("DBUser");
 		return newLogin(model,session) ; 
@@ -106,7 +108,7 @@ public class LoginController {
 		}
 		
 		return resultEntity ; 
-	}
+	}*/
 	
 	/**
 	 * @param model

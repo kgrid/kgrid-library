@@ -17,10 +17,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,14 +42,6 @@ import com.google.gson.Gson;
 @Controller
 public class AccountController {
 
-	private UserDAO userDao;
-	
-	public void setUserDao(UserDAO userDao) {
-		this.userDao = userDao;
-	}
-	
-
-
 	@Autowired
 	private CustomizedUserManager userDetailService;
 	
@@ -55,47 +49,15 @@ public class AccountController {
 	private static final Logger logger = Logger.getLogger(AccountController.class);
 	
 	
-	@RequestMapping(value = "/saveUser", method = RequestMethod.POST,consumes ={MediaType.APPLICATION_JSON_VALUE}, produces= {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> saveUser( @RequestBody String string ,  @ModelAttribute("loggedInUser") OTUser loggedInUser , HttpSession httpSession) {	
-		
-		ResponseEntity<String> resultEntity = checkAccessRights(loggedInUser); 
-
-		if(resultEntity == null) {
-		
-				Gson gson = new Gson();
-				User user = gson.fromJson(string, User.class);
-
-				User updatedUser = userDao.updateUser(user);
-
-				if(updatedUser != null ) {				
-					String result = gson.toJson(updatedUser);
-					if(loggedInUser.getProfile().getId() == user.getId()) {
-						httpSession.removeAttribute("DBUser");
-						httpSession.setAttribute("DBUser", updatedUser);
-					}
-					resultEntity =  new ResponseEntity<String>( result , HttpStatus.OK) ;
-				} else {
-					resultEntity = new ResponseEntity<String>("Unable to update user with ID "+user.getId() , HttpStatus.INTERNAL_SERVER_ERROR) ;
-				} 
-		}
-
-		return resultEntity ; 
-	}
-	
-	
-	@RequestMapping(value = "/deleteUser/{userID}", method = RequestMethod.DELETE )
+	@DeleteMapping(value = "/user/{userID}")
 	public  ResponseEntity<String>  deleteUser( @PathVariable int userID,  @ModelAttribute("loggedInUser") OTUser loggedInUser) {
 		ResponseEntity<String> resultEntity = checkAccessRights(loggedInUser); 
 
 		if(resultEntity == null) { 
 			if(userID != loggedInUser.getProfile().getId()){
-				try {
-					userDao.deleteUser(userID);
-					resultEntity = new ResponseEntity<String>( HttpStatus.OK) ;
-				} catch(ObjectTellerException ex){
-					logger.error(ex.getMessage());
-					resultEntity = new ResponseEntity<String>(  ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR) ;
-				}
+				String username = userDetailService.getUsernameById(userID);
+				userDetailService.deleteUser(username);
+				resultEntity = new ResponseEntity<String>( HttpStatus.OK) ;
 			} else {
 				resultEntity = new ResponseEntity<String>("Please ask system administrator to delete your account. You can not delete it yourself. ", HttpStatus.FORBIDDEN) ;
 			}
@@ -173,4 +135,41 @@ public class AccountController {
 		return otUser;
 	}
 		
+	// TODO: hasRole or hasAuthority 
+	@PutMapping(value = "/user/{id}", 
+				consumes ={MediaType.APPLICATION_JSON_VALUE}, 
+				produces= {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<OTUser> updateUser(@RequestBody OTUserDTO dto , @PathVariable int id, @ModelAttribute("loggedInUser") OTUser loggedInUser, HttpSession httpSession) {	
+
+		ResponseEntity<OTUser> resultEntity = null;
+		
+
+		try { 
+
+			OTUser otUser = convertOTUserDTOToOTUser(dto); 
+
+			String username = userDetailService.getUsernameById(id);
+			if(username != null ) { 
+				if(! username.equals(dto.getUsername())) {
+					userDetailService.updateUserName(username, dto.getUsername());
+				}
+				userDetailService.updateUser(otUser);
+				OTUser result = userDetailService.loadUserByUsername(otUser.getUsername());
+				if(loggedInUser.getProfile().getId() == otUser.getId()) {
+					httpSession.removeAttribute("DBUser");
+					httpSession.setAttribute("DBUser", result);
+				}
+				resultEntity = new ResponseEntity<OTUser>( result , HttpStatus.OK) ;
+			}  else {
+				logger.error("User with id "+id+" does not exist. ");
+				resultEntity = new ResponseEntity<OTUser>(  HttpStatus.NOT_FOUND) ;
+			}
+
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+			resultEntity = new ResponseEntity<OTUser>(  HttpStatus.INTERNAL_SERVER_ERROR) ;
+		}
+
+		return resultEntity ; 
+	}
 }
