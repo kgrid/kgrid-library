@@ -50,7 +50,7 @@ function overlayHeightResize() {
 	$('.ol_pane').css("height", ol_pane_height + "px");
 	$('.overlay-board').css("height", boardHeight + "px");
 	$('.entryform').css("height", formHeight + "px");
-	$('ul#edittab li').css("height", liHeight + "px");
+	$('ul#edittab>li').css("height", liHeight + "px");
 	console.log("Heights:Pane="+ol_pane_height+" Board="+boardHeight+" Form="+formHeight+"Li="+liHeight);
 	return ol_pane_height;
 }

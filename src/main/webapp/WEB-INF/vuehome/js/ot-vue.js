@@ -352,7 +352,7 @@ const objDetail = Vue.component('ko-detail', {
 				url : "/ObjectTeller/knowledgeObject/" + uri + "/" + published,
 				success : function(response) {
 					self.isPublic=pub;
-					objModel.object.metadata.published=true;
+					objModel.object.metadata.published=pub;
 				},
 				error : function(response, tStatus, xhr) {
 					console.log(response);
@@ -816,7 +816,7 @@ var objeditor=Vue.component("objeditor",{
 			case "Citation":
 				if(editObjModel.object.metadata.citations.length==0){
 //					editObjModel.object.metadata.citations=[];
-					editObjModel.object.metadata.citations.push({citation_title:obj.title,citation_at:obj.lnk});
+					editObjModel.object.metadata.citations.push({citation_title:obj.title,citation_at:obj.link});
 				}else{			
 					editObjModel.object.metadata.citations[this.citationIndex].citation_title=obj.title;
 					editObjModel.object.metadata.citations[this.citationIndex].citation_at=obj.link;
