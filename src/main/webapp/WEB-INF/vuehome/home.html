@@ -348,7 +348,7 @@
 						</div>
 		</div>
 		<div slot="header">
-					<ul class="nav nav-tabs" role="tablist" id="tabs">
+					<ul class="nav nav-tabs view" role="tablist" id="tabs">
 						<li v-for="section in sections" class='labels' role='presentation'><a :href="section.id" :aria-controls="section.name" role='tab' data-toggle="tab">{{section.label}}</a></li>
 						<li role="presentation" class="labels accessLevelOne"><a
 							href="#" aria-controls="logdata" role="tab" data-toggle="tab">
@@ -367,7 +367,7 @@
 			</div>
 		</div>
 			<div slot="maincontent">
-					<ul class="tab-content" id="tab">
+					<ul class="tab-content view" id="tab">
 						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
 							class="tab-pane">
 								<tab-pane v-bind:section="section.name" v-bind:object="objModel.object" ></tab-pane>

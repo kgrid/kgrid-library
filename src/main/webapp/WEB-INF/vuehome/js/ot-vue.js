@@ -101,16 +101,12 @@ var login= Vue.component("loginoverlay",{
 							      $("div.success").fadeIn(300).delay(500).fadeOut(400, function(){
 							    	  eventBus.$emit("userloggedin",obj);
 								});
-							     
-							      //location.reload();
 						    }
 						} ,
 						
 						error : function(response) {
-							// TODO: Handle Error Message
-							
 							$( "div.processing" ).fadeOut( 200 );
-							 $( "div.failure" ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 );
+							$( "div.failure" ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 );
 						}
 					});
 			}else{
@@ -241,10 +237,10 @@ const tabPane = Vue.component('tab-pane', {
 		});
 	},
 	updated : function() {
-/*		$('.autosize').each(autoresize);
-*/	},
+
+	},
 	created : function() {
-/*		$('.autosize').each(autoresize);*/
+
 	},
 	computed : {
 		filteredFields :function(){
@@ -278,6 +274,7 @@ const objDetail = Vue.component('ko-detail', {
 		if(sessionObj){
 			 $.extend(true, self.objModel.object, JSON.parse(sessionObj));
 		}
+
 	},
 	mounted:function() {
 		var self = this;
@@ -285,14 +282,23 @@ const objDetail = Vue.component('ko-detail', {
 				response) {
 			self.objModel.object = response;
 			self.isPublic = self.objModel.object.metadata.published;
-			
+
 		}); 
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active');
+	    $('ul#tabs li.active').addClass('middleout');
+	   // tabNav("");
 	    otScroll();
 	    $("html, body").animate({
 	        scrollTop: 0
 	    }, 200);
+	    
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			  var target = $(e.target).attr("href") // activated tab
+			  $('ul#tabs li.middleout').removeClass('middleout');
+			  $('ul#tabs li.active').addClass('middleout');
+			  $(".autosize").each(autoresize);
+		});	
 	},
 	computed : {
 		formattedUpdateDate : function() {
@@ -315,7 +321,7 @@ const objDetail = Vue.component('ko-detail', {
 	updated : function() {
 		$('ul#tabs li:first').addClass('active'); 
 	    $('ul#tab li:first').addClass('active'); 
-//		$('.autosize').each(autoresize);
+		$(".autosize").each(autoresize);
 	},
 	methods:{
 		editObj:function(){
@@ -675,12 +681,14 @@ var objeditor=Vue.component("objeditor",{
 
 	},
 	mounted:function(){
+		$('ul#edittabs li:first').addClass('active'); 
+	    $('ul#edittab li:first').addClass('active'); 
+		$("ul#edittabs li.active").addClass("middleout");
 		editTabNav();
 	},
 	updated : function() {
-		$('ul#etabs li:first').addClass('active'); 
-	    $('ul#etab li:first').addClass('active'); 
-/*		$('.autosize').each(autoresize);*/
+
+
 	},
 	component:{
 		  fileuploader:fileuploader
@@ -728,7 +736,7 @@ var objeditor=Vue.component("objeditor",{
 					});
 					$("div.processing").fadeOut(200);
 					$("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
-							//overlaySlide("addObject", false, "edit");
+							
 						});
 					
 				},
@@ -782,12 +790,11 @@ var objeditor=Vue.component("objeditor",{
 				editObjModel.object.metadata.citations=[];
 			}
 			this.citationIndex=editObjModel.object.metadata.citations.length;
-//			editObjModel.object.metadata.citations.push({citation_title:"",citation_at:""});
+			editObjModel.object.metadata.citations.push({citation_title:"",citation_at:""});
 			this.srcFieldModel.object={title:"",link:""};
 			this.showSecOverlay.show=true;
 			this.inEdit="Citation";
-			
-//			console.log("selected index:"+this.citationIndex);
+
 		},
 		selectCitation:function(obj){
 			var srcObj = {title:"",link:""};
@@ -940,16 +947,23 @@ var navbar = Vue.component("navbar",{
 			userModel:userModel
 		}
 	},
-	created:function(){
-
+	updated:function(){
+		$('#userDropdown').on('show.bs.dropdown', function(e){
+			  var target = $(e.target).attr("id"); // activated tab
+			  $("img#dropdowniconimg").removeClass('down');
+			  $("img#dropdowniconimg").addClass('up');	
+		});
+		$('#userDropdown').on('hide.bs.dropdown', function(e){
+			  var target = $(e.target).attr("id"); // activated tab
+			  $("img#dropdowniconimg").removeClass('up');
+			  $("img#dropdowniconimg").addClass('down');		  
+		});
 	},
 	computed:{
 		isLoggedIn:function(){
-			var loggedin =false;
-			loggedin = (this.userModel.user.username!="");
-			return loggedin;
+			return (this.userModel.user.username!="")
 		}
-	},	
+	},
 	methods:{
 		login_click:function(){
 			eventBus.$emit("open","500px");
@@ -990,7 +1004,7 @@ var vm = new Vue({
 		}
 	},
 	updated:function(){
-//		$('.autosize').each(autoresize);
+
 	},
 	created: function(){
 		var self=this;
@@ -1039,7 +1053,6 @@ var vm = new Vue({
 			 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
 			 self.showOverlay.show=false;
 			 document.body.classList.toggle('noscroll', false);
-			 
 		 });
 		 eventBus.$on("return", function(){
 			router.push({ path: '/' }); 
