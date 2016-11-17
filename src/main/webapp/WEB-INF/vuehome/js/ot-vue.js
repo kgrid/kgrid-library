@@ -22,7 +22,7 @@ var olpane= Vue.component("olpane",{
 	created:function(){
 		var self=this;
 		eventBus.$on("open",function(x){
-			console.log(x);
+//			console.log(x);
 			$(".modal-mask").css('opacity',1);
 			$(".ol_pane").animate({
 			'left' : x
@@ -47,7 +47,7 @@ var olnarrowpane= Vue.component("olnarrowpane",{
 	created:function(){
 		var self=this;
 		eventBus.$on("open",function(x){
-			console.log(x);
+//			console.log(x);
 			$(".modal-mask").css('opacity',1);
 			$(".ol_pane").animate({
 			'left' : x
@@ -78,7 +78,7 @@ var login= Vue.component("loginoverlay",{
 		userlogin:function(){
 			var self = this;
 			var text = JSON.stringify(this.userModel.user);
-			console.log(text);
+//			console.log(text);
 			if(true){
 //				console.log("validation result: " +validForm);
 				$( "div.processing" ).fadeIn( 300 );
@@ -155,7 +155,7 @@ var vmcomp = Vue.component(
 														+ uri,
 												success : function(
 														response) {
-													console.log("Deletion successful!");
+//													console.log("Deletion successful!");
 													self.$emit('remove');
 												}
 											});
@@ -163,7 +163,7 @@ var vmcomp = Vue.component(
 							}
 						},
 						selected: function(){
-							console.log(this.object.uri+"selected");
+//							console.log(this.object.uri+"selected");
 							eventBus.$emit("objectSelected", this.object);
 							sessionStorage.setItem("otObj", JSON.stringify(this.object));
 							return false;
@@ -363,7 +363,7 @@ const objDetail = Vue.component('ko-detail', {
 					console.log(response);
 				}
 			});
-			console.log("Private/Public changed"+this.isPublic);
+//			console.log("Private/Public changed"+this.isPublic);
 		},
 		deleteObject : function() {
 			var self=this;
@@ -378,7 +378,7 @@ const objDetail = Vue.component('ko-detail', {
 										+ uri,
 								success : function(
 										response) {
-									console.log("Deletion successful!");
+	//								console.log("Deletion successful!");
 									window.location.href = "/ObjectTeller/vuehome/home.html";
 								}
 							});
@@ -427,15 +427,14 @@ const Home = Vue.component("ko-main", {
 		});
 		eventBus.$on('objectSelected',function(obj){
 			objModel.object=obj;
-			console.log("Selected:"+obj.uri)
-		//	router.push({ name:'object', params: { uri:obj.uri }}); 
+//			console.log("Selected:"+obj.uri);
 		});
 		eventBus.$on("startdate",function(date){
-			console.log("StartDateCHanged"+date);
+//			console.log("StartDateCHanged"+date);
 			self.startdate=date;
 		});
 		eventBus.$on("enddate",function(date){
-			console.log("EndDateCHanged"+date);
+	//		console.log("EndDateCHanged"+date);
 			self.enddate=date;
 		});
 		eventBus.$on("userloggedin",function(obj){
@@ -510,7 +509,7 @@ const Home = Vue.component("ko-main", {
 														filterResult = (filterResult || ((field.metadata.title
 																.search(fString))!=-1));
 													}
-													console.log(fString.toString()+" "+filterResult);
+//													console.log(fString.toString()+" "+filterResult);
 													if (self.check.keywords) {
 														filterResult = (filterResult || ((field.metadata.keywords
 																.search(fString))!=-1));													}
@@ -571,6 +570,12 @@ const Home = Vue.component("ko-main", {
 			 removeString: function (s) {
 				   this.filterStrings.splice(this.filterStrings.indexOf(s), 1)
 				 },
+				 setstartdate:  function(){
+					 var startdate=$("#startdatepicker").val();
+					 var sstamp=new Date(startdate).getTime();
+					 eventBus.$emit("startdate",sstamp);
+					console.log("Start date:"+ sstamp);
+				 }
 		
 	},
 	components:{'appLayout':applayout}
@@ -601,7 +606,7 @@ var objcreator = Vue.component("objcreator",{
 		createObj:function(){
 			var self=this;
 			var text = JSON.stringify(self.newobjModel.object);
-			console.log("data to sent:"+text);
+//			console.log("data to sent:"+text);
 			$.ajax({
 				beforeSend : function(xhrObj) {
 					xhrObj.setRequestHeader("Content-Type", "application/json");
@@ -616,7 +621,7 @@ var objcreator = Vue.component("objcreator",{
 					if ((response != 'empty') && (response != null)) {
 						var test = JSON.stringify(response);
 						var obj = JSON.parse(test);
-						console.log(test);
+	//					console.log(test);
 						$.extend(true, self.newobjModel.object, obj);
 					}
 					$("div.processing").fadeOut(200);
@@ -625,7 +630,7 @@ var objcreator = Vue.component("objcreator",{
 					});
 				},
 				error : function(response) {
-					console.log(response);
+	//				console.log(response);
 					$("div.processing").fadeOut(200);
 					$("div.warning").text(response.status+"   "+response.statusText);
 					$("div.warning").show();
@@ -636,7 +641,7 @@ var objcreator = Vue.component("objcreator",{
 			});	
 		},
 		 updatedisplay : function(sec, msg){
-		    	console.log("Section:"+sec+" Msg:"+msg);
+	//	    	console.log("Section:"+sec+" Msg:"+msg);
 		    	var fullobj={};
 		    	if(msg!=""){
 		    	try{
@@ -695,7 +700,7 @@ var objeditor=Vue.component("objeditor",{
 	  },
 	methods: {
 		 updatedisplay : function(sec, msg){
-			    	console.log("Section:"+sec+" Msg:"+msg);
+//			    	console.log("Section:"+sec+" Msg:"+msg);
 			    	switch(sec) {
 			    		case "payload":
 			    			this.editObjModel.object.payload.content=msg;
@@ -712,7 +717,7 @@ var objeditor=Vue.component("objeditor",{
 		saveObj:function(){
 			var text = JSON.stringify(this.editObjModel.object);
 			var self =this;
-			console.log(text);
+//			console.log(text);
 			$("div.processing").fadeIn(300);
 			$.ajax({
 				beforeSend : function(xhrObj) {
@@ -724,14 +729,14 @@ var objeditor=Vue.component("objeditor",{
 				data : text,
 				dataType : "json",
 				success : function(response) {
-					console.log(response);
+//					console.log(response);
 					if ((response != 'empty') && (response != null)) {
 						var test = JSON.stringify(response);
 						var obj = JSON.parse(test);
 					}
 					eventBus.$emit("objSaved",self.editObjModel.object);
 					$("#addObj_f").find("ul#tabs li").each(function() {
-						console.log("UL li text:" + $(this).text());
+//						console.log("UL li text:" + $(this).text());
 						$(this).text($(this).text().replace("*", ""));
 					});
 					$("div.processing").fadeOut(200);
@@ -741,7 +746,7 @@ var objeditor=Vue.component("objeditor",{
 					
 				},
 				error : function(response) {
-					console.log(response);
+//					console.log(response);
 					$("div.processing").fadeOut(200);
 					$("div.failure").text(response.status+"   "+ response.statusText);
 					$("div.faiure").fadeIn(300).delay(1500).fadeOut(400);
@@ -804,7 +809,7 @@ var objeditor=Vue.component("objeditor",{
 			this.showSecOverlay.show=true;
 			this.inEdit="Citation";
 			this.citationIndex=editObjModel.object.metadata.citations.indexOf(obj);
-			console.log("selected index:"+this.citationIndex);
+//			console.log("selected index:"+this.citationIndex);
 		},
 		deleteCitation:function(obj){
 			editObjModel.object.metadata.citations.splice(editObjModel.object.metadata.citations.indexOf(obj), 1);
@@ -813,7 +818,7 @@ var objeditor=Vue.component("objeditor",{
 			
 			this.showSecOverlay.show=false;
 			this.setSrcField(obj);
-			console.log(JSON.stringify(obj));
+	//		console.log(JSON.stringify(obj));
 			switch(this.inEdit){
 			case "License":
 				editObjModel.object.metadata.license.licenseName=obj.title;
@@ -905,7 +910,6 @@ var fileuploader = Vue.component("fileuploader",{
 				return function(e) {
 					var contents = e.target.result;
 					self.message.msg=contents;
-//					console.log("Section:"+self.section+" Msg:"+self.message.msg);
 					self.$emit("filechange",self.section,self.message.msg);
 				};
 			})(file);
@@ -923,16 +927,12 @@ var fileuploader = Vue.component("fileuploader",{
 		      this.message.msg="";
 		      this.$emit("filechange",this.section,this.message.msg);
 		    }
-	    
-		
 	}
 });
-
-
 const routes = [ 
     { path : '/', component : Home	}, 
     { path : '/object/:uri', name : 'object', component : objDetail, data: function(){
-    	console.log("current URI"+ this.$route.params.uri);
+ //   	console.log("current URI"+ this.$route.params.uri);
     }	} 
     ];
 const router = new VueRouter({
@@ -1004,13 +1004,12 @@ var vm = new Vue({
 		}
 	},
 	updated:function(){
-
 	},
 	created: function(){
 		var self=this;
 		var sessionUser = sessionStorage.getItem("otUser");
 		if(sessionUser){
-			console.log("Current User: "+ sessionUser);
+//			console.log("Current User: "+ sessionUser);
 			 $.extend(true, self.userModel.user, JSON.parse(sessionUser));
 		}
 		eventBus.$on('editObj', function(obj){
@@ -1041,7 +1040,6 @@ var vm = new Vue({
 			if(editObjModel.object.metadata.license==null){
 				editObjModel.object.metadata.license={licenseName:"",licenseLink:""};
 			}
-
 		});
 		eventBus.$on("addobj", function(s){
 			self.currentOLView="objcreator";
