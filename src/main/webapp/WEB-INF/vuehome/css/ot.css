@@ -92,13 +92,13 @@ body {
 	text-align: left;
 	width: 1024px;
 	background-color: #fff;
-	margin-top:10px;
-	margin-bottom:10px;
+	margin-top:5px;
+	margin-bottom:5px;
 	color: #696969;
 	font-weight:400;
 	border-bottom: 2px solid #fff;
-	padding:10px;
-	 transition: border-bottom .8s ease-in-out;
+	padding:8px;
+    transition: border-bottom .8s ease-in-out;
 
 }
 

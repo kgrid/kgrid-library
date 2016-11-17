@@ -13,10 +13,10 @@
 	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 	crossorigin="anonymous">
 <!-- Optional theme -->
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
 	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-	crossorigin="anonymous">
+	crossorigin="anonymous"> -->
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 <link rel="stylesheet" href="css/bannercontent.css"
 	type="text/css" />
@@ -48,7 +48,6 @@
 	src="https://unpkg.com/vue@2.0.2/dist/vue.js"></script>
 <script type="text/javascript" src="https://unpkg.com/vue-router@2.0.0"></script>
 <script type="text/javascript" src="js/lodash.js"></script>
-<script src="js/jquery-ui.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script src="js/ot.js"></script>
 <script src="js/date.format.js"></script>
@@ -636,7 +635,7 @@
 								<div class="loginField">
 									<h4 title="username">USERNAME</h4>
 									<div class="addtext">
-										<input class="textbox login" v-model="userModel.user.username" type="text" spellcheck="false"
+										<input class="textbox login" name="username" v-model="userModel.user.username" type="text" spellcheck="false"
 											placeholder="Enter your email" autofocus
 											maxlength="140">
 <!-- 											<button class="edit_btn" >Need to create an account?</button>
@@ -646,7 +645,7 @@
 								<div class="loginField">
 									<h4 title="password">PASSWORD</h4>
 									<div class="addtext">
-										<input class="textbox login" v-model="userModel.user.passwd"
+										<input class="textbox login" name="password" v-model="userModel.user.passwd"
 											type="password" spellcheck="false"
 											placeholder="Enter your password"  @keyup.enter="userlogin"
 											maxlength="140">
