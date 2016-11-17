@@ -395,7 +395,7 @@ ul#edittabs {
 	text-align: center;
 }
 
-ul#edittabs li {
+ul#edittabs li, ul#tabs li {
 	display: block;
 	float: left;
 	color: #b3b3b3;
@@ -448,8 +448,8 @@ ul#edittabs li.middleout:after {
 	background: #39b45a;
 }
 
-ul#edittabs li:hover {
-	background-color: #fff;
+ul#edittabs li:hover, ul#tabs li:hover{
+	background-color: transparent;
 	color: #666666;
 }
 
@@ -764,7 +764,7 @@ input[id$="datepicker"]{
 	padding-left: 0px;
 	}
 	.ot-pub .active {
-	border-bottom: 2px solid #39b45a;
+	border-bottom: 3px solid #39b45a;
 	}
 	
 	.datetype {
@@ -876,9 +876,10 @@ input[id$="datepicker"]{
     border-radius: 4px 4px 0 0;
 }
 .nav>li>a {
-    position: relative;
+position: relative;
     display: block;
-    padding: 5px 15px;
+    padding: 0px 0px;
+    margin: 5px 0px;
 }
 
 
