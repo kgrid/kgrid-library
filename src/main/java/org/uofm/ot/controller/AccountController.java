@@ -7,16 +7,16 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import  org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,15 +24,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.uofm.ot.AppSecurityConfig;
 import org.uofm.ot.CustomizedUserManager;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.model.OTUser;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.google.gson.Gson;
 
 
 
@@ -85,7 +79,8 @@ public class AccountController {
 	}
 	
 
-	// TODO: hasRole or hasAuthority 
+	// TODO: Add INFORMATICIAN in hasAuthority 
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping(value = {"/user","/getAllUsers"}
 		,produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<List<OTUser>> getAllUsers( ) {
@@ -137,6 +132,7 @@ public class AccountController {
 	@PutMapping(value = "/user/{id}", 
 				consumes ={MediaType.APPLICATION_JSON_VALUE}, 
 				produces= {MediaType.APPLICATION_JSON_VALUE})
+	
 	public ResponseEntity<OTUser> updateUser(@RequestBody OTUserDTO dto , @PathVariable int id, @ModelAttribute("loggedInUser") OTUser loggedInUser, HttpSession httpSession) {	
 
 		ResponseEntity<OTUser> resultEntity = null;
@@ -169,5 +165,27 @@ public class AccountController {
 		}
 
 		return resultEntity ; 
+	}
+	
+	@GetMapping(value="user/me")
+	
+	public ResponseEntity<OTUser> getLoggedInUser(){
+		
+		OTUser loggedInUser = null ; 
+		
+		Authentication currentUser = SecurityContextHolder.getContext()
+				.getAuthentication(); 
+		
+		if(currentUser != null) {
+			if( ! "anonymousUser".equals(currentUser.getName())) {
+ 
+				loggedInUser = userDetailService.loadUserByUsername(currentUser.getName());
+			}
+		}
+		
+		ResponseEntity<OTUser> entity = new ResponseEntity<OTUser> (loggedInUser , HttpStatus.OK);
+		
+		return entity ; 
+				
 	}
 }
