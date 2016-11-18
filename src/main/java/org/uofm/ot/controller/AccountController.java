@@ -80,7 +80,7 @@ public class AccountController {
 	
 
 	// TODO: Add INFORMATICIAN in hasAuthority 
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('INFORMATICIAN') OR hasAuthority('ADMIN')")
 	@GetMapping(value = {"/user","/getAllUsers"}
 		,produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<List<OTUser>> getAllUsers( ) {
@@ -98,6 +98,7 @@ public class AccountController {
 	@PostMapping(value = {"/user","/addUser"}, 
 			consumes ={MediaType.APPLICATION_JSON_VALUE},
 			produces= {MediaType.APPLICATION_JSON_VALUE})
+	@PreAuthorize("hasAuthority('INFORMATICIAN') OR hasAuthority('ADMIN')")
 	public  ResponseEntity<OTUser>  createNewUser(@RequestBody OTUserDTO dto ) {
 		ResponseEntity<OTUser> resultEntity = null;
 		
@@ -132,7 +133,7 @@ public class AccountController {
 	@PutMapping(value = "/user/{id}", 
 				consumes ={MediaType.APPLICATION_JSON_VALUE}, 
 				produces= {MediaType.APPLICATION_JSON_VALUE})
-	
+	@PreAuthorize("hasAuthority('INFORMATICIAN') OR hasAuthority('ADMIN')")
 	public ResponseEntity<OTUser> updateUser(@RequestBody OTUserDTO dto , @PathVariable int id, @ModelAttribute("loggedInUser") OTUser loggedInUser, HttpSession httpSession) {	
 
 		ResponseEntity<OTUser> resultEntity = null;
