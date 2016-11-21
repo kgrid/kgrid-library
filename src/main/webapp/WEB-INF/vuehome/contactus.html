@@ -34,8 +34,24 @@
 	src="https://unpkg.com/vue@2.0.2/dist/vue.js"></script>
 <script type="text/javascript" src="https://unpkg.com/vue-router@2.0.0"></script>
 <script type="text/javascript" src="js/lodash.js"></script>
+
 <!-- <script src="js/multi_step_form.js"></script> -->
 <script>
+
+function getCurrentUser(getUser) {
+	$.ajax({
+		type : "GET",
+		url : "/ObjectTeller/user/me",
+		success : function(response, tStatus, xhr) {
+			console.log(xhr);
+			getUser(response);
+		},
+		error : function(response) {
+			//errorHandler(response);
+		}
+	});
+}
+
 	$(document).ready(function() {
 		var padLeft = 280;
 		var navItemID ="#contactus";
@@ -187,7 +203,7 @@
 								<div class="loginField">
 									<h4 title="password">PASSWORD</h4>
 									<div class="addtext">
-										<input class="textbox login" v-model="userModel.user.passwd"
+										<input class="textbox login" v-model="userModel.user.password"
 											type="password" spellcheck="false"
 											placeholder="Enter your password"  @keyup.enter="userlogin"
 											maxlength="140">
@@ -208,7 +224,7 @@
 </template>
 <script>
 var eventBus = new Vue();
-var userModel= {user:{username:"",passwd:""}};
+var userModel= {user:{username:"",password:""}};
 var navbar = Vue.component("navbar",{
 	template:"#navbar",
 	data:function(){
@@ -233,7 +249,7 @@ var navbar = Vue.component("navbar",{
 				type : 'POST',
 				url : "/ObjectTeller/logout" ,
 				success : function(response) {
-					 $.extend(true, self.userModel.user,{username:"",passwd:""});
+					 $.extend(true, self.userModel.user,{username:"",password:""});
 					 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
 				}
 			});
@@ -269,7 +285,7 @@ var login= Vue.component("loginoverlay",{
 	template:'#login_overlay',
 	data:function(){
 		return {
-			userModel:{user:{username:"",passwd:""}},
+			userModel:{user:{username:"",password:""}},
 			role:"default",
 		}
 	},
@@ -277,48 +293,30 @@ var login= Vue.component("loginoverlay",{
 		userlogin:function(){
 			var self = this;
 			var text = JSON.stringify(this.userModel.user);
-			console.log(text);
+			console.log("Data to send: "+text);
 			if(true){
-//				console.log("validation result: " +validForm);
 				$( "div.processing" ).fadeIn( 300 );
 				$.ajax({
-						beforeSend : function(xhrObj) {
-							xhrObj.setRequestHeader("Content-Type",
-									"application/json");
-							xhrObj.setRequestHeader("Accept", "application/json");
-						},
 						type : 'POST',
 						url : "/ObjectTeller/login",
-						data : text,
-						dataType : "json",
-
-						success : function(response) {
-						 if(response!='empty') {
-								  var test = JSON.stringify(response);
-							      var obj = JSON.parse(test);
-							      $( "div.processing" ).fadeOut( 200 );
-							      $("div.success").fadeIn(300).delay(500).fadeOut(400, function(){
-							    	  eventBus.$emit("userloggedin",obj);
+						data : self.userModel.user,
+						success : function(response,tStatus,xhr) {
+							console.log(self.userModel.user);
+							console.log(response);
+    					      $( "div.processing" ).fadeOut( 200 );
+						      $("div.success").fadeIn(300).delay(500).fadeOut(400, function(){
+					    	  eventBus.$emit("userloggedin",self.userModel.user);
 								});
-							     
-							      //location.reload();
-						    }
 						} ,
-						
 						error : function(response) {
-							// TODO: Handle Error Message
-							
 							$( "div.processing" ).fadeOut( 200 );
-							 $( "div.failure" ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 );
+							$( "div.failure" ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 );
 						}
 					});
 			}else{
 				}
-			
 			}, 
 		}
-	
-	
 });
 
 var vm = new Vue({
@@ -327,6 +325,13 @@ var vm = new Vue({
 		currentOLView:'login',
 		showOverlay:{show:false},
 		userModel:userModel
+	},	
+	beforeCreate:function(){
+		var self=this;
+		getCurrentUser(function(response) {
+			if(response!="")
+				$.extend(true, self.userModel.user, response);
+		})
 	},
 	created: function(){
 		var self = this;
@@ -352,12 +357,17 @@ var vm = new Vue({
 			}
 		});
 		 eventBus.$on("userloggedin",function(obj){
-			 $.extend(true, self.userModel.user,obj);
-			 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
-			 self.showOverlay.show=false;
-			 document.body.classList.toggle('noscroll', false);
-			 
-		 });
+//				$.extend(true, self.userModel.user,obj);
+				 self.showOverlay.show=false;
+				 document.body.classList.toggle('noscroll', false);		
+				 getCurrentUser(function(response) {
+						console.log(response);
+						if(response!="")
+							$.extend(true, self.userModel.user, response);
+						 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
+
+					})
+			 });
 	},
 	components:{
 		navbar:navbar,
