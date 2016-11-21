@@ -537,6 +537,7 @@ input[type=text].login, input[type=password].login {
     width: 350px;
     height: 53px;
 }
+
 button.login {
     width: 350px;
     position: relative;

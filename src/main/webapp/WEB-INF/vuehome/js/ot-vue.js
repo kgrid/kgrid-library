@@ -3,7 +3,9 @@ var eventBus = new Vue({});
 var raw = 9;
 var objModel = { object : { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} };
 var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"ark"} };
-var userModel= {user:{username:"",password:"",id:-1,first_name:"",last_name:"",role:""}};
+//var userModel= {user:{username:"",password:"",id:-1,first_name:"",last_name:"",role:""}};
+var userModel= {user:{username:"",password:""}};
+
 var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
                 {name:"payload",id:"#payload",label:"PAYLOAD"},
                 {name:"inputMessage",id:"#inputMessage", label:"INPUT"},
@@ -78,27 +80,19 @@ var login= Vue.component("loginoverlay",{
 		userlogin:function(){
 			var self = this;
 			var text = JSON.stringify(this.userModel.user);
-//			console.log(text);
+			console.log("Data to send: "+text);
 			if(true){
-//				console.log("validation result: " +validForm);
 				$( "div.processing" ).fadeIn( 300 );
 				$.ajax({
 						type : 'POST',
 						url : "/ObjectTeller/login",
 						data : self.userModel.user,
-//						dataType : "json",
-
-						success : function(response) {
-						 if(response!='empty') {
-								  var test = JSON.stringify(response);
-							      var obj = JSON.parse(test);
-							      $( "div.processing" ).fadeOut( 200 );
-							      $("div.success").fadeIn(300).delay(500).fadeOut(400, function(){
-							    	  eventBus.$emit("userloggedin",self.userModel.user);
+						success : function(response,tStatus,xhr) {
+    					      $( "div.processing" ).fadeOut( 200 );
+						      $("div.success").fadeIn(300).delay(500).fadeOut(400, function(){
+					    	  eventBus.$emit("userloggedin",self.userModel.user);
 								});
-						    }
 						} ,
-						
 						error : function(response) {
 							$( "div.processing" ).fadeOut( 200 );
 							$( "div.failure" ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 );
@@ -106,13 +100,9 @@ var login= Vue.component("loginoverlay",{
 					});
 			}else{
 				}
-			
 			}, 
 		}
-	
-	
 });
-
 
 var vmcomp = Vue.component(
 				"ko-tile",
@@ -132,8 +122,6 @@ var vmcomp = Vue.component(
 						},
 						objLink : function() {
 							return 'home.html#object/'+encodeURIComponent(this.object.uri)
-								
-							
 						},
 					},
 					methods : {
@@ -358,7 +346,6 @@ const objDetail = Vue.component('ko-detail', {
 					console.log(response);
 				}
 			});
-//			console.log("Private/Public changed"+this.isPublic);
 		},
 		deleteObject : function() {
 			var self=this;
@@ -373,7 +360,6 @@ const objDetail = Vue.component('ko-detail', {
 										+ uri,
 								success : function(
 										response) {
-	//								console.log("Deletion successful!");
 									window.location.href = "/ObjectTeller/vuehome/home.html";
 								}
 							});
@@ -403,7 +389,7 @@ const Home = Vue.component("ko-main", {
  			datetype:'lastModified',
  			startdate:0,
 			enddate:0,
-			userModel:{user:{username:"",passwd:""}},
+			userModel:{user:{username:"",password:""}},
 			isAdmin:true
  		}
 	},
@@ -411,7 +397,7 @@ const Home = Vue.component("ko-main", {
 		var self = this;
 		this.startdate = new Date("March 1, 2016").getTime();
 		this.enddate=new Date().getTime();
-		$.extend(true,this.userModel,userModel);
+		//$.extend(true,this.userModel,userModel);
 		this.isLoggedIn = (this.userModel.user.username!="");
 		this.check.pri=this.isLoggedIn;
 		retrieveObjectList(function(response) {
@@ -422,14 +408,11 @@ const Home = Vue.component("ko-main", {
 		});
 		eventBus.$on('objectSelected',function(obj){
 			objModel.object=obj;
-//			console.log("Selected:"+obj.uri);
 		});
 		eventBus.$on("startdate",function(date){
-//			console.log("StartDateCHanged"+date);
 			self.startdate=date;
 		});
 		eventBus.$on("enddate",function(date){
-	//		console.log("EndDateCHanged"+date);
 			self.enddate=date;
 		});
 		eventBus.$on("userloggedin",function(obj){
@@ -439,7 +422,7 @@ const Home = Vue.component("ko-main", {
 			self.check.pri=true;
 		});
 		eventBus.$on("logout", function(){
-			$.extend(true, self.userModel.user, {username:"",passwd:""});
+			$.extend(true, self.userModel.user, {username:"",password:""});
 			self.isLoggedIn=false;
 			self.isAdmin=false;
 		});	
@@ -969,8 +952,7 @@ var navbar = Vue.component("navbar",{
 				type : 'POST',
 				url : "/ObjectTeller/logout" ,
 				success : function(response) {
-					 $.extend(true, self.userModel.user,{username:"",passwd:"",id:-1,first_name:"",last_name:"",role:""});
-					 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
+					 $.extend(true, self.userModel.user,{username:"",password:"",id:-1,first_name:"",last_name:"",role:""});
 					 eventBus.$emit("logout");
 				}
 			});
@@ -1000,13 +982,15 @@ var vm = new Vue({
 	},
 	updated:function(){
 	},
+	beforeCreate:function(){
+		var self=this;
+		getCurrentUser(function(response) {
+			if(response!="")
+				$.extend(true, self.userModel.user, response);
+		})
+	},
 	created: function(){
 		var self=this;
-		var sessionUser = sessionStorage.getItem("otUser");
-		if(sessionUser){
-//			console.log("Current User: "+ sessionUser);
-			 $.extend(true, self.userModel.user, JSON.parse(sessionUser));
-		}
 		eventBus.$on('editObj', function(obj){
 			self.currentOLView='objeditor';
 			self.showOverlay.show=true;
@@ -1042,10 +1026,12 @@ var vm = new Vue({
 			document.body.classList.toggle('noscroll', true);
 		});
 		 eventBus.$on("userloggedin",function(obj){
-			 $.extend(true, self.userModel.user,obj);
-			 sessionStorage.setItem("otUser", JSON.stringify(self.userModel.user));
 			 self.showOverlay.show=false;
-			 document.body.classList.toggle('noscroll', false);
+			 document.body.classList.toggle('noscroll', false);		
+			 getCurrentUser(function(response) {
+				if(response!="")
+						$.extend(true, self.userModel.user, response);
+			})
 		 });
 		 eventBus.$on("return", function(){
 			router.push({ path: '/' }); 

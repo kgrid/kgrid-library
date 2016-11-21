@@ -7,7 +7,7 @@ function retrieveObjectList(fillObjectList){
 			     withCredentials: true
 			},
 			success : function(response, tStatus, xhr) {
-				console.log(xhr);
+			//	console.log(xhr);
 				fillObjectList(response);
 			},
 			error : function(response) {
@@ -92,6 +92,20 @@ function editTabNav(){
 			$(this).addClass("middleout");
 			$("ul#edittab"+tabClass+"  li.active").removeClass("active");
 			$("ul#edittab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
+		}
+	});
+}
+
+function getCurrentUser(getUser) {
+	$.ajax({
+		type : "GET",
+		url : "/ObjectTeller/user/me",
+		success : function(response, tStatus, xhr) {
+			console.log(xhr);
+			getUser(response);
+		},
+		error : function(response) {
+			//errorHandler(response);
 		}
 	});
 }

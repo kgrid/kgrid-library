@@ -37,6 +37,7 @@ $(document).ready(function(){
 		var validForm=login_validator.form();
 		if(validForm){
 			console.log("validation result: " +validForm);
+			console.log("Data to Send: "+text);
 			$( "div.processing" ).fadeIn( 300 );
 			$.ajax({
 					beforeSend : function(xhrObj) {
