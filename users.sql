@@ -34,8 +34,9 @@ CREATE TABLE authorities
   username  VARCHAR(50) NOT NULL PRIMARY KEY,
   authority VARCHAR(50) NOT NULL,
   CONSTRAINT fk_authorities_users
-  FOREIGN KEY (username)
-  REFERENCES users (username)
+    FOREIGN KEY (username)
+    REFERENCES users (username)
+    ON DELETE CASCADE ON UPDATE CASCADE 
 );
 
 CREATE TABLE user_profiles
@@ -45,8 +46,9 @@ CREATE TABLE user_profiles
   first_name VARCHAR(50)           NOT NULL,
   last_name  VARCHAR(50)           NOT NULL,
   CONSTRAINT fk_user_profiles_users
-  FOREIGN KEY (username)
-  REFERENCES users (username)
+    FOREIGN KEY (username)
+    REFERENCES users (username) 
+    ON DELETE CASCADE ON UPDATE CASCADE 
 );
 
 -- Migrate exist data from user_details
