@@ -3,7 +3,7 @@ var eventBus = new Vue({});
 var raw = 9;
 var objModel = { object : { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} };
 var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"ark"} };
-var userModel= {user:{username:"",passwd:"",id:-1,first_name:"",last_name:"",role:""}};
+var userModel= {user:{username:"",password:"",id:-1,first_name:"",last_name:"",role:""}};
 var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
                 {name:"payload",id:"#payload",label:"PAYLOAD"},
                 {name:"inputMessage",id:"#inputMessage", label:"INPUT"},
@@ -70,7 +70,7 @@ var login= Vue.component("loginoverlay",{
 	template:'#login_overlay',
 	data:function(){
 		return {
-			userModel:{user:{username:"",passwd:""}},
+			userModel:{user:{username:"",password:""}},
 			role:"default",
 		}
 	},
@@ -83,15 +83,10 @@ var login= Vue.component("loginoverlay",{
 //				console.log("validation result: " +validForm);
 				$( "div.processing" ).fadeIn( 300 );
 				$.ajax({
-						beforeSend : function(xhrObj) {
-							xhrObj.setRequestHeader("Content-Type",
-									"application/json");
-							xhrObj.setRequestHeader("Accept", "application/json");
-						},
 						type : 'POST',
 						url : "/ObjectTeller/login",
-						data : text,
-						dataType : "json",
+						data : self.userModel.user,
+//						dataType : "json",
 
 						success : function(response) {
 						 if(response!='empty') {
@@ -99,7 +94,7 @@ var login= Vue.component("loginoverlay",{
 							      var obj = JSON.parse(test);
 							      $( "div.processing" ).fadeOut( 200 );
 							      $("div.success").fadeIn(300).delay(500).fadeOut(400, function(){
-							    	  eventBus.$emit("userloggedin",obj);
+							    	  eventBus.$emit("userloggedin",self.userModel.user);
 								});
 						    }
 						} ,
