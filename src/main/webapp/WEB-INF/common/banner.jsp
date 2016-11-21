@@ -51,8 +51,8 @@ $(document).ready(function(){
 
 					success : function(response) {
 					 if(response!='empty') {
-						//	  var test = JSON.stringify(response);
-						 //    var obj = JSON.parse(test);
+							  var test = JSON.stringify(response);
+						     var obj = JSON.parse(test);				     
 						      location.reload();
 					    }
 					} ,

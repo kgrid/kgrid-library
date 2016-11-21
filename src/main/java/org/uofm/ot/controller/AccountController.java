@@ -177,12 +177,14 @@ public class AccountController {
 		Authentication currentUser = SecurityContextHolder.getContext()
 				.getAuthentication(); 
 		
-		if(currentUser != null) {
+		loggedInUser =  (OTUser) currentUser.getPrincipal();
+		
+		/*if(currentUser != null) {
 			if( ! "anonymousUser".equals(currentUser.getName())) {
  
 				loggedInUser = userDetailService.loadUserByUsername(currentUser.getName());
 			}
-		}
+		}*/
 		
 		ResponseEntity<OTUser> entity = new ResponseEntity<OTUser> (loggedInUser , HttpStatus.OK);
 		

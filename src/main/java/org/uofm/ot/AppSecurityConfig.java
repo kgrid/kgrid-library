@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -20,49 +21,27 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 	
+	@Autowired
+    private AuthenticationSuccessHandler successHandler;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
-    //   http.authorizeRequests().anyRequest().fullyAuthenticated();
-     //    http.httpBasic();
- //       http.csrf().disable();
-		
-		/*http.csrf().disable()
-		.authorizeRequests()
-		.antMatchers("/home").permitAll()		
-		.anyRequest().fullyAuthenticated().and().formLogin()
-				.loginPage("/home").failureUrl("/login?error").permitAll().and()
-				.logout().permitAll()
-				;*/
-		
-		// Form authentication is working 
-		
-		/*http.csrf().disable()
-        .httpBasic()
-      .and()
-        .authorizeRequests()
-          .antMatchers("/home", "/", "/login").permitAll()
-          .anyRequest().authenticated().and().formLogin();*/
-		
+
 		http.csrf().disable()
 		.authorizeRequests()
-		.antMatchers("/home", "/").permitAll()
+		.antMatchers("/home", "/")
+		.permitAll()
 		.and().formLogin()
-	    .loginPage("/login").failureUrl("/login?error").permitAll().and()
+		.failureHandler(new SimpleUrlAuthenticationFailureHandler())
+        .successHandler(successHandler)
+	    .loginPage("/login")
+	    .failureUrl("/login?error")
+	    .permitAll().and()
 	    .logout().permitAll();
 	}
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		/*auth.inMemoryAuthentication()
-		.withUser("admin").password("admin").roles("ADMIN", "USER").and()
-		.withUser("user").password("user").roles("USER");*/
-		
-		/*auth.jdbcAuthentication().dataSource(dataSource).
-		withDefaultSchema().withUser("user").password("user").roles("USER");*/
-		
-		// auth.jdbcAuthentication().dataSource(this.dataSource);
-		
 		 auth.userDetailsService(getUserService());
 	}
 	
@@ -70,7 +49,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 	public CustomizedUserManager getUserService() {
 		CustomizedUserManager mg = new CustomizedUserManager();
 		mg.setDataSource(dataSource);
-	//	userDetailService = mg;
 		return mg;
 	}
 }
