@@ -126,29 +126,31 @@
 						});
 
 		$("#" + divID + " > .deleteButton").click(function() {
-			var id = divID.substring(4);
-			var selectedUser = getUserIndexForId(id);
-			$.ajax({
-				type : 'DELETE',
-				url : "user/" + users[selectedUser].id,
+			var r = confirm("Do you really want to delete the user ? ");
+			if (r == true) {
+				var id = divID.substring(4);
+				var selectedUser = getUserIndexForId(id);
+				$.ajax({
+					type : 'DELETE',
+					url : "user/" + users[selectedUser].id,
 
-				success : function(response) {
-					removeUsercard(divID);
-					users.splice(id, 1);
+					success : function(response) {
+						removeUsercard(divID);
+						users.splice(id, 1);
 
-				},
+					},
 
-				error : function(response) {
+					error : function(response) {
 					
-					var test = JSON.stringify(response);
-					var obj = JSON.parse(test);
-					alert(obj.responseText);
-				}
+						var test = JSON.stringify(response);
+						var obj = JSON.parse(test);
+						alert(obj.responseText);
+					}
 
-			});
+				});
+			}
 
 		});
-
 	}
 
 	function getUserIndexForId(id) {
