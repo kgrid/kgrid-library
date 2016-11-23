@@ -3,6 +3,7 @@ package org.uofm.ot;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.Http401AuthenticationEntryPoint;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -28,16 +30,15 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.csrf().disable()
-		.authorizeRequests()
-		.antMatchers("/home", "/")
-		.permitAll()
-		.and().formLogin()
+		.exceptionHandling()
+		.authenticationEntryPoint(new Http401AuthenticationEntryPoint("Forms realm=\"kgrid\""))
+		.and()
+		.formLogin()
 		.failureHandler(new SimpleUrlAuthenticationFailureHandler())
         .successHandler(successHandler)
-	    .loginPage("/login")
-	    .failureUrl("/login?error")
-	    .permitAll().and()
-	    .logout().permitAll();
+	    .and()
+	    .logout()
+	    .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
 	}
 
 	@Override
