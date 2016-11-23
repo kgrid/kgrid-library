@@ -169,7 +169,7 @@ public class AccountController {
 	}
 	
 	@GetMapping(value="user/me")
-	
+	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<OTUser> getLoggedInUser(){
 		
 		OTUser loggedInUser = null ; 
