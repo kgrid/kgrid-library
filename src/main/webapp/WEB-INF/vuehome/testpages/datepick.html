@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous"><link rel="stylesheet" href="css/todo.css" type="text/css" />
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://unpkg.com/vue@2.0.2/dist/vue.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="main">
+<div class="row">
+	<input type="text" v-cal="dt" />
+	<button v-on:click="CheckDate">CheckDate!</button>
+</div>
+<!-- <div class="row">
+	
+	<input type="text" id="StartDate" v-model="dt" />
+	<button v-on:click="CheckDate2">CheckDate!</button>
+</div> -->
+
+</div>
+
+<script>
+$(function(){
+	$("#StartDate").datepicker();
+});
+var vd=Vue.directive('cal', {
+	  bind: function () {
+	    var vm = this.vm;
+	    var key = this.expression;
+	    $(this.el).datepicker({
+	      dateFormat: 'dd.mm.yy',
+	      onClose: function (date) {
+	        if (date.match(/^(0?[1-9]|[12][0-9]|3[01])[\/\-\.](0?[1-9]|1[012])[\/\-\.]\d{4}$/))
+	          vm.$set(key, date);
+	        else {
+	          vm.$set(key, "");
+	          console.log('invalid date');
+	        }
+	      }
+	    });
+	  },
+	  update: function (val) {
+	    $(this.el).datepicker('setDate', val);
+	  }
+	});
+	
+	var v =new Vue({
+		el:"#main",
+		data:{
+			dt: '04/29/2015'
+		},
+		methods:{
+			CheckDate:function(){
+	            console.log(this.dt);
+			},
+			CheckDate2:function(){
+				var dd=$("#StartDate").val();
+				//this.dt=dd;  // I don't like this way...
+				console.log(dd, this.dt);
+			}
+		}
+	});
+	</script>
+</body>
+</html>
