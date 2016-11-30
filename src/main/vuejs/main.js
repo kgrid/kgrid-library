@@ -7,7 +7,8 @@ require('es6-promise').polyfill();
 require('bootstrap');
 require('lodash');
 require('./vendor/jquery-ui.js');
-require('./ot.js');
+
+import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList} from './ot.js';
 // debug mode
 Vue.config.debug = false;
 
@@ -63,10 +64,12 @@ var vm = new Vue({
 	},
 	beforeCreate:function(){
 		var self=this;
-		getCurrentUser(function(response) {
+/*		getCurrentUser(function(response) {
 			if(response!="")
 				$.extend(true, self.userModel.user, response);
-		})
+		},function(response) {
+			console.log(response);
+		});*/
 	},
 	created: function(){
 		var self=this;
