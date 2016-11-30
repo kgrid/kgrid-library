@@ -1,15 +1,8 @@
 {
-  "name": "vuejs-java-starter",
-  "description": "vue.js java starter",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kucharzyk/vuejs-java-starter.git"
-  },
-  "author": "Tomasz Kucharzyk",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/kucharzyk/vuejs-java-starter/issues"
-  },
+  "name": "objectteller",
+  "version": "1.0.0",
+  "description": "Object Teller User Management Page",
+  "author": "George Meng <gqmeng@umich.edu>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --config build/webpack.dev.conf.js",
@@ -64,6 +57,7 @@
     "vue-loader": "8.0.0",
     "vue-style-loader": "1.0.0",
     "webpack": "1.12.11",
-    "webpack-dev-server": "1.14.1"
+    "webpack-dev-server": "1.14.1",
+    "webpack-merge": "^0.14.1"
   }
 }
