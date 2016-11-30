@@ -1,4 +1,3 @@
-'use strict';
 export function retrieveObjectList(fillObjectList){
 		$.ajax({
 			type : "GET",

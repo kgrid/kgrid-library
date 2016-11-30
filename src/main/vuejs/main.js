@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
+import App from './App';
 
 require('es6-promise').polyfill();
 // Bootstrap 4
@@ -41,6 +42,7 @@ var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
                 {name:"logData",id:"#logData", label:"LOG DATA"}];
 var vm = new Vue({
 	router : router,
+	components : { App },
 	data : {
 		currentOLView:'objeditor',
 		koModel:objModel,

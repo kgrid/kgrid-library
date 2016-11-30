@@ -10,7 +10,7 @@ import navbar from './components/navbar.vue';
 import login from './components/login';  // eslint-disable-line
 import olnpane from './components/olnpane'; // eslint-disable-line
 export default {
-  name: 'app',
+  name: 'app1',
   data: function () {
     return {
       showOverlay: { show: false },
