@@ -19,13 +19,12 @@
     	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
     	crossorigin="anonymous"></script>
-    
     {% for (var css in o.htmlWebpackPlugin.files.css) { %}
     <link href="{%=o.htmlWebpackPlugin.files.css[css] %}" rel="stylesheet">
     {% } %}
 </head>
 <body>
-<div id='app'></div>
+<app></app>
 {% for (var chunk in o.htmlWebpackPlugin.files.chunks) { %}
 <script src="{%=o.htmlWebpackPlugin.files.chunks[chunk].entry %}"></script>
 {% } %}
