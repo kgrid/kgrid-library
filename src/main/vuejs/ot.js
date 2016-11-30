@@ -1,5 +1,5 @@
 'use strict';
-function retrieveObjectList(fillObjectList){
+export function retrieveObjectList(fillObjectList){
 		$.ajax({
 			type : "GET",
 			url : "/ObjectTeller/knowledgeObject",
@@ -16,7 +16,7 @@ function retrieveObjectList(fillObjectList){
 		});
 }
 
-function retrieveObject(uri, section, fillObjectContent){
+export function retrieveObject(uri, section, fillObjectContent){
 	var endPoint = uri; 
 	if(section!=""){
 		endPoint = endPoint+ "/"+section;
@@ -39,10 +39,11 @@ function retrieveObject(uri, section, fillObjectContent){
 
 
 
-function loadFieldsConfig(fillFieldsConfig){
+export function loadFieldsConfig(fillFieldsConfig){
 	$.getJSON("json/fields.json", fillFieldsConfig);
 }
-function overlayHeightResize() {
+
+export function overlayHeightResize() {
 	var ol_pane_height = $(window).height();
 	var boardHeight = (ol_pane_height - 180);
 	var formHeight = (boardHeight - 80);
@@ -55,28 +56,28 @@ function overlayHeightResize() {
 	return ol_pane_height;
 }
 
-function autoresize() {
+export function autoresize() {
 	var eid= $(this).text();
 	var sh = $(this)[0].scrollHeight+15;
 	$(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
 	$(this).css('height',sh+ 'px');    //Set new height
 }
 
-function backToTop() {
+export function backToTop() {
     $("html, body").animate({
         scrollTop: 0
     }, 600);
     return false;
 }
 
-function setBannerbkSize(){
+export function setBannerbkSize(){
   		var vp_width=$(window).width();
   		if(vp_width>1584){
   			$("#bannerbk").css("width",vp_width+"px");
   		}
   	}
  
-function editTabNav(){
+export function editTabNav(){
 	$("ul#edittabs li").click(function(e) {
 		var tabClass=".view";
 		if($(this).parent().hasClass("inEdit")){
@@ -95,7 +96,7 @@ function editTabNav(){
 	});
 }
 
-function getCurrentUser(getUser) {
+export function getCurrentUser(getUser, errorHandler) {
 	$.ajax({
 		type : "GET",
 		url : "/ObjectTeller/user/me",
@@ -104,26 +105,26 @@ function getCurrentUser(getUser) {
 			getUser(response);
 		},
 		error : function(response) {
-			//errorHandler(response);
+			errorHandler(response);
 		}
 	});
 }
 
-function setstartdate(){
+export function setstartdate(){
 	 var startdate=$("#startdatepicker").val();
 	 var sstamp=new Date(startdate).getTime();
 	 eventBus.$emit("startdate",sstamp);
 	console.log("Start date:"+ sstamp);
  }
 
-function setenddate(){
+export function setenddate(){
 				var enddate=$("#enddatepicker").val();
 				 var estamp=new Date(enddate).getTime();
 				eventBus.$emit("enddate",estamp);
 				console.log("End date:"+ estamp);
 			 }
  
-function otScroll() {
+export function otScroll() {
 	var padLeft = 280;
     var navOffset = $(".header").offset().top;
     $(".header").wrap('<div class="theadwrapper"></div>');
@@ -150,11 +151,12 @@ function otScroll() {
        $(".fixed").css("left",-x+"px");
     });
 }
+
 $(document).ready(function() {
 	$("#startdatepicker").datepicker();
 	$("#enddatepicker").datepicker();
 	$("#startdatepicker").val("03/01/16");
-	$("#enddatepicker").val(new Date().format("shortDate"));
+	$("#enddatepicker").val(new Date());
 	overlayHeightResize();
 	$('[data-toggle="tooltip"]').tooltip();
 	$('#userDropdown').on('show.bs.dropdown', function(e){
