@@ -16,7 +16,7 @@ export function retrieveObjectList(fillObjectList){
 }
 
 export function retrieveObject(uri, section, fillObjectContent){
-	var endPoint = uri; 
+	var endPoint = uri;
 	if(section!=""){
 		endPoint = endPoint+ "/"+section;
 	}
@@ -75,7 +75,7 @@ export function setBannerbkSize(){
   			$("#bannerbk").css("width",vp_width+"px");
   		}
   	}
- 
+
 export function editTabNav(){
 	$("ul#edittabs li").click(function(e) {
 		var tabClass=".view";
@@ -122,7 +122,7 @@ export function setenddate(){
 				eventBus.$emit("enddate",estamp);
 				console.log("End date:"+ estamp);
 			 }
- 
+
 export function otScroll() {
 	var padLeft = 280;
     var navOffset = $(".header").offset().top;
@@ -152,28 +152,28 @@ export function otScroll() {
 }
 
 $(document).ready(function() {
-	$("#startdatepicker").datepicker();
-	$("#enddatepicker").datepicker();
-	$("#startdatepicker").val("03/01/16");
-	$("#enddatepicker").val(new Date());
+	// $("#startdatepicker").datepicker();
+	// $("#enddatepicker").datepicker();
+	// $("#startdatepicker").val("03/01/16");
+	// $("#enddatepicker").val(new Date());
 	overlayHeightResize();
-	$('[data-toggle="tooltip"]').tooltip();
+//	$('[data-toggle="tooltip"]').tooltip();
 	$('#userDropdown').on('show.bs.dropdown', function(e){
 		  var target = $(e.target).attr("id"); // activated tab
 		  $("img#dropdowniconimg").removeClass('down');
-		  $("img#dropdowniconimg").addClass('up');	
+		  $("img#dropdowniconimg").addClass('up');
 	});
 	$('#userDropdown').on('hide.bs.dropdown', function(e){
 		  var target = $(e.target).attr("id"); // activated tab
 		  $("img#dropdowniconimg").removeClass('up');
-		  $("img#dropdowniconimg").addClass('down');		  
+		  $("img#dropdowniconimg").addClass('down');
 	});
 	$(window).resize(function(){
 			overlayHeightResize();
 			setBannerbkSize()});
  	setBannerbkSize();
-    $('ul#tabs li:first').addClass('active'); 
-    $('ul#tab li:first').addClass('active'); 
+    $('ul#tabs li:first').addClass('active');
+    $('ul#tab li:first').addClass('active');
 	$("ul#tabs li.active a span").addClass("middleout");
-	    
+
 })
