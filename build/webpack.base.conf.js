@@ -1,19 +1,36 @@
-var webpack = require('webpack');
-var path = require('path');
+var path = require('path')
+var config = require('../config')
+var utils = require('./utils')
+var projectRoot = path.resolve(__dirname, '../')
+
+var env = process.env.NODE_ENV
+// check env & config/index.js to decide weither to enable CSS Sourcemaps for the
+// various preprocessor loaders added to vue-loader at the end of this file
+var cssSourceMapDev = (env === 'development' && config.dev.cssSourceMap)
+var cssSourceMapProd = (env === 'production' && config.build.productionSourceMap)
+var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
 
 module.exports = {
   entry: {
     app: './src/main/vuejs/main.js'
   },
   output: {
-    path: path.resolve(__dirname, '../src/main/resources/static/dist/'),
+    path: config.build.assetsRoot,
+    publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
     filename: '[name].js'
   },
   resolve: {
     extensions: ['', '.js', '.vue'],
+    fallback: [path.join(__dirname, '../node_modules')],
     alias: {
-      'src': path.resolve(__dirname, '../src')
+      'vue$': 'vue/dist/vue.common.js',
+      'src': path.resolve(__dirname, '../src/main/vue'),
+      'assets': path.resolve(__dirname, '../src/main/vue/assets'),
+      'components': path.resolve(__dirname, '../src/main/vue/components')
     }
+  },
+  resolveLoader: {
+    fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
     loaders: [
@@ -23,7 +40,8 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel', //'babel!eslint',
+        loader: 'babel',
+        include: projectRoot,
         exclude: /node_modules/
       },
       {
@@ -31,37 +49,29 @@ module.exports = {
         loader: 'json'
       },
       {
-        test: /\.(png|jpg|gif|svg)/,
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url',
         query: {
           limit: 10000,
-          name: '[name].[ext]?[hash]'
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
       {
-        test: /\.(woff|eot|ttf|woff(2)?|otf)/i,
-        loader: 'file-loader?[name].[ext]?[hash]'
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url',
+        query: {
+          limit: 10000,
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+        }
       }
     ]
   },
   vue: {
-    loaders: {
-      js: 'babel' //'babel!eslint'
-    },
-    autoprefixer: {
-      browsers: ['last 2 versions']
-    }
-  },
-/*  eslint: {
-    formatter: require('eslint-friendly-formatter')
-  },*/
-  plugins: [
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-      'Tether': 'tether',
-      'window.Tether': 'tether'
-    })
-  ]
-};
+    loaders: utils.cssLoaders({ sourceMap: useCssSourceMap }),
+    postcss: [
+      require('autoprefixer')({
+        browsers: ['last 2 versions']
+      })
+    ]
+  }
+}
