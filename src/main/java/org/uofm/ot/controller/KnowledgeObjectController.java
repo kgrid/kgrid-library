@@ -86,8 +86,16 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/complete",
 			method=RequestMethod.GET , 
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public KnowledgeObject getCompleteKnowledgeObjectForArkId( ArkId arkId) throws ObjectTellerException  {
-		return knowledgeObjectService.getCompleteKnowledgeObject(arkId);
+	public  ResponseEntity<KnowledgeObject> getCompleteKnowledgeObjectForArkId( ArkId arkId) throws ObjectTellerException  {
+		ResponseEntity<KnowledgeObject> entity = null;
+		KnowledgeObject knowledgeObject =  knowledgeObjectService.getCompleteKnowledgeObject(arkId);
+		if(knowledgeObject != null){
+			entity = new ResponseEntity<KnowledgeObject>(knowledgeObject,HttpStatus.OK);
+		} else {
+			entity = new ResponseEntity<KnowledgeObject>(knowledgeObject,HttpStatus.NOT_FOUND);
+		}
+
+		return entity ;
 	}
 	
 	// TODO: Remove this method after UI switched it to other API
