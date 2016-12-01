@@ -74,17 +74,20 @@ public class KnowledgeObjectService {
 		
 		KnowledgeObject object = getKnowledgeObject(arkId);
 		
-		Payload payload = fusekiService.getPayloadProperties(uri);
-		
-		payload.setContent(getPayloadContent(uri));
-		
-		object.setPayload(payload);
+		if(object != null ) {
 
-		object.setLogData(getProvData(arkId));
+			Payload payload = fusekiService.getPayloadProperties(uri);
 
-		object.setInputMessage(getInputMessageContent(arkId));
+			payload.setContent(getPayloadContent(uri));
 
-		object.setOutputMessage(getOutputMessageContent(arkId));
+			object.setPayload(payload);
+
+			object.setLogData(getProvData(arkId));
+
+			object.setInputMessage(getInputMessageContent(arkId));
+
+			object.setOutputMessage(getOutputMessageContent(arkId));
+		}
 		
 		return object;
 	}
