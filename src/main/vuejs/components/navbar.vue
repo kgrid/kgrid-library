@@ -1,7 +1,7 @@
 
 <template id='navbar'>
 		<div class='ot-nav'>
-			<a class='navbar-brand ot-1 .router-link-active' href='home.html'>
+			<a class='navbar-brand ot-1 .router-link-active' href='index.html'>
 				<img alt='Brand' src='../assets/logo.png'>
 			</a>
 			<nav class='navbar navbar-default navbar-fixed-top ot-1'>
@@ -18,9 +18,9 @@
 					<div class='collapse navbar-collapse ot-1'
 						id='bs-example-navbar-collapse-1'>
 						<ul class='nav navbar-nav'>
-							<li><a href='about.html'>About</a></li>
-							<li><a href='faq.html'>FAQ</a></li>
-							<li><a href='contactus.html'>Contact Us</a></li>
+							<li><a href='static/about.html'>About</a></li>
+							<li><a href='static/faq.html'>FAQ</a></li>
+							<li><a href='static/contactus.html'>Contact Us</a></li>
 						</ul>
 						<div v-if='!isLoggedIn'>
 						<ul class='nav navbar-nav navbar-right ot-1'>
@@ -53,6 +53,9 @@
 </template>
 
 <script>
+import eventBus from '../components/eventBus.js'
+import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList} from '../ot.js';
+
 export default {
   name: 'navbar',
   data: function () {
@@ -60,6 +63,13 @@ export default {
       userModel: {user: {username: '', password: '', id: -1, first_name: '', last_name: '', role: ''}}
     };
   },
+  created: function() {
+  	var self = this;
+  	 eventBus.$on('userloggedin',function(obj){
+    	console.log(obj);
+		$.extend(true, self.userModel.user, obj);
+	});
+  }, 
   mounted: function () {
     $('#userDropdown').on('show.bs.dropdown', function (e) { // eslint-disable-line
       var target = $(e.target).attr('id');  // eslint-disable-line

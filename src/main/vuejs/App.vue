@@ -26,6 +26,9 @@ export default {
       self.currentOLView = 'login'
       document.body.classList.toggle('noscroll', true)
     })
+    eventBus.$on('userloggedin',function(obj){
+    	self.showOverlay.show = false
+    })
     eventBus.$on('hideOverlay', function (layerid) {
       switch (layerid) {
         case '0':
