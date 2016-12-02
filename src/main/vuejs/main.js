@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+require('bootstrap')
 import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList} from './ot.js';
 
 /* eslint-disable no-new */
