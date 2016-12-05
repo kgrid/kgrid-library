@@ -13,6 +13,10 @@ require('lodash');
 // require('./vendor/jquery-ui.js');
 
 import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
+import login from './components/login';  
+import objeditor from './components/objeditor'; 
+import objcreator from './components/objcreator'; 
+
 // debug mode
 Vue.config.debug = false;
 
@@ -25,8 +29,10 @@ Vue.use(VueRouter);
 // create router
 const routes = [
                 { path : '/', component : require('./components/home.vue')	},
-                { path : '/about', name : 'object', component : require('./components/about.vue')}
-                ];
+                { path : '/object/:uri', name : 'object', component : require('./components/objdetail.vue'), data: function(){
+                	   	console.log("current URI"+ this.$route.params.uri);
+                	    }	} 
+                	    ];
 
 const router = new VueRouter({
 	routes : routes,
@@ -45,7 +51,6 @@ var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
 var vm = new Vue({
 	router : router,
 	el: '#app',
-	components : { App },
 	data : {
 		currentOLView:'objeditor',
 		koModel:objModel,
@@ -53,11 +58,12 @@ var vm = new Vue({
 		showSecOverlay:{show:false},
 		userModel:userModel
 	},
-/*	components:{
+	components:{
+		App: App,
 		login : login,
 		objeditor : objeditor,
 		objcreator :objcreator
-	},*/
+	},
 	computed:{
 		isLoggedIn:function(){
 			var loggedin =false;
@@ -123,6 +129,12 @@ var vm = new Vue({
 		 eventBus.$on("return", function(){
 			router.push({ path: '/' });
 		 });
+		 eventBus.$on("objectSelected", function(obj){
+				router.push({ name:'object' ,params: { uri: obj.uri }});
+			 });
+			 
+		 
+		 
 			eventBus.$on("open", function(x){
 				self.showOverlay.show=true;
 				self.currentOLView='login';

@@ -151,8 +151,8 @@
 </div>
 </div>				
 					<ul>
-						<li v-for='(object,index) in orderedList' v-bind:key='index'><ko-tile :object='object'
-								:listsize='listSize' :tileindex='index' v-on:remove='orderedList.splice(index, 1)'></ko-tile></li>
+						<li v-for='(object,index) in orderedList' v-bind:key='index'><kotile :object='object'
+								:listsize='listSize' :tileindex='index' v-on:remove='orderedList.splice(index, 1)'></kotile></li>
 					</ul>
 				</div>
 			</applayout>
@@ -160,11 +160,13 @@
 </template>
 <script>
 import applayout from './applayout.vue';
-import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from '../ot.js';
+import kotile from './kotile.vue';
+import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
 import eventBus from '../components/eventBus.js';
+import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 
 export default {
-    nme: 'home',
+    name: 'home',
 	data : function() {
 		return {
 			sortKey : 'metadata.lastModified',
@@ -187,6 +189,7 @@ export default {
 	},
 	created : function() {
 		var self = this;
+		setBannerbkSize();
 		this.startdate = new Date('March 1, 2016').getTime();
 		this.enddate=new Date().getTime();
 		//$.extend(true,this.userModel,userModel);
@@ -348,6 +351,20 @@ export default {
 				 }
 		
 	},
-	components:{'applayout':applayout}
+	components:{
+		'applayout':applayout,
+		'kotile':kotile
+		}
 };
 </script>
+<style>
+#bannerbk{
+	position:fixed;
+	width:1024px;
+	top:85px;
+	text-align: center;
+}
+
+
+
+</style>
