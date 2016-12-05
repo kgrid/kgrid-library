@@ -1,5 +1,5 @@
 <template>
-  <div id='app'>
+  <div>
     <navbar></navbar>
  	<router-view></router-view>
     <div v-bind:is='currentOLView'  v-if='showOverlay.show'></div>
@@ -51,6 +51,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #777;
-  margin-top: 60px;
+  margin-top: 0px;
 }
 </style>

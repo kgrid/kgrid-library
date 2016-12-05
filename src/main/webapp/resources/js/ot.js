@@ -1,4 +1,5 @@
-export function retrieveObjectList(fillObjectList){
+'use strict';
+function retrieveObjectList(fillObjectList){
 		$.ajax({
 			type : "GET",
 			url : "/ObjectTeller/knowledgeObject",
@@ -10,13 +11,13 @@ export function retrieveObjectList(fillObjectList){
 				fillObjectList(response);
 			},
 			error : function(response) {
-				// errorHandler(response);
+				errorHandler(response);
 			}
 		});
 }
 
-export function retrieveObject(uri, section, fillObjectContent){
-	var endPoint = uri;
+function retrieveObject(uri, section, fillObjectContent){
+	var endPoint = uri; 
 	if(section!=""){
 		endPoint = endPoint+ "/"+section;
 	}
@@ -38,11 +39,10 @@ export function retrieveObject(uri, section, fillObjectContent){
 
 
 
-export function loadFieldsConfig(fillFieldsConfig){
-	$.getJSON("resources/json/fields.json", fillFieldsConfig);
+function loadFieldsConfig(fillFieldsConfig){
+	$.getJSON("json/fields.json", fillFieldsConfig);
 }
-
-export function overlayHeightResize() {
+function overlayHeightResize() {
 	var ol_pane_height = $(window).height();
 	var boardHeight = (ol_pane_height - 180);
 	var formHeight = (boardHeight - 80);
@@ -55,28 +55,28 @@ export function overlayHeightResize() {
 	return ol_pane_height;
 }
 
-export function autoresize() {
+function autoresize() {
 	var eid= $(this).text();
 	var sh = $(this)[0].scrollHeight+15;
 	$(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
 	$(this).css('height',sh+ 'px');    //Set new height
 }
 
-export function backToTop() {
+function backToTop() {
     $("html, body").animate({
         scrollTop: 0
     }, 600);
     return false;
 }
 
-export function setBannerbkSize(){
+function setBannerbkSize(){
   		var vp_width=$(window).width();
   		if(vp_width>1584){
   			$("#bannerbk").css("width",vp_width+"px");
   		}
   	}
-
-export function editTabNav(){
+ 
+function editTabNav(){
 	$("ul#edittabs li").click(function(e) {
 		var tabClass=".view";
 		if($(this).parent().hasClass("inEdit")){
@@ -95,7 +95,7 @@ export function editTabNav(){
 	});
 }
 
-export function getCurrentUser(getUser, errorHandler) {
+function getCurrentUser(getUser) {
 	$.ajax({
 		type : "GET",
 		url : "/ObjectTeller/user/me",
@@ -104,26 +104,26 @@ export function getCurrentUser(getUser, errorHandler) {
 			getUser(response);
 		},
 		error : function(response) {
-			errorHandler(response);
+			//errorHandler(response);
 		}
 	});
 }
 
-export function setstartdate(){
+function setstartdate(){
 	 var startdate=$("#startdatepicker").val();
 	 var sstamp=new Date(startdate).getTime();
 	 eventBus.$emit("startdate",sstamp);
 	console.log("Start date:"+ sstamp);
  }
 
-export function setenddate(){
+function setenddate(){
 				var enddate=$("#enddatepicker").val();
 				 var estamp=new Date(enddate).getTime();
 				eventBus.$emit("enddate",estamp);
 				console.log("End date:"+ estamp);
 			 }
-
-export function otScroll() {
+ 
+function otScroll() {
 	var padLeft = 280;
     var navOffset = $(".header").offset().top;
     $(".header").wrap('<div class="theadwrapper"></div>');
@@ -150,30 +150,29 @@ export function otScroll() {
        $(".fixed").css("left",-x+"px");
     });
 }
-
 $(document).ready(function() {
-	// $("#startdatepicker").datepicker();
-	// $("#enddatepicker").datepicker();
+	$("#startdatepicker").datepicker();
+	$("#enddatepicker").datepicker();
 	$("#startdatepicker").val("03/01/16");
 	$("#enddatepicker").val(new Date().format("shortDate"));
 	overlayHeightResize();
-//	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="tooltip"]').tooltip();
 	$('#userDropdown').on('show.bs.dropdown', function(e){
 		  var target = $(e.target).attr("id"); // activated tab
 		  $("img#dropdowniconimg").removeClass('down');
-		  $("img#dropdowniconimg").addClass('up');
+		  $("img#dropdowniconimg").addClass('up');	
 	});
 	$('#userDropdown').on('hide.bs.dropdown', function(e){
 		  var target = $(e.target).attr("id"); // activated tab
 		  $("img#dropdowniconimg").removeClass('up');
-		  $("img#dropdowniconimg").addClass('down');
+		  $("img#dropdowniconimg").addClass('down');		  
 	});
 	$(window).resize(function(){
 			overlayHeightResize();
 			setBannerbkSize()});
  	setBannerbkSize();
-    $('ul#tabs li:first').addClass('active');
-    $('ul#tab li:first').addClass('active');
+    $('ul#tabs li:first').addClass('active'); 
+    $('ul#tab li:first').addClass('active'); 
 	$("ul#tabs li.active a span").addClass("middleout");
-
+	    
 })
