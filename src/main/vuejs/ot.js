@@ -10,7 +10,7 @@ export function retrieveObjectList(fillObjectList){
 				fillObjectList(response);
 			},
 			error : function(response) {
-				errorHandler(response);
+				// errorHandler(response);
 			}
 		});
 }

@@ -159,7 +159,10 @@
 		</div>
 </template>
 <script>
-import applayout from './layout/applayout.vue';
+import applayout from './applayout.vue';
+import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from '../ot.js';
+import eventBus from '../components/eventBus.js';
+
 export default {
     nme: 'home',
 	data : function() {
