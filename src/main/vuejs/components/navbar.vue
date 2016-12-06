@@ -72,11 +72,13 @@ export default {
   }, 
   mounted: function () {
     $('#userDropdown').on('show.bs.dropdown', function (e) { // eslint-disable-line
+		console.log('dropdown shown..');
       var target = $(e.target).attr('id');  // eslint-disable-line
       $('img#dropdowniconimg').removeClass('down');  // eslint-disable-line
       $('img#dropdowniconimg').addClass('up');  // eslint-disable-line
     });
     $('#userDropdown').on('hide.bs.dropdown', function(e){ // eslint-disable-line
+    console.log('doprdown hidden');
       var target = $(e.target).attr('id');  // eslint-disable-line
       $('img#dropdowniconimg').removeClass('up');  // eslint-disable-line
       $('img#dropdowniconimg').addClass('down');  // eslint-disable-line

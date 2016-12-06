@@ -365,6 +365,37 @@ export default {
 	text-align: center;
 }
 
-
-
+input[type=text], input[type=password], input[type=textarea], .addtext a {
+    width: 900px;
+    height: 38px;
+    padding: 0px 16px;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    margin: 2px 0;
+    font-size: 14px;
+    color: #666666;
+    font-weight: 400;
+}
+input[id$="datepicker"] {
+    width: 150px;
+}
+select {
+    background: transparent;
+    background-image: url(../assets/dropdown_chevron.png);
+    background-repeat: no-repeat;
+    background-position: 98%;
+    line-height: 1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 6px;
+    height: 40px;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    margin: 2px 0;
+    font-size: 14px;
+    color: #666666;
+    font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
+}
 </style>

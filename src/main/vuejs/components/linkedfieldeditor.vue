@@ -42,35 +42,36 @@
 		</div>
 	</olpane>
 </template>
-	<script>
-	export default {
-		name:"linkedfieldeditor",
-		props:['inedit', 'srcfield'],
-		data: function(){
-			return {linkedField:{}}
-		},
-		mounted:function(){
+<script>
+import olpane from '../components/olpane';
+export default {
+	name:"linkedfieldeditor",
+	props:['inedit', 'srcfield'],
+	data: function(){
+		return {linkedField:{}}
+	},
+	components: {
+		olpane
+	},
+	mounted:function(){
+		this.linkedField=this.srcfield;
+	},
+	watch:{
+		srcfield:function(){
 			this.linkedField=this.srcfield;
-		},
-		watch:{
-			srcfield:function(){
-				this.linkedField=this.srcfield;
-			}
-		},
-		methods:{
-			undoEdit: function(){
-				this.linkedField= this.$parent.getOriginalField();
-			},
-			doneEdit:function(){
-				this.$emit('slideout',this.linkedField);
-			},
-			preview: function(){
-				var myWindow = window.open(this.linkedField.link, "myWindow", "width=400,height=700");   // Opens a new window
-				myWindow.focus();
-			}
 		}
-	};
-	
-	
-	
-	</script>
+	},
+	methods:{
+		undoEdit: function(){
+			this.linkedField= this.$parent.getOriginalField();
+		},
+		doneEdit:function(){
+			this.$emit('slideout',this.linkedField);
+		},
+		preview: function(){
+			var myWindow = window.open(this.linkedField.link, "myWindow", "width=400,height=700");   // Opens a new window
+			myWindow.focus();
+		}
+	}
+};
+</script>

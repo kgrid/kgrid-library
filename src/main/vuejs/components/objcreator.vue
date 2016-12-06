@@ -22,8 +22,10 @@
 	</olpane>
 </template>
 	<script>
+	import olpane from '../components/olpane';
 	import eventBus from '../components/eventBus.js';
 	import fileuploader from './fileuploader.vue';
+	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
 		name:"objcreator",
 		data:function(){
@@ -37,6 +39,7 @@
 		
 	},
 	components: {
+		olpane:olpane,
 		fileuploader:fileuploader
 		},
 	computed:{
@@ -105,3 +108,15 @@
 	}
 };
 	</script>
+	<style>
+	.done_btn {
+    height: 55px;
+    width: 910px;
+    /* right: 100px; */
+    margin: 55px auto;
+    background-color: #39b45a;
+    color: #fff;
+    border-radius: 10px;
+    position: absolute;
+}
+	</style>

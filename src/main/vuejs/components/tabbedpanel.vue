@@ -22,7 +22,7 @@
 			}
 		},
 		components: {
-		fieldtile:fieldtile
+			fieldtile:fieldtile
 		},
 		beforeCreate : function() {
 			var self = this;
@@ -47,3 +47,69 @@
 		}
 	};
 	</script>
+<style>
+ul#tab {
+    list-style-type: none;
+    margin: 22px 0px 0px 0px;
+    padding: 0;
+    width: 100%;
+    float: left;
+    min-height: 800px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+input[type=text]:disabled {
+	border: 1px solid #fff;
+	background-color: #fff;
+	color: #666666;
+	font-weight: 400;
+	font-size: 14px;
+}
+.addtext textarea {
+	width: 900px;
+	min-height:60px;
+	resize:none;
+	padding:8px 16px;
+	border: 1px solid #e6e6e6;
+	border-radius: 10px;
+	color:#666666;
+  	margin:2px 0;
+  	font-size: 14px;
+  	overflow-y:auto;
+  	line-height:1.4em;
+  	   	text-overflow: clip;
+   	white-space: pre-wrap;
+   	word-break: break-word;
+   	background-color: #fff;
+    font-weight: 400;
+}
+
+.addtext textarea:disabled{
+	border: 1px solid #fff;
+}
+
+.addtext a {
+    width: 100%;
+    border: 1px solid #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 38px;
+    padding: 0px 16px;
+    border-radius: 10px;
+    margin: 2px 0;
+    font-size: 14px;
+    color: #666666;
+    font-weight: 400;
+}
+ul.list li {
+    display: block;
+    padding: 0px 16px;
+}
+a {
+	text-decoration: none;
+    background-color: transparent;
+}
+
+</style>
+	
