@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<link rel="shortcut icon"
+	href="images/MiniIconObjectTeller.ico" />
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+<!-- Optional theme -->
+<!-- <link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous"> -->
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/bannercontent.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/datagrid.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/button.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/l_overlay.css"
+	type="text/css" />
+<!-- <link rel="stylesheet" href="css/navigation.css"
+	type="text/css" /> -->
+<link rel="stylesheet" href="css/librarysetting.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/formstyle.css"
+	type="text/css" />
+<link rel="stylesheet" href="css/tab.css" type="text/css" />
+<link rel="stylesheet" href="css/ot.css" type="text/css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<title>OBJECT TELLER in Vue </title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+<script
+	src="https://unpkg.com/vue@2.0.2/dist/vue.js"></script>
+<script type="text/javascript" src="https://unpkg.com/vue-router@2.0.0"></script>
+<script type="text/javascript" src="js/lodash.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="js/ot.js"></script>
+<script src="js/date.format.js"></script>
+</head>
+<body>
+	<div id="app">
+		<navbar></navbar>
+		<router-view></router-view>
+		<div v-bind:is='currentOLView'  v-if="showOverlay.show"></div>
+	</div>
+	<template id="layout">
+		<div class="ot-content">
+			<button class="greenroundbutton ot-backtotop" v-on:click='backToTop()'>
+				<img src="images/Chevron_Icon.png">
+			</button>
+			<div class="whitebacking">
+				<div class="wrapper">
+					<div class="ot-banner" v-if="nothelper">
+						<slot name="banner"></slot>		
+			</div></div></div>
+			<div class="header" v-if="nothelper">
+				<div class="headercontainer">
+					<div class="headercol">
+						<slot name="header"></slot> 
+			</div></div></div>
+			<div class="e6backing">
+				<div class="wrapper">
+					<div class="datagrid">
+						<slot name="maincontent"></slot>
+					</div>
+					<div class="m_logo_footer" v-if="nothelper==false">
+						<img src="images/blue-transparentbg.png" width="60px"	height="auto" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</template>
+	<template id="ko-list">
+		<div class="content">
+			<div id="bannerbk">
+				<img src="images/bannerBackground.png">
+			</div>
+			<appLayout :nothelper="true">
+				<div slot="banner">
+					<h1>
+						ObjectTeller supports Health Knowledge Services<br> <small>by
+					providing a repository toolkit for storing, curating, managing and
+					making computable health knowledge accessible for learning health
+					systems. </small>
+					</h1>
+				</div>
+				<div slot="header">
+				<div v-show="isLoggedIn">
+					<button class="greenroundbutton ot-newobj"  v-on:click="addObject">
+						<img src="images/Plus_Icon.png"/>
+					</button>
+				</div>
+				<div class="row">
+						<div class="col-md-6 ot-search">
+							<span class="ot-glybtn glyphicon glyphicon-search"></span> <input
+								placeholder="Search" v-model="newstring"  @keyup.enter="addFilterString"/>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-2 ot-count">{{countString}}</div>
+						<div class="col-md-2">
+							<select class="ot-select" v-model="sortKey">
+								<option value="metadata.title">Title</option>
+								<option value="uri">Object ID</option>
+								<option value="metadata.lastModified">Last Updated</option>
+							</select>
+						</div>
+						<div class="col-md-1">
+							<button v-on:click="toggleOrder()">
+								<span v-if="orderAsc"
+									class="ot-glybtn glyphicon glyphicon-sort-by-attributes"></span>
+								<span v-else
+									class="ot-glybtn glyphicon glyphicon-sort-by-attributes-alt"></span>
+							</button>
+						</div>
+					</div>
+					</div>
+				<div slot="maincontent">
+
+		<div id="filtercontrol">
+		<div class="row">
+			<div class="col-md-2">
+				<div id="filterBtn">
+				<a href="#filterpanel" data-toggle="collapse"> Filter </a></div>
+			</div>
+			<div class="col-md-10">
+				<section class="main" v-show="filterStrings.length">
+					<ul class="filterlist">
+						<li v-for="filterstring in filterStrings" class="todo" :key="filterstring.id">
+							<div class="view">
+								<button class="destroy" @click="removeString(filterstring)">
+								<span class="ot-small-glybtn glyphicon glyphicon-remove"></span>
+								</button>
+								<label>{{ filterstring.title }}</label>
+							</div> 
+						</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+		<div id="filterpanel" class="collapse">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row"><p>Search only within the following:</p></div>
+					<div class="row">
+						<div class="col-md-5">
+							<input type="checkbox" v-model="check.keywords" /> <label
+								for="keywordcheck">Keywords</label> 
+						</div>
+						<div class="col-md-7">
+							<input type="checkbox" v-model="check.objectID" /> <label
+								for="keywordcheck">Object ID</label> 
+						</div>
+						
+					</div>
+					<div class="row">
+					<div class="col-md-5">
+					<input type="checkbox" v-model="check.owners" /> 
+					<label for="keywordcheck">Owners</label></div>
+					<div class="col-md-7">
+							<input type="checkbox" disabled v-model="check.citations" /> <label
+								for="keywordcheck">Citations</label> 
+						</div>
+					</div>				
+					<div class="row">
+					<div class="col-md-5">
+						
+					<input type="checkbox" v-model="check.title" /> <label
+								for="keywordcheck">Title</label>
+					
+					</div>
+					<div class="col-md-7">
+							<input type="checkbox"
+								v-model="check.contributors" /> <label for="keywordcheck">Contributors</label>
+								</div>
+						</div>
+											<div class="row">
+					
+					<div class="col-md-7">
+							<input type="checkbox" disabled v-model="showmyobj" /> <label
+								for="keywordcheck">View only My Knowledge Objects</label>
+								</div>		
+								<div class="col-md-5">				
+					</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="row">
+							<p>Show Knowledge Object:</p></div>
+						<div class="row">
+							
+							<div class="col-md-1"></div>
+					<div class="col-md-4"><input type="checkbox" id="pub" v-model="check.pub" /> <label
+								for="pub">Public</label> </div>
+							<div class="col-md-21"></div>
+					<div class="col-md-4">
+								<input type="checkbox" v-if="isLoggedIn"  id = "pri" v-model="check.pri" /> <label
+								v-if="isLoggedIn" for="pri">Private</label></div>
+								<div class="col-md-1"></div>
+								</div>
+					<div class="row"><p>Select the type of date:</p></div>
+					<div class="row datetype">
+					<div class="col-md-1"></div>
+					<div class="col-md-4">
+						<label class="radio-inline"><input type="radio" value="lastModified" v-model="datetype">Last Updated</label>
+					</div>
+					<div class="col-md-2"></div>
+					<div class="col-md-4">
+						<label class="radio-inline"><input type="radio" value="createdOn" v-model="datetype">Created</label>
+					</div>
+					<div class="col-md-1"></div>
+					</div>
+					<div class="row"><p>Search within the following date range:</p></div>
+					<div class="row">
+						<div class="col-md-6">
+							<p>Start <input type="text" onchange="setstartdate()" id="startdatepicker"></p>
+						</div>
+						<div class="col-md-6">
+							<p>End <input type="text" onchange="setenddate()" id="enddatepicker"></p>
+						</div>
+					</div>
+			</div>
+		</div>
+</div>
+</div>				
+					<ul>
+						<li v-for="(object,index) in orderedList" v-bind:key="index"><ko-tile :object="object"
+								:listsize="listSize" :tileindex="index" v-on:remove="orderedList.splice(index, 1)"></ko-tile></li>
+					</ul>
+				</div>
+			</appLayout>
+		</div>
+	</template>
+	<template id="ko-tile-template"> 
+		<a :href="objLink" v-on:click="return selected();">
+			<div class="container ot-tile" v-bind:id="object.uri">
+				<div class="row ot-2">
+					<div class="col-md-1 ot-type">
+						<img v-if="object.metadata.published" src="images/LittleGreenDot.png" width="10px"	height="auto" />
+					</div>
+					<div class="col-md-10 ot-title" data-toggle="tooltip"
+							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
+					</div>
+					<div class="col-md-1 ot-empty ">
+						<!-- <button class="edit" v-on:click.stop="deleteObject">
+							<span class="glyphicon glyphicon glyphicon-trash"></span>
+						</button> -->
+					</div>
+				</div>
+				<div class="row ot-2">
+					<div class="col-md-1 ot-empty">
+<!-- 					{{tileindex}} of {{listsize}} -->
+					</div>
+					<div class="col-md-11 ot-owner">{{object.metadata.owner}}</div>
+				</div>
+				<div class="row ot-2">
+					<div class="col-md-1 ot-empty "></div>
+					<div class="col-md-5 ot-keywords">Keyword:{{object.metadata.keywords}}</div>
+					<div class="col-md-3 ot-id">
+						<span class="ot-left">Object ID: {{object.uri}}</span>
+					</div>
+					<div class="col-md-3 ot-udate">
+						<span class="ot-right">Last Updated: <span v-text="formattedlastModified"></span></span>
+					</div>
+				</div>
+			</div>
+		</a> 
+	</template>
+	<template id="obj-detail">
+	<div class="content">
+		<appLayout :nothelper="true">
+		<div slot="banner">
+		<div class="row ot-detail-spacer"></div>
+		<div class="row ot-detail-smallrow">
+			<div class="col-md-3">
+			<div id="goback">
+				<div id="backButton">
+					<a @click="returntolibrary">BACK TO THE LIBRARY</a>
+				</div>
+			</div>
+			</div>
+			<div class="col-md-5"></div>
+			<div class="col-md-4">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+						<label class="ot-pub radio-inline"><input type="radio" value="false" v-on:click="unpublish"/>
+							<span v-if="isPublic">PRIVATE</span>
+							<span class="active middleout" v-else>PRIVATE</span>
+						</label>
+			</div>
+			<div class="col-md-4">
+						<label class="ot-pub radio-inline"><input type="radio" value="true" v-on:click="publish"/><img src="images/LittleGreenDot.png">
+							<span class="active middleout"  v-if="isPublic">PUBLIC</span>
+							<span v-else>PUBLIC</span>
+						</label>
+			</div>
+				
+			</div>
+			</div>
+					<div class="row ot-detail-titlerow">
+			<div id="ko-title">
+				<div style="width: 10px; hieght: 60px; display: inline-block;">
+					<img v-if="objModel.object.metadata.published"
+						src="images/LittleGreenDot.png" width="10px"
+						height="auto" />
+				</div>
+				<h1>
+					<small id="page_title_v">{{objModel.object.metadata.title}}</small>
+				</h1>
+			</div>
+			</div>
+					<div class="row ot-detail-daterow">
+							<div class="col-md-3">
+					<p class="date-title">Object ID:</p>
+					<p class="date-data">
+						<span>{{objModel.object.uri}}</span>
+					</p>
+				</div>
+				<div class="col-md-2">
+					<p class="date-title">Last Updated:</p>
+					<p class="date-data">
+						<span v-text="formattedUpdateDate"></span>
+					</p>
+				</div>
+				<div class="col-md-2">
+					<p class="date-title">Created On:</p>
+					<p class="date-data">
+						<span v-text="formattedCreateDate"></span>
+					</p>
+				</div>
+				<div class="col-md-5">
+				</div>
+						</div>
+		</div>
+		<div slot="header">
+					<ul class="nav nav-tabs view" role="tablist" id="tabs">
+						<li v-for="section in sections" class='labels' role='presentation'><a :href="section.id" :aria-controls="section.name" role='tab' data-toggle="tab">{{section.label}}</a></li>
+						<li role="presentation" class="labels accessLevelOne"><a
+							href="#" aria-controls="logdata" role="tab" data-toggle="tab">
+								<div class="labels iconBtn accessLevelOne">
+									<img class="hover-out" src="images/More_Icon_Light-01.png" /> 
+									<img class="hover-in" style="display: none;" src="images/More_Icon_Dark-01.png" />
+								</div>
+						</a></li>
+					</ul>
+					<div class="inline editwrapper accessLevelOne" id="objBtns"
+						style="top: 10px; right: 10px; position: absolute;">
+						<button class="edit" id="metadataeditBtn" v-on:click="editObj">EDIT</button>
+						<button class="edit" id="deleteButton"
+							v-on:click="deleteObject">DELETE</button>
+						<a class="edit" id="downloadButton" v-bind:href="downloadLink">DOWNLOAD</a>
+			</div>
+		</div>
+			<div slot="maincontent">
+					<ul class="tab-content view" id="tab">
+						<li v-for="section in sections" v-bind:id="section.name" role="tabpanel"
+							class="tab-pane">
+								<tab-pane v-bind:section="section.name" v-bind:object="objModel.object" ></tab-pane>
+						</li>
+					</ul>
+				</div>
+			</appLayout>
+	</div>
+	</template>
+	<template id= "tab-panel-template">
+		<div class="tab-content view-obj">
+			<ul>
+				<li class="ot-viewlist" v-for="field in filteredFields">
+					<field-tile :field="field" :object="object" :isDisabled=isDisabled></field-tile>
+				</li>
+			</ul>
+		</div>
+	</template>
+	<template id="field-tile-template">
+	<div class="addtext" :id="field.name">
+		<h4>{{field.title}}</h4>
+		<input :type="field.type" class="metaEdit" disabled v-bind:value="value" 
+			v-if="isInput" />
+		<textarea class="metaEdit autosize" disabled  v-bind:value="value"
+			v-if="isTextArea">{{value}}</textarea>
+		<linkedfield-tile v-if="isLicense" v-bind:link="value.licenseLink"
+			v-bind:value="value.licenseName"></linkedfield-tile>
+		<div class='entryDisplayArea' id='citation_entries' v-if="isCitation">
+			<ul class="list">
+				<li v-for="citation in value">
+				<linkedfield-tile :value="citation.citation_title" :link="citation.citation_at"></linkedfield-tile>
+				</li>
+			</ul>
+		</div>
+	</div>
+	</template>
+	<template id="linkedfield-tile-template"> 
+	   <a target="_blank" v-bind:href="link">{{value}}</a> 
+	</template>
+	<template id="ol-pane-template">
+	<transition name="modal">
+	<div class="modal-mask">
+	<div class="ol_pane">
+		<div class="sidebar_close">
+			<h3>CLOSE</h3>
+			<button class="greenroundbutton" id="close_overlay"	v-on:click="closeOverlay">
+				<img src="images/Close_Icon.png" >
+			</button>
+		</div>
+		<div class="overlay-top">
+		</div>
+		<div class="overlay-board">
+				<div class="overlay-title">
+					<slot name="ol-title"></slot>
+				</div>
+				<div class="entryform" id="entry_form">
+					<slot name="ol-form"></slot>
+				</div>
+		</div>
+		<div class="overlay-alert">
+					<div class="alert-box processing"><slot name="ol-processing"></slot></div>
+					<div class="alert-box success"><slot name="ol-success"></slot></div>
+					<div class="alert-box failure"><slot name="ol-failure"></slot></div>
+					<div class="alert-box warning"><slot name="ol-warning"></slot></div>
+		</div>
+	</div>
+	</div>
+	</transition>
+</template>
+<template id="ol-narrow-pane-template">
+<transition name="modal">
+	<div class="modal-mask">
+	<div class="ol_narrow_pane">
+		<div class="sidebar_close">
+			<h3>CLOSE</h3>
+			<button class="greenroundbutton" id="close_overlay"	v-on:click="closeOverlay">
+				<img src="images/Close_Icon.png" >
+			</button>
+		</div>
+		<div class="overlay-top">
+		</div>
+		<div class="overlay-board">
+				<div class="overlay-title">
+					<slot name="ol-title"></slot>
+				</div>
+				<div class="entryform" id="entry_form">
+					<slot name="ol-form"></slot>
+				</div>
+		</div>
+		<div class="overlay-alert">
+					<div class="alert-box processing"><slot name="ol-processing"></slot></div>
+					<div class="alert-box success"><slot name="ol-success"></slot></div>
+					<div class="alert-box failure"><slot name="ol-failure"></slot></div>
+					<div class="alert-box warning"><slot name="ol-warning"></slot></div>
+		</div>
+	</div>
+	</div>
+	</transition>
+</template>
+<template id="objcreator_overlay">
+	<olpane layerid=0>
+		<div slot="ol-title"><h3>Create New Knowledge Object</h3></div>
+		<div slot="ol-form">
+			<div class="addtext">
+				<h4>Please enter a title for the new knowledge object, then	click on "Create Object".</h4>
+					<input type="text" maxlength="140" class="metaEdit inEdit" 
+						v-model="newobjModel.object.metadata.title" /> <span>140/140</span>
+					<h4> - Or - </h4>
+				</div>
+				<div>
+					<fileuploader section="NEW_OBJECT" v-on:filechange="updatedisplay" :src='jsonobj'></fileuploader>
+				</div>
+				<div>
+					<button class="done_btn" v-on:click="createObj">Create Object</button>
+				</div>
+			</div>
+		<div slot="ol-processing">Processing...</div>
+		<div slot="ol-success">New object succesfully created!!! Object ID:{{newobjModel.object.uri}}</div>
+		<div slot="ol-failure">Creation of new object Failed! </div>
+		<div slot="ol-warning">Warning !!!</div>
+	</olpane>
+</template>
+<template id="objEditor_overlay">
+ <div>
+	<olpane layerid=0> 
+		<div slot="ol-title"><h3>{{editObjModel.object.metadata.title}}</h3>
+			<div id="barcontainer">
+				<ul class="inEdit" id="edittabs">
+					<li class="labels active">METADATA</li>
+					<li class="labels">PAYLOAD</li>
+					<li class="labels">INPUT</li>
+					<li class="labels">OUTPUT</li>
+				</ul>
+				<div id="editWrapper">
+					<button class="edit" v-on:click="undoEdit" id="cancelBtn">UNDO</button>
+					<button class="edit" id="saveObjButton" v-on:click="saveObj">SAVE&CLOSE</button>
+								</div>
+			</div>
+		</div>
+		<div slot="ol-form">
+		<ul class="inEdit" id="edittab">
+			<li class="active current-tab" id="metadata">
+				<fieldset class="fieldcontainer" id="first">
+					<div id="metadata_fields">
+						<div class="addtext">
+							<h4>TITLE</h4>
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" />
+							</div>
+						<div class="addtext">
+							<h4>DESCRIPTION</h4>
+							<textarea class="metaEdit" v-model="editObjModel.object.metadata.description"></textarea>
+						</div>
+						<div class="addtext">
+							<h4>KEYWORDS</h4>
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.keywords" />
+						</div>
+						<div class="addtext">
+							<h4>OWNERS</h4>
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.owner" />
+						</div>
+						<div class="addtext">
+							<h4>CONTRIBUTORS</h4>
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" />
+						</div>
+						<div class="addtext">
+							<h4>LICENSE</h4>
+							<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName"><button class="mediumgreenroundbutton" v-on:click="addLicense"><img src="images/Plus_Icon.png" width="12px"></button></div>
+							<div class="row" v-else>
+								<div class="col-md-9">
+									<linkedfield-tile v-bind:link="editObjModel.object.metadata.license.licenseLink"
+										v-bind:value="editObjModel.object.metadata.license.licenseName"></linkedfield-tile>
+								</div>
+								<div class="col-md-3">
+									<button class="edit" v-on:click="selectLicense(editObjModel.object.metadata.license)">EDIT</button>
+									<button class="edit" v-on:click="deleteLicense">DELETE</button>
+								</div>
+							</div>
+						</div>
+						<div class="addtext">
+							<h4>CITATIONS</h4>
+							<button class="mediumgreenroundbutton" v-on:click="addCitation"><img src="images/Plus_Icon.png" width="12px"></button>
+							<div class='entryArea'>
+								<ul id="citationlist" class="list">
+									<li v-for="(citation,index) in editObjModel.object.metadata.citations" >
+										<div class="row">
+											<div class="col-md-10">
+												<linkedfield-tile :value="citation.citation_title" :link="citation.citation_at"></linkedfield-tile>
+											</div>
+											<div class="col-md-2">
+												<button class="edit" v-on:click="selectCitation(citation)">EDIT</button>
+												<button class="edit" v-on:click="deleteCitation(citation)">DELETE</button>
+											</div>
+										</div>	
+									</li>
+								</ul>
+							</div>
+						</div>
+					</fieldset>
+				</li>
+				<li id="payload">
+						<div id="payload_fields">
+							<div class="addtext">
+								<h4> FUNCTION NAME (REQUIRED)
+								</h4>
+								<div class="addtext">
+									<input class="textbox inEdit" type="text" v-model="editObjModel.object.payload.functionName"
+										placeholder="one instance only" maxlength="140"><span>140/140</span>
+								</div>
+								</div>
+								<div class="addtext">
+									<h4>ENGINE TYPE
+									</h4>
+									<select required class="options" v-model="editObjModel.object.payload.engineType">
+										<option value="Python">PYTHON</option>
+									</select> <br>
+								</div>
+								<fileuploader section="payload" v-on:filechange="updatedisplay" :src='editObjModel.object.payload.content'></fileuploader>
+								</div>
+
+
+						</li>
+					<li id="input">
+ 							<div id="input_fields">
+								<fileuploader section="inputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.inputMessage'></fileuploader>
+							</div>
+					</li>
+					<li id="output">
+					<div id="output_fields">
+							<fileuploader section="outputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.outputMessage'></fileuploader>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div slot="ol-processing">Processing...</div>
+		<div slot="ol-success">Update Successful !!!</div>
+		<div slot="ol-failure">Update Failure! </div>
+		<div slot="ol-warning">Warning !!!</div>
+	</olpane>
+	<div v-if="showSecOverlay.show">
+			<linkedfieldeditor v-bind:inedit="inEdit" v-bind:srcfield="srcFieldModel.object" v-on:slideout="update"></linkedfieldeditor>
+	</div>
+ </div>
+</template>
+<template id="file_uploader"> 
+	<div v-if="!selectedfile">
+	<div class="dropfile">
+			<div class="upload-direction">
+				<input type="file" :id="selectfile" @change="onFileChange" class="inputfile" 
+										data-multiple-caption="{count} files selected" multiple style="display: none;"/>
+				<label :for="selectfile" id="filecount"> 
+					<img src="images/Upload_Icon.png">
+					<p class="green">CHOOSE_FILE_FOR_{{section}}</p>
+				</label>
+			</div>
+	</div></div>
+	<div v-else>
+		<button v-on:click="removeOutputFile">Remove</button>
+		<textarea @change="inputchange" spellcheck=false v-model="message.msg"></textarea>
+	</div>
+</template>  
+<template id="login_overlay">
+	<olnarrowpane layerid=0> 
+		<div slot="ol-title"><h3>Log in</h3></div>
+		<div slot="ol-form">
+			<fieldset class="fieldcontainer" id="first">
+								<div class="loginField">
+									<h4 title="username">USERNAME</h4>
+									<div class="addtext">
+										<input class="textbox login" name="username" v-model="userModel.user.username" type="text" spellcheck="false"
+											placeholder="Enter your email" autofocus
+											maxlength="140">
+<!-- 											<button class="edit_btn" >Need to create an account?</button>
+ -->									</div>
+									<label class="errorLabel" for="username"> </label>
+								</div>
+								<div class="loginField">
+									<h4 title="password">PASSWORD</h4>
+									<div class="addtext">
+										<input class="textbox login" name="password" v-model="userModel.user.password"
+											type="password" spellcheck="false"
+											placeholder="Enter your password"  @keyup.enter="userlogin"
+											maxlength="140">
+											<!-- <button class="edit_btn">Forgot Password?</button> -->
+									</div>
+									<label class="errorLabel" for="password"> </label>
+								</div>
+								<div class="loginField">
+									<button class="login" @click="userlogin">LOG IN</button>
+								</div>
+				</fieldset>
+		</div>
+		<div slot="ol-processing">Log in ...</div>
+		<div slot="ol-success">Login Successful !!!</div>
+		<div slot="ol-failure">Unable to login. Please check your username and password! </div>
+		<div slot="ol-warning">Warning !!!</div>
+	</olpane>
+</template>
+<template id="linkedfield_editor">
+	<olpane layerid=1> 
+		<div slot="ol-title"><h3>Add/Edit {{inedit}}</h3>
+		<div classs="row">
+			<div class="col-md-9"></div>
+			<div class="col-md-3">
+				<button class="edit" v-on:click="undoEdit">UNDO</button>
+				<button class="edit" v-on:click="doneEdit">DONE</button>
+			</div>
+			</div>
+		
+		</div>
+		<div slot="ol-form">
+			<fieldset class="fieldcontainer" id="linkedfields">
+								<div class="licenseField">
+									<h4 title="license_title">{{inedit}} TITLE</h4>
+									<div class="addtext">
+										<input class="textbox inEdit" v-model="linkedField.title" type="text" spellcheck="false"
+											placeholder="Enter Title"
+											maxlength="140"/>
+										</div>
+									<label class="errorLabel" for="username"> </label>
+								</div>
+								<div class="licenseField">
+									<h4 title="citation_link">HYPERLINK</h4>
+									<button class="inline edit" v-on:click="preview">PREVIEW</button>
+									<div class="addtext">
+										<input class="textbox inEdit" v-model="linkedField.link"
+											type="text" spellcheck="false"
+											placeholder="Please provide the URL. "
+											maxlength="140"/><span>140/140</span>
+									</div>
+									<label class="errorLabel" for="license_link"> </label>
+								</div>
+								<div>
+									<h4>DETAIL</h4>
+									<div class="addtext">
+									The content will be displayed in a new window.
+
+								</div>
+				</fieldset>
+		</div>
+	</olpane>
+</template>
+<template id="navbar">
+		<div class="ot-nav">
+			<a class="navbar-brand ot-1 .router-link-active" href="home.html">
+				<img alt="Brand" src="images/logo.png">
+			</a>
+			<nav class="navbar navbar-default navbar-fixed-top ot-1">
+				<div class="container-fluid ot-1">
+					<div class="navbar-header ot-1">
+						<button type="button" class="navbar-toggle collapsed ot-1"
+							data-toggle="collapse"
+							data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="collapse navbar-collapse ot-1"
+						id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li><a href="about.html">About</a></li>
+							<li><a href="faq.html">FAQ</a></li>
+							<li><a href="contactus.html">Contact Us</a></li>
+
+						</ul>
+						<div v-if="!isLoggedIn">
+						<ul class="nav navbar-nav navbar-right ot-1">
+							<li class="login-link" v-on:click="login_click"><a>Log In</a></li>
+							<li class="signup-link"><a id="signupBtn">Sign Up</a></li>
+						</ul>
+						</div>
+						<div v-else>
+							<ul class="nav navbar-nav navbar-right ot-1">
+								<li class="login-link1">
+									<div class="dropdown" id="userDropdown" style="height:50px;margin-top:5px;">
+										<a id="dLabel" data-toggle="dropdown" role="button">Hello,
+											{{userModel.user.first_name}}<span><img
+											id="dropdowniconimg" class="down"
+											src="images/Chevron_Icon.png" width="12px" /></span></a> 
+										<ul class="dropdown-menu" aria-labelledby="dLabel">
+											<li><a id="logoutBtn" v-on:click="userlogout">Logout</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+		</div>
+</template>
+<script src="js/ot-vue.js"></script>
+</body>
+</html>

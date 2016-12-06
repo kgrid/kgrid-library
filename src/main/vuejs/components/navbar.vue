@@ -55,6 +55,7 @@
 <script>
 import eventBus from '../components/eventBus.js'
 import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList} from '../ot.js';
+import { userModel } from '../components/models.js'
 
 export default {
   name: 'navbar',
