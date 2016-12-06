@@ -28,12 +28,12 @@ export default {
   },
   beforeCreate:function(){
 		var self=this;
-/*		getCurrentUser(function(response) {
+		getCurrentUser(function(response) {
 			if(response!="")
 				$.extend(true, self.userModel.user, response);
 		},function(response) {
 			console.log(response);
-		});*/
+		});
 	},
   created: function () {
     var self = this  // eslint-disable-line

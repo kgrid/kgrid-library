@@ -197,7 +197,7 @@ export default {
 					xhrObj.setRequestHeader("Accept", "application/json");
 				},
 				type : "PUT",
-				url : "../knowledgeObject/"+this.editObjModel.object.uri,
+				url : "/ObjectTeller/knowledgeObject/"+this.editObjModel.object.uri,
 				data : text,
 				dataType : "json",
 				success : function(response) {
