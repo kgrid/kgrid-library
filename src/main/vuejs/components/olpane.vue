@@ -47,7 +47,7 @@ export default {
 	},
 	methods:{
 		closeOverlay:function(){
-			eventBus.$emit('slideout',this.layerid);
+			eventBus.$emit('hideOverlay',this.layerid);
 		},
 		openOverlay:function(){
 			this.find(".ol_pane").animate({

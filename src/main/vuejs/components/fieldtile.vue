@@ -26,6 +26,9 @@
 				data:function(){
 						return {}
 					},
+				components:{
+					linkedfieldtile
+					},
 				computed : {
 						value : function() {
 							var propertyValue = "";
@@ -61,7 +64,4 @@
 					    }
 					}
 				};
-	
-	
-	
-	</script>
+</script>

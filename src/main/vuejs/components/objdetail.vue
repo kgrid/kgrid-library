@@ -237,3 +237,25 @@
 		}
 };
 	</script>
+<style>
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #666666;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-bottom-color: transparent;
+}
+ul#tabs li.middleout:after {
+    width: 100%;
+    background: #39b45a;
+}
+ul#tabs li:after {
+    content: '';
+    display: block;
+    margin: auto;
+    height: 2px;
+    width: 0px;
+    background: transparent;
+    transition: width .5s ease, background-color .5s ease;
+}
+	</style>
