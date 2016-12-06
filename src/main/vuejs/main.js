@@ -84,11 +84,6 @@ var vm = new Vue({
 	},
 	created: function(){
 		var self=this;
-		eventBus.$on('editObj', function(obj){
-			self.currentOLView='objeditor';
-			self.showOverlay.show=true;
-			document.body.classList.toggle('noscroll', true);
-		});
 		eventBus.$on('objSaved', function(obj){
 			self.updateObject(obj);
 			self.showOverlay.show=false;

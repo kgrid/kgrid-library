@@ -42,7 +42,7 @@
 						</div>
 						<div class="addtext">
 							<h4>LICENSE</h4>
-							<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName"><button class="mediumgreenroundbutton" v-on:click="addLicense"><img src="images/Plus_Icon.png" width="12px"></button></div>
+							<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName"><button class="mediumgreenroundbutton" v-on:click="addLicense"><img src="../assets/Plus_Icon.png" width="12px"></button></div>
 							<div class="row" v-else>
 								<div class="col-md-9">
 									<linkedfieldtile v-bind:link="editObjModel.object.metadata.license.licenseLink"
@@ -56,7 +56,7 @@
 						</div>
 						<div class="addtext">
 							<h4>CITATIONS</h4>
-							<button class="mediumgreenroundbutton" v-on:click="addCitation"><img src="images/Plus_Icon.png" width="12px"></button>
+							<button class="mediumgreenroundbutton" v-on:click="addCitation"><img src="../assets/Plus_Icon.png" width="12px"></button>
 							<div class='entryArea'>
 								<ul id="citationlist" class="list">
 									<li v-for="(citation,index) in editObjModel.object.metadata.citations" >
@@ -120,12 +120,13 @@
  </div>
 </template>
 <script>
+import olpane from '../components/olpane';
 import eventBus from '../components/eventBus.js';
 import fileuploader from './fileuploader.vue';
 import linkedfieldeditor from './linkedfieldeditor.vue'
 import linkedfieldtile from './linkedfield.vue'
 import { objModel, editObjModel, sections, userModel } from '../components/models.js'
-
+import { editTabNav } from '../ot.js';
 export default {
   	name: "objeditor",
 	data:function(){
@@ -140,6 +141,7 @@ export default {
 		}
 	},
 	components: {
+	olpane:olpane,
 	fileuploader:fileuploader,
 	linkedfieldeditor:linkedfieldeditor
 	},

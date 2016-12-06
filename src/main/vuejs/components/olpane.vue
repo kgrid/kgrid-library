@@ -1,11 +1,10 @@
 <template id="ol-pane-template">
-	<transition name="modal">
 	<div class="modal-mask">
 	<div class="ol_pane">
 		<div class="sidebar_close">
 			<h3>CLOSE</h3>
 			<button class="greenroundbutton" id="close_overlay"	v-on:click="closeOverlay">
-				<img src="images/Close_Icon.png" >
+				<img src="../assets/Close_Icon.png" >
 			</button>
 		</div>
 		<div class="overlay-top">
@@ -26,7 +25,6 @@
 		</div>
 	</div>
 	</div>
-	</transition>
 </template>
 <script>
 import eventBus from '../components/eventBus.js';
@@ -35,6 +33,10 @@ export default {
   	props:['layerid', 'left'],
 	created:function(){
 		var self=this;
+   		eventBus.$on('openOverlay', function () {
+      		document.body.classList.toggle('noscroll', true);
+      		self.$el.style.right = '0px';
+    	});
 		eventBus.$on("open",function(x){
 //			console.log(x);
 			$(".modal-mask").css('opacity',1);
@@ -56,10 +58,10 @@ export default {
 };
 </script>
 <style>
-.ol_narrow_pane{
+.ol_pane{
 	position: absolute;
     right:0px;
-    width: 540px;
+    width: 1024px;
      margin: 0px auto;
     background-color: #fff;
     height: 100%;
@@ -109,7 +111,7 @@ export default {
 
 .overlay-top {
     height: 120px;
-    width: 480px;
+    width: 960px;
     position: absolute;
     top: 0;
     left: 60px;
@@ -122,7 +124,7 @@ export default {
 .overlay-board {
     position: absolute;
     background: white;
-    width: 480px;
+    width: 960px;
     top: 120px;
     left: 60px;
     padding: 0px 0px;
@@ -131,7 +133,7 @@ export default {
 
 .overlay-alert {
     height: 60px;
-    width: 480px;
+    width: 960px;
     position: absolute;
     bottom:0px;
     left: 60px;
@@ -146,7 +148,7 @@ export default {
     margin-bottom: 20px;
     border: 1px solid transparent;
     border-radius: 10px;
-    width:240px;
+    width:400px;
 }
 
 .success {

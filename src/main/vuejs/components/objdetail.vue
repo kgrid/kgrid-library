@@ -96,7 +96,7 @@
 	</template>
 	<script>
 	import applayout from './applayout.vue';
-	import tabpane from './components/tabbedpanel.vue';
+	import tabpane from './tabbedpanel.vue';
 	import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, autoresize, setBannerbkSize} from '../ot.js';
 	import eventBus from '../components/eventBus.js';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
@@ -112,6 +112,7 @@
 		},
 			components:{
 		'applayout':applayout,
+		'tabpane':tabpane
 		},
 		created : function() {
 			var self = this;

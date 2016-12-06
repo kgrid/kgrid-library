@@ -9,8 +9,10 @@
 import navbar from './components/navbar.vue';
 import login from './components/login';  // eslint-disable-line
 import olnpane from './components/olnpane'; // eslint-disable-line
+import objeditor from './components/objeditor'; 
+import objcreator from './components/objcreator'; 
 import eventBus from './components/eventBus.js';
-
+import { editTabNav } from './ot.js';
 export default {
   name: 'app1',
   data: function () {
@@ -38,10 +40,23 @@ export default {
           break;
       }
     });
+	eventBus.$on('editObj', function(obj){
+		console.log("Edit Obj Button Clicked...");
+		self.currentOLView='objeditor';
+		self.showOverlay.show=true;
+		document.body.classList.toggle('noscroll', true);
+	});
+	eventBus.$on("addobj", function(s){
+		self.currentOLView="objcreator";
+		self.showOverlay.show=true;
+		document.body.classList.toggle('noscroll', true);
+	});
   },
   components: {
     navbar,
-    login
+    login,
+    objeditor,
+    objcreator
   }
 };
 </script>
