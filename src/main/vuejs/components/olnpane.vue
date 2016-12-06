@@ -33,7 +33,7 @@ export default {
   props: ['layerid', 'left'],
   created: function () {
     var self = this  // eslint-disable-line
-    eventBus.$on('openOverlay', function () {
+    eventBus.$on('editObj', function () {
       document.body.classList.toggle('noscroll', true);
       self.$el.style.right = '0px';
     });

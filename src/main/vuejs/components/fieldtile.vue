@@ -17,14 +17,14 @@
 	</div>
 	</template>
 	<script>
-		import linkedfieldtile from './linkedfield.vue';
+	import linkedfieldtile from './linkedfield.vue';
 	export default {
 				name: "fieldtile",
 				props : [ 'field' ,'fieldmodel', 'object',"isDisabled"],
 				created:function(){
 					},
 				data:function(){
-						return {raw:raw}
+						return {}
 					},
 				computed : {
 						value : function() {
