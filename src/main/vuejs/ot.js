@@ -103,7 +103,8 @@ export function getCurrentUser(getUser, errorHandler) {
 			console.log(xhr);
 			getUser(response);
 		},
-		error : function(response) {
+		error : function(response, tStatus, xhr) {
+			console.log(xhr);
 			errorHandler(response);
 		}
 	});

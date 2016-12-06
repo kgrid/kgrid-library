@@ -63,6 +63,7 @@ var vm = new Vue({
 	},
 	created: function(){
 		var self=this;
+		
 		 eventBus.$on("return", function(){
 			router.push({ path: '/' });
 		 });
