@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 //import VueResource from 'vue-resource';
 import App from './App';
 import eventBus from './components/eventBus.js';
+import { objModel, editObjModel, sections, userModel } from './components/models.js'
 
 require('es6-promise').polyfill();
 // Bootstrap 4
@@ -40,14 +41,6 @@ const router = new VueRouter({
   hashbang : false,
 });
 
-var objModel = { object : { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} };
-var editObjModel = { object : { metadata:{title:"Edit object",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"ark"} };
-var userModel= {user:{username:"",password:""}};
-var sections = [{name:"metadata",id:"#metadata",label:"METADATA"},
-                {name:"payload",id:"#payload",label:"PAYLOAD"},
-                {name:"inputMessage",id:"#inputMessage", label:"INPUT"},
-                {name:"outputMessage",id:"#outputMessage", label:"OUTPUT"},
-                {name:"logData",id:"#logData", label:"LOG DATA"}];
 var vm = new Vue({
 	router : router,
 	el: '#app',
@@ -63,7 +56,6 @@ var vm = new Vue({
 	},
 	created: function(){
 		var self=this;
-		
 		 eventBus.$on("return", function(){
 			router.push({ path: '/' });
 		 });

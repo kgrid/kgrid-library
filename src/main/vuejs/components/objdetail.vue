@@ -65,16 +65,16 @@
 						</div>
 		</div>
 		<div slot='header'>
-					<ul class='nav nav-tabs view' role='tablist' id='tabs'>
-						<li v-for='section in sections' class='labels' role='presentation'><a :href='section.id' :aria-controls='section.name' role='tab' data-toggle='tab'>{{section.label}}</a></li>
-						<li role='presentation' class='labels accessLevelOne'><a
-							href='#' aria-controls='logdata' role='tab' data-toggle='tab'>
-								<div class='labels iconBtn accessLevelOne'>
-									<img class='hover-out' src='../assets/More_Icon_Light-01.png' /> 
-									<img class='hover-in' style='display: none;' src='../assets/More_Icon_Dark-01.png' />
-								</div>
-						</a></li>
-					</ul>
+		<ul class='nav nav-tabs view' role='tablist' id='tabs'>
+		<li v-for='section in sections' class='labels' role='presentation'><a :href='section.id' :aria-controls='section.name' role='tab' data-toggle='tab'>{{section.label}}</a></li>
+		<li role='presentation' class='labels accessLevelOne'><a
+			href='#' aria-controls='logdata' role='tab' data-toggle='tab'>
+				<div class='labels iconBtn accessLevelOne'>
+					<img class='hover-out' src='../assets/More_Icon_Light-01.png' /> 
+					<img class='hover-in' style='display: none;' src='../assets/More_Icon_Dark-01.png' />
+				</div>
+		</a></li>
+	</ul>
 					<div class='inline editwrapper accessLevelOne' id='objBtns'
 						style='top: 10px; right: 10px; position: absolute;'>
 						<button class='edit' id='metadataeditBtn' v-on:click='editObj'>EDIT</button>
@@ -97,7 +97,7 @@
 	<script>
 	import applayout from './applayout.vue';
 	import tabpane from './tabbedpanel.vue';
-	import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, autoresize, setBannerbkSize} from '../ot.js';
+	import {tabNav, getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, autoresize, setBannerbkSize} from '../ot.js';
 	import eventBus from '../components/eventBus.js';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
@@ -116,6 +116,7 @@
 		},
 		created : function() {
 			var self = this;
+			tabNav();
 			eventBus.$on("objSaved",function(obj){
 				$.extend(true, objModel.object, obj);
 			});

@@ -60,6 +60,7 @@ export function autoresize() {
 	var sh = $(this)[0].scrollHeight+15;
 	$(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
 	$(this).css('height',sh+ 'px');    //Set new height
+	console.log("New Height = "+sh);
 }
 
 export function backToTop() {
@@ -94,7 +95,24 @@ export function editTabNav(){
 		}
 	});
 }
-
+export function tabNav(){
+	$("ul#tabs li").click(function(e) {
+		var tabClass=".view";
+		if($(this).parent().hasClass("inEdit")){
+			tabClass=".inEdit";
+		}
+		if (!$(this).hasClass("active")) {
+			var tabNum = $(this).index();
+			var nthChild = tabNum + 1;
+			$("ul#tabs"+tabClass+" li.active").removeClass("active");
+			$("ul#tabs"+tabClass+"  li.middleout").removeClass("middleout");
+			$(this).addClass("active");
+			$(this).addClass("middleout");
+			$("ul#tab"+tabClass+"  li.active").removeClass("active");
+			$("ul#tab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
+		}
+	});
+}
 export function getCurrentUser(getUser, errorHandler) {
 	$.ajax({
 		type : "GET",
@@ -114,14 +132,14 @@ export function setstartdate(){
 	 var startdate=$("#startdatepicker").val();
 	 var sstamp=new Date(startdate).getTime();
 	 eventBus.$emit("startdate",sstamp);
-	console.log("Start date:"+ sstamp);
+//	console.log("Start date:"+ sstamp);
  }
 
 export function setenddate(){
 				var enddate=$("#enddatepicker").val();
 				 var estamp=new Date(enddate).getTime();
 				eventBus.$emit("enddate",estamp);
-				console.log("End date:"+ estamp);
+			//	console.log("End date:"+ estamp);
 			 }
 
 export function otScroll() {

@@ -29,9 +29,11 @@ export default {
   beforeCreate:function(){
 		var self=this;
 		getCurrentUser(function(response) {
-			if(response!="")
+			if(response!=""){
+				$.extend(true, userModel.user, response);
 				$.extend(true, self.userModel.user, response);
-		},function(response) {
+			}
+			},function(response) {
 			console.log(response);
 		});
 	},
@@ -92,8 +94,10 @@ export default {
 		 self.showOverlay.show=false;
 		 document.body.classList.toggle('noscroll', false);
 		 getCurrentUser(function(response) {
-			if(response!="")
-					$.extend(true, self.userModel.user, response);
+			if(response!=""){
+				$.extend(true, self.userModel.user, response);
+				$.extend(true, userModel.user, response);
+			}
 		})
 	 });
 		eventBus.$on("open", function(x){
@@ -111,7 +115,8 @@ export default {
 	computed:{
 		isLoggedIn:function(){
 			var loggedin =false;
-			loggedin = (this.userModel.user.username!="");
+			console.log('Computing isLoggedIn for App ==> '+ userModel.user.username);
+			loggedin = (userModel.user.username!="");
 			return loggedin;
 		}
 	},
