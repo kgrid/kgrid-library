@@ -140,10 +140,10 @@
 					<div class='row'><p>Search within the following date range:</p></div>
 					<div class='row'>
 						<div class='col-md-6'>
-							<p>Start <input type='text' onchange='setstartdate()' id='startdatepicker'></p>
+							<p>Start <input type='text' v-on:change='setstartdate()' id='startdatepicker'></p>
 						</div>
 						<div class='col-md-6'>
-							<p>End <input type='text' onchange='setenddate()' id='enddatepicker'></p>
+							<p>End <input type='text' v-on:change='setenddate()' id='enddatepicker'></p>
 						</div>
 					</div>
 			</div>
@@ -161,7 +161,7 @@
 <script>
 import applayout from './applayout.vue';
 import kotile from './kotile.vue';
-import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
+import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, setstartdate, otScroll, setBannerbkSize} from '../ot.js';
 import eventBus from '../components/eventBus.js';
 import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 
@@ -171,7 +171,6 @@ export default {
 		return {
 			sortKey : 'metadata.lastModified',
 			order : 'asc',
-			isLoggedIn:false,
 			searchQuery : '',
 			  model : {
 				koList : []
@@ -192,7 +191,8 @@ export default {
 		setBannerbkSize();
 		this.startdate = new Date('March 1, 2016').getTime();
 		this.enddate=new Date().getTime();
-		//$.extend(true,this.userModel,userModel);
+		console.log('Home created ==> '+ userModel.user.username);
+		$.extend(true,this.userModel,userModel);
 		this.isLoggedIn = (this.userModel.user.username!='');
 		this.check.pri=this.isLoggedIn;
 		retrieveObjectList(function(response) {
@@ -226,6 +226,12 @@ export default {
 		otScroll();
 	},
 	computed : {
+	isLoggedIn:function(){
+			var loggedin =false;
+			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
+			loggedin = (userModel.user.username!="");
+			return loggedin;
+		},
 		countString : function() {
 			var count = this.orderedList.length;
 			if (count <= 1) {
@@ -327,6 +333,18 @@ export default {
 		addObject:function(){
 			eventBus.$emit('addobj','');
 		},
+		setstartdate:function(){
+	 var startdate=$("#startdatepicker").val();
+	 var sstamp=new Date(startdate).getTime();
+	 eventBus.$emit("startdate",sstamp);
+	console.log("Start date:"+ sstamp);
+ },
+ setenddate:function(){
+				var enddate=$("#enddatepicker").val();
+				 var estamp=new Date(enddate).getTime();
+				eventBus.$emit("enddate",estamp);
+				console.log("End date:"+ estamp);
+			 },
 		 addFilterString: function () {
 			   var value = this.newstring && this.newstring.trim();
 			   if (!value) {

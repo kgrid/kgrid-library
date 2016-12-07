@@ -63,7 +63,7 @@ export default {
           success: function (response) {
             $( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
             $('div.success').fadeIn(300).delay(500).fadeOut(400, function(){  // eslint-disable-line
-           $.extend(true, self.userModel.user, response);
+           	$.extend(true, self.userModel.user, response);
             eventBus.$emit('userloggedin', self.userModel.user);  // eslint-disable-line
             });
           },
