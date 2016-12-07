@@ -34,7 +34,8 @@ var webpackConfig = merge(baseWebpackConfig, {
         jquery: 'jquery',
         'window.jQuery': 'jquery',
         jQuery: 'jquery',
-        'window.Tether': 'tether'
+        'window.Tether': 'tether',
+        Tether: 'tether'
       }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
