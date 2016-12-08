@@ -94,7 +94,7 @@ export function editTabNav(){
 			$("ul#edittab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
 		}
 	});
-}
+}/*
 export function tabNav(){
 	$("ul#tabs li").click(function(e) {
 		var tabClass=".view";
@@ -112,7 +112,7 @@ export function tabNav(){
 			$("ul#tab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
 		}
 	});
-}
+}*/
 export function getCurrentUser(getUser, errorHandler) {
 	$.ajax({
 		type : "GET",
@@ -191,8 +191,8 @@ $(document).ready(function() {
 			overlayHeightResize();
 			setBannerbkSize()});
  	setBannerbkSize();
-    $('ul#tabs li:first').addClass('active');
+/*    $('ul#tabs li:first').addClass('active');
     $('ul#tab li:first').addClass('active');
 	$("ul#tabs li.active a span").addClass("middleout");
-
+*/
 })
