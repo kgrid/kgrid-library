@@ -7,7 +7,7 @@
 									<h4 title='username'>USERNAME</h4>
 									<div class='addtext'>
 										<input class='textbox login' type='text' v-model='userModel.user.username'  spellcheck='false'
-											placeholder='Enter your email' autofocus
+											placeholder='Enter your email' autofocus autocomplete="on"
 											maxlength='140'>
 <!-- 											<button class='edit_btn' >Need to create an account?</button>
  -->									</div>
@@ -17,7 +17,7 @@
 									<h4 title='password'>PASSWORD</h4>
 									<div class='addtext'>
 										<input class='textbox login' v-model='userModel.user.password'
-											type='password' spellcheck='false'
+											type='password' spellcheck='false' autocomplete="on"
 											placeholder='Enter your password'  @keyup.enter='userlogin'
 											maxlength='140'>
 											<!-- <button class='edit_btn'>Forgot Password?</button> -->
