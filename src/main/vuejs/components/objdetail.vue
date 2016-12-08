@@ -66,9 +66,8 @@
 		</div>
 		<div slot='header'>
 		<ul class='nav nav-tabs view' role='tablist' id='tabs'>
-		<li v-for='section in sections' class='labels' role='presentation'><a :href='section.id' :aria-controls='section.name' role='tab' data-toggle='tab'>{{section.label}}</a></li>
-		<li role='presentation' class='labels accessLevelOne'><a
-			href='#' aria-controls='logdata' role='tab' data-toggle='tab'>
+		<li v-for='section in sections' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section.label)"><a >{{section.label}}</a></li>
+		<li role='presentation' class='labels accessLevelOne'><a>
 				<div class='labels iconBtn accessLevelOne'>
 					<img class='hover-out' src='../assets/More_Icon_Light-01.png' /> 
 					<img class='hover-in' style='display: none;' src='../assets/More_Icon_Dark-01.png' />
@@ -85,8 +84,8 @@
 		</div>
 			<div slot='maincontent'>
 					<ul class='tab-content view' id='tab'>
-						<li v-for='section in sections' v-bind:id='section.name' role='tabpanel'
-							class='tab-pane'>
+						<li v-for='section in sections' v-bind:id='section.name'
+								 v-bind:class="{ active: activeTab === section.label }">
 								<tabpane v-bind:section='section.name' v-bind:object='objModel.object' ></tabpane>
 						</li>
 					</ul>
@@ -107,16 +106,22 @@
 				objModel : objModel,
 				sections : sections,
 				isDisabled: 1,
-				isPublic:false
+				isPublic:false,
+				activeTab: 'METADATA'
 			}
 		},
 			components:{
 		'applayout':applayout,
 		'tabpane':tabpane
 		},
+		watch:{
+			activeTab:function(){
+				console.log(this.activeTab);
+			}
+		},
 		created : function() {
 			var self = this;
-			tabNav();
+			//tabNav();
 			eventBus.$on("objSaved",function(obj){
 				$.extend(true, objModel.object, obj);
 			});
@@ -134,20 +139,11 @@
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
 			}); 
-			$('ul#tabs li:first').addClass('active'); 
-	    	$('ul#tab li:first').addClass('active');
 	    	$('ul#tabs li.active').addClass('middleout');
-		   // tabNav("");
-		    //otScroll();
 	    	$("html, body").animate({
 	        	scrollTop: 0
 	    	}, 200);
-	    	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-			  var target = $(e.target).attr("href") // activated tab
-			  $('ul#tabs li.middleout').removeClass('middleout');
-			  $('ul#tabs li.active').addClass('middleout');
-			  $(".autosize").each(autoresize);
-			});	
+	    	this.autoresize();
 		},
 		computed : {
 			formattedUpdateDate : function() {
@@ -168,11 +164,14 @@
 			}
 		},
 		updated : function() {
-			$('ul#tabs li:first').addClass('active'); 
-	    	$('ul#tab li:first').addClass('active'); 
-			$(".autosize").each(autoresize);
+			this.autoresize();
 		},
 		methods:{
+			selectTab: function(tablabel){
+				console.log("Clicked on "+tablabel);
+				this.activeTab=tablabel;
+				this.autoresize();
+		},
 			editObj:function(){
 				$.extend(true, editObjModel.object, this.objModel.object);
 				if(editObjModel.object.outputMessage==null){
@@ -188,6 +187,16 @@
 			},
 			unpublish:function(){
 				this.toggleObject(false);
+			},
+			autoresize:function(){
+				console.log(this);
+				var autosize = this.$el.querySelector("ul#tab li.active .autosize");
+				console.log(autosize);
+				console.log(autosize.scrollHeight);
+				var sh = autosize.scrollHeight+15;
+				autosize.style.height="0px";     //Reset height, so that it not only grows but also shrinks
+				autosize.style.height = sh + 'px';    //Set new height
+				console.log(this.activeTab+"New Height = "+sh);
 			},
 			toggleObject:function(pub){
 				var uri=this.objModel.object.uri;
@@ -259,4 +268,12 @@ ul#tabs li:after {
     background: transparent;
     transition: width .5s ease, background-color .5s ease;
 }
+
+ul#tab>li {
+	display:none;	
+}
+ul#tab>li.active {
+	display:block;	
+}
+
 	</style>

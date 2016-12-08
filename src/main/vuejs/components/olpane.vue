@@ -61,8 +61,8 @@ export default {
 .ol_pane{
 	position: absolute;
     right:0px;
-    width: 1024px;
-     margin: 0px auto;
+    width: 1090px;
+    margin: 0px auto;
     background-color: #fff;
     height: 100%;
     transition: all .8s ease;

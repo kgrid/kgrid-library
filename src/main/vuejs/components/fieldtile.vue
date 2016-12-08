@@ -23,6 +23,9 @@
 				props : [ 'field' ,'fieldmodel', 'object',"isDisabled"],
 				created:function(){
 					},
+				mounted: function(){
+
+					},
 				data:function(){
 						return {}
 					},

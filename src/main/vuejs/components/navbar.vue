@@ -32,11 +32,11 @@
 							<ul class='nav navbar-nav navbar-right ot-1'>
 								<li class='login-link1'>
 									<div class='dropdown' id="userDropdown" style='height:55px;'>
-										<a id='dLabel' data-target='#' data-toggle='dropdown' role='button'>Hello,
+										<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>Hello,
 											{{userModel.user.first_name}}<span><img
 											id='dropdowniconimg' class='down'
 											src='../assets/Chevron_Icon.png' width='12px' /></span></a>
-										<ul class='dropdown-menu' aria-labelledby='dLabel'>
+										<ul v-if='showDropdown'>
 											<li><a id='logoutBtn' v-on:click='userlogout'>Logout</a></li>
 										</ul>
 									</div>
@@ -61,7 +61,8 @@ export default {
   name: 'navbar',
   data: function () {
     return {
-      userModel: {user: {username: '', password: '', id: -1, first_name: '', last_name: '', role: ''}}
+        userModel: {user: {username: '', password: '', id: -1, first_name: '', last_name: '', role: ''}},
+ 		showDropdown : false
     };
   },
   created: function() {
@@ -102,6 +103,9 @@ export default {
     login_click: function () {
       eventBus.$emit('openOverlay'); // eslint-disable-line
     },
+    toggleDropdown: function () {
+    	this.showDropdown=!this.showDropdown;
+    	},
     userlogout: function () {
       var self = this;
       $.ajax({ // eslint-disable-line
@@ -109,6 +113,7 @@ export default {
         url: '/ObjectTeller/logout',
         success: function (response) {
           $.extend(true, self.userModel.user, {username: '', password: ''}); // eslint-disable-line
+          this.showDropdown = false;
         }
       });
     }
