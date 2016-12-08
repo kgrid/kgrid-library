@@ -189,6 +189,8 @@ export default {
 	created : function() {
 		var self = this;
 		setBannerbkSize();
+			$("#startdatepicker").val("03/01/16");
+	$("#enddatepicker").val(new Date().format("shortDate"));
 		this.startdate = new Date('March 1, 2016').getTime();
 		this.enddate=new Date().getTime();
 		console.log('Home created ==> '+ userModel.user.username);
@@ -226,10 +228,11 @@ export default {
 		otScroll();
 	},
 	computed : {
-	isLoggedIn:function(){
+		isLoggedIn:function(){
 			var loggedin =false;
 			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
 			loggedin = (userModel.user.username!="");
+			this.check.pri=loggedin;
 			return loggedin;
 		},
 		countString : function() {
