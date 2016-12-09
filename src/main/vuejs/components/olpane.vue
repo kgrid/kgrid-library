@@ -4,7 +4,7 @@
 		<div class="sidebar_close">
 			<h3>CLOSE</h3>
 			<button class="greenroundbutton" id="close_overlay"	v-on:click="closeOverlay">
-				<img src="../assets/Close_Icon.png" >
+				<img src="../assets/Close_Icon.png" width='10px'>
 			</button>
 		</div>
 		<div class="overlay-top">
@@ -66,6 +66,7 @@ export default {
     background-color: #fff;
     height: 100%;
     transition: all .8s ease;
+
 }
 
 .modal-mask {
@@ -107,6 +108,7 @@ export default {
     top:10px;
     width:35px;
     height:35px;
+box-shadow: none;
 }
 
 .overlay-top {
@@ -190,6 +192,10 @@ export default {
     background-color: #39b54a;
     border: none;
     font-size: 20px;
-    padding: 0;
+padding: 0 2px 1px 0;
+box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
+}
+.greenroundbutton:hover {
+    transform: scale(1.2);
 }
 </style>
