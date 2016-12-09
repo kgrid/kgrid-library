@@ -22,9 +22,19 @@
 				name: "fieldtile",
 				props : [ 'field' ,'fieldmodel', 'object',"isDisabled"],
 				created:function(){
+		
 					},
 				mounted: function(){
-
+						if(this.isTextArea){
+							console.log(this.field.section+" TextArea Mounted:");
+							console.log(this);
+							var ta = this.$el.children[1];
+							console.log(ta);
+							console.log(ta.scrollHeight);
+							var sh = ta.scrollHeight+15;
+							//ta.style.height="0px";     //Reset height, so that it not only grows but also shrinks
+							//ta.style.height = sh + 'px';    //Set new height
+						}
 					},
 				data:function(){
 						return {}

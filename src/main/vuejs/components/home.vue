@@ -48,7 +48,7 @@
 		<div class='row'>
 			<div class='col-md-2'>
 				<div id='filterBtn'>
-				<a href='#filterpanel' data-toggle='collapse'> Filter </a></div>
+				<a v-on:click='toggleFilter'> Filter </a></div>
 			</div>
 			<div class='col-md-10'>
 				<section class='main' v-show='filterStrings.length'>
@@ -65,7 +65,7 @@
 				</section>
 			</div>
 		</div>
-		<div id='filterpanel' class='collapse'>
+		<div id='filterpanel' v-if='showFilterControl'>
 			<div class='row'>
 				<div class='col-md-6'>
 					<div class='row'><p>Search only within the following:</p></div>
@@ -183,7 +183,8 @@ export default {
  			startdate:0,
 			enddate:0,
 			userModel:{user:{username:'',password:''}},
-			isAdmin:true
+			isAdmin:true,
+			showFilterControl:false
  		};
 	},
 	created : function() {
@@ -333,6 +334,9 @@ export default {
 				this.order = 'asc';
 			}
 		},
+		toggleFilter: function(){
+			this.showFilterControl=!this.showFilterControl;
+		},
 		addObject:function(){
 			eventBus.$emit('addobj','');
 		},
@@ -399,6 +403,10 @@ input[type=text], input[type=password], input[type=textarea], .addtext a {
 }
 input[id$="datepicker"] {
     width: 150px;
+}
+
+#filterBtn {
+	cursor: pointer;
 }
 select {
     background: transparent;
