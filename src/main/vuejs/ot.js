@@ -177,7 +177,7 @@ $(document).ready(function() {
 	$("#enddatepicker").val(new Date().format("shortDate"));
 	overlayHeightResize();
 //	$('[data-toggle="tooltip"]').tooltip();
-	$('#userDropdown').on('show.bs.dropdown', function(e){
+/*	$('#userDropdown').on('show.bs.dropdown', function(e){
 		  var target = $(e.target).attr("id"); // activated tab
 		  $("img#dropdowniconimg").removeClass('down');
 		  $("img#dropdowniconimg").addClass('up');
@@ -186,7 +186,7 @@ $(document).ready(function() {
 		  var target = $(e.target).attr("id"); // activated tab
 		  $("img#dropdowniconimg").removeClass('up');
 		  $("img#dropdowniconimg").addClass('down');
-	});
+	});*/
 	$(window).resize(function(){
 			overlayHeightResize();
 			setBannerbkSize()});

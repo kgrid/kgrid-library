@@ -79,21 +79,32 @@ export default {
 };
 </script>
 <style>
+input[type=text].login, input[type=password].login {
+    width: 400px;
+    height: 50px;
+}
+
 .fieldcontainer {
     display: block;
     position: relative;
     height: 95%;
     overflow: auto;
+margin: 0 auto;
+padding: 0px 20px;
 }
 button.login {
-    width: 350px;
+    width: 400px;
     position: relative;
-    height: 53px;
+    height: 50px;
     border-radius: 10px;
     border:1px solid #39b45a;
     background-color: #39b45a;
     color: #fff;
     margin-top: 38px;
+}
+button.login:hover {
+	transform: scaleX(1.02) scaleY(1.1);
+    opacity: 0.75;
 }
 .entryform {
     height: 600px;
@@ -119,11 +130,7 @@ fieldset h4 {
     margin: 5px 0px 15px 0px;
     color: #666666;
 }
-button.login:hover {
-	border:1px solid #e6e6e6;
-    background-color: #fff;
-    color: #666666;
-}
+
 h3 {
     font-size: 24px;
     font-weight: 300;

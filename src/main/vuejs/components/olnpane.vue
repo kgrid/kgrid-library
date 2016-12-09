@@ -50,7 +50,7 @@ export default {
 .ol_narrow_pane{
 	position: absolute;
     right:0px;
-    width: 540px;
+    width: 550px;
      margin: 0px auto;
     background-color: #fff;
     height: 100%;
@@ -100,7 +100,7 @@ export default {
 
 .overlay-top {
     height: 120px;
-    width: 480px;
+    width: 494px;
     position: absolute;
     top: 0;
     left: 60px;
@@ -113,7 +113,7 @@ export default {
 .overlay-board {
     position: absolute;
     background: white;
-    width: 480px;
+    width: 494px;
     top: 120px;
     left: 60px;
     padding: 0px 0px;
@@ -122,7 +122,7 @@ export default {
 
 .overlay-alert {
     height: 60px;
-    width: 480px;
+    width: 494px;
     position: absolute;
     bottom:0px;
     left: 60px;

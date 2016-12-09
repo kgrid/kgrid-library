@@ -48,7 +48,9 @@
 		<div class='row'>
 			<div class='col-md-2'>
 				<div id='filterBtn'>
-				<a v-on:click='toggleFilter'> Filter </a></div>
+				<a v-on:click='toggleFilter'> Filters <span><img
+						id='filterdowniconimg' class='down'
+						src='../assets/dropdown_chevron.png' width='12px' /></span></a></div>
 			</div>
 			<div class='col-md-10'>
 				<section class='main' v-show='filterStrings.length'>
@@ -336,6 +338,14 @@ export default {
 		},
 		toggleFilter: function(){
 			this.showFilterControl=!this.showFilterControl;
+	    	if(this.showFilterControl){
+	    	      $('img#filterdowniconimg').removeClass('down');  // eslint-disable-line
+	    	      $('img#filterdowniconimg').addClass('up');  // eslint-disable-line
+	    	}else
+	    	{
+	    	      $('img#filterdowniconimg').removeClass('up');  // eslint-disable-line
+	    	      $('img#filterdowniconimg').addClass('down');  // eslint-disable-line
+	    	}
 		},
 		addObject:function(){
 			eventBus.$emit('addobj','');
@@ -389,7 +399,21 @@ export default {
 	top:85px;
 	text-align: center;
 }
-
+.ot-glybtn {
+    top: 0px;
+    line-height: 2.2em;
+    font-size: large;
+    color: #39b54a;
+    background-color: #fff;
+    padding: 0 0 0 12px;
+}
+.ot-search {
+    display: inline-block;
+    border: 1px solid #fff;
+	border-radius: 10px;
+    width: 49%;
+    margin-left: 10px;
+}
 input[type=text], input[type=password], input[type=textarea], .addtext a {
     width: 900px;
     height: 38px;
@@ -404,9 +428,28 @@ input[type=text], input[type=password], input[type=textarea], .addtext a {
 input[id$="datepicker"] {
     width: 150px;
 }
-
-#filterBtn {
+#filterBtn, #filterBtn a {
+    background-color: #fff;
+    text-decoration: none;
+    margin: 12px 0px 0px 0px;
+    padding: 12px 10px 12px 10px;
+    text-align: center;
 	cursor: pointer;
+	width: 100px;
+	height: 45px;
+}
+
+img#filterdowniconimg.down {
+    -moz-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+}
+img#filterdowniconimg.up {
+    -moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
 }
 select {
     background: transparent;
