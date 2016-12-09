@@ -34,7 +34,7 @@
 			//this.autoresize();
 		},
 		created : function() {
-			console.log(this.section);
+			//console.log(this.section);
 		},
 		mounted : function() {
 
