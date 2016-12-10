@@ -121,7 +121,9 @@ export default {
         url: '/ObjectTeller/logout',
         success: function (response) {
           $.extend(true, self.userModel.user, {username: '', password: ''}); // eslint-disable-line
+          $.extend(true, userModel.user, {username: '', password: ''});
           this.showDropdown = false;
+          eventBus.$emit('logout');
         }
       });
     }

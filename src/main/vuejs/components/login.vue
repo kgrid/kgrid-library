@@ -68,8 +68,8 @@ export default {
             });
           },
           error: function (response) {
-							$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
-							$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
+				$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
+				$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
           }
         });
       } else {
@@ -83,7 +83,6 @@ input[type=text].login, input[type=password].login {
     width: 400px;
     height: 50px;
 }
-
 .fieldcontainer {
     display: block;
     position: relative;
