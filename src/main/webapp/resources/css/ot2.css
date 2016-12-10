@@ -241,19 +241,6 @@ span.ot-right{
 	margin: 0 auto;
 }
 
-.ot-banner h1 {
-	font-size:35px;
-  font-weight: 400;
-  margin-top: 75px;
-  text-align:center;
-  margin-bottom: 20px;
-  color: dimgrey;
-  margin: 0 auto;
-  line-height: 2em;
-  padding-top:90px;
-   background:transparent;
-}
-
 .ot-banner h1 small {
 	font-size:28px;
   line-height: 1.5em;
@@ -302,7 +289,7 @@ position: absolute;
 
 .datagrid {
 	margin:0 auto;
-	min-height: 580px;
+	min-height: 720px;
 }
 .headercol{
 	margin: 7px auto;

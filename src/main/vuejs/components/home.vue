@@ -1,18 +1,18 @@
 <template>
- <div class='content'>
-			<div id='bannerbk'>
-				<img src='../assets/bannerBackground.png'>
+<div class='content'>
+	<applayout :nothelper='true'>
+		<div slot='banner'>
+			<div v-if="isLoggedIn">
+				<h1>Hello, {{userModel.user.first_name}}!<br>Need to invite others? <span>Add Users.</span></h1>
 			</div>
-			<applayout :nothelper='true'>
-				<div slot='banner'>
-					<h1>
-						ObjectTeller supports Health Knowledge Services<br> <small>by
-					providing a repository toolkit for storing, curating, managing and
-					making computable health knowledge accessible for learning health
-					systems. </small>
-					</h1>
-				</div>
-				<div slot='header'>
+			<div v-else>
+				<h1>Object Teller is a repository for storing, curating, managing and
+				making accessible health knowledge accessible for learning health
+				systems. <br>Get Started, <span> Sign-Up.</span></h1>
+			</div>
+			<div id='libname'>{{libraryname}}</div>
+		</div>
+		<div slot='header'>
 				<div v-show='isLoggedIn'>
 					<button class='greenroundbutton ot-newobj'  v-on:click='addObject'>
 						<img src='../assets/Plus_Icon.png'/>
@@ -171,6 +171,7 @@ export default {
     name: 'home',
 	data : function() {
 		return {
+			libraryname : 'Department of Learning Health Systems Production Server',
 			sortKey : 'metadata.lastModified',
 			order : 'asc',
 			searchQuery : '',
@@ -191,7 +192,7 @@ export default {
 	},
 	created : function() {
 		var self = this;
-		setBannerbkSize();
+		//setBannerbkSize();
 			$("#startdatepicker").val("03/01/16");
 	$("#enddatepicker").val(new Date().format("shortDate"));
 		this.startdate = new Date('March 1, 2016').getTime();
@@ -220,11 +221,13 @@ export default {
 			$.extend(true, self.userModel.user,obj);
 			self.isAdmin = (self.userModel.user.role=='ADMIN');
 			self.check.pri=true;
+			$('.ot-banner').addClass('loggedin');
 		});
 		eventBus.$on('logout', function(){
 			$.extend(true, self.userModel.user, {username:'',password:''});
 			self.isLoggedIn=false;
 			self.isAdmin=false;
+			$('.ot-banner').removeClass('loggedin');
 		});	
 	},
 	mounted:function(){
@@ -469,5 +472,42 @@ select {
     color: #666666;
     font-weight: 400;
     font-family: 'Open Sans', sans-serif;
+}
+.ot-banner {
+    background-color: transparent;
+    position: relative;
+    width: 900px;
+    overflow: visible;
+    z-index: 10;
+    height: 335px;
+    margin: 0 auto;
+}
+.ot-banner.loggedin {
+	height: 240px;
+}
+.ot-banner h1 {
+    font-size: 32px;
+    font-weight: 300;
+    margin-top: 75px;
+    text-align: left;
+    margin-bottom: 20px;
+    color: dimgrey;
+    margin: 0 auto;
+    line-height: 1.3em;
+    padding-top: 90px;
+    background: transparent;
+}
+.ot-banner h1 span {
+	color: #666666;
+}
+#libname {
+    text-align: right;
+    font-size: 24px;
+    /* margin-top: 30px; */
+    color: #e3e3e3;
+    font-weight: 300;
+    bottom: 20px;
+    position: absolute;
+    right: 0px;
 }
 </style>

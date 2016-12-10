@@ -51,7 +51,7 @@ export function overlayHeightResize() {
 	$('.overlay-board').css("height", boardHeight + "px");
 	$('.entryform').css("height", formHeight + "px");
 	$('ul#edittab>li').css("height", liHeight + "px");
-	console.log("Heights:Pane="+ol_pane_height+" Board="+boardHeight+" Form="+formHeight+"Li="+liHeight);
+//	console.log("Heights:Pane="+ol_pane_height+" Board="+boardHeight+" Form="+formHeight+"Li="+liHeight);
 	return ol_pane_height;
 }
 
@@ -189,8 +189,10 @@ $(document).ready(function() {
 	});*/
 	$(window).resize(function(){
 			overlayHeightResize();
-			setBannerbkSize()});
- 	setBannerbkSize();
+			//setBannerbkSize()
+			}
+	);
+ 	//setBannerbkSize();
 /*    $('ul#tabs li:first').addClass('active');
     $('ul#tab li:first').addClass('active');
 	$("ul#tabs li.active a span").addClass("middleout");
