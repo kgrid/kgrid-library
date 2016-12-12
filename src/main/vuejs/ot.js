@@ -173,8 +173,6 @@ export function otScroll() {
 $(document).ready(function() {
 	// $("#startdatepicker").datepicker();
 	// $("#enddatepicker").datepicker();
-	$("#startdatepicker").val("03/01/16");
-	$("#enddatepicker").val(new Date().format("shortDate"));
 	overlayHeightResize();
 //	$('[data-toggle="tooltip"]').tooltip();
 /*	$('#userDropdown').on('show.bs.dropdown', function(e){

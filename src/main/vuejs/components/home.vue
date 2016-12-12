@@ -142,10 +142,10 @@
 					<div class='row'><p>Search within the following date range:</p></div>
 					<div class='row'>
 						<div class='col-md-6'>
-							<p>Start <input type='text' v-on:change='setstartdate()' id='startdatepicker'></p>
+							<p>Start <date-picker :date="startTime" :option="option" :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
 						<div class='col-md-6'>
-							<p>End <input type='text' v-on:change='setenddate()' id='enddatepicker'></p>
+							<p>End  <date-picker :date="endtime" :option="option" :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></p>
 						</div>
 					</div>
 			</div>
@@ -161,6 +161,7 @@
 		</div>
 </template>
 <script>
+import myDatepicker from '../vendor/vue-datepicker.vue'
 import applayout from './applayout.vue';
 import kotile from './kotile.vue';
 import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, setstartdate, otScroll, setBannerbkSize} from '../ot.js';
@@ -187,14 +188,69 @@ export default {
 			enddate:0,
 			userModel:{user:{username:'',password:''}},
 			isAdmin:true,
-			showFilterControl:false
+			showFilterControl:false,
+			startTime: {
+		        time: ''
+		      },
+		      endtime: {
+		        time: ''
+		      },
+
+		      option: {
+		        type: 'day',
+		        week: [ 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa','Su'],
+		        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		        format: 'MM/DD/YYYY',
+		        placeholder: 'when?',
+		        inputStyle: {
+		          'display': 'inline-block',
+		          'padding': '6px',
+		          'line-height': '22px',
+		          'font-size': '16px',
+		          'border': '2px solid #fff',
+		          'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
+		          'border-radius': '2px',
+		          'color': '#fff5F5F5F',
+		          'width': '150px'
+		        },
+		        color: {
+		          header: '#fff',
+		          headerText: '#f00'
+		        },
+		        buttons: {
+		          ok: 'Ok',
+		          cancel: 'Cancel'
+		        },
+		        overlayOpacity: 0.5, // 0.5 as default
+		        dismissible: true // as true as default
+		      },
+		      timeoption: {
+		        type: 'min',
+		        week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa','Su'],
+		        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		        format: 'YYYY-MM-DD HH:mm'
+		      },
+		      multiOption: {
+		        type: 'multi-day',
+		        week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa','Su'],
+		        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		        format:"YYYY-MM-DD HH:mm"
+		      },
+		      limit: [{
+		        type: 'weekday',
+		        available: [1, 2, 3, 4, 5]
+		      },
+		      {
+		        type: 'fromto',
+		        from: '',
+		        to: ''
+		      }]
  		};
 	},
 	created : function() {
 		var self = this;
-		//setBannerbkSize();
-			$("#startdatepicker").val("03/01/16");
-	$("#enddatepicker").val(new Date().format("shortDate"));
+		$("#startdatepicker").val("03/01/16");
+		$("#enddatepicker").val(new Date().format("shortDate"));
 		this.startdate = new Date('March 1, 2016').getTime();
 		this.enddate=new Date().getTime();
 		console.log('Home created ==> '+ userModel.user.username);
@@ -353,19 +409,7 @@ export default {
 		addObject:function(){
 			eventBus.$emit('addobj','');
 		},
-		setstartdate:function(){
-	 var startdate=$("#startdatepicker").val();
-	 var sstamp=new Date(startdate).getTime();
-	 eventBus.$emit("startdate",sstamp);
-	console.log("Start date:"+ sstamp);
- },
- setenddate:function(){
-				var enddate=$("#enddatepicker").val();
-				 var estamp=new Date(enddate).getTime();
-				eventBus.$emit("enddate",estamp);
-				console.log("End date:"+ estamp);
-			 },
-		 addFilterString: function () {
+	 addFilterString: function () {
 			   var value = this.newstring && this.newstring.trim();
 			   if (!value) {
 			     return;
@@ -382,16 +426,22 @@ export default {
 				   this.filterStrings.splice(this.filterStrings.indexOf(s), 1);
 				 },
 				 setstartdate:  function(){
-					 var startdate=$('#startdatepicker').val();
-					 var sstamp=new Date(startdate).getTime();
+					 var sstamp=new Date(this.startTime.time).getTime();
 					 eventBus.$emit('startdate',sstamp);
 					console.log('Start date:'+ sstamp);
-				 }
-		
+				 },
+				 setenddate:function(){
+					 var estamp=new Date(this.endtime.time).getTime();
+						eventBus.$emit("enddate",estamp);
+						console.log("End date:"+ estamp);
+					 }
+
+				 
 	},
 	components:{
 		'applayout':applayout,
-		'kotile':kotile
+		'kotile':kotile,
+		'date-picker': myDatepicker
 		}
 };
 </script>
