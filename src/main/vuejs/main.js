@@ -11,7 +11,7 @@ require('bootstrap');
 require('jquery');
 require('tether');
 require('lodash');
-// require('./vendor/jquery-ui.js');
+//require('./vendor/jquery-ui.js');
 
 import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
 import login from './components/login';  
