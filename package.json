@@ -13,6 +13,7 @@
     "es6-promise": "3.0.2",
     "font-awesome": "4.5.0",
     "jquery": "2.2.0",
+    "moment": "^2.17.1",
     "tether": "1.1.1",
     "vue": "^2.1.0",
     "vue-router": "2.0.0"
