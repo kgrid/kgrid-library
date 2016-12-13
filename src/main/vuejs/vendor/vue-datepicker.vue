@@ -3,7 +3,6 @@
   width: 100%;
   height: 100%;
   z-index: 998;
- 
   overflow: hidden;
   -webkit-animation: fadein 0.5s;
   /* Safari, Chrome and Opera > 12.1 */
@@ -65,25 +64,35 @@
   overflow: hidden;
   position: absolute;
   font-size: 14px;
-  font-family: 'OPen Sans';
+  font-family: 'Open Sans';
   font-weight: 400;
   display: block;
   width: 400px;
   z-index: 999;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+      border: 1px solid #39b45a;
 }
+
+.leftalign .cov-date-body {
+
+}
+
+.rightalign .cov-date-body {
+  transform: translate(-250px,10px);
+}
+
 .cov-picker-box {
   background: #fff;
   width: 100%;
   display: inline-block;
-  padding: 25px;
+  padding: 5px 5px 5px 5px;
   box-sizing: border-box !important;
   -moz-box-sizing: border-box !important;
   -webkit-box-sizing: border-box !important;
   -ms-box-sizing: border-box !important;
   width: 400px;
   max-width: 100%;
-  height: 280px;
+  height: 215px;
   text-align: start!important;
 }
 .cov-picker-box td {
@@ -105,13 +114,13 @@ table {
   width: 100%;
 }
 .day {
-  width: 14.2857143%;
+  width: 12.45%;
   display: inline-block;
   text-align: center;
   cursor: pointer;
   height: 24px;
   padding: 0;
-	margin:3px;
+	margin:2px;
   line-height: 24px;
   color: #666666;
   background: #e3e3e3;
@@ -174,7 +183,7 @@ table {
   font-size: 18px;
 }
 .cov-date-caption span:hover {
-  color: rgba(255, 255, 255, 0.7);
+  color: #666666;
 }
 .cov-date-previous:hover,
 .cov-date-next:hover {
@@ -192,14 +201,14 @@ table {
 }
 .cov-date-next::before,
 .cov-date-previous::before {
-  width: 20px;
+  width: 10px;
   height: 2px;
   text-align: center;
   position: absolute;
   background: #39b45a;
   top: 50%;
-  margin-top: -7px;
-  margin-left: -7px;
+  margin-top: -3px;
+  margin-left: -10px;
   left: 50%;
   line-height: 0;
   content: '';
@@ -209,13 +218,13 @@ table {
 }
 .cov-date-next::after,
 .cov-date-previous::after {
-  width: 20px;
+  width: 10px;
   height: 2px;
   text-align: center;
   position: absolute;
   background: #39b45a;
-  margin-top: 6px;
-  margin-left: -7px;
+  margin-top: 4px;
+  margin-left: -10px;
   top: 50%;
   left: 50%;
   line-height: 0;
@@ -359,10 +368,6 @@ table {
             </div>
           </div>
         </div>
-        <div class="button-box">
-          <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
-          <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
-        </div>
       </div>
     </div>
   </div>
@@ -392,14 +397,14 @@ exports.default = {
       default: function _default() {
         return {
           type: 'day',
-          SundayFirst: false,
+          SundayFirst: true,
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format: 'YYYY-MM-DD',
           color: {
-            checked: '#F50057',
-            header: '#3f51b5',
-            headerText: '#fff'
+            checked: '#39b45a',
+            header: '#fff',
+            headerText: '#666666'
           },
           inputStyle: {
             'display': 'inline-block',
