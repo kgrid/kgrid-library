@@ -142,10 +142,10 @@
 					<div class='row'><p>Search within the following date range:</p></div>
 					<div class='row'>
 						<div class='col-md-6'>
-							<p>Start <date-picker :date="startTime" :option="option" :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
+							<p>Start <date-picker :date="startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
 						<div class='col-md-6'>
-							<p>End  <date-picker :date="endtime" :option="option" :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></p>
+							<p>End  <date-picker :date="endtime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></p>
 						</div>
 					</div>
 			</div>
@@ -195,58 +195,59 @@ export default {
 		      endtime: {
 		        time: ''
 		      },
-
 		      option: {
-		        type: 'day',
-		        week: [ 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa','Su'],
-		        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		        format: 'MM/DD/YYYY',
-		        placeholder: 'when?',
-		        inputStyle: {
-		          'display': 'inline-block',
-		          'padding': '6px',
-		          'line-height': '22px',
-		          'font-size': '16px',
-		          'border': '2px solid #fff',
-		          'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
-		          'border-radius': '2px',
-		          'color': '#fff5F5F5F',
-		          'width': '150px'
+		          type: 'day',
+		          SundayFirst: true,
+		          week: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+		          month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		          format: 'MM/DD/YYYY',
+		          placeholder: 'MM/DD/YYYY',
+		          inputStyle: {
+		            'display': 'inline-block',
+		            'padding': '6px',
+		            'line-height': '22px',
+		            'font-size': '16px',
+		            'border': '2px solid #fff',
+		            'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
+		            'border-radius': '2px',
+		            'color': '#5F5F5F',
+		            'width': '134px'
+		          },
+		          color: {
+		            checkedDay: '#39b45a',
+		            header: '#fff',
+		            headerText: '#666666'
+		          },
+		          buttons: {
+		            ok: 'Ok',
+		            cancel: 'Cancel'
+		          },
+		          overlayOpacity: 0.5, // 0.5 as default
+		          dismissible: true // as true as default
 		        },
-		        color: {
-		          header: '#fff',
-		          headerText: '#f00'
+		        timeoption: {
+		          type: 'min',
+		          week: ['Su','Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+		          month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		          format: 'YYYY-MM-DD HH:mm'
 		        },
-		        buttons: {
-		          ok: 'Ok',
-		          cancel: 'Cancel'
+		        multiOption: {
+		          type: 'multi-day',
+		          week: ['Su','Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+		          month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		          format: 'YYYY-MM-DD HH:mm'
 		        },
-		        overlayOpacity: 0.5, // 0.5 as default
-		        dismissible: true // as true as default
-		      },
-		      timeoption: {
-		        type: 'min',
-		        week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa','Su'],
-		        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		        format: 'YYYY-MM-DD HH:mm'
-		      },
-		      multiOption: {
-		        type: 'multi-day',
-		        week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa','Su'],
-		        month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		        format:"YYYY-MM-DD HH:mm"
-		      },
-		      limit: [{
-		        type: 'weekday',
-		        available: [1, 2, 3, 4, 5]
-		      },
-		      {
-		        type: 'fromto',
-		        from: '',
-		        to: ''
-		      }]
- 		};
-	},
+		        limit: [{
+		          type: 'weekday',
+		          available: [0, 1, 2, 3, 4, 5, 6]
+		        },
+		        {
+		          type: 'fromto',
+		          from: '2016-03-01',
+		          to: ''
+		        }]
+		      }
+		    },
 	created : function() {
 		var self = this;
 		$("#startdatepicker").val("03/01/16");
@@ -544,17 +545,21 @@ select {
     color: dimgrey;
     margin: 0 auto;
     line-height: 1.3em;
-    padding-top: 90px;
+    padding-top: 60px;
     background: transparent;
 }
 .ot-banner h1 span {
+	color: #e3e3e3;
+	cursor: pointer;
+}
+.ot-banner h1 span:hover {
 	color: #666666;
 }
 #libname {
     text-align: right;
     font-size: 24px;
     /* margin-top: 30px; */
-    color: #e3e3e3;
+    color: #666666;
     font-weight: 300;
     bottom: 20px;
     position: absolute;
