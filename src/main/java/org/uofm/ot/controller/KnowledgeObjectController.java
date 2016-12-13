@@ -377,7 +377,7 @@ public class KnowledgeObjectController {
 
 	@PutMapping("/knowledgeObject/ark:/{naan}/{name}/{published:published|unpublished}")
 	@ResponseStatus(HttpStatus.OK)
-	public String publish(ModelMap map, @ModelAttribute OTUser loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException {
+	public String publish(ModelMap map, @ModelAttribute("loggedInUser") OTUser loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException {
 		loggedInUser = (OTUser) map.get("loggedInUser");
 		
 		knowledgeObjectService.publishKnowledgeObject(arkId, "published".equals(published), loggedInUser);
