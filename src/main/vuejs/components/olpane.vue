@@ -194,6 +194,7 @@ box-shadow: none;
     font-size: 20px;
 padding: 0 2px 1px 0;
 box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
+transition: all 0.5s ease;
 }
 .greenroundbutton:hover {
     transform: scale(1.2);
