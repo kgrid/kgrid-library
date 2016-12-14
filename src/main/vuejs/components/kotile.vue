@@ -2,7 +2,7 @@
 		<div class="container ot-tile" v-bind:id="object.uri" v-on:click="selected">
 				<div class="row ot-2">
 					<div class="col-md-1 ot-type">
-						<img v-if="object.metadata.published" src="../assets/LittleGreenDot.png" width="8px"	height="auto" />
+						<img v-if="object.metadata.published" src="../assets/images/LittleGreenDot.png" width="8px"	height="auto" />
 					</div>
 					<div class="col-md-10 ot-title" data-toggle="tooltip"
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}

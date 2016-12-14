@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link rel="stylesheet" href="../resources/css/style.css"	type="text/css" />
-<link rel="stylesheet"	href="../resources/css/infogrid.css" type="text/css" />
-<link rel="stylesheet"	href="../resources/css/datagrid.css" type="text/css" />
-<link rel="stylesheet"	href="../resources/css/button.css" type="text/css" />
-<link rel="stylesheet"	href="../resources/css/formstyle.css"  type="text/css" />
-<link rel="stylesheet" href="../resources/css/l_overlay.css"
+<link rel="stylesheet" href="../static/css/style.css"	type="text/css" />
+<link rel="stylesheet"	href="../static/css/infogrid.css" type="text/css" />
+<link rel="stylesheet"	href="../static/css/datagrid.css" type="text/css" />
+<link rel="stylesheet"	href="../static/css/button.css" type="text/css" />
+<link rel="stylesheet"	href="../static/css/formstyle.css"  type="text/css" />
+<link rel="stylesheet" href="../static/css/l_overlay.css"
 	type="text/css" />
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -19,13 +19,13 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
 	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
 	crossorigin="anonymous">
-<link rel="stylesheet" href="../resources/css/ot.css" type="text/css" />	
-<link rel="shortcut icon"	href="../resources/images/MiniIconObjectTeller.ico" />
+<link rel="stylesheet" href="../static/css/ot2.css" type="text/css" />	
+<link rel="shortcut icon"	href="../static/images/MiniIconObjectTeller.ico" />
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-<script src="../resources/js/info.js"></script>
+<script src="../static/js/info.js"></script>
 <!-- <script type="text/javascript"	src="js/dropdown.js"></script> -->
-<script src="../resources/js/jquery-ui.js"></script>
-<script src="../resources/js/jquery.validate.js"></script>
+<script src="../static/js/jquery-ui.js"></script>
+<script src="../static/js/jquery.validate.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -33,7 +33,7 @@
 <script
 	src="https://unpkg.com/vue@2.0.2/dist/vue.js"></script>
 <script type="text/javascript" src="https://unpkg.com/vue-router@2.0.0"></script>
-<script type="text/javascript" src="../resources/js/lodash.js"></script>
+<script type="text/javascript" src="../static/js/lodash.js"></script>
 
 <!-- <script src="js/multi_step_form.js"></script> -->
 <script>
@@ -97,7 +97,7 @@ function getCurrentUser(getUser) {
 			</div>
 		</div>
 		<div id="m_logo_footer">
-		<img src="../resources/images/blue-transparentbg.png" width="60px"
+		<img src="../static/images/blue-transparentbg.png" width="60px"
 						height="auto" />
 		</div>
 	</div>
@@ -105,7 +105,7 @@ function getCurrentUser(getUser) {
 <template id="navbar">
 		<div class="ot-nav">
 			<a class="navbar-brand ot-1 .router-link-active" href="../index.html">
-				<img alt="Brand" src="../resources/images/logo.png">
+				<img alt="Brand" src="../static/images/logo.png">
 			</a>
 			<nav class="navbar navbar-default navbar-fixed-top ot-1">
 				<div class="container-fluid ot-1">
@@ -139,7 +139,7 @@ function getCurrentUser(getUser) {
 										<a id="dLabel" data-target="#" data-toggle="dropdown" role="button">Hello,
 											{{userModel.user.first_name}}<span><img
 											id="dropdowniconimg" class="down"
-											src="../resources/images/Chevron_Icon.png" width="12px" /></span></a> 
+											src="../static/images/Chevron_Icon.png" width="12px" /></span></a> 
 										<ul class="dropdown-menu" aria-labelledby="dLabel">
 											<li><a id="logoutBtn" v-on:click="userlogout">Logout</a></li>
 										</ul>
@@ -162,7 +162,7 @@ function getCurrentUser(getUser) {
 		<div class="sidebar_close">
 			<h3>CLOSE</h3>
 			<button class="greenroundbutton" id="close_overlay"	v-on:click="closeOverlay">
-				<img src="../resources/images/Close_Icon.png" >
+				<img src="../static/images/Close_Icon.png" >
 			</button>
 		</div>
 		<div class="overlay-top">

@@ -21,7 +21,7 @@
 						</label>
 			</div>
 			<div class='col-md-4'>
-						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/LittleGreenDot.png'>
+						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png'>
 							<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
 							<span v-else>PUBLIC</span>
 						</label>
@@ -33,7 +33,7 @@
 			<div id='ko-title'>
 				<div style='width: 10px; hieght: 60px; display: inline-block;'>
 					<img v-if='objModel.object.metadata.published'
-						src='../assets/LittleGreenDot.png' width='10px'
+						src='../assets/images/LittleGreenDot.png' width='10px'
 						height='auto' />
 				</div>
 				<h1>
@@ -69,8 +69,8 @@
 		<li v-for='section in sections' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section.label)"><a >{{section.label}}</a></li>
 		<li role='presentation' class='labels accessLevelOne'><a>
 				<div class='labels iconBtn accessLevelOne'>
-					<img class='hover-out' src='../assets/More_Icon_Light-01.png' /> 
-					<img class='hover-in' style='display: none;' src='../assets/More_Icon_Dark-01.png' />
+					<img class='hover-out' src='../assets/images/More_Icon_Light-01.png' /> 
+					<img class='hover-in' style='display: none;' src='../assets/images/More_Icon_Dark-01.png' />
 				</div>
 		</a></li>
 	</ul>

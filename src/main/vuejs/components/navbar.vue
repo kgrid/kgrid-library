@@ -2,7 +2,7 @@
 <template id='navbar'>
 		<div class='ot-nav'>
 			<a class='navbar-brand ot-1 .router-link-active' href='index.html'>
-				<img alt='Brand' src='../assets/logo.png'>
+				<img alt='Brand' src='../assets/images/logo.png'>
 			</a>
 			<nav class='navbar navbar-default navbar-fixed-top ot-1'>
 				<div class='container-fluid ot-1'>
@@ -35,7 +35,7 @@
 										<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>Hello,
 											{{userModel.user.first_name}}<span><img
 											id='dropdowniconimg' class='down'
-											src='../assets/Chevron_Icon.png' width='12px' /></span></a>
+											src='../assets/images/Chevron_Icon.png' width='12px' /></span></a>
 										<ul v-if='showDropdown'>
 											<li><a id='logoutBtn' v-on:click='userlogout'>Logout</a></li>
 										</ul>

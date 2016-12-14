@@ -5,7 +5,7 @@
 				<input type="file" :id="selectfile" @change="onFileChange" class="inputfile" 
 										data-multiple-caption="{count} files selected" multiple style="display: none;"/>
 				<label :for="selectfile" id="filecount"> 
-					<img src="../assets/Upload_Icon.png">
+					<img src="../assets/images/Upload_Icon.png">
 					<p class="green">CHOOSE_FILE_FOR_{{section}}</p>
 				</label>
 			</div>
