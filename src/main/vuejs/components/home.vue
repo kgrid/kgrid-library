@@ -8,7 +8,7 @@
 			<div v-else>
 				<h1>Object Teller is a repository for storing, curating, managing and
 				making accessible health knowledge accessible for learning health
-				systems. <br>Get Started, <span> Sign-Up.</span></h1>
+				systems. <br>Get Started, <span> Sign-Up Now.</span></h1>
 			</div>
 			<div id='libname'>{{libraryname}}</div>
 		</div>

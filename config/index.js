@@ -25,9 +25,9 @@ module.exports = {
       '/ObjectTeller': {
         target: 'http://localhost:8080/ObjectTeller',
         changeOrigin: true,
-        pathRewrite: {
+       /* pathRewrite: {
           '^/ObjectTeller': '/ObjectTeller'
-        }
+        }*/
       }
     },    
 	// CSS Sourcemaps off by default because relative paths are "buggy"
