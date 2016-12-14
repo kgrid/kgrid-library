@@ -196,7 +196,7 @@
 				var sh = autosize.scrollHeight+15;
 				autosize.style.height="0px";     //Reset height, so that it not only grows but also shrinks
 				autosize.style.height = sh + 'px';    //Set new height
-				//console.log(this.activeTab+"New Height = "+sh);
+				console.log(this.activeTab+"New Height = "+sh);
 			},
 			toggleObject:function(pub){
 				var uri=this.objModel.object.uri;
