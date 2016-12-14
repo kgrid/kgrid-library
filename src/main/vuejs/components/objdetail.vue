@@ -275,5 +275,22 @@ ul#tab>li {
 ul#tab>li.active {
 	display:block;	
 }
-
+#backButton {
+	background-image: url("../assets/images/Back_Icon_Light-01.png");
+	background-repeat: no-repeat;
+	background-position: left top;
+	display:inline-block;
+	background-color: #fff;
+	border: none;
+	color: #b3b3b3;
+	font-size: 12px;
+	vertical-align:top;
+	height:21px;
+}
+#backButton:hover{
+	background-image: url("../assets/images/Back_Icon_Dark-01.png");
+		background-repeat: no-repeat;
+background-position: left top;
+color:#666666;
+}
 	</style>

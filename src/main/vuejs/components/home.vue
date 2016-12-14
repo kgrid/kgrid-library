@@ -172,7 +172,7 @@ export default {
     name: 'home',
 	data : function() {
 		return {
-			libraryname : 'Department of Learning Health Systems Production Server',
+			libraryname : 'Department of Learning Health Systems Development Server',
 			sortKey : 'metadata.lastModified',
 			order : 'asc',
 			searchQuery : '',
@@ -190,7 +190,7 @@ export default {
 			isAdmin:true,
 			showFilterControl:false,
 			startTime: {
-		        time: ''
+		        time: '01/01/2016'
 		      },
 		      endtime: {
 		        time: ''
