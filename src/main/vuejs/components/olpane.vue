@@ -183,20 +183,5 @@ box-shadow: none;
     padding: 16px 22px;
     margin-top:0px;
     }
-.noscroll { overflow: hidden; }
-.greenroundbutton {
-    width: 41px;
-    height: 41px;
-    border-radius: 100%;
-    color: white;
-    background-color: #39b54a;
-    border: none;
-    font-size: 20px;
-padding: 0 2px 1px 0;
-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
-transition: all 0.5s ease;
-}
-.greenroundbutton:hover {
-    transform: scale(1.2);
-}
+
 </style>
