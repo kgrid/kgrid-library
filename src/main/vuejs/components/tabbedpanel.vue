@@ -26,12 +26,12 @@
 		},
 		beforeCreate : function() {
 			var self = this;
-			loadFieldsConfig(function(data) {
+			$.getJSON("./static/json/fields.json",function(data) {
 				self.fields_json.fields = data.fields;
 			});
 		},
 		updated : function() {
-			//this.autoresize();
+			this.autoresize();
 		},
 		created : function() {
 			//console.log(this.section);
