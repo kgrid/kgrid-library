@@ -15,7 +15,7 @@
 		<div slot='header'>
 				<div v-show='isLoggedIn'>
 					<button class='greenroundbutton ot-newobj'  v-on:click='addObject'>
-						<img src='../assets/Plus_Icon.png'/>
+						<img src='../assets/images/Plus_Icon.png'/>
 					</button>
 				</div>
 				<div class='row'>
@@ -50,7 +50,7 @@
 				<div id='filterBtn'>
 				<a v-on:click='toggleFilter'> Filters <span><img
 						id='filterdowniconimg' class='down'
-						src='../assets/dropdown_chevron.png' width='12px' /></span></a></div>
+						src='../assets/images/dropdown_chevron.png' width='12px' /></span></a></div>
 			</div>
 			<div class='col-md-10'>
 				<section class='main' v-show='filterStrings.length'>
@@ -250,6 +250,12 @@ export default {
 		    },
 	created : function() {
 		var self = this;
+	  	getCurrentUser(function(response) {
+				if(response!="")
+					$.extend(true, self.userModel.user, response);
+			},function(response) {
+				console.log(response);
+			});
 		$("#startdatepicker").val("03/01/16");
 		$("#enddatepicker").val(new Date().format("shortDate"));
 		this.startdate = new Date('March 1, 2016').getTime();
@@ -507,7 +513,7 @@ img#filterdowniconimg.up {
 }
 select {
     background: transparent;
-    background-image: url(../assets/dropdown_chevron.png);
+    background-image: url(../assets/images/dropdown_chevron.png);
     background-repeat: no-repeat;
     background-position: 98%;
     line-height: 1;

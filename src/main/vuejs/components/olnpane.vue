@@ -4,7 +4,7 @@
 		<div class='sidebar_close'>
 			<h3>CLOSE</h3>
 			<button class='greenroundbutton' id='close_overlay'	v-on:click='closeOverlay'>
-				<img src='../assets/Close_Icon.png' >
+				<img src='../assets/images/Close_Icon.png' >
 			</button>
 		</div>
 		<div class='overlay-top'>
