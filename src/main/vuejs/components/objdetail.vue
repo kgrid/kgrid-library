@@ -21,7 +21,7 @@
 						</label>
 			</div>
 			<div class='col-md-4'>
-						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png'>
+						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="8px">
 							<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
 							<span v-else>PUBLIC</span>
 						</label>
@@ -69,8 +69,8 @@
 		<li v-for='section in sections' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section.label)"><a >{{section.label}}</a></li>
 		<li role='presentation' class='labels accessLevelOne'><a>
 				<div class='labels iconBtn accessLevelOne'>
-					<img class='hover-out' src='../assets/images/More_Icon_Light-01.png' /> 
-					<img class='hover-in' style='display: none;' src='../assets/images/More_Icon_Dark-01.png' />
+					<img class='hover-out' src='../assets/images/More_Icon_Light-01.png' width="25px"/> 
+					<img class='hover-in' style='display: none;' src='../assets/images/More_Icon_Dark-01.png' width="25px"/>
 				</div>
 		</a></li>
 	</ul>
@@ -286,6 +286,7 @@ ul#tab>li.active {
 	font-size: 12px;
 	vertical-align:top;
 	height:21px;
+	background-size: 20px;
 }
 #backButton:hover{
 	background-image: url("../assets/images/Back_Icon_Dark-01.png");

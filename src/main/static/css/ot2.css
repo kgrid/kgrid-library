@@ -9,9 +9,14 @@ body {
 	outline:none;
 }
 
-a {
+a, a:hover {
 	text-decoration:none;
 }
+
+a:visited {
+	color: #666666;
+}
+
 .ot-1 {
 	background-color: #39b45a;
 	color:#fff;
@@ -30,9 +35,8 @@ a {
 	font-weight: 700;
 	line-height: 1.8;
     letter-spacing: 0.05em;
-        margin: 9px;
-            padding: 8px;
-        
+    margin: 9px;
+    padding: 8px;
 }
 
 .ot-nav {
@@ -95,34 +99,11 @@ a {
 	width:100%;
 }
 
-.ot-tile {
-	text-align: left;
-	width: 1024px;
-	background-color: #fff;
-	margin-top:5px;
-	margin-bottom:5px;
-	color: #696969;
-	font-weight:400;
-	border-bottom: 2px solid #fff;
-	padding:8px;
-    transition: border-bottom .8s ease-in-out;
-
-}
-
 .flip-list-move {
   transition: transform 3s;
 }
 
-.ot-tile:hover {
-	border-bottom: 2px solid #39b45a;
-	cursor:pointer;
-}
 
-.ot-tile>.row {
-	height: 34px;
-	line-height: 34px;
-	vertical-align: middle;
-}
 
 .ot-type{
 	vertical-align: middle;
@@ -140,11 +121,6 @@ a {
 	overflow: hidden;
   	text-overflow: ellipsis;
 }
-
-/* .ot-title:hover{
-    text-overflow:clip;
-    white-space: normal;
-} */
 
 .ot-owner{
 	font-size: 14px;
@@ -290,10 +266,15 @@ position: absolute;
 .datagrid {
 	margin:0 auto;
 	min-height: 720px;
+	position: relative;
+	width: 1024px;
+	font-family: 'Open Sans', sans-serif;
+	overflow: hidden;
+	max-width: 1028px;
 }
 .headercol{
 	margin: 7px auto;
-	width:1028px;
+	width:1024px;
 }
 .headercontainer {
 	width:1584px;
@@ -656,13 +637,6 @@ input[id$="datepicker"]{
 		width:150px;
 	}
 	
-	#filterBtn, #filterBtn a {
-		background-color:#fff;
-		text-decoration:none;
-		margin: 12px 0px 0px 0px;
-		padding: 12px 12px 30px 12px;
-		text-align:center;
-	}
 	
 	 #filterBtn a:hover, #filterBtn a:visited {
 	 	color: #666666;
@@ -845,7 +819,6 @@ position: relative;
 	transition: all 0.5s ease;
 }
 .greenroundbutton:hover {
-  
     transform: scale(1.2);
 }
 

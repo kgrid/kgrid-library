@@ -15,7 +15,7 @@
 		<div slot='header'>
 				<div v-show='isLoggedIn'>
 					<button class='greenroundbutton ot-newobj'  v-on:click='addObject'>
-						<img src='../assets/images/Plus_Icon.png'/>
+						<img src='../assets/images/Plus_Icon.png' width="14px"/>
 					</button>
 				</div>
 				<div class='row'>
@@ -488,17 +488,27 @@ input[type=text], input[type=password], input[type=textarea], .addtext a {
 input[id$="datepicker"] {
     width: 150px;
 }
-#filterBtn, #filterBtn a {
+#filterBtn {
     background-color: #fff;
-    text-decoration: none;
-    margin: 12px 0px 0px 0px;
-    padding: 12px 10px 12px 10px;
+    margin: 25px 0px 0px 0px;
+    padding: 12px 0px 12px 0px;
     text-align: center;
 	cursor: pointer;
 	width: 100px;
 	height: 45px;
 }
-
+#filterBtn a {
+    background-color: #fff;
+    margin: 25px 0px 0px 0px;
+    padding: 12px 10px 12px 0px;
+    text-align: center;
+	cursor: pointer;
+	width: 80px;
+	height: 45px;
+}
+#filterBtn a span {
+	margin: 0px -15px 0px 12px;
+}
 img#filterdowniconimg.down {
     -moz-transform: scaleY(1);
     -o-transform: scaleY(1);
@@ -513,6 +523,7 @@ img#filterdowniconimg.up {
 }
 select {
     background: transparent;
+	background-size: 18px;
     background-image: url(../assets/images/dropdown_chevron.png);
     background-repeat: no-repeat;
     background-position: 98%;

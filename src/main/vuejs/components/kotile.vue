@@ -100,12 +100,31 @@
 				    text-align: left;
 				    width: 1024px;
 				    background-color: #fff;
-				    margin-top: 5px;
-				    margin-bottom: 5px;
+				    margin: 10px 0px 0px 0px;
 				    color: #696969;
 				    font-weight: 400;
-				    border-bottom: 2px solid #fff;
-				    padding: 8px;
-				    transition: border-bottom .8s ease-in-out;
+				    border: none;
+				    padding: 0px ;
 				}
+				.ot-tile:after {
+					content: '';
+					display: block;
+					margin: auto;
+					height: 2px;
+					width: 0px;
+					background: transparent;
+					transition: width 0.8s ease, background-color .5s ease;
+				}
+				.ot-tile:hover:after{
+					width:100%;
+				background: #39b45a;
+				}
+				.ot-tile>.row {
+					height: 30px;
+					margin: 6px 0px 4px 0px;
+				    line-height: 30px;
+				}
+					
+				
+				
 				</style>

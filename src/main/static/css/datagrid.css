@@ -24,7 +24,7 @@
 .datagrid, .infogrid {
 	/* 	background-color:pink; */
 	position: relative;
-	width: 1028px;
+	width: 1024px;
 	font-family: 'Open Sans', sans-serif;
 	overflow: hidden;
 	max-width: 1028px;
