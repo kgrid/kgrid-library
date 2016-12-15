@@ -235,7 +235,7 @@
 										+ uri,
 								success : function(
 										response) {
-									window.location.href = "/ObjectTeller/vuehome/home.html";
+									eventBus.$emit('return');
 								}
 							});
 					}
