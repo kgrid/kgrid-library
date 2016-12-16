@@ -1,9 +1,8 @@
-
 <template id='navbar'>
 		<div class='ot-nav'>
-			<a class='navbar-brand ot-1 .router-link-active' href='index.html'>
+			<router-link class='navbar-brand ot-1 .router-link-active' to='/'>
 				<img alt='Brand' src='../assets/images/logo.png'>
-			</a>
+			</router-link>
 			<nav class='navbar navbar-default navbar-fixed-top ot-1'>
 				<div class='container-fluid ot-1'>
 					<div class='navbar-header ot-1'>
@@ -18,9 +17,9 @@
 					<div class='collapse navbar-collapse ot-1'
 						id='bs-example-navbar-collapse-1'>
 						<ul class='nav navbar-nav'>
-							<li><a href='static/about.html'>About</a></li>
-							<li><a href='static/faq.html'>FAQ</a></li>
-							<li><a href='static/contactus.html'>Contact Us</a></li>
+							<li><router-link to='/about'>About</router-link></li>
+							<li><router-link to='/faq'>FAQ</router-link></li>
+							<li><router-link to='/contactus'>Contact Us</a></li>
 						</ul>
 						<div v-if='!isLoggedIn'>
 						<ul class='nav navbar-nav navbar-right ot-1'>
@@ -151,9 +150,10 @@ export default {
 	font-weight: 700;
 	line-height: 1.8;
     letter-spacing: 0.05em;
-        margin: 9px;
-            padding: 8px;
-
+    margin: 9px auto;
+    padding-top: 8px;
+	padding-bottom: 8px;
+	
 }
 
 .ot-nav {
