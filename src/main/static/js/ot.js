@@ -16,7 +16,7 @@ function retrieveObjectList(fillObjectList){
 		});
 }
 
-function retrieveObject(uri, section, fillObjectContent){
+function retrieveObject(uri, section, fillObjectContent, errorhandler){
 	var endPoint = uri; 
 	if(section!=""){
 		endPoint = endPoint+ "/"+section;
@@ -32,16 +32,16 @@ function retrieveObject(uri, section, fillObjectContent){
 			fillObjectContent(response);
 		},
 		error : function(response) {
-			//errorHandler(response);
+			console.log("Retrieve error");
+			errorhandler(response);
 		}
 	});
 }
 
-
-
 function loadFieldsConfig(fillFieldsConfig){
 	$.getJSON("json/fields.json", fillFieldsConfig);
 }
+
 function overlayHeightResize() {
 	var ol_pane_height = $(window).height();
 	var boardHeight = (ol_pane_height - 180);

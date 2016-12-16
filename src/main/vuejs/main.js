@@ -35,7 +35,10 @@ const routes = [
                 { path: '/contactus', component: require('./components/contactus.vue') },
                 { path : '/object/:uri', name : 'object', component : require('./components/objdetail.vue'), data: function(){
                 	   	console.log("current URI"+ this.$route.params.uri);
-                	    }	} 
+                	    }	} ,
+                {path:'/soon', component: require('./components/comingsoon.vue')},
+                 { path : '*', component : require('./components/notfound.vue')	},
+                        
                 	    ];
 
 const router = new VueRouter({
@@ -59,6 +62,13 @@ var vm = new Vue({
 	},
 	created: function(){
 		var self=this;
+		eventBus.$on('404', function(){
+			router.push({path:'*'});
+		});
+		eventBus.$on('soon', function(){
+			router.push({path:'/soon'});
+		});
+		
 		 eventBus.$on("return", function(){
 			router.push({ path: '/' });
 		 });

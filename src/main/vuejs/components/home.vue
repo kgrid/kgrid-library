@@ -6,9 +6,9 @@
 				<h1>Hello, {{userModel.user.first_name}}!<br>Need to invite others? <span>Add Users.</span></h1>
 			</div>
 			<div v-else>
-				<h1>Object Teller is a repository for storing, curating, managing and
-				making accessible health knowledge accessible for learning health
-				systems. <br>Get Started, <span> Sign-Up Now.</span></h1>
+				<h1>Object Teller is a repository for storing, curating, managing,<br> and
+				making accessible health knowledge for <br>learning health
+				systems. <br>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
 			</div>
 			<div id='libname'>{{libraryname}}</div>
 		</div>
@@ -20,8 +20,8 @@
 				</div>
 				<div class='row'>
 						<div class='col-md-6 ot-search'>
-							<span class='ot-glybtn glyphicon glyphicon-search'></span> <input
-								placeholder='Search' v-model='newstring'  @keyup.enter='addFilterString'/>
+						<img src='../assets/images/Search_Icon-01.png' width="20px"/><input
+								placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
 						</div>
 						<div class='col-md-1'></div>
 						<div class='col-md-2 ot-count'>{{countString}}</div>
@@ -471,9 +471,18 @@ export default {
     display: inline-block;
     border: 1px solid #fff;
 	border-radius: 10px;
-    width: 49%;
-    margin-left: 10px;
+    width: 46%;
+    margin-left: 15px;
 }
+
+
+.ot-search input {
+    line-height: 2.8em;
+    font-size: 14px;
+    padding: 0px 0px 0px 16px;
+    width:85%;
+}
+
 input[type=text], input[type=password], input[type=textarea], .addtext a {
     width: 900px;
     height: 38px;
@@ -544,11 +553,12 @@ select {
 .ot-banner {
     background-color: transparent;
     position: relative;
-    width: 900px;
+    width: 1024px;
     overflow: visible;
     z-index: 10;
     height: 335px;
     margin: 0 auto;
+padding: 0px 48px 0px 48px;
 }
 .ot-banner.loggedin {
 	height: 240px;
@@ -565,11 +575,11 @@ select {
     padding-top: 60px;
     background: transparent;
 }
-.ot-banner h1 span {
+.ot-banner h1 a {
 	color: #e3e3e3;
 	cursor: pointer;
 }
-.ot-banner h1 span:hover {
+.ot-banner h1 a:hover {
 	color: #666666;
 }
 #libname {
@@ -580,6 +590,6 @@ select {
     font-weight: 300;
     bottom: 20px;
     position: absolute;
-    right: 0px;
+    right: 48px;
 }
 </style>

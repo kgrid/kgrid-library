@@ -4,10 +4,10 @@
 					<div class="col-md-1 ot-type">
 						<img v-if="object.metadata.published" src="../assets/images/LittleGreenDot.png" width="8px"	height="auto" />
 					</div>
-					<div class="col-md-10 ot-title" data-toggle="tooltip"
+					<div class="col-md-11 ot-title" data-toggle="tooltip"
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
-					<div class="col-md-1 ot-empty-1"></div>
+					
 				</div>
 				<div class="row ot-2">
 					<div class="col-md-1 ot-empty"></div>
@@ -15,7 +15,7 @@
 				</div>
 				<div class="row ot-2">
 					<div class="col-md-1 ot-empty"></div>
-					<div class="col-md-5 ot-keywords">Keyword:{{object.metadata.keywords}}</div>
+					<div class="col-md-5 ot-keywords">Keyword: {{object.metadata.keywords}}</div>
 					<div class='col-md-6 ot-iddate'>
 					<div class='row'>
 					<div class="col-md-6 ot-id">
@@ -125,6 +125,35 @@
 				    line-height: 30px;
 				}
 					
-				
-				
+				.ot-type>img{
+					margin: 13px 15px 17px 6px;
+					
+					}
+
+.ot-title{
+	font-size: 18px;
+	font-weight: 400;
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+	padding: 0px 0px 0px 8px;
+width:950px;
+}
+
+.ot-owner{
+	font-size: 14px;
+	font-style: italic;
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+    padding: 0px 15px 0px 8px;
+}
+
+.ot-keywords, .ot-id, .ot-udate {
+	font-size: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+    padding: 0px 15px 0px 8px;
+}
 				</style>

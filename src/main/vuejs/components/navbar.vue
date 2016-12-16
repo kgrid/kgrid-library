@@ -24,7 +24,7 @@
 						<div v-if='!isLoggedIn'>
 						<ul class='nav navbar-nav navbar-right ot-1'>
 							<li class='login-link' v-on:click='login_click'><a>Log In</a></li>
-							<li class='signup-link'><a id='signupBtn'>Sign Up</a></li>
+							<li class='signup-link'><router-link id="signupBtn" to='/soon'>Sign Up</router-link></li>
 						</ul>
 						</div>
 						<div v-else>
@@ -197,7 +197,7 @@ export default {
 #signupBtn {
 	border: 1px solid #e3e3e3;
     border-radius: 10px;
-    color: #e3e3e3;
+    color: #fff;
 	width: 125px;
 	text-align: center;
 }

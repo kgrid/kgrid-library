@@ -42,11 +42,6 @@ a:visited {
 .ot-nav {
 	z-index:50;
 }
-#signupBtn {
-	border: 1px solid #e3e3e3;
-    border-radius: 10px;
-    color: #e3e3e3;
-}
 
 .ot-1 .navbar-nav>li{
     margin: 0px 15px;
@@ -110,32 +105,7 @@ a:visited {
 	height: 40px;
 }
 
-.ot-type>img{
-	margin: 15px;
-	
-	}
-.ot-title{
-	font-size: 18px;
-	font-weight: 400;
-	white-space: nowrap;
-	overflow: hidden;
-  	text-overflow: ellipsis;
-}
 
-.ot-owner{
-	font-size: 14px;
-	font-style: italic;
-	white-space: nowrap;
-	overflow: hidden;
-  	text-overflow: ellipsis;
-}
-
-.ot-keywords, .ot-id, .ot-udate {
-	font-size: 12px;
-	white-space: nowrap;
-	overflow: hidden;
-  	text-overflow: ellipsis;
-}
 
 .ot-udate>span {
 	padding-left: 15px;	
@@ -170,20 +140,6 @@ padding:16px 0px 0px 16px;
    	border:none;
 }
 
-.ot-search {
-	display:inline-block;
-	border: 1px solid #e3e3e3;
-	border-radius:10px;
-	width:49%;
-	margin-left:10px;
-}
-
-.ot-search input {
-    line-height: 2em;
-    font-size: 18px;
-    padding: 0px 0px 0px 8px;
-    width:92%;
-}
 
 span.ot-right{
 	border-left: 1px solid #696969;
@@ -205,16 +161,6 @@ span.ot-right{
 	color:#39b54a;
 	background-color: #fff;	
 	font-weight:200;
-}
-
-.ot-banner {
-	background-color:transparent;
-	position:relative;
-  	width: 1024px;;  
-	overflow: visible;
-	z-index:10;
-	height:335px;
-	margin: 0 auto;
 }
 
 .ot-banner h1 small {
