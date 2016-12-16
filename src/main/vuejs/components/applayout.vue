@@ -1,4 +1,4 @@
-	<template id="layout">
+<template id="layout">
 		<div class="ot-content">
 			<div class="whitebacking">
 				<div class="wrapper">

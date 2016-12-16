@@ -30,6 +30,9 @@ Vue.use(VueRouter);
 // create router
 const routes = [
                 { path : '/', component : require('./components/home.vue')	},
+                { path: '/about', component: require('./components/about.vue') },
+                { path: '/faq', component: require('./components/faq.vue') },
+                { path: '/contactus', component: require('./components/contactus.vue') },
                 { path : '/object/:uri', name : 'object', component : require('./components/objdetail.vue'), data: function(){
                 	   	console.log("current URI"+ this.$route.params.uri);
                 	    }	} 
