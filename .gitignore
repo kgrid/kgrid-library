@@ -41,6 +41,7 @@ coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+dist
 
 # Dependency directories
 node_modules
@@ -62,3 +63,8 @@ jspm_packages
 .yarn-integrity
 
 
+#Eclipse IDE
+.classpath
+.project
+/node
+/.settings
