@@ -141,6 +141,10 @@
 			retrieveObject(this.$route.params.uri, "complete", function(response) {
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
+			}, function(response){
+				console.log("Error:");
+				console.log(response);
+				eventBus.$emit('404');
 			}); 
 	    	$('ul#tabs li.active').addClass('middleout');
 	    	$("html, body").animate({
