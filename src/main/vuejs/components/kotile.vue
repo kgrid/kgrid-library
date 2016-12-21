@@ -18,10 +18,10 @@
 					<div class="col-md-5 ot-keywords">Keyword: {{object.metadata.keywords}}</div>
 					<div class='col-md-6 ot-iddate'>
 					<div class='row'>
-					<div class="col-md-6 ot-id">
+					<div class="col-md-7 ot-id">
 						<span class="ot-left">Object ID: {{object.uri}}</span>
 					</div>
-					<div class="col-md-6 ot-udate">
+					<div class="col-md-5 ot-udate">
 						<span class="ot-right">Last Updated: <span v-text="formattedlastModified"></span></span>
 					</div></div>
 					</div>
@@ -92,10 +92,7 @@
 			    height: 0px;
 			    width: 48px;
 				}
-				.ot-id {
-					text-align: right;
-			    	padding-right: 0;
-				}
+				
 				.ot-tile {
 				    text-align: left;
 				    width: 1024px;
@@ -155,5 +152,21 @@ width:950px;
 	overflow: hidden;
   	text-overflow: ellipsis;
     padding: 0px 15px 0px 8px;
+}
+.ot-keywords {
+	width: 450px;
+}
+.ot-id {
+	text-align: right;
+	padding-right: 12px;
+	width: 300px;
+}
+.ot-id span {
+	
+}
+.ot-udate {
+	text-align: right;
+	padding: 0px;
+	width: 175px;
 }
 				</style>

@@ -74,21 +74,22 @@ ul#tab {
     background-color: #ffffff;
 }
 input[type=text]:disabled {
-	border: 1px solid #fff;
+	border: none;
 	background-color: #fff;
 	color: #666666;
 	font-weight: 400;
 	font-size: 14px;
+padding: 0px;
 }
 .addtext textarea {
 	width: 900px;
-	min-height:60px;
+	min-height:38px;
 	resize:none;
-	padding:8px 16px;
-	border: 1px solid #e6e6e6;
-	border-radius: 10px;
+	padding:8px 0px 0px 0px;
+	border: none;
+	border-radius: 0px;
 	color:#666666;
-  	margin:2px 0;
+  	margin: 0;
   	font-size: 14px;
   	overflow-y:auto;
   	line-height:1.4em;
@@ -99,32 +100,31 @@ input[type=text]:disabled {
     font-weight: 400;
 }
 
-.addtext textarea:disabled{
-	border: 1px solid #fff;
-}
 
 .addtext a {
-    width: 100%;
-    border: 1px solid #fff;
+	display: block;
+	border: none;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 38px;
-    padding: 0px 16px;
-    border-radius: 10px;
-    margin: 2px 0;
+    padding: 10px 0px 0px 1px;
+	border-radius: 0px;
+    margin: 0px;
     font-size: 14px;
     color: #666666;
     font-weight: 400;
 }
+
+.addtext a span {
+	border-bottom: 1px solid #39b45a;
+}
+
 ul.list li {
     display: block;
-    padding: 0px 16px;
+    padding: 0px;
 }
-a {
-	text-decoration: none;
-    background-color: transparent;
-}
+
 
 </style>
 	

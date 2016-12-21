@@ -251,6 +251,9 @@ border-bottom-right-radius: 10px;
 transition: all .5s ease;
 }
 
+.dropdown ul li {
+	display: table-cell;
+}
 .dropdown a{
 color: #fff;
 }

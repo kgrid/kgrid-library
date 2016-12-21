@@ -3,7 +3,7 @@
 	<applayout :nothelper='true'>
 		<div slot='banner'>
 			<div v-if="isLoggedIn">
-				<h1>Hello, {{userModel.user.first_name}}!<br>Need to invite others? <span>Add Users.</span></h1>
+				<h1>Hello, {{userModel.user.first_name}}!<br>Need to invite others? <router-link to='/soon'>Add Users.</router-link></h1>
 			</div>
 			<div v-else>
 				<h1>Object Teller is a repository for storing, curating, managing,<br> and
@@ -514,6 +514,7 @@ input[id$="datepicker"] {
 	cursor: pointer;
 	width: 80px;
 	height: 45px;
+	colro: #666666;
 }
 #filterBtn a span {
 	margin: 0px -15px 0px 12px;
@@ -535,7 +536,7 @@ select {
 	background-size: 18px;
     background-image: url(../assets/images/dropdown_chevron.png);
     background-repeat: no-repeat;
-    background-position: 98%;
+    background-position: 90%;
     line-height: 1;
     -webkit-appearance: none;
     -moz-appearance: none;

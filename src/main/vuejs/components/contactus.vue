@@ -41,5 +41,7 @@ export default {
 };
 </script>
 <style>
-
+.firstline {
+	font-weight: 700;
+}
 </style>

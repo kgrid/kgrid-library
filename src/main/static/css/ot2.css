@@ -1,8 +1,11 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic);
 
-body {
+body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, input, textarea, blockquote, button {
+  margin: 0;
+  padding: 0;
+  border: 0; 
   font-family: 'Open Sans', sans-serif;
-  color:#777;
+  color: #777;	
 }
 
 * {
@@ -11,9 +14,11 @@ body {
 
 a, a:hover {
 	text-decoration:none;
+	color: #e3e3e3;
+		cursor: pointer;
 }
 
-a:visited {
+a:hover {
 	color: #666666;
 }
 
@@ -113,16 +118,17 @@ a:visited {
 
 .ot-viewlist {
 	list-style:none;
+	padding: 10px 16px 16px 16px;
 }
 
 .ot-viewlist input, .ot-viewlist div, .ot-viewlist h4{
 	background-color: #fff;
-	padding-left: 16px;
+	padding: 0px;
 	color: #666666;
 	font-weight: 400;
 	font-size: 14px;
 	border-radius: 5px;
-
+	margin: 0px;
 }
 
 .ot-viewlist textarea{
@@ -167,6 +173,7 @@ span.ot-right{
 	font-size:28px;
   line-height: 1.5em;
   display: block;
+  font-weight: 300;
 }
 
 .main-content {
@@ -192,17 +199,6 @@ span.ot-right{
     z-index:500;
 }
 
-
-#ko-title h1{
-position: absolute;
-    display: inline-block;
-    font-size: 22px;
-    left: 24px;
-    margin: 0;
-    text-align: left;
-    padding: 0;
-}
-
 .m_logo_footer {
 	text-align: center;
 	padding-top: 30px;
@@ -219,7 +215,7 @@ position: absolute;
 	max-width: 1028px;
 }
 .headercol{
-	margin: 7px auto;
+	margin: 8px auto;
 	width:1024px;
 }
 .headercontainer {
@@ -326,7 +322,7 @@ ul#edittabs li, ul#tabs li {
 	line-height: 2;
 	margin-top: 6px;
 	margin-bottom: 6px;
-	margin-left: 38px;
+	margin-left: 48px;
 	margin-right: 2px;
 	cursor: pointer;
 	vertical-align: bottom;
@@ -496,6 +492,17 @@ color:#666666;
 .addtext textarea:disabled{
 		border: 1px solid #fff;
 }
+
+.fixed {
+  top: 0px;
+  position: fixed;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  align-content: center;
+
+}
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -610,15 +617,18 @@ input[id$="datepicker"]{
 	
 	.ot-detail-smallrow {
 		height: 40px;
+		margin-left: -40px;
 	}
 	.ot-detail-spacer {
 		height: 40px;
 	}
 	.ot-detail-titlerow {
 		height: 140px;
+		margin-left: -40px;
 	}
 	.ot-detail-daterow {
 		height: 60px;
+				margin-left: -37px;
 	}
 	.date2 {
 	padding: 0px;
@@ -632,6 +642,8 @@ input[id$="datepicker"]{
 	padding-left: 0px;
 	}
 	.ot-pub .active {
+	margin-left: 5px;
+	padding-bottom:2px;
 	border-bottom: 2px solid #39b45a;
 	}
 	
@@ -766,5 +778,59 @@ position: relative;
 }
 .greenroundbutton:hover {
     transform: scale(1.2);
+}
+
+/* CSS for InfoGrid */
+.infogrid {
+	background-color: #fff;
+	position: relative;
+	width: 1028px;
+	font-family: 'Open Sans', sans-serif;
+	color: #666666;
+	overflow: hidden;
+	max-width: 1024px;
+	text-align: center;
+	padding: 50px 0px;
+	margin-top: 60px;
+	min-height: 740px;
+}
+
+.block_title {
+	width: 100%;
+	font-size: 21px;
+	font-weight: 300;
+	color: #666666;
+	padding-top: 25px;
+	padding-bottom: 20px;
+}
+
+.line {
+	display: inline-block;
+	width: 50px;
+	padding: 0px 16px;
+	vertical-align: middle;
+	color: #b3b3b3;
+}
+
+.line hr {
+	border: 1px solid #fff;
+	border-bottom-color: #b3b3b3;
+	color: #fff;
+}
+
+.infoblock {
+	padding-top: 10px;
+	padding-bottom: 30px;
+}
+
+
+
+.block_info {
+	width: 100%;
+	font-size: 14px;
+	font-weight: 400;
+	color: #666666;
+	padding-top: 0px;
+	line-height: 1.8em;
 }
 
