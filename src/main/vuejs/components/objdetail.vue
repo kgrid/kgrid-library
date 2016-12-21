@@ -11,17 +11,17 @@
 				</div>
 			</div>
 			</div>
-			<div class='col-md-5'></div>
-			<div class='col-md-4'>
 			<div class='col-md-4'></div>
-			<div class='col-md-4'>
+			<div class='col-md-5 pri-pub'>
+			<div class='col-md-7' style="text-align:right;w">VIEW TYPE:</div>
+			<div class='col-md-2'>
 						<label class='ot-pub radio-inline'><input type='radio' value='false' v-on:click='unpublish'/>
 							<span v-if='isPublic'>PRIVATE</span>
 							<span class='active middleout' v-else>PRIVATE</span>
 						</label>
 			</div>
-			<div class='col-md-4'>
-						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="8px">
+			<div class='col-md-3'>
+						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="6px">
 							<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
 							<span v-else>PUBLIC</span>
 						</label>
@@ -31,7 +31,7 @@
 			</div>
 					<div class='row ot-detail-titlerow'>
 			<div id='ko-title'>
-				<div style='width: 10px; hieght: 60px; display: inline-block;'>
+				<div id= 'type-status' >
 					<img v-if='objModel.object.metadata.published'
 						src='../assets/images/LittleGreenDot.png' width='10px'
 						height='auto' />
@@ -68,18 +68,19 @@
 		<ul class='nav nav-tabs view' role='tablist' id='tabs'>
 		<li v-for='section in sections' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section.label)"><a >{{section.label}}</a></li>
 		<li role='presentation' class='labels accessLevelOne'><a>
-				<div class='labels iconBtn accessLevelOne'>
-					<img class='hover-out' src='../assets/images/More_Icon_Light-01.png' width="25px"/> 
-					<img class='hover-in' style='display: none;' src='../assets/images/More_Icon_Dark-01.png' width="25px"/>
+				<div class='labels iconBtn accessLevelOne' id ='more'>
 				</div>
 		</a></li>
 	</ul>
 					<div class='inline editwrapper accessLevelOne' id='objBtns'
-						style='top: 10px; right: 10px; position: absolute;'>
+						style='top: 10px; right: 40px; position: absolute;'>
 						<button class='edit' id='metadataeditBtn' v-on:click='editObj'>EDIT</button>
 						<button class='edit' id='deleteButton'
 							v-on:click='deleteObject'>DELETE</button>
-						<a class='edit' id='downloadButton' v-bind:href='downloadLink'>DOWNLOAD</a>
+						<div id='downloadButton'>
+							<a class='edit' v-bind:href='downloadLink'>DOWNLOAD</a>
+							<div id='downloadButtonimg'></div>
+						</div>
 			</div>
 		</div>
 			<div slot='maincontent'>
@@ -116,10 +117,7 @@
 		},
 		watch:{
 			activeTab:function(){
-				$('ul#tabs li.middleout').removeClass('middleout');
-				$('ul#tabs li.active').addClass('middleout');
-				//this.autoresize();
-				//console.log(this.activeTab);
+				console.log(this.activeTab);
 			}
 		},
 		created : function() {
@@ -150,7 +148,7 @@
 	    	$("html, body").animate({
 	        	scrollTop: 0
 	    	}, 200);
-	    	//
+	    	otScroll();
 		},
 		computed : {
 			formattedUpdateDate : function() {
@@ -197,7 +195,7 @@
 			},
 			autoresize:function(){
 				var autosize = this.$el.querySelector("ul#tab>li.active .autosize");
-				var sh = autosize.scrollHeight+15;
+				var sh = autosize.scrollHeight+5;
 				autosize.style.height="0px";     //Reset height, so that it not only grows but also shrinks
 				autosize.style.height = sh + 'px';    //Set new height
 				console.log(this.activeTab+"New Height = "+sh);
@@ -252,6 +250,39 @@
 };
 	</script>
 <style>
+#type-status {
+	width: 10px; 
+	height: 42px; 
+	display: inline-block;
+}
+#type-status img {
+	position: absolute;
+	top: 16px;
+left: 5px;
+}
+#ko-title {
+	position:relative;
+	display: block;
+	font-size: 28pt;
+	margin-left:16px;
+	margin-top:16px;
+	width:860px;
+	height:60px;
+	background-color:#fff;
+}
+
+#ko-title h1{
+	position: absolute;
+    display: inline-block;
+    font-size: 22px;
+    left: 24px;
+    margin: 0;
+    text-align: left;
+    padding: 0;
+}
+
+
+
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
     color: #666666;
     cursor: pointer;
@@ -259,7 +290,7 @@
     border: 1px solid #fff;
     border-bottom-color: transparent;
 }
-ul#tabs li.middleout:after {
+ul#tabs li.active:after {
     width: 100%;
     background: #39b45a;
 }
@@ -277,8 +308,31 @@ ul#tab>li {
 	display:none;	
 }
 ul#tab>li.active {
-	display:block;	
+	display:block;
+	padding: 36px 36px;
 }
+
+
+#goback {
+	display: inline-block;
+	font-size: 12px;
+	color: #666666;
+
+}
+
+#backButton a{
+	padding-left:26px;
+	vertical-align:middle;
+	color: #b3b3b3;
+	line-height: 1.8em;
+}
+
+#backButton a:hover{
+	color:#666666;
+}
+
+
+
 #backButton {
 	background-image: url("../assets/images/Back_Icon_Light-01.png");
 	background-repeat: no-repeat;
@@ -298,4 +352,51 @@ ul#tab>li.active {
 background-position: left top;
 color:#666666;
 }
-	</style>
+.date-title {
+	font-size: 12px;
+}
+.date-data {
+	font-size: 18px;
+}
+#more {
+	width: 25px;
+	height: 20px;
+	margin: auto;
+	background-image : url('../assets/images/More_Icon_Light-01.png');
+	background-size: 20px;
+    background-repeat: no-repeat;
+	background-position-y: center;
+}
+
+#more:hover {	
+	background-image : url('../assets/images/More_Icon_Dark-01.png');
+}
+
+#downloadButton {
+	display: inline-block;
+background-image : url('../assets/images/Down_Arrow_Light.png');
+background-size: 12px;
+background-position-x: 98%;
+background-position-y:center;
+background-repeat: no-repeat;
+}
+#downloadButtonimg{
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	padding: 3px;
+	border-radius: 100%;
+	border: none
+
+}
+#downloadButton:hover {
+	background-image : url('../assets/images/Down_Arrow_Dark.png');
+
+}
+.pri-pub {
+	font-size: 12px;
+}
+.pri-pub label {
+	margin: 0px;
+}
+</style>

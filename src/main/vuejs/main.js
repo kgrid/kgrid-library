@@ -75,6 +75,15 @@ var vm = new Vue({
 		 eventBus.$on("objectSelected", function(obj){
 			router.push({ name:'object' ,params: { uri: obj.uri }});
 		 });
+		 eventBus.$on('objSaved', function(obj){
+				self.updateObject(obj);
+		});
+		 
+	},
+	methods: {
+		updateObject:function(obj){
+			$.extend(true, objModel.object, obj);
+		},
 	}
 	}).$mount('#app');
 

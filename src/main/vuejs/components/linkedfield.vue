@@ -1,5 +1,5 @@
 	<template id="linkedfieldtile-template"> 
-	   <a target="_blank" v-bind:href="link">{{value}}</a> 
+	   <a target="_blank" v-bind:href="link"><span>{{value}}</span></a> 
 	</template>
 	<script>
 	export default {

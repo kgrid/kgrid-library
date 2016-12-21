@@ -57,7 +57,7 @@ export function overlayHeightResize() {
 
 export function autoresize() {
 	var eid= $(this).text();
-	var sh = $(this)[0].scrollHeight+15;
+	var sh = $(this)[0].scrollHeight+5;
 	$(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
 	$(this).css('height',sh+ 'px');    //Set new height
 	console.log("New Height = "+sh);
@@ -94,25 +94,7 @@ export function editTabNav(){
 			$("ul#edittab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
 		}
 	});
-}/*
-export function tabNav(){
-	$("ul#tabs li").click(function(e) {
-		var tabClass=".view";
-		if($(this).parent().hasClass("inEdit")){
-			tabClass=".inEdit";
-		}
-		if (!$(this).hasClass("active")) {
-			var tabNum = $(this).index();
-			var nthChild = tabNum + 1;
-			$("ul#tabs"+tabClass+" li.active").removeClass("active");
-			$("ul#tabs"+tabClass+"  li.middleout").removeClass("middleout");
-			$(this).addClass("active");
-			$(this).addClass("middleout");
-			$("ul#tab"+tabClass+"  li.active").removeClass("active");
-			$("ul#tab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
-		}
-	});
-}*/
+}
 export function getCurrentUser(getUser, errorHandler) {
 	$.ajax({
 		type : "GET",
