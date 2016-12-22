@@ -114,7 +114,7 @@ table {
   width: 100%;
 }
 .day {
-  width: 12.45%;
+  width: 13.25%;
   display: inline-block;
   text-align: center;
   cursor: pointer;
@@ -123,7 +123,7 @@ table {
 	margin:2px;
   line-height: 24px;
   color: #666666;
-  background: #e3e3e3;
+  background: #e6e6e6;
   vertical-align: middle;
 	border: 1px solid #fff;
 	transition: all 0.3s ease;
@@ -138,24 +138,25 @@ table {
   display: inline-block;
   text-align: center;
   background: transparent;
-  color: #000;
-  font-weight: bold;
+  color: #666666;
+  font-weight: 400;
 }
 .passive-day {
   color: #fff;
 	background-color: #fff;
 }
 .checked {
-  background: #F50057;
-  color: #FFF !important;
+  background: #e6e6e6;
+  color: #666666 !important;
   border-radius: 3px;
+	border: 1px solid #39b45a;
 }
 .unavailable {
   color: #e6e6e6;
   cursor: not-allowed;
 }
 .cov-date-monthly {
-  height: 50px;
+  height: 36px;
 }
 .cov-date-monthly > div {
   display: inline-block;
@@ -163,7 +164,7 @@ table {
   margin: 0;
   vertical-align: middle;
   color: #fff;
-  height: 50px;
+  height: 36px;
   float: left;
   text-align: center;
   cursor: pointer;
@@ -180,7 +181,7 @@ table {
   width: 60%;
   padding: 10px 0!important;
   box-sizing: border-box;
-  font-size: 18px;
+  font-size: 14px;
 }
 .cov-date-caption span:hover {
   color: #666666;
@@ -190,14 +191,14 @@ table {
   background: rgba(255, 255, 255, 0.1);
 }
 .day:hover {
-	background: #e3e3e3;
- 	border: 1px solid #39b45a;
+	background: #b3b3b3;
+ 	
 }
 .unavailable:hover {
   background: none;
 }
 .checked:hover {
-  background: #FF4F8E;
+  background: #e6e6e6;
 }
 .cov-date-next::before,
 .cov-date-previous::before {
@@ -328,7 +329,7 @@ table {
         <div class="cov-date-monthly">
           <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
           <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
-          <span @click="showMonth">{{displayInfo.month}} </span><span @click="showYear"><small> {{checked.year}}</small></span>
+          <span @click="showMonth">{{displayInfo.month}} </span><span @click="showYear">  {{checked.year}}</span>
           </div>
           <div class="cov-date-next" @click="nextMonth('next')">»</div>
         </div>
@@ -402,7 +403,7 @@ exports.default = {
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format: 'YYYY-MM-DD',
           color: {
-            checked: '#39b45a',
+            checkedDay: '#e6e6e6',
             header: '#fff',
             headerText: '#666666'
           },

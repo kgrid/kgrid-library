@@ -2,7 +2,7 @@
 		<div class="container ot-tile" v-bind:id="object.uri" v-on:click="selected">
 				<div class="row ot-2">
 					<div class="col-md-1 ot-type">
-						<img v-if="object.metadata.published" src="../assets/images/LittleGreenDot.png" width="8px"	height="auto" />
+						<img v-if="object.metadata.published" src="../assets/images/LittleGreenDot.png" width="10px" height="auto" />
 					</div>
 					<div class="col-md-11 ot-title" data-toggle="tooltip"
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
@@ -84,13 +84,13 @@
 				<style>
 				.ot-type {
 				    vertical-align: middle;
-				    height: 40px;
-				    width: 48px;
+				    height: 25px;
+				    width: 60px;
 				}
 				.ot-empty {
 				    background-color: #fff;
 			    height: 0px;
-			    width: 48px;
+			    width: 60px;
 				}
 				
 				.ot-tile {
@@ -117,13 +117,11 @@
 				background: #39b45a;
 				}
 				.ot-tile>.row {
-					height: 30px;
-					margin: 6px 0px 4px 0px;
-				    line-height: 30px;
+					margin: 10px 0px;
 				}
 					
 				.ot-type>img{
-					margin: 13px 15px 17px 6px;
+					margin: 13px 10px 0px 10px;
 					
 					}
 
@@ -133,8 +131,8 @@
 	white-space: nowrap;
 	overflow: hidden;
   	text-overflow: ellipsis;
-	padding: 0px 0px 0px 8px;
-width:950px;
+	padding: 5px 0px 0px 0px;
+	width:950px;
 }
 
 .ot-owner{
@@ -143,7 +141,7 @@ width:950px;
 	white-space: nowrap;
 	overflow: hidden;
   	text-overflow: ellipsis;
-    padding: 0px 15px 0px 8px;
+    padding: 0px 15px 0px 0px;
 }
 
 .ot-keywords, .ot-id, .ot-udate {
@@ -151,15 +149,18 @@ width:950px;
 	white-space: nowrap;
 	overflow: hidden;
   	text-overflow: ellipsis;
-    padding: 0px 15px 0px 8px;
+    padding: 0px 15px 5px 0px;
 }
 .ot-keywords {
 	width: 450px;
 }
+.ot-iddate {
+	padding-right: 0px;
+}
 .ot-id {
 	text-align: right;
-	padding-right: 12px;
-	width: 300px;
+	padding-right: 0px;
+	right:-10px;
 }
 .ot-id span {
 	
@@ -167,6 +168,6 @@ width:950px;
 .ot-udate {
 	text-align: right;
 	padding: 0px;
-	width: 175px;
+	width: 185px;
 }
 				</style>
