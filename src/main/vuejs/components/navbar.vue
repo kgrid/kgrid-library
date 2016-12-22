@@ -1,6 +1,6 @@
 <template id='navbar'>
 		<div class='ot-nav'>
-			<router-link class='navbar-brand ot-1 .router-link-active' to='/'>
+			<router-link class='navbar-brand ot-1' to='/'>
 				<img alt='Brand' src='../assets/images/logo.png'>
 			</router-link>
 			<nav class='navbar navbar-default navbar-fixed-top ot-1'>
@@ -132,12 +132,6 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-.ot-1 {
-	background-color: #39b45a;
-	color:#fff;
-	z-index: 50;
-}
-
 .navbar-fixed-top.ot-1{
 	background-image: none;
 	background-color: #39b45a;

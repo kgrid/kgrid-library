@@ -95,8 +95,7 @@ export default {
     vertical-align:middle;
     top:60px;
     left:10px;
-    color:#666666;
-    font-size:14px;
+     font-size:14px;
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
     -ms-transform: rotate(270deg);

@@ -149,6 +149,7 @@
 	        	scrollTop: 0
 	    	}, 200);
 	    	otScroll();
+	    	$('.ot-banner').addClass('detail');
 		},
 		computed : {
 			formattedUpdateDate : function() {
@@ -250,6 +251,26 @@
 };
 	</script>
 <style>
+.ot-banner.detail {
+	height: 200px; 
+}
+.ot-detail-smallrow {
+	height: 20px;
+	margin-left: -40px;
+}
+.ot-detail-spacer {
+	height: 25px;
+}
+.ot-detail-titlerow {
+	height: 40px;
+	margin-left: -40px;
+}
+.ot-detail-daterow {
+	height: 60px;
+	margin-left: -37px;
+	margin-top: 35px;
+}
+
 #type-status {
 	width: 10px; 
 	height: 42px; 
@@ -317,7 +338,6 @@ ul#tab>li.active {
 	display: inline-block;
 	font-size: 12px;
 	color: #666666;
-
 }
 
 #backButton a{
@@ -331,26 +351,26 @@ ul#tab>li.active {
 	color:#666666;
 }
 
-
-
 #backButton {
-	background-image: url("../assets/images/Back_Icon_Light-01.png");
+	background-image: url("../assets/images/Back_Icon_Dark-01.png");
 	background-repeat: no-repeat;
-	background-position: left top;
+	background-position: 2px 2px;
 	display:inline-block;
 	background-color: #fff;
 	border: none;
 	color: #b3b3b3;
 	font-size: 12px;
 	vertical-align:top;
-	height:21px;
+	height:24px;
 	background-size: 20px;
 }
 #backButton:hover{
 	background-image: url("../assets/images/Back_Icon_Dark-01.png");
-		background-repeat: no-repeat;
-background-position: left top;
-color:#666666;
+	background-repeat: no-repeat;
+	background-position: left top;
+	color:#666666;
+	background-size: 24px;
+	transition:  0.5s ease;
 }
 .date-title {
 	font-size: 12px;
@@ -381,13 +401,21 @@ background-position-y:center;
 background-repeat: no-repeat;
 }
 #downloadButtonimg{
-	display: inline-block;
-	width: 14px;
-	height: 14px;
-	padding: 3px;
+	position: absolute; 
+	top:0px;
+    right: 0px;
+	width: 30px;
+	height: 30px;
 	border-radius: 100%;
-	border: none
-
+	border: 1px solid #b3b3b3;
+	transition: all 0.5s ease;
+}
+#downloadButtonimg:hover {
+	top: -2px;
+	right: -2px;
+	width: 36px;
+	height: 36px;
+	border: 1px solid #666666;
 }
 #downloadButton:hover {
 	background-image : url('../assets/images/Down_Arrow_Dark.png');
@@ -399,4 +427,18 @@ background-repeat: no-repeat;
 .pri-pub label {
 	margin: 0px;
 }
+
+.pri-pub label span {
+	color: #b3b3b3;
+	transition: color 0.5s ease;
+}
+
+.pri-pub label span:hover {
+	color: #666666;
+}
+
+.pri-pub label span.active {
+	color: #666666;
+}
+
 </style>

@@ -214,7 +214,7 @@ export default {
 		            'width': '134px'
 		          },
 		          color: {
-		            checkedDay: '#39b45a',
+		            checkedDay: '#e6e6e6',
 		            header: '#fff',
 		            headerText: '#666666'
 		          },
@@ -514,7 +514,7 @@ input[id$="datepicker"] {
 	cursor: pointer;
 	width: 80px;
 	height: 45px;
-	colro: #666666;
+	color: #666666;
 }
 #filterBtn a span {
 	margin: 0px -15px 0px 12px;
@@ -557,12 +557,12 @@ select {
     width: 1024px;
     overflow: visible;
     z-index: 10;
-    height: 335px;
+    height: 400px;
     margin: 0 auto;
 padding: 0px 48px 0px 48px;
 }
 .ot-banner.loggedin {
-	height: 240px;
+	height: 200px;
 }
 .ot-banner h1 {
     font-size: 32px;
@@ -573,12 +573,17 @@ padding: 0px 48px 0px 48px;
     color: dimgrey;
     margin: 0 auto;
     line-height: 1.3em;
-    padding-top: 60px;
+    padding-top: 100px;
     background: transparent;
+}
+
+.ot-banner.loggedin h1 {
+    padding-top: 52px;
 }
 .ot-banner h1 a {
 	color: #e3e3e3;
 	cursor: pointer;
+    transition: color .5s ease;
 }
 .ot-banner h1 a:hover {
 	color: #666666;

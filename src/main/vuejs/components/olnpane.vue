@@ -70,11 +70,17 @@ export default {
 }
 .sidebar_close {
     background-color:#fff;
+	color: #b3b3b3;
     position:absolute;
     height: 100%;
     width:60px;
     text-align:center;
     border-right: 1px solid #e6e6e6;
+	transition: color 0.5s ease;
+}
+
+.sidebar_close:hover {
+	color: #666666;
 }
 
 .sidebar_close h3{
@@ -83,7 +89,6 @@ export default {
     vertical-align:middle;
     top:60px;
     left:10px;
-    color:#666666;
     font-size:14px;
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
