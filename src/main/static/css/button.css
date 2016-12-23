@@ -43,17 +43,6 @@
   font-weight: 300;
   margin-right: 25px;
 }
-.greenroundbutton {
-    width:41px;
-    height:41px;
-    border-radius: 100%;
-    color:white;
-    background-color:#39b54a;
-    border:none;
-    font-size:20px;
-    padding:8px 10px 8px 8px;
-}
-
 .mediumgreenroundbutton {
     width:22px;
     height:22px;

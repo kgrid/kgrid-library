@@ -1,10 +1,11 @@
 <template id='ol-narrow-pane-template'>
 	<div class='modal-mask'>
+	<transition name='slide'>
 	<div class='ol_narrow_pane'>
 		<div class='sidebar_close'>
 			<h3>CLOSE</h3>
 			<button class='greenroundbutton' id='close_overlay'	v-on:click='closeOverlay'>
-				<img src='../assets/images/Close_Icon.png' >
+				<img src='../assets/images/Close_Icon.png' width='10px'>
 			</button>
 		</div>
 		<div class='overlay-top'>
@@ -24,6 +25,7 @@
 					<div class='alert-box warning'><slot name='ol-warning'></slot></div>
 		</div>
 	</div>
+	</transition>
 	</div>
 </template>
 <script>
@@ -51,7 +53,7 @@ export default {
 	position: absolute;
     right:0px;
     width: 550px;
-     margin: 0px auto;
+    margin: 0px auto;
     background-color: #fff;
     height: 100%;
     transition: all .8s ease;
@@ -68,6 +70,15 @@ export default {
   display: table;
   transition: opacity .5s ease;
 }
+.slide-enter, .slide-leave  {
+	right: -540px;
+}
+
+.slide-enter-active {
+	right: 0px;
+}
+
+
 .sidebar_close {
     background-color:#fff;
 	color: #b3b3b3;
@@ -99,8 +110,8 @@ export default {
 #close_overlay {
     position: relative;
     top:10px;
-    width:35px;
-    height:35px;
+    width:28px;
+    height:28px;
 }
 
 .overlay-top {
@@ -176,14 +187,5 @@ export default {
     margin-top:0px;
     }
 .noscroll { overflow: hidden; }
-.greenroundbutton {
-    width: 41px;
-    height: 41px;
-    border-radius: 100%;
-    color: white;
-    background-color: #39b54a;
-    border: none;
-    font-size: 20px;
-    padding: 0;
-}
+
 </style>

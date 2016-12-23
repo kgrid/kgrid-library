@@ -177,6 +177,7 @@ table {
   overflow: hidden;
   color: #fff;
 }
+
 .cov-date-caption {
   width: 60%;
   padding: 10px 0!important;
