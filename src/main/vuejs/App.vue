@@ -2,7 +2,7 @@
   <div>
     <navbar></navbar>
  	<router-view></router-view>
-    <div v-bind:is='currentOLView'  v-if='showOverlay.show'></div>
+    <div id='ol' v-bind:is='currentOLView'  v-if='showOverlay.show'></div>
   </div>
 </template>
 <script>
@@ -43,11 +43,19 @@ export default {
       self.showOverlay.show = true;
       self.currentOLView = 'login';
       document.body.classList.toggle('noscroll', true);
+      $('#ol').addClass('animated slideInRight');
+      $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+    	  $('#ol').removeClass('animated slideInRight');
+      });
     });
     eventBus.$on('hideOverlay', function (layerid) {
       switch (layerid) {
         case '0':
           self.showOverlay.show = false;
+          $('#ol').addClass('animated slideOutRight');
+          $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+        	  $('#ol').removeClass('animated slideOutRight');
+          });
           document.body.classList.toggle('noscroll', false);
           break;
         case '1':

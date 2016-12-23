@@ -76,6 +76,7 @@ export default {
     	console.log(obj);
 		$.extend(true, self.userModel.user, obj);
 	});
+  	 this.showDropdown=false;
   }, 
   mounted: function () {
     $('#userDropdown').on('show.bs.dropdown', function (e) { // eslint-disable-line
@@ -115,6 +116,7 @@ export default {
     	},
     userlogout: function () {
       var self = this;
+      this.showDropdown=false;
       $.ajax({ // eslint-disable-line
         type: 'POST',
         url: '/ObjectTeller/logout',

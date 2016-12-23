@@ -152,8 +152,8 @@
 		</div>
 </div>
 </div>				
-					<ul>
-						<li v-for='(object,index) in orderedList' v-bind:key='index'><kotile :object='object'
+<ul>
+<li v-for='(object,index) in orderedList' v-bind:key='index'><kotile :object='object'
 								:listsize='listSize' :tileindex='index' v-on:remove='orderedList.splice(index, 1)'></kotile></li>
 					</ul>
 				</div>
@@ -243,7 +243,7 @@ export default {
 		        },
 		        {
 		          type: 'fromto',
-		          from: '2016-03-01',
+		          from: '2016-01-01',
 		          to: ''
 		        }]
 		      }
@@ -294,6 +294,11 @@ export default {
 		});	
 	},
 	mounted:function(){
+		if(this.isLoggedIn){
+			$('.ot-banner').addClass('loggedin');
+		}else{
+			$('.ot-banner').removeClass('loggedin');
+		}
 		otScroll();
 	},
 	computed : {
@@ -441,7 +446,31 @@ export default {
 					 var estamp=new Date(this.endtime.time).getTime();
 						eventBus.$emit("enddate",estamp);
 						console.log("End date:"+ estamp);
-					 }
+					 },
+				 beforeEnter: function () {
+						 el.style.opacity = 0
+						 el.style.height = 0
+					    },
+					    enter: function (el, done) {
+					      var delay = el.dataset.index * 150
+					      setTimeout(function () {
+					        Velocity(
+					          el,
+					          { opacity: 1, height: '1.6em' },
+					          { complete: done }
+					        )
+					      }, delay)
+					    },
+					    leave: function (el, done) {
+					      var delay = el.dataset.index * 150
+					      setTimeout(function () {
+					    	  Velocity(
+					    	  el,
+					          { opacity: 0, height: 0 },
+					          { complete: done }
+					        )
+					      }, delay)
+					    }
 
 				 
 	},
@@ -577,6 +606,16 @@ padding: 0px 48px 0px 48px;
     background: transparent;
 }
 
+.ot-newobj{
+	width: 40px;
+	height: 40px;
+		position:absolute;
+    bottom:-30px;
+    right:-30px;
+    margin:0 auto;
+    z-index:500;
+box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
+}
 .ot-banner.loggedin h1 {
     padding-top: 52px;
 }

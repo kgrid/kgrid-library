@@ -105,9 +105,9 @@ export default {
 #close_overlay {
     position: relative;
     top:10px;
-    width:35px;
-    height:35px;
-box-shadow: none;
+    width:28px;
+    height:28px;
+    box-shadow: none;
 }
 
 .overlay-top {

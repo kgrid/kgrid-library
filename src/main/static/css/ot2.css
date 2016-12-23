@@ -165,15 +165,6 @@ span.ot-right{
     z-index:500;
 }
 
-.ot-newobj{
-		position:absolute;
-    bottom:-30px;
-    right:-30px;
-    margin:0 auto;
-    z-index:500;
-}
-
-
 .datagrid {
 	margin:0 auto;
 	min-height: 880px;
@@ -418,16 +409,6 @@ input[type=textarea],
   	text-overflow: ellipsis;
 }
 
-.greenroundbutton {
-    width: 41px;
-    height: 41px;
-    border-radius: 100%;
-    color: white;
-    background-color: #39b54a;
-    border: none;
-    font-size: 20px;
-    padding: 0;
-}
 .overlay-title {
 	padding:0px 22px;
 }
@@ -681,15 +662,10 @@ position: relative;
 .noscroll { overflow: hidden; }
 
 .greenroundbutton {
-    width: 41px;
-    height: 41px;
     border-radius: 100%;
     color: white;
     background-color: #39b54a;
     border: none;
-    font-size: 20px;
-	padding: 0 2px 1px 0;
-	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
 	transition: all 0.5s ease;
 }
 .greenroundbutton:hover {
