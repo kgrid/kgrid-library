@@ -5,7 +5,7 @@
 			<div class="addtext">
 				<h4>Please enter a title for the new knowledge object, then	click on "Create Object".</h4>
 					<input type="text" maxlength="140" class="metaEdit inEdit" 
-						v-model="newobjModel.object.metadata.title" /> <span>140/140</span>
+						v-model="newobjModel.object.metadata.title" /> <span  v-bind:class="{ nearmax:newobjModel.object.metadata.title.length>=130 }" >{{newobjModel.object.metadata.title.length}}/140</span>
 					<h4> - Or - </h4>
 				</div>
 				<div>
@@ -108,7 +108,24 @@
 	}
 };
 	</script>
-	<style>
+	<style scoped>
+	.addtext {
+	    position: relative;
+	    width: 100%;
+	    padding: 0;
+	    margin: 5px 0px 15px 0px;
+	    color: #666666;
+	font-size: 11px;
+	}
+	.addtext span{
+		position: relative;
+		color: #39b45a;
+	top: 5px;
+	left: 850px;
+	}
+	.addtext span.nearmax {
+		color: #ec2526;
+	}
 	.done_btn {
     height: 55px;
     width: 910px;

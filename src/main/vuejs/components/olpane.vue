@@ -125,7 +125,7 @@ export default {
 .overlay-board {
     position: absolute;
     background: white;
-    width: 960px;
+    width: 980px;
     top: 120px;
     left: 60px;
     padding: 0px 0px;
