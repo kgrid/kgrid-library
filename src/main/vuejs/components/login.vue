@@ -2,32 +2,31 @@
 	<olnpane layerid=0>
 		<div slot='ol-title'><h3>Log in</h3></div>
 		<div slot='ol-form'>
+		   <form @submit.prevent="validateLoginForm" data-vv-scope="loginform">
 			<fieldset class='fieldcontainer' id='first'>
+			<div class='loginField'>
+               <label class="label">Username</label>
+                <p class="control has-icon has-icon-right">
+                    <input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'loginform') }" type="text" placeholder="Email">
+                    <i v-show="errors.has('email', 'loginform')" class="fa fa-warning"></i>
+                    <span v-show="errors.has('email', 'loginform')" class="help is-danger">{{ errors.first('email', 'loginform') }}</span>
+                </p>
+					    <!--<button class='edit_btn' >Need to create an account?</button>-->
+				</div>
+				<div class='loginField'>
+				 <label class="label">Password</label>
+                 <p class="control has-icon has-icon-right">
+                     <input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
+                     <i v-show="errors.has('password', 'loginform')" class="fa fa-warning"></i>
+                     <span v-show="errors.has('password', 'loginform')" class="help is-danger">{{ errors.first('password', 'loginform') }}</span>
+                 </p>
+									    <!-- 											<button class='edit_btn' >Forgot your password?</button>
+		 -->							</div>
 								<div class='loginField'>
-									<h4 title='username'>USERNAME</h4>
-									<div class='addtext'>
-										<input class='textbox login' type='text' v-model='userModel.user.username'  spellcheck='false'
-											placeholder='Enter your email' autofocus autocomplete="on"
-											maxlength='140'>
-<!-- 											<button class='edit_btn' >Need to create an account?</button>
- -->									</div>
-									<label class='errorLabel' for='username'> </label>
-								</div>
-								<div class='loginField'>
-									<h4 title='password'>PASSWORD</h4>
-									<div class='addtext'>
-										<input class='textbox login' v-model='userModel.user.password'
-											type='password' spellcheck='false' autocomplete="on"
-											placeholder='Enter your password'  @keyup.enter='userlogin'
-											maxlength='140'>
-											<!-- <button class='edit_btn'>Forgot Password?</button> -->
-									</div>
-									<label class='errorLabel' for='password'> </label>
-								</div>
-								<div class='loginField'>
-									<button class='login' @click='userlogin'>LOG IN</button>
+									<button class='login' type='submit'>LOG IN</button>
 								</div>
 				</fieldset>
+				</form>
 		</div>
 		<div slot='ol-processing'>Log in ...</div>
 		<div slot='ol-success'>Login Successful !!!</div>
@@ -51,6 +50,18 @@ export default {
     olnpane
   },
   methods: {
+	  validateLoginForm(e) {
+          this.$validator.validateAll('loginform');
+          if (!this.errors.any('loginform')) {
+	            this.userlogin()
+	        }
+      },
+	  validateBeforeSubmit(e) {
+	        this.$validator.validateAll();
+	        if (!this.errors.any()) {
+	            this.userlogin()
+	        }
+	      },
     userlogin: function () {
       var self = this;  // eslint-disable-line
       if (this.test) {
@@ -79,9 +90,32 @@ export default {
 };
 </script>
 <style>
-input[type=text].login, input[type=password].login {
+p.control {
+	position: absolute;
+	margin: 12px 0;
+}
+.loginField input[type=text], .loginField input[type=password] {
     width: 400px;
     height: 50px;
+}
+.loginField label {
+	position: relative;
+	color: #666666;
+	font-weight: 400;
+	font-size: 16px;
+line-height: 1.6em;
+padding: 10px 14px;
+margin:0px;
+}
+p.control span.is-danger {
+	position: absolute;
+	left: 16px;
+	top: 62px;
+font-style: italic;
+font-size: 12px;
+color: #ec2526;
+
+
 }
 .fieldcontainer {
     display: block;
@@ -111,7 +145,7 @@ button.login:hover {
     margin-top: 0px;
 }
 .loginField {
-    margin: 15px 0px 15px 0px;
+    margin: 25px 0px 25px 0px;
     height: 120px;
 }
 fieldset h4 {

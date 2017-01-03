@@ -174,7 +174,7 @@ export default {
 		return {
 			libraryname : 'Department of Learning Health Systems Development Server',
 			sortKey : 'metadata.lastModified',
-			order : 'asc',
+			order : 'desc',
 			searchQuery : '',
 			  model : {
 				koList : []
