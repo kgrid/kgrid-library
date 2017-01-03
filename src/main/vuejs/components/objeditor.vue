@@ -22,26 +22,31 @@
 					<div id="metadata_fields">
 						<div class="addtext">
 							<h4>TITLE</h4>
-							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" />
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" maxlength="140" />
+							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.title.length>=130 }" >{{editObjModel.object.metadata.title.length}}/140</span>
 							</div>
 						<div class="addtext">
 							<h4>DESCRIPTION</h4>
 							<textarea class="metaEdit" v-model="editObjModel.object.metadata.description"></textarea>
+							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.description.length>=480 }" >{{editObjModel.object.metadata.description.length}}/500</span>
 						</div>
 						<div class="addtext">
 							<h4>KEYWORDS</h4>
-							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.keywords" />
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.keywords" maxlength="140"/>
+							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.keywords.length>=130 }" >{{editObjModel.object.metadata.keywords.length}}/140</span>
 						</div>
 						<div class="addtext">
 							<h4>OWNERS</h4>
-							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.owner" />
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.owner" maxlength="140" />
+							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.owner.length>=130 }" >{{editObjModel.object.metadata.owner.length}}/140</span>
 						</div>
 						<div class="addtext">
 							<h4>CONTRIBUTORS</h4>
-							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" />
+							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" maxlength="140" />
+							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.contributors.length>=130 }" >{{editObjModel.object.metadata.contributors.length}}/140</span>
 						</div>
 						<div class="addtext">
-							<h4>LICENSE</h4>
+							<h4>LICENSE  </h4>
 							<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName"><button class="mediumgreenroundbutton" v-on:click="addLicense"><img src="../assets/images/Plus_Icon.png" width="12px"></button></div>
 							<div class="row" v-else>
 								<div class="col-md-9">
@@ -82,7 +87,8 @@
 								</h4>
 								<div class="addtext">
 									<input class="textbox inEdit" type="text" v-model="editObjModel.object.payload.functionName"
-										placeholder="one instance only" maxlength="140"><span>140/140</span>
+										placeholder="one instance only" maxlength="140">
+									
 								</div>
 								</div>
 								<div class="addtext">
@@ -311,6 +317,55 @@ export default {
 	
 };
 </script>
-<style>
+<style scoped>
+.addtext {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    margin: 5px 0px 15px 0px;
+    color: #666666;
+font-size: 11px;
+}
+.addtext span{
+	position: relative;
+	color: #39b45a;
+top: 5px;
+left: 850px;
+}
+.addtext span.nearmax {
+	color: #ec2526;
+}
+.addtext textarea {
+    width: 900px;
+    height: 80px;
+    resize: none;
+    padding: 8px 16px 8px 16px;
+border: 1px solid #e6e6e6;
+border-radius: 10px;
+    color: #666666;
+    margin: 0;
+    font-size: 14px;
+    overflow-y: auto;
+    line-height: 1.4em;
+    text-overflow: clip;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background-color: #fff;
+    font-weight: 400;
+}
+.addtext a {
+    display: block;
+    border: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 38px;
+    padding: 10px 0px 0px 16px;
+    border-radius: 0px;
+    margin: 0px;
+    font-size: 14px;
+    color: #666666;
+    font-weight: 400;
+}
 
 </style>

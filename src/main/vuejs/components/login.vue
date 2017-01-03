@@ -2,7 +2,7 @@
 	<olnpane layerid=0>
 		<div slot='ol-title'><h3>Log in</h3></div>
 		<div slot='ol-form'>
-		   <form @submit.prevent="validateLoginForm" data-vv-scope="loginform">
+		   <form @submit.prevent="validateLoginForm" data-vv-scope="loginform" autocomplete='on'>
 			<fieldset class='fieldcontainer' id='first'>
 			<div class='loginField'>
                <label class="label">Username</label>
