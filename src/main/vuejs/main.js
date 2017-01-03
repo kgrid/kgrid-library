@@ -1,5 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import VeeValidate from 'vee-validate';
+
+
 //import VueResource from 'vue-resource';
 import App from './App';
 import eventBus from './components/eventBus.js';
@@ -26,6 +29,9 @@ Vue.config.debug = false;
 
 // install router
 Vue.use(VueRouter);
+
+// install Vee-Validate
+Vue.use(VeeValidate);
 
 // create router
 const routes = [

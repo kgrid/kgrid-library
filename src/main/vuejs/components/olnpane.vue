@@ -48,7 +48,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .ol_narrow_pane{
 	position: absolute;
     right:0px;
@@ -147,13 +147,13 @@ export default {
 }
 .alert-box {
 	position:absolute;
-	left:100px;
+	left:47px;
 	bottom:0px;
 	padding: 15px;
     margin-bottom: 20px;
     border: 1px solid transparent;
     border-radius: 10px;
-    width:240px;
+    width:400px;
 }
 
 .success {

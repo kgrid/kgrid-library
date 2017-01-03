@@ -57,7 +57,7 @@ export default {
 	}
 };
 </script>
-<style>
+<style scoped>
 .ol_pane{
 	position: absolute;
     right:0px;
