@@ -496,25 +496,11 @@ img#dropdowniconimg.down {
 }
 
 
-.filterlist li{
-display:inline-block;
-background-color:#fff;
-margin:12px;
-padding:5px 12px;
-}
 
 #pub, #pri {
 	margin-left: 14px;
 }
-.destroy {
-	width:25px;
-	height: 25px;
-	border-radius:100%;
-	border: 1px solid #39b45a;
-	background-color:#fff;
-	margin: 0px 5px 0px 0px;
-	color:#39b45a;
-}
+
 input[id$="datepicker"]{
 		width:150px;
 	}
