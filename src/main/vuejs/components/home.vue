@@ -56,58 +56,81 @@
 				<section class='main' v-show='filterStrings.length'>
 					<ul class='filterlist'>
 						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
-							<div class='view'>
+							
 								<button class='destroy' @click='removeString(filterstring)'>
-								<span class='ot-small-glybtn glyphicon glyphicon-remove'></span>
 								</button>
 								<label>{{ filterstring.title }}</label>
-							</div>
+							
 						</li>
+						<button id='clearAll' @click='removeAllFilters'>Clear Filters</button>
 					</ul>
+		
 				</section>
 			</div>
 		</div>
 		<div id='filterpanel' v-if='showFilterControl'>
 			<div class='row'>
 				<div class='col-md-6'>
-					<div class='row'><p>Search only within the following:</p></div>
-					<div class='row'>
-						<div class='col-md-5'>
-							<input type='checkbox' v-model='check.keywords' /> <label
-								for='keywordcheck'>Keywords</label> 
+					<div class='row filter'><p>Search only within the following:</p></div>
+					<div class='row filter'>
+						<div class='col-md-4'>
+ 							<label class="custom-control custom-checkbox">
+ 								<input v-model='check.keywords' type="checkbox" class="custom-control-input">
+ 								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Keywords</span>
+							</label>
 						</div>
-						<div class='col-md-7'>
-							<input type='checkbox' v-model='check.objectID' /> <label
-								for='keywordcheck'>Object ID</label> 
+						<div class='col-md-8'>
+							<label class="custom-control custom-checkbox">
+								<input v-model='check.objectID' type="checkbox" class="custom-control-input">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Object ID</span>
+							</label>					
 						</div>
-						
 					</div>
-					<div class='row'>
-					<div class='col-md-5'>
-					<input type='checkbox' v-model='check.owners' /> 
-					<label for='keywordcheck'>Owners</label></div>
-					<div class='col-md-7'>
-							<input type='checkbox' disabled v-model='check.citations' /> <label
-								for='keywordcheck'>Citations</label> 
+					<div class='row filter'>
+					<div class='col-md-4'>
+					<label class="custom-control custom-checkbox">
+					<input v-model='check.owners' type="checkbox" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Owners</span>
+				</label>	
+					</div>
+					<div class='col-md-8'>
+					<label class="custom-control custom-checkbox">
+					<input v-model='check.citations' disabled type="checkbox" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Citations</span>
+				</label>								
 						</div>
 					</div>				
-					<div class='row'>
-					<div class='col-md-5'>
-						
-					<input type='checkbox' v-model='check.title' /> <label
-								for='keywordcheck'>Title</label>
+					<div class='row filter'>
+					<div class='col-md-4'>
+					<label class="custom-control custom-checkbox">
+					<input v-model='check.title' type="checkbox" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Title</span>
+				</label>	
 					
 					</div>
-					<div class='col-md-7'>
-							<input type='checkbox'
-								v-model='check.contributors' /> <label for='keywordcheck'>Contributors</label>
+					<div class='col-md-8'>
+					<label class="custom-control custom-checkbox">
+					<input v-model='check.contributors' type="checkbox" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Contributors</span>
+				</label>	
+							
 								</div>
 						</div>
-											<div class='row'>
+											<div class='row filter'>
 					
-					<div class='col-md-7'>
-							<input type='checkbox' disabled v-model='showmyobj' /> <label
-								for='keywordcheck'>View only My Knowledge Objects</label>
+					<div class='col-md-12'>
+					<label class="custom-control custom-checkbox">
+					<input v-model='showmyobj' disabled type="checkbox" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">View only My Objects</span>
+				</label>	
+							
 								</div>		
 								<div class='col-md-5'>				
 					</div>
@@ -116,31 +139,50 @@
 				<div class='col-md-6'>
 					<div class='row'>
 							<p>Show Knowledge Object:</p></div>
-						<div class='row'>
+						<div class='row filter datetype'>
 							
 							<div class='col-md-1'></div>
-					<div class='col-md-4'><input type='checkbox' id='pub' v-model='check.pub' /> <label
-								for='pub'>Public</label> </div>
-							<div class='col-md-21'></div>
 					<div class='col-md-4'>
-								<input type='checkbox' v-if='isLoggedIn'  id = 'pri' v-model='check.pri' /> <label
-								v-if='isLoggedIn' for='pri'>Private</label></div>
+					<label class="custom-control custom-checkbox">
+					<input v-model='check.pub' id='pub' type="checkbox" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Public</span>
+				</label>	
+					 </div>
+							<div class='col-md-2'></div>
+					<div class='col-md-4'>
+					<label v-if='isLoggedIn' class="custom-control custom-checkbox">
+					<input v-model='check.pri' id='pri' type="checkbox" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Private</span>
+				</label>	
+								</div>
 								<div class='col-md-1'></div>
 								</div>
-					<div class='row'><p>Select the type of date:</p></div>
-					<div class='row datetype'>
+					<div class='row filter'><p>Select the type of date:</p></div>
+					<div class='row filter datetype'>
 					<div class='col-md-1'></div>
 					<div class='col-md-4'>
-						<label class='radio-inline'><input type='radio' value='lastModified' v-model='datetype'>Last Updated</label>
+					<label class="custom-control custom-radio">
+					<input id="radio1" value='lastModified' v-model='datetype' name="radio" type="radio" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Last Updated</span>
+					</label>
+						
 					</div>
 					<div class='col-md-2'></div>
 					<div class='col-md-4'>
-						<label class='radio-inline'><input type='radio' value='createdOn' v-model='datetype'>Created</label>
+					<label class="custom-control custom-radio">
+					<input id="radio1" value='createdOn' v-model='datetype' name="radio" type="radio" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Created</span>
+					</label>
+						
 					</div>
 					<div class='col-md-1'></div>
 					</div>
-					<div class='row'><p>Search within the following date range:</p></div>
-					<div class='row'>
+					<div class='row filter'><p>Search within the following date range:</p></div>
+					<div class='row filter'>
 						<div class='col-md-6'>
 							<p>Start <date-picker :date="startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
@@ -193,7 +235,7 @@ export default {
 		        time: '01/01/2016'
 		      },
 		      endtime: {
-		        time: ''
+		        time: 'Today'
 		      },
 		      option: {
 		          type: 'day',
@@ -204,11 +246,13 @@ export default {
 		          placeholder: 'MM/DD/YYYY',
 		          inputStyle: {
 		            'display': 'inline-block',
-		            'padding': '6px',
-		            'line-height': '22px',
-		            'font-size': '16px',
-		            'border': '2px solid #fff',
-		            'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
+		            'height':'30px',
+		            'padding': '3px 0px 3px 10px',
+		            'margin':'0px 0px 0px 5px',
+		            'line-height': '20px',
+		            'font-size': '14px',
+		            'border': '1px solid #39b45a',
+		            'box-shadow': 'none',
 		            'border-radius': '2px',
 		            'color': '#5F5F5F',
 		            'width': '134px'
@@ -433,7 +477,9 @@ export default {
 			   });
 			   this.newstring = '';
 			 },
-		 
+	 	removeAllFilters: function(){
+				 this.filterStrings.splice(0);
+			 },
 			 removeString: function (s) {
 				   this.filterStrings.splice(this.filterStrings.indexOf(s), 1);
 				 },
@@ -560,6 +606,38 @@ img#filterdowniconimg.up {
     -webkit-transform: scaleY(-1);
     transform: scaleY(-1);
 }
+
+.filterlist li, .filterlist button#clearAll{
+display:inline-block;
+background-color:#fff;
+margin:25px 10px 0px 10px;
+padding:12px;
+height: 44px;
+}
+.destroy {
+	width:20px;
+	height: 20px;
+	border:none;
+	background-image:url('../assets/images/Close_Circle_Green_Default.png');
+background-size: 100% 100%;
+background-repeat: no-repeat;
+background-position: center center;
+	margin: 0px 5px 0px 0px;
+	color:#39b45a;
+background-color: transparent;
+}
+
+.filterlist li label {
+	display: inline-block;
+	margin: 0px;
+	text-align: center;
+	vertical-align: top;
+}
+.filterlist button#clearAll {
+background-color: #e6e6e6;
+font-size: 12px;
+vertical-align: top;
+}
 select {
     background: transparent;
 	background-size: 18px;
@@ -636,5 +714,66 @@ box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
     bottom: 20px;
     position: absolute;
     right: 48px;
+}
+.row.filter {
+	height: 30px;
+	
+}
+.custom-control {
+	
+    position: relative;
+    display: inline;
+    padding-left: 1.5rem;
+	margin-bottom: 1.5rem;
+    cursor: pointer;
+}
+.custom-control-input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+.custom-control-description {
+	position: absolute;
+	padding-left: 15px;
+	top: 8px;
+	width: 180px;
+}
+.custom-control-indicator {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    display: block;
+    width: 15px;
+    height: 15px;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: 80% 80%;
+    background-size: 80% 80%;
+}
+.custom-checkbox .custom-control-indicator {
+    border-radius: 0px;
+	border: 1px solid #39b45a;
+}
+.custom-checkbox .custom-control-input:checked~.custom-control-indicator {
+    background-image: url(../assets/images/checkmark.png);
+	background-size: 50% 50%;
+}
+.custom-checkbox .custom-control-input:disabled~.custom-control-indicator {
+    background-color: #e6e6e6;
+	border: 1px solid #b3b3b3;
+}
+.custom-radio .custom-control-indicator {
+    border-radius: 100%;
+	border: 1px solid #39b45a;
+}
+.custom-radio .custom-control-input:checked~.custom-control-indicator {
+    background-image: url(../assets/images/LittleGreenDot.png);
+	background-size: 75% 75%;
 }
 </style>

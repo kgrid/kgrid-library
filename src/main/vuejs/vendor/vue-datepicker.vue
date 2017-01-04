@@ -13,6 +13,7 @@
   -o-animation: fadein 0.5s;
   /* Opera < 12.1 */
   animation: fadein 0.5s;
+	margin: 10px 0px 0px 5px;
 }
 @keyframes fadein {
   from {
@@ -67,7 +68,7 @@
   font-family: 'Open Sans';
   font-weight: 400;
   display: block;
-  width: 400px;
+  width: 386px;
   z-index: 999;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
       border: 1px solid #39b45a;
@@ -114,7 +115,7 @@ table {
   width: 100%;
 }
 .day {
-  width: 13.25%;
+  width: 13.05%;
   display: inline-block;
   text-align: center;
   cursor: pointer;
@@ -148,7 +149,7 @@ table {
 .checked {
   background: #e6e6e6;
   color: #666666 !important;
-  border-radius: 3px;
+  border-radius: 0px;
 	border: 1px solid #39b45a;
 }
 .unavailable {
