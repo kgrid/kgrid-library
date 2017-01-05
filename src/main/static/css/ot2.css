@@ -509,13 +509,7 @@ input[id$="datepicker"]{
 	 #filterBtn a:hover, #filterBtn a:visited {
 	 	color: #666666;
 	 }
-	#filterpanel {
-		background-color:#fff;
-		margin: 0px 0px 12px 0px;
-		padding: 12px;
-			
-			
-	}
+
 	
 	label {
 		font-weight: 400;

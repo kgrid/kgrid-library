@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     login_click: function () {
-      eventBus.$emit('openOverlay'); // eslint-disable-line
+      eventBus.$emit('openLogin'); // eslint-disable-line
     },
     toggleDropdown: function () {
     	this.showDropdown=!this.showDropdown;

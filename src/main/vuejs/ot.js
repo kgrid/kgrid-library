@@ -95,6 +95,25 @@ export function editTabNav(){
 		}
 	});
 }
+
+
+export function retrieveUserList(fillUserList, errorHandler){
+	$.ajax({
+		type : "GET",
+		url : "/ObjectTeller/getAllUsers",
+		xhrFields: {
+		     withCredentials: true
+		},
+		success : function(response, tStatus, xhr) {
+		//	console.log(xhr);
+			fillUserList(response);
+		},
+		error : function(response) {
+			errorHandler(response);
+		}
+	});
+}
+
 export function getCurrentUser(getUser, errorHandler) {
 	$.ajax({
 		type : "GET",
