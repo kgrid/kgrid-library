@@ -11,6 +11,28 @@
 				systems. <br>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
 			</div>
 			<div id='libname'>{{libraryname}}</div>
+			<div id="bannericons" v-show='isLoggedIn'>
+			<ul id="bannericonrow">
+				<li><div style="position: relative">
+						<button class="roundbutton iconBtn" id="userlink"
+							@click="userlink_click">
+						</button>
+						<button class="greenroundbutton iconBtn" id="newuser">
+						</button>
+					</div></li>
+				<li>
+					<button class="roundbutton open-overlay iconBtn" type="button"
+						id="settinglink" @click="settinglink_click">
+						
+					</button>
+				</li>
+				
+			</ul>
+			<div class="floatingInfo" id="homeIcons">
+				<span></span>
+			</div>
+		</div>
+			
 		</div>
 		<div slot='header'>
 				<div v-show='isLoggedIn'>
@@ -444,6 +466,12 @@ export default {
 		}
 	},
 	methods : {
+		userlink_click: function () {
+	      eventBus.$emit('openUserManagement'); // eslint-disable-line
+	    },
+		settinglink_click: function () {
+		      eventBus.$emit('openLibSetting'); // eslint-disable-line
+		    },
 		toggleOrder : function() {
 			if (this.order == 'asc') {
 				this.order = 'desc';
@@ -456,10 +484,13 @@ export default {
 	    	if(this.showFilterControl){
 	    	      $('img#filterdowniconimg').removeClass('down');  // eslint-disable-line
 	    	      $('img#filterdowniconimg').addClass('up');  // eslint-disable-line
+	    	      $('#filterBtn').addClass('tall');
+	    	      
 	    	}else
 	    	{
 	    	      $('img#filterdowniconimg').removeClass('up');  // eslint-disable-line
 	    	      $('img#filterdowniconimg').addClass('down');  // eslint-disable-line
+	    	      $('#filterBtn').removeClass('tall');
 	    	}
 		},
 		addObject:function(){
@@ -581,6 +612,10 @@ input[id$="datepicker"] {
 	width: 100px;
 	height: 45px;
 }
+
+#filterBtn.tall{
+	height: 57px;
+}
 #filterBtn a {
     background-color: #fff;
     margin: 25px 0px 0px 0px;
@@ -606,7 +641,13 @@ img#filterdowniconimg.up {
     -webkit-transform: scaleY(-1);
     transform: scaleY(-1);
 }
-
+#filterpanel {
+	background-color:#fff;
+	margin: 0px 0px 12px 0px;
+	padding: 12px;
+		
+		
+}
 .filterlist li, .filterlist button#clearAll{
 display:inline-block;
 background-color:#fff;
@@ -713,7 +754,7 @@ box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
     font-weight: 300;
     bottom: 20px;
     position: absolute;
-    right: 48px;
+    right: 128px;
 }
 .row.filter {
 	height: 30px;
@@ -775,5 +816,70 @@ box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
 .custom-radio .custom-control-input:checked~.custom-control-indicator {
     background-image: url(../assets/images/LittleGreenDot.png);
 	background-size: 75% 75%;
+}
+
+#bannericons {
+	display: inline-block;
+    position: absolute;
+    width: 20%;
+    height: 40px;
+    bottom: 16px;
+    right: 24px;
+    overflow: visible;
+}
+#bannericonrow {
+    list-style: none;
+    position: relative;
+    display: table-row;
+    float: right;
+}
+#bannericonrow li {
+    display: table-cell;
+}
+#bannericonrow li button#userlink, #bannericonrow li button#settinglink {
+	width: 30px;
+height: 30px;
+background-size: 65% 65%;
+background-repeat: no-repeat;
+background-position: center center;
+background-color: #fff;
+border: 1px solid #b3b3b3;
+}
+
+#bannericonrow li button#userlink:hover, #bannericonrow li button#settinglink:hover {
+	background-color: #fff;
+	border: 1px solid #666666;
+}
+button#userlink {
+	   background-image: url(../assets/images/Person_Icon_Light-01.png);
+}
+button#userlink:hover {
+	   background-image: url(../assets/images/Person_Icon_Dark-01.png);
+
+}
+button#settinglink {
+	   background-image: url(../assets/images/Gear_Icon.png);
+
+}
+button#settinglink:hover {
+	   background-image: url(../assets/images/Gear_Icon-01.png);
+}
+
+#newuser{
+	width:12px;
+	height:12px;
+        position:absolute;
+    bottom:-5px;
+    right:-5px;
+    padding:0;
+    z-index:12;
+    transition: none;
+background-size: 65% 65%;
+background-repeat: no-repeat;
+background-position: center center;
+background-image: url(../assets/images/Plus_Icon.png);
+}
+#newuser:hover {
+	transform: none;
 }
 </style>

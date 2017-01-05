@@ -38,6 +38,9 @@ function retrieveObject(uri, section, fillObjectContent, errorhandler){
 	});
 }
 
+
+
+
 function loadFieldsConfig(fillFieldsConfig){
 	$.getJSON("json/fields.json", fillFieldsConfig);
 }
@@ -91,6 +94,23 @@ function editTabNav(){
 			$(this).addClass("middleout");
 			$("ul#edittab"+tabClass+"  li.active").removeClass("active");
 			$("ul#edittab"+tabClass+"  li:nth-child(" + nthChild + ")").addClass("active");
+		}
+	});
+}
+
+function retrieveUserList(fillUserList, errorHandler){
+	$.ajax({
+		type : "GET",
+		url : "/ObjectTeller/getAllUsers",
+		xhrFields: {
+		     withCredentials: true
+		},
+		success : function(response, tStatus, xhr) {
+		//	console.log(xhr);
+			fillUserList(response);
+		},
+		error : function(response) {
+			errorHandler(response);
 		}
 	});
 }

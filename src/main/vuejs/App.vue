@@ -12,6 +12,8 @@ import olnpane from './components/olnpane'; // eslint-disable-line
 import objeditor from './components/objeditor'; 
 import objcreator from './components/objcreator'; 
 import eventBus from './components/eventBus.js';
+import libraryusers from './components/libraryusers.vue';
+import librarysetting from './components/librarysetting.vue';
 import { editTabNav, getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
 import { objModel, editObjModel, sections, userModel } from './components/models.js'
 
@@ -39,7 +41,7 @@ export default {
 	},
   created: function () {
     var self = this  // eslint-disable-line
-    eventBus.$on('openOverlay', function () {
+    eventBus.$on('openLogin', function () {
       self.showOverlay.show = true;
       self.currentOLView = 'login';
       document.body.classList.toggle('noscroll', true);
@@ -48,6 +50,24 @@ export default {
     	  $('#ol').removeClass('animated slideInRight');
       });
     });
+    eventBus.$on('openUserManagement', function () {
+        self.showOverlay.show = true;
+        self.currentOLView = 'libraryusers';
+        document.body.classList.toggle('noscroll', true);
+        $('#ol').addClass('animated slideInRight');
+        $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+      	  $('#ol').removeClass('animated slideInRight');
+        });
+      });
+    eventBus.$on('openLibSetting', function () {
+        self.showOverlay.show = true;
+        self.currentOLView = 'librarysetting';
+        document.body.classList.toggle('noscroll', true);
+        $('#ol').addClass('animated slideInRight');
+        $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+      	  $('#ol').removeClass('animated slideInRight');
+        });
+      });
     eventBus.$on('hideOverlay', function (layerid) {
       switch (layerid) {
         case '0':
@@ -118,7 +138,9 @@ export default {
     navbar,
     login,
     objeditor,
-    objcreator
+    objcreator,
+    libraryusers,
+    librarysetting
   },
 	computed:{
 		isLoggedIn:function(){
