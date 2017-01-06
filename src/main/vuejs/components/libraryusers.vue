@@ -7,13 +7,66 @@
 			<div class='ot-sub'>USERS IN THIS LIBRARY</div>
 			  <div id='uList'>
 		        <ul>
-		          <li v-for='(user,index) in umodel.userList' v-bind:key='index'><usercard :user='user' :you='userModel.user'
+		          <li v-for='(user,index) in umodel.userList' v-bind:key='index'><usercard :user='user' :you='curUserModel.user'
 		      						:tileindex='index' v-on:remove='orderedList.splice(index, 1)'></usercard></li>
 		        </ul>
 		      </div>
 		    </div>
 	        <div class='col-md-6'>
 			    <div class='ot-sub'>BASIC INFORMATION</div>
+			    <form @submit.prevent="validateuserform" data-vv-scope="userform" autocomplete='on'>
+					<fieldset class='fieldcontainer' id='first'>
+					<div class='loginField'>
+						<label class="label">ROLE</label>
+						<p class="control has-icon has-icon-right">
+							<select class="userEdit" name="role" v-model='userModel.user.role'>
+								<option value="ADMIN">ADMIN</option>
+								<option value="INFORMATICIAN">INFORMATICIAN</option>
+								<option value="USER">USER</option>
+								</select>
+							<i v-show="errors.has('role', 'userform')" class="fa fa-warning"></i>
+							<span v-show="errors.has('role', 'userform')" class="help is-danger">{{ errors.first('role', 'userform') }}</span>
+						</p>
+					</div>
+					<div class='loginField'>
+						<label class="label">FIRST NAME</label>
+						<p class="control has-icon has-icon-right">
+							<input spellcheck=false v-model='userModel.user.first_name' name="first name" v-validate data-vv-delay="1000" data-vv-rules="required" :class="{'input': true, 'is-danger': errors.has('first name', 'userform') }" type="text" placeholder="Your firstname">
+						<i v-show="errors.has('first name', 'userform')" class="fa fa-warning"></i>
+						<span v-show="errors.has('first name', 'userform')" class="help is-danger">{{ errors.first('first name', 'userform') }}</span>
+					</p>
+				</div>
+				<div class='loginField'>
+				<label class="label">LAST NAME</label>
+				<p class="control has-icon has-icon-right">
+					<input spellcheck=false v-model='userModel.user.last_name' name="last name" v-validate data-vv-delay="1000" data-vv-rules="required" :class="{'input': true, 'is-danger': errors.has('last name', 'userform') }" type="text" placeholder="Your lastname">
+					<i v-show="errors.has('last name', 'userform')" class="fa fa-warning"></i>
+					<span v-show="errors.has('last name', 'userform')" class="help is-danger">{{ errors.first('last name', 'userform') }}</span>
+				</p>
+			</div>
+						<div class='loginField'>
+							<label class="label">EMAIL</label>
+							<p class="control has-icon has-icon-right">
+								<input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'userform') }" type="text" placeholder="Email">
+								<i v-show="errors.has('email', 'userform')" class="fa fa-warning"></i>
+								<span v-show="errors.has('email', 'userform')" class="help is-danger">{{ errors.first('email', 'userform') }}</span>
+							</p>
+						</div>
+						<div class='loginField'>
+							<label class="label">Password</label>
+							<p class="control has-icon has-icon-right">
+								<input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
+								<i v-show="errors.has('password', 'userform')" class="fa fa-warning"></i>
+								<span v-show="errors.has('password', 'userform')" class="help is-danger">{{ errors.first('password', 'userform') }}</span>
+							</p>
+						</div>
+						<div class='loginField' v-show='isNewUser'>
+							<button class='user' v-if='isNewUser' id="addUserButton" type='submit'>ADD USER</button>
+							<button class='user' v-if='!isNewUser' id="updateUserButton" type='submit'>UPDATE</button>
+							<button class="edit" id="cancelButton">CANCEL</button>
+						</div>
+					</fieldset>
+					</form>
 		   </div>     
 		 </div>
 			</div>
@@ -39,9 +92,11 @@
 			              {username: 'jrampton@umich.edu', passwd: '', id: 3, first_name: 'James', last_name: 'Rampton', role: 'Designer'}
 			           ]},
 				newobjModel:{object:{metadata:{title:""},uri:"arkid"}},
+				userModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
 				newtitle:"",
 				jsonobj:"",
-				userModel:{user:{}}
+				curUserModel:{user:{}},
+				isNewUser: false
 			}
 		},
 		beforeCreate: function(){
@@ -53,14 +108,17 @@
 			});
 			getCurrentUser(function(response) {
 				if(response!="")
-					$.extend(true, self.userModel.user, response);
+					$.extend(true, self.curUserModel.user, response);
 			},function(response) {
 				console.log(response);
 			});
 		},
 	created:function(){
 			var self =this;
-			
+			eventBus.$on("userselected", function(user){
+				$.extend(true, self.userModel.user, user);
+				self.isNewUser=false;
+			});
 		  	
 			eventBus.$on('userdeleted',function(userid){
 			      console.log(userid)
@@ -134,8 +192,178 @@
 		    		$.extend(true, this.newobjModel.object, {"metadata":{"title":""}});
 		    	}
 		    },
-		 
-		    
+		  validateuserForm(e) {
+		          this.$validator.validateAll('userform');
+		          if (!this.errors.any('userform')) {
+			            //this.addorupdateuser()
+			        }
+		      },
+			  validateBeforeSubmit(e) {
+			        this.$validator.validateAll();
+			        if (!this.errors.any()) {
+			            //this.addorupdateuser()
+			        }
+			      },
+		    userlogin: function () {
+		      var self = this;  // eslint-disable-line
+		      if (this.test) {
+		        $( 'div.processing' ).fadeIn( 300 );  // eslint-disable-line
+		        $.ajax({  // eslint-disable-line
+		          type: 'POST',
+		          url: '/ObjectTeller/login',
+		          data: self.userModel.user,
+		          dataType: 'json',
+		          success: function (response) {
+		            $( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
+		            $('div.success').fadeIn(300).delay(500).fadeOut(400, function(){  // eslint-disable-line
+		           	$.extend(true, self.userModel.user, response);
+		            eventBus.$emit('userloggedin', self.userModel.user);  // eslint-disable-line
+		            });
+		          },
+		          error: function (response) {
+						$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
+						$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
+		          }
+		        });
+		      } else {
+		      }
+		    },
+//		    addOrUpdateUser(){
+//		    	var act = $("#addUserButton").text();
+//		    	console.log(act);
+//
+//		    	/* Code to add user to database*/
+//		    	/* Call createUserCard */
+//		    	/* delete emptySlot */
+//		    	/* appendto #slot1 */
+//		    	/* createEmptySlot and append to sort1 */
+//		    	
+//		    	var userObject = new Object();
+//
+//		    	userObject.role = document.getElementById("role_data").value;
+//		    	userObject.username = document.getElementById("email_data").value;
+//		    	
+//		    	var profile = new Object();
+//		    	profile.first_name = document.getElementById("fname_data").value;
+//		    	profile.last_name = document.getElementById("lname_data").value;
+//		    	
+//		    	userObject.profile = profile ; 
+//
+//		    	if (act == "ADD USER") {
+//		    		if(addUserValidation()) {
+//		    		userObject.password = document.getElementById("pwd_data").value;
+//		    		var text = JSON.stringify(userObject);
+//		    		
+//		    		$.ajax({
+//		    					beforeSend : function(xhrObj) {
+//		    						xhrObj.setRequestHeader("Content-Type","application/json");
+//		    						xhrObj.setRequestHeader("Accept","application/json");
+//		    					},
+//		    					type : 'POST',
+//		    					url : "user",
+//		    					data : text,
+//		    					dataType : "json",
+//
+//		    					success : function(response) {
+//		    						if (response != 'empty') {
+//		    							var test = JSON.stringify(response);
+//		    							var obj = JSON.parse(test);
+//		    							removeEmptySlot();
+//		    							usercard = createUserCard(
+//		    									obj.username,
+//		    									obj.first_name,
+//		    									obj.last_name,
+//		    									obj.role,
+//		    									"card"+ obj.id);
+//		    							$(usercard).appendTo('#sort1');
+//
+//		    							users[newUserId] = obj;
+//
+//		    							addEventListenerToCard("card"+ obj.id);
+//		    							newUserId = newUserId + 1;
+//
+//		    							var eSlot = createEmptySlot(2);
+//		    							$(eSlot).appendTo('#sort1');
+//		    							emptySlotClick();
+//		    							$("#role_data").val("");
+//		    							$("#fname_data").val("");
+//		    							$("#lname_data").val("");
+//		    							$("#email_data").val("");
+//		    							$("#pwd_data").val("");
+//
+//		    						}
+//		    					},
+//
+//		    					error : function(response) {
+//		    						alert("Error "+response.responseText);
+//		    					}
+//		    				});
+//		    		} else {
+//		    			alert("Please provide Role, Email Address and Password");
+//		    		}
+//		    	}
+//		    	if (act == "UPDATE") {
+//		    		if(updateUserValidation()) {
+//		    		var id = users[selectedCard].id ; 
+//		    		userObject.password = users[selectedCard].password ; 
+//		    		userObject.profile.id = users[selectedCard].id;
+//		    		var text = JSON.stringify(userObject);
+//
+//		    		$
+//		    				.ajax({
+//		    					beforeSend : function(
+//		    							xhrObj) {
+//		    						xhrObj
+//		    								.setRequestHeader(
+//		    										"Content-Type",
+//		    										"application/json");
+//		    						xhrObj
+//		    								.setRequestHeader(
+//		    										"Accept",
+//		    										"application/json");
+//		    					},
+//		    					type : 'PUT',
+//		    					url : "user/"+id,
+//		    					data : text,
+//		    					dataType : "json",
+//
+//		    					success : function(
+//		    							response) {
+//		    						if (response != 'empty') {
+//		    							var test = JSON
+//		    									.stringify(response);
+//		    							var obj = JSON
+//		    									.parse(test);
+//		    							users[selectedCard].role = obj.role;
+//		    							users[selectedCard].first_name = obj.first_name;
+//		    							users[selectedCard].last_name = obj.last_name;
+//		    							users[selectedCard].username = obj.username;
+//		    							updateUserCard(
+//		    									obj.username,
+//		    									obj.first_name,
+//		    									obj.last_name,
+//		    									obj.role,
+//		    									"card"+ obj.id);
+//		    							addEventListenerToCard("card"+ obj.id);
+//
+//		    							$("#role_data").val("");
+//		    							$("#fname_data").val("");
+//		    							$("#lname_data").val("");
+//		    							$("#email_data").val("");
+//		    							$("#pwd_data").val("");
+//		    						}
+//		    					},
+//
+//		    					error : function(response) {
+//		    						alert("Error "+response.responseText);
+//		    					}
+//		    				});
+//		    		}  else {
+//		    			alert("Please provide Role and  Email Address.");
+//		    		}
+//		    	}
+//		    }
+//		    
 	}
 };
 	</script>
@@ -183,5 +411,58 @@
 		margin: 0px 10px;
 	font-size:14px;
 	}
+	.loginField {
+		position: relative;
+		padding: 0px 0px;
+	    margin: 15px 0px 5px 0px;
+	    height: 70px;
+	}
+	.loginField select {
+		width: 385px;
+	height: 30px;
+	border-radius: 8px;
+	}
+	.fieldcontainer {
+		padding:0px 10px;
+	}
+	.loginField input[type=text], .loginField input[type=password] {
+	    width: 385px;
+	    height: 30px;
+		border-radius: 8px;
+	}
+	.loginField label {
+	    position: relative;
+	    color: #666666;
+	    font-weight: 400;
+	    font-size: 16px;
+	    line-height: 1.6em;
+	    padding: 0px 4px 0px 16px;
+	    margin: 0px;
+	}
+	p.control {
+	    position: absolute;
+	    margin: 2px 0;
+	}
+	p.control span.is-danger {
+		position: absolute;
+		left: 16px;
+		top: 38px;
+	font-style: italic;
+	font-size: 12px;
+	color: #ec2526;
+
+
+	}
+	button.user {
+	    width: 120px;
+	    position: relative;
+	    height: 38px;
+	    border-radius: 10px;
+	    border: 1px solid #39b45a;
+	    background-color: #39b45a;
+	    color: #fff;
+	    margin: 18px 0px 0px 180px;
+	}
+	
 	
 	</style>
