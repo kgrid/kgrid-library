@@ -2,8 +2,8 @@
   <olpane layerid=0>
 	<div slot="ol-title"><h3>Libray Users</h3></div>
 	  <div slot="ol-form">
-		<div class="row addtext">
-		  <div class='col-md-6'>
+		<div class="row addtext maxheight" >
+		  <div class='col-md-6 maxheight'>
 			<div class='ot-sub'>USERS IN THIS LIBRARY</div>
 			  <div id='uList'>
 		        <ul>
@@ -13,10 +13,10 @@
 		        <div id='emptyuser' @click='adduser'></div>
 		      </div>
 		    </div>
-	        <div class='col-md-6'>
+	        <div class='col-md-6 maxheight'>
 			    <div class='ot-sub'>BASIC INFORMATION</div>
-			    <form @submit.prevent="validateuserform" data-vv-scope="userform" autocomplete='on'>
-					<fieldset class='fieldcontainer' id='first'>
+			    <form @submit.prevent="validateuserform" data-vv-scope="userform" autocomplete='off'>
+					<fieldset class='fieldcontainer maxheight' id='first'>
 					<div class='loginField'>
 						<label class="label">ROLE</label>
 						<p class="control has-icon has-icon-right">
@@ -334,7 +334,9 @@
 		list-style: none;
 	}
 	#uList {
+		margin: 10px 0px;
 		padding: 0px 10px;
+	height: 100%;
 	max-height: 650px;
 	overflow: auto;
 	}
@@ -374,6 +376,10 @@
 	    padding: 5px 0px;
 		margin: 0px 10px;
 	font-size:14px;
+	}
+	.ot-sub .fieldcontainer,   {
+		height: 100%;
+		overflow-y: auto;
 	}
 	.loginField {
 		position: relative;
@@ -439,5 +445,10 @@
 	    border:1px dashed #39b45a;
 	    padding: 0px ;
 	}
-	
+	.maxheight {
+		height: 100%;
+	}
+	.entryform>div {
+		height: 100%;
+	}
 	</style>
