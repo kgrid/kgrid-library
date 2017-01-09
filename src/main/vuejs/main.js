@@ -14,7 +14,7 @@ require('bootstrap');
 require('jquery');
 require('tether');
 require('lodash');
-require('./vendor/velocity.min.js');
+
 
 import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
 import login from './components/login';  
