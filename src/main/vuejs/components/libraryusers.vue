@@ -20,7 +20,7 @@
 					<div class='loginField'>
 						<label class="label">ROLE</label>
 						<p class="control has-icon has-icon-right">
-							<select class="userEdit" name="role" v-model='userModel.user.role'>
+							<select class="userEdit" name="role" v-validate data-vv-rules="required" v-model='userModel.user.role'>
 								<option value="ADMIN">ADMIN</option>
 								<option value="INFORMATICIAN">INFORMATICIAN</option>
 								<option value="USER">USER</option>
@@ -48,7 +48,7 @@
 						<div class='loginField'>
 							<label class="label">EMAIL</label>
 							<p class="control has-icon has-icon-right">
-								<input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'userform') }" type="text" placeholder="Email">
+								<input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email|not_in:cc@c.edu" :class="{'input': true, 'is-danger': errors.has('email', 'userform') }" type="text" placeholder="Email">
 								<i v-show="errors.has('email', 'userform')" class="fa fa-warning"></i>
 								<span v-show="errors.has('email', 'userform')" class="help is-danger">{{ errors.first('email', 'userform') }}</span>
 							</p>
@@ -94,7 +94,7 @@
 			           ]},
 				newobjModel:{object:{metadata:{title:""},uri:"arkid"}},
 				userModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
-				newuserModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
+				newuserModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: 'USER'}},
 				newtitle:"",
 				jsonobj:"",
 				curUserModel:{user:{}},
@@ -123,11 +123,13 @@
 			});
 			eventBus.$on("userAdded", function(user){
 				self.umodel.userList.push(user);
+				$.extend(true, self.userModel.user, self.newuserModel.user);
 			});
 			eventBus.$on("userUpdated", function(user){
 				var dIndex = self.umodel.userList.map(function(e) {return e.id}).indexOf(user.profile.id);
 				console.log(dIndex);
 				$.extend(true, self.umodel.userList[dIndex], user);
+				$.extend(true, self.userModel.user, self.newuserModel.user);
 			});
 			eventBus.$on('userdeleted',function(userid){
 			      console.log(userid)
@@ -141,6 +143,13 @@
 		usercard
 		},
 	computed:{
+		existingUserNames: function() {
+			var usernameList = new Array();
+			for (var i = 0; i < this.umodel.userList.length; i ++ ){
+				usernameList.push(this.umodel.userList[i].username);
+			}
+			return usernameList;
+		},
 		newid:function(){
 			if(!this.newobjModel.object.uri){
 				return "";
@@ -281,7 +290,7 @@
 		    					},
 
 		    					error : function(response) {
-		    						alert("Error "+response.responseText);
+		    						console.log(response);
 		    					}
 		    				});
 		    		
