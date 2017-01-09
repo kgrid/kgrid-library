@@ -68,10 +68,7 @@ img{
 img#dropdown{
 	tr
 }
-.greenroundbutton:hover{
-    background-color: lightgreen;
-    
-}
+
         #infoicon{
             position:absolute;
             bottom:-20px;
@@ -111,4 +108,36 @@ img#dropdown{
 
 .delete_btn:hover, .edit_btn:hover{
 	color:#666666;
+}
+
+.btnContent{
+  position: relative;
+  top:-30px;
+  left:13px;
+}
+.ot-r-btn {
+  position: relative;
+  border: none;
+  width:40px;
+  height:40px;
+  padding: 0px 0px 0px 0px;
+  background-color: transparent;
+}
+
+.greenroundbutton {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    color: white;
+    background-color: #39b54a;
+    border: none;
+    font-size: 20px;
+    margin: auto;
+   	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
+	transition: transform 0.5s ease;
+}
+
+.ot-r-btn:hover .greenroundbutton {
+  transform: scale(1.2);
+  margin: auto;
 }

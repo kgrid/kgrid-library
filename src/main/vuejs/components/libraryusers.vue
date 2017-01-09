@@ -10,6 +10,7 @@
 		          <li v-for='(user,index) in umodel.userList' v-bind:key='index'><usercard :user='user' :you='curUserModel.user'
 		      						:tileindex='index' v-on:remove='orderedList.splice(index, 1)'></usercard></li>
 		        </ul>
+		        <div id='emptyuser' @click='adduser'></div>
 		      </div>
 		    </div>
 	        <div class='col-md-6'>
@@ -60,7 +61,7 @@
 								<span v-show="errors.has('password', 'userform')" class="help is-danger">{{ errors.first('password', 'userform') }}</span>
 							</p>
 						</div>
-						<div class='loginField' v-show='isNewUser'>
+						<div class='loginField'>
 							<button class='user' v-if='isNewUser' id="addUserButton" type='submit'>ADD USER</button>
 							<button class='user' v-if='!isNewUser' id="updateUserButton" type='submit'>UPDATE</button>
 							<button class="edit" id="cancelButton">CANCEL</button>
@@ -72,8 +73,8 @@
 			</div>
 		</div>
 		<div slot="ol-processing">Processing...</div>
-		<div slot="ol-success">New object succesfully created!!! Object ID:{{newobjModel.object.uri}}</div>
-		<div slot="ol-failure">Creation of new object Failed! </div>
+		<div slot="ol-success">User succesfully updated!!! </div>
+		<div slot="ol-failure">Update Failed! </div>
 		<div slot="ol-warning">Warning !!!</div>
 	</olpane>
 </template>
@@ -93,6 +94,7 @@
 			           ]},
 				newobjModel:{object:{metadata:{title:""},uri:"arkid"}},
 				userModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
+				newuserModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
 				newtitle:"",
 				jsonobj:"",
 				curUserModel:{user:{}},
@@ -119,11 +121,19 @@
 				$.extend(true, self.userModel.user, user);
 				self.isNewUser=false;
 			});
-		  	
+			eventBus.$on("userAdded", function(user){
+				self.umodel.userList.push(user);
+			});
+			eventBus.$on("userUpdated", function(user){
+				var dIndex = self.umodel.userList.map(function(e) {return e.id}).indexOf(user.profile.id);
+				console.log(dIndex);
+				$.extend(true, self.umodel.userList[dIndex], user);
+			});
 			eventBus.$on('userdeleted',function(userid){
 			      console.log(userid)
 			      var dIndex = self.umodel.userList.map(function(e) {return e.id}).indexOf(userid);
 			      self.umodel.userList.splice(dIndex,1);
+				  $.extend(true, self.userModel.user, self.newuserModel.user);
 			    })
 	},
 	components: {
@@ -137,9 +147,25 @@
 			}else{
 			return this.newobjModel.object.uri;
 			}
+		},
+		
+		userdtoModel:function(){
+			var obj = {username:'',password:'',role:'', profile:{first_name:'',id:-1,last_name:''}};
+			obj.username=this.userModel.user.username;
+			obj.password=this.userModel.user.password;
+			obj.profile.first_name=this.userModel.user.first_name;
+			obj.profile.last_name=this.userModel.user.last_name;
+			obj.profile.id=this.userModel.user.id;
+			obj.role=this.userModel.user.role;
+			return obj;
 		}
+			
 	},
 	methods:{
+		adduser:function(){
+		  this.isNewUser=true;
+		  $.extend(true, this.userModel.user, this.newuserModel.user);
+	},
 		createObj:function(){
 			var self=this;
 			var text = JSON.stringify(self.newobjModel.object);
@@ -192,16 +218,16 @@
 		    		$.extend(true, this.newobjModel.object, {"metadata":{"title":""}});
 		    	}
 		    },
-		  validateuserForm(e) {
+		  validateuserform(e) {
 		          this.$validator.validateAll('userform');
 		          if (!this.errors.any('userform')) {
-			            //this.addorupdateuser()
+			            this.addOrUpdateUser()
 			        }
 		      },
 			  validateBeforeSubmit(e) {
 			        this.$validator.validateAll();
-			        if (!this.errors.any()) {
-			            //this.addorupdateuser()
+			        if (!this.errors.any('userform')) {
+			            this.addOrUpdateUser()
 			        }
 			      },
 		    userlogin: function () {
@@ -228,142 +254,69 @@
 		      } else {
 		      }
 		    },
-//		    addOrUpdateUser(){
-//		    	var act = $("#addUserButton").text();
-//		    	console.log(act);
-//
-//		    	/* Code to add user to database*/
-//		    	/* Call createUserCard */
-//		    	/* delete emptySlot */
-//		    	/* appendto #slot1 */
-//		    	/* createEmptySlot and append to sort1 */
-//		    	
-//		    	var userObject = new Object();
-//
-//		    	userObject.role = document.getElementById("role_data").value;
-//		    	userObject.username = document.getElementById("email_data").value;
-//		    	
-//		    	var profile = new Object();
-//		    	profile.first_name = document.getElementById("fname_data").value;
-//		    	profile.last_name = document.getElementById("lname_data").value;
-//		    	
-//		    	userObject.profile = profile ; 
-//
-//		    	if (act == "ADD USER") {
-//		    		if(addUserValidation()) {
-//		    		userObject.password = document.getElementById("pwd_data").value;
-//		    		var text = JSON.stringify(userObject);
-//		    		
-//		    		$.ajax({
-//		    					beforeSend : function(xhrObj) {
-//		    						xhrObj.setRequestHeader("Content-Type","application/json");
-//		    						xhrObj.setRequestHeader("Accept","application/json");
-//		    					},
-//		    					type : 'POST',
-//		    					url : "user",
-//		    					data : text,
-//		    					dataType : "json",
-//
-//		    					success : function(response) {
-//		    						if (response != 'empty') {
-//		    							var test = JSON.stringify(response);
-//		    							var obj = JSON.parse(test);
-//		    							removeEmptySlot();
-//		    							usercard = createUserCard(
-//		    									obj.username,
-//		    									obj.first_name,
-//		    									obj.last_name,
-//		    									obj.role,
-//		    									"card"+ obj.id);
-//		    							$(usercard).appendTo('#sort1');
-//
-//		    							users[newUserId] = obj;
-//
-//		    							addEventListenerToCard("card"+ obj.id);
-//		    							newUserId = newUserId + 1;
-//
-//		    							var eSlot = createEmptySlot(2);
-//		    							$(eSlot).appendTo('#sort1');
-//		    							emptySlotClick();
-//		    							$("#role_data").val("");
-//		    							$("#fname_data").val("");
-//		    							$("#lname_data").val("");
-//		    							$("#email_data").val("");
-//		    							$("#pwd_data").val("");
-//
-//		    						}
-//		    					},
-//
-//		    					error : function(response) {
-//		    						alert("Error "+response.responseText);
-//		    					}
-//		    				});
-//		    		} else {
-//		    			alert("Please provide Role, Email Address and Password");
-//		    		}
-//		    	}
-//		    	if (act == "UPDATE") {
-//		    		if(updateUserValidation()) {
-//		    		var id = users[selectedCard].id ; 
-//		    		userObject.password = users[selectedCard].password ; 
-//		    		userObject.profile.id = users[selectedCard].id;
-//		    		var text = JSON.stringify(userObject);
-//
-//		    		$
-//		    				.ajax({
-//		    					beforeSend : function(
-//		    							xhrObj) {
-//		    						xhrObj
-//		    								.setRequestHeader(
-//		    										"Content-Type",
-//		    										"application/json");
-//		    						xhrObj
-//		    								.setRequestHeader(
-//		    										"Accept",
-//		    										"application/json");
-//		    					},
-//		    					type : 'PUT',
-//		    					url : "user/"+id,
-//		    					data : text,
-//		    					dataType : "json",
-//
-//		    					success : function(
-//		    							response) {
-//		    						if (response != 'empty') {
-//		    							var test = JSON
-//		    									.stringify(response);
-//		    							var obj = JSON
-//		    									.parse(test);
-//		    							users[selectedCard].role = obj.role;
-//		    							users[selectedCard].first_name = obj.first_name;
-//		    							users[selectedCard].last_name = obj.last_name;
-//		    							users[selectedCard].username = obj.username;
-//		    							updateUserCard(
-//		    									obj.username,
-//		    									obj.first_name,
-//		    									obj.last_name,
-//		    									obj.role,
-//		    									"card"+ obj.id);
-//		    							addEventListenerToCard("card"+ obj.id);
-//
-//		    							$("#role_data").val("");
-//		    							$("#fname_data").val("");
-//		    							$("#lname_data").val("");
-//		    							$("#email_data").val("");
-//		    							$("#pwd_data").val("");
-//		    						}
-//		    					},
-//
-//		    					error : function(response) {
-//		    						alert("Error "+response.responseText);
-//		    					}
-//		    				});
-//		    		}  else {
-//		    			alert("Please provide Role and  Email Address.");
-//		    		}
-//		    	}
-//		    }
-//		    
+		    addOrUpdateUser(){
+		    	var self=this;
+		    	var userObject = self.userdtoModel;
+		    	$( 'div.processing' ).fadeIn( 300 );  
+		    	if (self.isNewUser) {
+		    		var text = JSON.stringify(userObject);
+			    		$.ajax({
+		    					beforeSend : function(xhrObj) {
+		    						xhrObj.setRequestHeader("Content-Type","application/json");
+		    						xhrObj.setRequestHeader("Accept","application/json");
+		    					},
+		    					type : 'POST',
+		    					url : "/ObjectTeller/user",
+		    					data : text,
+		    					dataType : "json",
+
+		    					success : function(response) {
+		    						if (response != 'empty') {
+		    							$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
+		    				            $('div.success').fadeIn(300).delay(500).fadeOut(400, function(){  // eslint-disable-line
+		    				           	$.extend(true, self.userModel.user, response);
+		    				            eventBus.$emit('userAdded', self.userModel.user);  // eslint-disable-line
+		    				            });
+		    						}
+		    					},
+
+		    					error : function(response) {
+		    						alert("Error "+response.responseText);
+		    					}
+		    				});
+		    		
+		    	}else {
+		    		var text = JSON.stringify(userObject);
+		    		var id = userObject.profile.id;
+		    		$.ajax({
+		    			beforeSend : function(xhrObj) {
+		    						xhrObj.setRequestHeader("Content-Type",	"application/json");
+		    						xhrObj.setRequestHeader("Accept","application/json");
+		    					},
+		    					type : 'PUT',
+		    					url : "/ObjectTeller/user/"+id,
+		    					data : text,
+		    					dataType : "json",
+
+		    					success : function(
+		    							response) {
+		    						if (response != 'empty') {
+		    							$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
+		    				            $('div.success').fadeIn(300).delay(500).fadeOut(400, function(){  // eslint-disable-line
+		    				           	$.extend(true, self.userModel.user, response);
+		    				            eventBus.$emit('userUpdated', self.userModel.user);  // eslint-disable-line
+		    				            });
+		    						}
+		    					},
+
+		    					error : function(response) {
+		    						alert("Error "+response.responseText);
+		    					}
+		    				});
+		    		
+		    	}
+		    }
+		    
 	}
 };
 	</script>
@@ -373,6 +326,8 @@
 	}
 	#uList {
 		padding: 0px 10px;
+	max-height: 650px;
+	overflow: auto;
 	}
 	#uList li {
 		margin-top : 20px;
@@ -463,6 +418,17 @@
 	    color: #fff;
 	    margin: 18px 0px 0px 180px;
 	}
-	
+	#emptyuser {
+		position: relative;
+	    text-align: left;
+	    width: 385px;
+		height: 75px;
+	    background-color: #fff;
+	    margin: 10px 0px 10px 0px;
+	    color: #696969;
+	    font-weight: 400;
+	    border:1px dashed #39b45a;
+	    padding: 0px ;
+	}
 	
 	</style>

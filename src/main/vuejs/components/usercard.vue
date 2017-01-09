@@ -1,9 +1,12 @@
 <template>
 		<div class="container ot-usercard" v-bind:id="user.username" v-on:click="userselected">
+		<div v-if='user.id!=-1'>
     <div class='ot-initial'>{{userInitial}}</div>
         <div class='ot-name'>{{user.first_name}} {{user.last_name}}<span>{{user.role}}</span></div>
         <div class='ot-username'>{{user.username}}</div>
         <button v-show='!isCurrentUser' class='cardBtn' @click='deleteuser'>Delete</button>
+        </div>
+        <div v-else><img src='../assets/images/'</div>
         <div class='ot-bk'></div>
         			</div>
 	</template>
@@ -34,7 +37,23 @@
 							if (userid != "") {
 								var r = confirm("Do you really want to delete the user ? ");
 								if (r == true) {
-								    eventBus.$emit('userdeleted',userid);
+									$.ajax({
+										type : 'DELETE',
+										url : "/ObjectTeller/user/" + userid,
+
+										success : function(response) {
+										     eventBus.$emit('userdeleted',userid);
+										},
+
+										error : function(response) {
+										
+											var test = JSON.stringify(response);
+											var obj = JSON.parse(test);
+											alert(obj.responseText);
+										}
+
+									});
+								    
                 }
 							}
 						},
@@ -49,10 +68,10 @@
 				</script>
 				<style>
 				.ot-usercard {
-            position: relative;
+					position: relative;
 				    text-align: left;
 				    width: 385px;
-            height: 75px;
+					height: 75px;
 				    background-color: #fff;
 				    margin: 10px 0px 10px 0px;
 				    color: #696969;
@@ -60,7 +79,9 @@
 				    border: 1px solid #e6e6e6;
 				    padding: 0px ;
 				}
-
+				.ot-usercard#emptyuser{
+					border: 1px dashed #39b45a;
+				}
         .ot-bk {
         width: 385px;
         height: 73px;
@@ -76,7 +97,7 @@
 				}
 				.ot-usercard:hover:after{
 					width:100%;
-				background: #39b45a;
+				    background: #39b45a;
 				}
         .ot-initial {
           position: absolute;
