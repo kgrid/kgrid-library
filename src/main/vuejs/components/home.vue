@@ -35,11 +35,14 @@
 			
 		</div>
 		<div slot='header'>
-				<div v-show='isLoggedIn'>
-					<button class='greenroundbutton ot-newobj'  v-on:click='addObject'>
-						<img src='../assets/images/Plus_Icon.png' width="14px"/>
-					</button>
-				</div>
+				<div v-show='isLoggedIn' class='ot-r-btn ot-newobj'  v-on:click='addObject''>
+			       <div class='greenroundbutton' > </div>
+			       <div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="14px"/></div>
+			</div>
+				
+				
+				
+					
 				<div class='row'>
 						<div class='col-md-6 ot-search'>
 						<img src='../assets/images/Search_Icon-01.png' width="20px"/><input
@@ -728,12 +731,11 @@ padding: 0px 48px 0px 48px;
 .ot-newobj{
 	width: 40px;
 	height: 40px;
-		position:absolute;
+	position:absolute;
     bottom:-30px;
     right:-30px;
     margin:0 auto;
     z-index:500;
-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
 }
 .ot-banner.loggedin h1 {
     padding-top: 52px;
