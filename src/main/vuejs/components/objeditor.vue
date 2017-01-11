@@ -367,5 +367,9 @@ border-radius: 10px;
     color: #666666;
     font-weight: 400;
 }
-
+#editWrapper{
+	position: relative;
+	right: -300px;
+	top: 9px;
+}
 </style>

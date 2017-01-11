@@ -110,16 +110,41 @@ img#dropdown{
 	color:#666666;
 }
 
-.btnContent{
+.ot-r-btn .btnContent{
   position: relative;
   top:-30px;
   left:13px;
 }
+
+.ot-r1-btn .btnContent{
+  position: relative;
+  top:-21px;
+  left:14px;
+  opacity: 0.5;
+  transition: opacity 0.5s ease;
+}
+
 .ot-r-btn {
   position: relative;
   border: none;
   width:40px;
   height:40px;
+  padding: 0px 0px 0px 0px;
+  background-color: transparent;
+}
+.ot-s-btn {
+  position: relative;
+  border: none;
+  width:400px;
+  height:50px;
+  padding: 0px 0px 0px 0px;
+  background-color: transparent;
+}
+.ot-r1-btn {
+  position: relative;
+  border: none;
+  width:20px;
+  height:20px;
   padding: 0px 0px 0px 0px;
   background-color: transparent;
 }
@@ -136,8 +161,37 @@ img#dropdown{
    	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
 	transition: transform 0.5s ease;
 }
+.greenbutton {
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    color: white;
+    background-color: #39b54a;
+    border: none;
+    font-size: 20px;
+    margin: auto;
+	transition: all 0.5s ease;
+}
 
-.ot-r-btn:hover .greenroundbutton {
+.greyroundbutton {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    color: white;
+    background-color: transparent;
+    border: 1px solid #b3b3b3;
+    font-size: 20px;
+    margin: auto;
+	transition: all 0.5s ease ;
+}
+
+.ot-r-btn:hover .greenroundbutton, .ot-r1-btn:hover .greyroundbutton{
   transform: scale(1.2);
   margin: auto;
+}
+
+.ot-s-btn:hover .greenbutton {
+	transform: scaleX(1.02) scaleY(1.1);
+    opacity: 0.75;
+
 }

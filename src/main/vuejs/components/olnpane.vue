@@ -1,12 +1,15 @@
 <template id='ol-narrow-pane-template'>
-	<div class='modal-mask'>
-	<transition name='slide'>
+<transition name='modal'>
+<div class='modal-mask'>
+
 	<div class='ol_narrow_pane'>
 		<div class='sidebar_close'>
 			<h3>CLOSE</h3>
-			<button class='greenroundbutton' id='close_overlay'	v-on:click='closeOverlay'>
-				<img src='../assets/images/Close_Icon.png' width='10px'>
-			</button>
+			<div class='ot-r-btn ot-close'  v-on:click='closeOverlay'>
+		       <div class='greenroundbutton' > </div>
+		       <div class='btnContent'><img src='../assets/images/Close_Icon.png' width="10px"/></div>
+		</div>
+			
 		</div>
 		<div class='overlay-top'>
 		</div>
@@ -25,8 +28,9 @@
 					<div class='alert-box warning'><slot name='ol-warning'></slot></div>
 		</div>
 	</div>
-	</transition>
+	
 	</div>
+	</transition>
 </template>
 <script>
 import eventBus from '../components/eventBus.js';
@@ -51,12 +55,12 @@ export default {
 <style scoped>
 .ol_narrow_pane{
 	position: absolute;
-    right:0px;
+    right: 0px;
     width: 550px;
     margin: 0px auto;
     background-color: #fff;
     height: 100%;
-    transition: all .8s ease;
+    transition: all 2s ease;
 }
 
 .modal-mask {
@@ -68,17 +72,23 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, .5);
   display: table;
-  transition: opacity .5s ease;
-}
-.slide-enter, .slide-leave  {
-	right: -540px;
+  transition: opacity 1s ease;
 }
 
-.slide-enter-active {
-	right: 0px;
-}
+.modal-enter {
+	  opacity: 0;
+	}
 
+	.modal-leave-active {
+	  opacity: 0;
+	}
 
+	.modal-enter .ol_narrow_pane,
+	.modal-leave-active .ol_narrow_pane {
+	  right: -540px;
+	}
+
+	
 .sidebar_close {
     background-color:#fff;
 	color: #b3b3b3;
@@ -98,7 +108,7 @@ export default {
     position:absolute;
     line-height:60px;
     vertical-align:middle;
-    top:60px;
+    top:40px;
     left:10px;
     font-size:14px;
     -webkit-transform: rotate(270deg);
@@ -106,6 +116,8 @@ export default {
     -ms-transform: rotate(270deg);
     -o-transform: rotate(270deg);
     transform: rotate(270deg);
+	transition: color 0.5s ease;
+color: #b3b3b3;
 }
 #close_overlay {
     position: relative;
@@ -113,7 +125,29 @@ export default {
     width:28px;
     height:28px;
 }
+.ot-close {
+	position: relative;
+	top: 11px;
+	left: 11px;
+}
+.ot-close .greenroundbutton {
+	width: 28px;
+    height: 28px;
+box-shadow: none;
+}
+.ot-close .btnContent {
+	postion: relative;
+	top: -24px;
+left: 0px;
+}
 
+.sidebar_close:hover h3{
+	color: #666666;
+}
+.sidebar_close:hover .greenroundbutton{
+	  transform: scale(1.2);
+	  margin: auto;
+}
 .overlay-top {
     height: 120px;
     width: 494px;
@@ -133,7 +167,6 @@ export default {
     top: 120px;
     left: 60px;
     padding: 0px 0px;
-    border-left: 1px solid #e6e6e6;
 }
 
 .overlay-alert {

@@ -5,13 +5,14 @@
 		<div class="row addtext maxheight" >
 		  <div class='col-md-6 maxheight'>
 			<div class='ot-sub'>USERS IN THIS LIBRARY</div>
+			<div class='uListContainer'>
 			  <div id='uList'>
 		        <ul>
 		          <li v-for='(user,index) in umodel.userList' v-bind:key='index'><usercard :user='user' :you='curUserModel.user'
 		      						:tileindex='index' v-on:remove='orderedList.splice(index, 1)'></usercard></li>
 		        </ul>
 		        <div id='emptyuser' @click='adduser'></div>
-		      </div>
+		      </div></div>
 		    </div>
 	        <div class='col-md-6 maxheight'>
 			    <div class='ot-sub'>BASIC INFORMATION</div>
@@ -48,7 +49,7 @@
 						<div class='loginField'>
 							<label class="label">EMAIL</label>
 							<p class="control has-icon has-icon-right">
-								<input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email|not_in:cc@c.edu" :class="{'input': true, 'is-danger': errors.has('email', 'userform') }" type="text" placeholder="Email">
+								<input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'userform') }" type="text" placeholder="Email">
 								<i v-show="errors.has('email', 'userform')" class="fa fa-warning"></i>
 								<span v-show="errors.has('email', 'userform')" class="help is-danger">{{ errors.first('email', 'userform') }}</span>
 							</p>
@@ -64,7 +65,7 @@
 						<div class='loginField'>
 							<button class='user' v-if='isNewUser' id="addUserButton" type='submit'>ADD USER</button>
 							<button class='user' v-if='!isNewUser' id="updateUserButton" type='submit'>UPDATE</button>
-							<button class="edit" id="cancelButton">CANCEL</button>
+							<button class="edit" type='button' v-on:click="undoEdit">CANCEL</button>
 						</div>
 					</fieldset>
 					</form>
@@ -94,6 +95,8 @@
 			           ]},
 				newobjModel:{object:{metadata:{title:""},uri:"arkid"}},
 				userModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
+				selectedUserModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
+				
 				newuserModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: 'USER'}},
 				newtitle:"",
 				jsonobj:"",
@@ -119,17 +122,18 @@
 			var self =this;
 			eventBus.$on("userselected", function(user){
 				$.extend(true, self.userModel.user, user);
+				$.extend(true, self.selectedUserModel.user, user);
 				self.isNewUser=false;
 			});
 			eventBus.$on("userAdded", function(user){
 				self.umodel.userList.push(user);
-				$.extend(true, self.userModel.user, self.newuserModel.user);
+				
 			});
 			eventBus.$on("userUpdated", function(user){
 				var dIndex = self.umodel.userList.map(function(e) {return e.id}).indexOf(user.profile.id);
 				console.log(dIndex);
 				$.extend(true, self.umodel.userList[dIndex], user);
-				$.extend(true, self.userModel.user, self.newuserModel.user);
+				
 			});
 			eventBus.$on('userdeleted',function(userid){
 			      console.log(userid)
@@ -175,43 +179,11 @@
 		  this.isNewUser=true;
 		  $.extend(true, this.userModel.user, this.newuserModel.user);
 	},
-		createObj:function(){
-			var self=this;
-			var text = JSON.stringify(self.newobjModel.object);
-//			console.log("data to sent:"+text);
-			$.ajax({
-				beforeSend : function(xhrObj) {
-					xhrObj.setRequestHeader("Content-Type", "application/json");
-					xhrObj.setRequestHeader("Accept", "application/json");
-				},
-				type : "POST",
-				url : "/ObjectTeller/knowledgeObject",
-				data : text,
-				dataType : "json",
-				success : function(response) {
-					console.log(response);
-					if ((response != 'empty') && (response != null)) {
-						var test = JSON.stringify(response);
-						var obj = JSON.parse(test);
-	//					console.log(test);
-						$.extend(true, self.newobjModel.object, obj);
-					}
-					$("div.processing").fadeOut(200);
-					$("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
-							eventBus.$emit("objcreated",obj);
-					});
-				},
-				error : function(response) {
-	//				console.log(response);
-					$("div.processing").fadeOut(200);
-					$("div.warning").text(response.status+"   "+response.statusText);
-					$("div.warning").show();
-					
-					//test code, to be removed 
-					eventBus.$emit("objcreated",{"metadata":{"title":"error"}});
-				}
-			});	
-		},
+		undoEdit: function(){
+		  $.extend(true, this.userModel.user, this.selectedUserModel.user);
+	},
+	
+
 		 updatedisplay : function(sec, msg){
 	//	    	console.log("Section:"+sec+" Msg:"+msg);
 		    	var fullobj={};
@@ -333,12 +305,18 @@
 	ul {
 		list-style: none;
 	}
+	.uListContainer {
+		height:100%;
+		padding: 0px 10px;
+	border-right: 1px solid #e3e3e3;
+	}
 	#uList {
 		margin: 10px 0px;
 		padding: 0px 10px;
-	height: 100%;
+	height: 99%;
 	max-height: 650px;
 	overflow: auto;
+	
 	}
 	#uList li {
 		margin-top : 20px;
@@ -377,9 +355,10 @@
 		margin: 0px 10px;
 	font-size:14px;
 	}
-	.ot-sub .fieldcontainer,   {
+	.ot-sub+form{
 		height: 100%;
 		overflow-y: auto;
+		margin: 10px 0px;
 	}
 	.loginField {
 		position: relative;
@@ -439,7 +418,7 @@
 	    width: 385px;
 		height: 75px;
 	    background-color: #fff;
-	    margin: 10px 0px 10px 0px;
+	    margin: 20px 0px 10px 0px;
 	    color: #696969;
 	    font-weight: 400;
 	    border:1px dashed #39b45a;

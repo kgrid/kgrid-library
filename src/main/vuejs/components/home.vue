@@ -22,7 +22,7 @@
 					</div></li>
 				<li>
 					<button class="roundbutton open-overlay iconBtn" type="button"
-						id="settinglink" @click="settinglink_click">
+						id="settinglink" disabled @click="settinglink_click">
 						
 					</button>
 				</li>
@@ -322,6 +322,7 @@ export default {
 	  	getCurrentUser(function(response) {
 				if(response!="")
 					$.extend(true, self.userModel.user, response);
+				$('.ot-banner').addClass('loggedin');
 			},function(response) {
 				console.log(response);
 			});
@@ -713,7 +714,7 @@ select {
 padding: 0px 48px 0px 48px;
 }
 .ot-banner.loggedin {
-	height: 200px;
+	height: 220px;
 }
 .ot-banner h1 {
     font-size: 32px;
@@ -853,19 +854,20 @@ border: 1px solid #b3b3b3;
 	border: 1px solid #666666;
 }
 button#userlink {
-	   background-image: url(../assets/images/Person_Icon_Light-01.png);
+	   background-image: url(../assets/images/Person_Icon_Dark-01.png);
+		opacity: 0.5;
+transition: opacity 0.5s ease;
 }
 button#userlink:hover {
-	   background-image: url(../assets/images/Person_Icon_Dark-01.png);
+	  opacity: 1;
 
 }
 button#settinglink {
-	   background-image: url(../assets/images/Gear_Icon.png);
-
-}
-button#settinglink:hover {
 	   background-image: url(../assets/images/Gear_Icon-01.png);
+		opacity: 0;
+	
 }
+
 
 #newuser{
 	width:12px;
