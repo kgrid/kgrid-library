@@ -5,11 +5,29 @@
 		<div class='row ot-detail-spacer'></div>
 		<div class='row ot-detail-smallrow'>
 			<div class='col-md-3'>
+			
 			<div id='goback'>
+			
+		
+			
+			
+				
 				<div id='backButton'>
-					<a @click='returntolibrary'>BACK TO THE LIBRARY</a>
-				</div>
+				 <a @click='returntolibrary'>BACK TO THE LIBRARY</a>
+				<div class='ot-r1-btn ot-back'>
+				<div class='greyroundbutton'></div>
+			       <div class='btnContent'><img src='../assets/images/Chevron.png' width="5px"/></div>
+			       </div>
+			      
 			</div>
+				
+				
+				
+				
+				
+				
+				
+				</div>
 			</div>
 			<div class='col-md-4'></div>
 			<div class='col-md-5 pri-pub'>
@@ -79,7 +97,10 @@
 							v-on:click='deleteObject'>DELETE</button>
 						<div id='downloadButton'>
 							<a class='edit' v-bind:href='downloadLink'>DOWNLOAD</a>
-							<div id='downloadButtonimg'></div>
+							<div class='ot-r1-btn ot-download'>
+							<div class='greyroundbutton'></div>
+						       <div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="12px"/></div>
+						       </div>
 						</div>
 			</div>
 		</div>
@@ -97,7 +118,7 @@
 	<script>
 	import applayout from './applayout.vue';
 	import tabpane from './tabbedpanel.vue';
-	import {tabNav, getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, autoresize, setBannerbkSize} from '../ot.js';
+	import {tabNav, getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
 	import eventBus from '../components/eventBus.js';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
@@ -114,11 +135,6 @@
 			components:{
 		'applayout':applayout,
 		'tabpane':tabpane
-		},
-		watch:{
-			activeTab:function(){
-				console.log(this.activeTab);
-			}
 		},
 		created : function() {
 			var self = this;
@@ -139,6 +155,7 @@
 			retrieveObject(this.$route.params.uri, "complete", function(response) {
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
+				
 			}, function(response){
 				console.log("Error:");
 				console.log(response);
@@ -170,7 +187,7 @@
 			}
 		},
 		updated : function() {
-			this.autoresize();
+			
 		},
 		methods:{
 			selectTab: function(tablabel){
@@ -195,11 +212,15 @@
 				this.toggleObject(false);
 			},
 			autoresize:function(){
-				var autosize = this.$el.querySelector("ul#tab>li.active .autosize");
-				var sh = autosize.scrollHeight+5;
-				autosize.style.height="0px";     //Reset height, so that it not only grows but also shrinks
-				autosize.style.height = sh + 'px';    //Set new height
-				console.log(this.activeTab+"New Height = "+sh);
+				var autosize = this.$el.querySelectorAll("ul#tab>li .autosize");
+				for (var i = 0; i < autosize.length; i++) {
+					var e = autosize[i];
+				var sh = e.scrollHeight+5;
+				console.log(e);
+				e.style.height="0px";     //Reset height, so that it not only grows but also shrinks
+				e.style.height = sh + 'px';    //Set new height
+				console.log("New Height = "+sh);
+				}
 			},
 			toggleObject:function(pub){
 				var uri=this.objModel.object.uri;
@@ -252,7 +273,7 @@
 	</script>
 <style>
 .ot-banner.detail {
-	height: 200px; 
+	height: 240px; 
 }
 .ot-detail-smallrow {
 	height: 20px;
@@ -262,7 +283,7 @@
 	height: 25px;
 }
 .ot-detail-titlerow {
-	height: 40px;
+	height: 80px;
 	margin-left: -40px;
 }
 .ot-detail-daterow {
@@ -352,9 +373,6 @@ ul#tab>li.active {
 }
 
 #backButton {
-	background-image: url("../assets/images/Back_Icon_Dark-01.png");
-	background-repeat: no-repeat;
-	background-position: 2px 2px;
 	display:inline-block;
 	background-color: #fff;
 	border: none;
@@ -365,9 +383,6 @@ ul#tab>li.active {
 	background-size: 20px;
 }
 #backButton:hover{
-	background-image: url("../assets/images/Back_Icon_Dark-01.png");
-	background-repeat: no-repeat;
-	background-position: left top;
 	color:#666666;
 	background-size: 24px;
 	transition:  0.5s ease;
@@ -379,48 +394,69 @@ ul#tab>li.active {
 	font-size: 18px;
 }
 #more {
+	opacity: 0.5;
 	width: 25px;
 	height: 20px;
 	margin: auto;
-	background-image : url('../assets/images/More_Icon_Light-01.png');
+	background-image : url('../assets/images/More_Icon_Dark-01.png');
 	background-size: 20px;
     background-repeat: no-repeat;
 	background-position-y: center;
+	transition: opacity 0.5s ease;
+
 }
 
 #more:hover {	
-	background-image : url('../assets/images/More_Icon_Dark-01.png');
+	opacity: 1;
 }
 
 #downloadButton {
 	display: inline-block;
-background-image : url('../assets/images/Down_Arrow_Light.png');
-background-size: 12px;
-background-position-x: 98%;
-background-position-y:center;
-background-repeat: no-repeat;
 }
-#downloadButtonimg{
-	position: absolute; 
-	top:0px;
-    right: 0px;
-	width: 30px;
-	height: 30px;
-	border-radius: 100%;
-	border: 1px solid #b3b3b3;
-	transition: all 0.5s ease;
+
+#downloadButton:hover .greyroundbutton{
+	  transform: scale(1.2);
+      border: 1px solid #666666;
+	  margin: auto;
+	}
+#downloadButton:hover .btnContent{
+		 opacity: 1;
+		}
+.ot-download{
+	width: 40px;
+	height: 40px;
+	position:absolute;
+    bottom:-20px;
+    right:-32px;
+    margin:0 auto;
+    z-index:500;
 }
-#downloadButtonimg:hover {
-	top: -2px;
-	right: -2px;
-	width: 36px;
-	height: 36px;
-	border: 1px solid #666666;
+
+.ot-back{
+	width: 40px;
+	height: 40px;
+	position:absolute;
+    bottom:-18px;
+    right:200px;
+    margin:0 auto;
+    z-index:500;
 }
-#downloadButton:hover {
-	background-image : url('../assets/images/Down_Arrow_Dark.png');
+
+.ot-back .btnContent {
+	position: relative;
+top: -20px;
+left:17px; 
 
 }
+
+#backButton:hover .greyroundbutton{
+	  transform: scale(1.2);
+	  border: 1px solid #666666;
+	  margin: auto;
+	}
+#backButton:hover .btnContent{
+		 opacity: 1;
+		}
 .pri-pub {
 	font-size: 12px;
 }

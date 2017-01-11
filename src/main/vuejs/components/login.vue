@@ -23,8 +23,17 @@
 									    <!-- 											<button class='edit_btn' >Forgot your password?</button>
 		 -->							</div>
 								<div class='loginField'>
-									<button class='login' type='submit'>LOG IN</button>
+								
+									
+								
+									<div class='ot-s-btn ot-login'>
+								       <div class='greenbutton' > </div>
+								       <div class='btnContent'><button class='login' type='submit'>LOG IN</button></div>
 								</div>
+									
+									
+									
+									</div>
 				</fieldset>
 				</form>
 		</div>
@@ -125,19 +134,24 @@ color: #ec2526;
 margin: 0 auto;
 padding: 0px 20px;
 }
+
+.ot-s-btn .btnContent{
+	  position: relative;
+	  top:-86px;
+	  left:0px;
+	}
+.ot-login {
+	padding: 22px 0px;
+}
 button.login {
     width: 400px;
     position: relative;
     height: 50px;
     border-radius: 10px;
-    border:1px solid #39b45a;
-    background-color: #39b45a;
+    border:none;
+    background-color: transparent;
     color: #fff;
     margin-top: 38px;
-}
-button.login:hover {
-	transform: scaleX(1.02) scaleY(1.1);
-    opacity: 0.75;
 }
 .entryform {
     height: 600px;

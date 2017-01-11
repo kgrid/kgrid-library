@@ -9,7 +9,7 @@
 	</template>
 	<script>
 	import fieldtile from './fieldtile.vue';
-	import { loadFieldsConfig, autoresize } from '../ot.js';
+	import { loadFieldsConfig } from '../ot.js';
 	export default {
 		name:'tabpane', 
 		props:['section','object','isDisabled'],
@@ -31,13 +31,13 @@
 			});
 		},
 		updated : function() {
-			this.autoresize();
+			
 		},
 		created : function() {
-			//console.log(this.section);
+			
 		},
 		mounted : function() {
-
+			
 		},
 		computed : {
 			filteredFields :function(){
@@ -49,16 +49,7 @@
 			}
 		},
 		methods: {
-			autoresize:function(){
-				console.log(this);
-				var autosize = this.$el.querySelector(".autosize");
-				console.log(autosize);
-				console.log(autosize.scrollHeight);
-				var sh = autosize.scrollHeight+15;
-				autosize.style.height="0px";     //Reset height, so that it not only grows but also shrinks
-				autosize.style.height = sh + 'px';    //Set new height
-				console.log(this.section+"New Height = "+sh);
-			}
+			
 		}
 	};
 	</script>
@@ -82,8 +73,6 @@ input[type=text]:disabled {
 padding: 0px;
 }
 .addtext textarea {
-	width: 900px;
-	min-height:38px;
 	resize:none;
 	padding:8px 0px 0px 0px;
 	border: none;
