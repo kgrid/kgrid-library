@@ -371,7 +371,15 @@ export default {
 			$('.ot-banner').removeClass('loggedin');
 		}
 		otScroll();
+		this.sortKey=sessionStorage.getItem("sortKey");
+		this.order=sessionStorage.getItem("order");
+		this.filterStrings=JSON.parse(sessionStorage.getItem("filters"));
 	},
+	updated: function() {
+		sessionStorage.setItem("sortKey", this.sortKey);
+		sessionStorage.setItem("order", this.order);
+		sessionStorage.setItem("filters", JSON.stringify(this.filterStrings));
+	  },
 	computed : {
 		isLoggedIn:function(){
 			var loggedin =false;
@@ -397,14 +405,13 @@ export default {
 			return (this.order == 'asc');
 		},
 		orderedList : function() {
-					return _.orderBy(this.filteredList, this.sortKey,
-					this.order);
+				return _.orderBy(this.filteredList, this.sortKey, this.order);
 		},
 		filteredList : function() {
 			  var self = this;
 			  var list = this.model.koList;
 			  if (!this.isLoggedIn) {
-  list = list.filter(function(field) {
+				  list = list.filter(function(field) {
 					  return (field.metadata.published);
 				});
 			}
