@@ -1,6 +1,6 @@
 <template>
   <olpane layerid=0>
-	<div slot="ol-title"><h3>Libray Users</h3></div>
+	<div slot="ol-title"><h3>Library Users</h3></div>
 	  <div slot="ol-form">
 		<div class="row addtext maxheight" >
 		  <div class='col-md-6 maxheight'>
@@ -49,7 +49,7 @@
 						<div class='loginField'>
 							<label class="label">EMAIL</label>
 							<p class="control has-icon has-icon-right">
-								<input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'userform') }" type="text" placeholder="Email">
+								<input spellcheck=false v-model='userModel.user.username' autocomplete='off' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'userform') }" type="text" placeholder="Email">
 								<i v-show="errors.has('email', 'userform')" class="fa fa-warning"></i>
 								<span v-show="errors.has('email', 'userform')" class="help is-danger">{{ errors.first('email', 'userform') }}</span>
 							</p>
@@ -57,15 +57,15 @@
 						<div class='loginField'>
 							<label class="label">Password</label>
 							<p class="control has-icon has-icon-right">
-								<input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
+								<input spellcheck=false  v-model='userModel.user.password' autocomplete='off' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
 								<i v-show="errors.has('password', 'userform')" class="fa fa-warning"></i>
 								<span v-show="errors.has('password', 'userform')" class="help is-danger">{{ errors.first('password', 'userform') }}</span>
 							</p>
 						</div>
 						<div class='loginField'>
-							<button class='user' v-if='isNewUser' id="addUserButton" type='submit'>ADD USER</button>
-							<button class='user' v-if='!isNewUser' id="updateUserButton" type='submit'>UPDATE</button>
-							<button class="edit" type='button' v-on:click="undoEdit">CANCEL</button>
+							<button class='user' v-if='isNewUser' :disabled='!inEdit' id="addUserButton" type='submit'>ADD USER</button>
+							<button class='user' v-if='!isNewUser' :disabled='!inEdit' id="updateUserButton" type='submit'>UPDATE</button>
+							<button class="edit" type='button' :disabled='!inEdit' v-on:click="undoEdit">UNDO</button>
 						</div>
 					</fieldset>
 					</form>
@@ -101,7 +101,8 @@
 				newtitle:"",
 				jsonobj:"",
 				curUserModel:{user:{}},
-				isNewUser: false
+				isNewUser: false,
+				inEdit: false,
 			}
 		},
 		beforeCreate: function(){
@@ -124,16 +125,18 @@
 				$.extend(true, self.userModel.user, user);
 				$.extend(true, self.selectedUserModel.user, user);
 				self.isNewUser=false;
+				self.inEdit=true;
 			});
 			eventBus.$on("userAdded", function(user){
 				self.umodel.userList.push(user);
+				self.inEdit=false;
 				
 			});
 			eventBus.$on("userUpdated", function(user){
 				var dIndex = self.umodel.userList.map(function(e) {return e.id}).indexOf(user.profile.id);
 				console.log(dIndex);
 				$.extend(true, self.umodel.userList[dIndex], user);
-				
+				self.inEdit=false;
 			});
 			eventBus.$on('userdeleted',function(userid){
 			      console.log(userid)
@@ -178,6 +181,7 @@
 		adduser:function(){
 		  this.isNewUser=true;
 		  $.extend(true, this.userModel.user, this.newuserModel.user);
+		  this.inEdit=true;
 	},
 		undoEdit: function(){
 		  $.extend(true, this.userModel.user, this.selectedUserModel.user);
@@ -411,6 +415,13 @@
 	    background-color: #39b45a;
 	    color: #fff;
 	    margin: 18px 0px 0px 180px;
+	}
+	button.user:disabled {
+		background-color: #b3b3b3;
+	border: 1px solid #b3b3b3;
+	}
+	button.edit:disabled {
+		opacity: 0;
 	}
 	#emptyuser {
 		position: relative;

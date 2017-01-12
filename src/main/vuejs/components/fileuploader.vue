@@ -11,8 +11,8 @@
 			</div>
 	</div></div>
 	<div v-else>
-		<button v-on:click="removeOutputFile">Remove</button>
-		<textarea @change="inputchange" spellcheck=false v-model="message.msg"></textarea>
+		<button v-on:click="removeOutputFile" class='removeBtn'>Remove</button>
+		<textarea class='contentDisp' @change="inputchange" spellcheck=false v-model="message.msg"></textarea>
 	</div>
 </template>  
 	<script>
@@ -90,6 +90,7 @@
     height: 140px;
     border-radius: 10px;
     text-align: center;
+	transition: opacity 0.8s ease;
     }
 .upload-direction {
     padding: 10px 0;
@@ -98,5 +99,32 @@ label {
     font-weight: 400;
     margin: 10px 0px;
     cursor: pointer;
+}
+.removeBtn {
+    background-color: #fff;
+    color: #39b54a;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 10px 55px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    float: right;
+    display: block;
+}
+textArea.contentDisp {
+    display: block;
+    min-height: 380px;
+    width: 96%;
+    padding: 5px 16px;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    resize: none;
+    color: #666666;
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 40px;
+	overflow-y: auto;
 }
 	</style>

@@ -8,11 +8,11 @@
 			
 			<div id='goback'>
 			<div id='backButton'>
-				 <a @click='returntolibrary'>BACK TO THE LIBRARY</a>
+				 <a @click='returntolibrary'>BACK TO THE LIBRARY
 				<div class='ot-r1-btn ot-back'>
 				<div class='greyroundbutton'></div>
 			       <div class='btnContent'><img src='../assets/images/Chevron.png' width="5px"/></div>
-			       </div>
+			       </div></a>
 			</div>
 				</div>
 			</div>
@@ -83,11 +83,11 @@
 						<button class='edit' id='deleteButton'
 							v-on:click='deleteObject'>DELETE</button>
 						<div id='downloadButton'>
-							<a class='edit' v-bind:href='downloadLink'>DOWNLOAD</a>
+							<a class='edit' v-bind:href='downloadLink'>DOWNLOAD
 							<div class='ot-r1-btn ot-download'>
 							<div class='greyroundbutton'></div>
 						       <div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="12px"/></div>
-						       </div>
+						       </div></a>
 						</div>
 			</div>
 		</div>
@@ -240,6 +240,10 @@
 							});
 					}
 				}
+			},
+			downloadObj: function() {
+				var myWindow = window.open(this.downlaodLink, "myWindow");   // Opens a new window
+				myWindow.focus();
 			},
 			returntolibrary: function(){
 				eventBus.$emit("return");
@@ -420,9 +424,8 @@ ul#tab>li.active {
 
 .ot-back .btnContent {
 	position: relative;
-top: -20px;
-left:17px; 
-
+    top: -22px;
+    left:17px; 
 }
 
 #backButton:hover .greyroundbutton{
