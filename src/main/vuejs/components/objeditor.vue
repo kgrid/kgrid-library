@@ -318,6 +318,12 @@ export default {
 };
 </script>
 <style scoped>
+#barcontainer {
+    height: 36px;
+    border-bottom: 1px solid #e3e3e3;
+    width: 96%;
+
+}
 .addtext {
     position: relative;
     width: 100%;
@@ -358,6 +364,7 @@ border-radius: 10px;
     border: none;
     white-space: nowrap;
     overflow: hidden;
+width:100%;
     text-overflow: ellipsis;
     height: 38px;
     padding: 10px 0px 0px 16px;
@@ -368,8 +375,17 @@ border-radius: 10px;
     font-weight: 400;
 }
 #editWrapper{
+	width: 300px;
+	display: inline-block;
 	position: relative;
 	right: -300px;
 	top: 9px;
+}
+select {
+    width: 96%;
+background-position: 98%;
+}
+input[type=text] {
+	width: 96%;
 }
 </style>

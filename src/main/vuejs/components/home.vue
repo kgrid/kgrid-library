@@ -51,7 +51,7 @@
 						<div class='col-md-1'></div>
 						<div class='col-md-2 ot-count'>{{countString}}</div>
 						<div class='col-md-2'>
-							<select class='ot-select' v-model='sortKey'>
+							<select class='ot-select' v-model='sortKey' v-on:change="onChange">
 								<option value='metadata.title'>Title</option>
 								<option value='uri'>Object ID</option>
 								<option value='metadata.lastModified'>Last Updated</option>
@@ -317,6 +317,7 @@ export default {
 		        }]
 		      }
 		    },
+	
 	created : function() {
 		var self = this;
 	  	getCurrentUser(function(response) {
@@ -470,6 +471,19 @@ export default {
 		}
 	},
 	methods : {
+		onChange: function(){
+			switch(this.sortKey) {
+			case 'metadata.lastModified':
+				this.order ='desc';
+			break;
+			case 'uri':
+				this.order ='asc';
+				break;
+			case 'metadata.title':
+				this.order ='asc';
+				break
+			}
+	},
 		userlink_click: function () {
 	      eventBus.$emit('openUserManagement'); // eslint-disable-line
 	    },
@@ -865,7 +879,6 @@ button#userlink:hover {
 button#settinglink {
 	   background-image: url(../assets/images/Gear_Icon-01.png);
 		opacity: 0;
-	
 }
 
 

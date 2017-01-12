@@ -1,7 +1,7 @@
 <template>
   <div>
     <navbar></navbar>
- 	<router-view></router-view>
+ 	<router-view :key='$route.path'></router-view>
     <div id='ol' v-bind:is='currentOLView'  v-if='showOverlay.show'></div>
   </div>
 </template>

@@ -21,7 +21,6 @@
 		}
 	},
 		mounted: function(){
-			console.log("User id = "+this.user.id + "   Your id = "+this.you.username);
 			this.isCurrentUser = (this.user.id==this.you.id);
 		},
 		computed : {
