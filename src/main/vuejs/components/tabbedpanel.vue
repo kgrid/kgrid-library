@@ -72,7 +72,7 @@ input[type=text]:disabled {
 	font-size: 14px;
 padding: 0px;
 }
-.addtext textarea {
+.addtext .textview {
 	resize:none;
 	padding:8px 0px 0px 0px;
 	border: none;

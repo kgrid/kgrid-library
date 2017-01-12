@@ -3,8 +3,8 @@
 		<h4>{{field.title}}</h4>
 		<input :type="field.type" class="metaEdit" disabled v-bind:value="value" 
 			v-if="isInput" />
-		<textarea class="metaEdit autosize" disabled  v-bind:value="value"
-			v-if="isTextArea">{{value}}</textarea>
+		<div class="metaEdit textview" v-if="isTextArea">{{value}}</div>
+			
 		<linkedfieldtile v-if="isLicense" v-bind:link="value.licenseLink"
 			v-bind:value="value.licenseName"></linkedfieldtile>
 		<div class='entryDisplayArea' id='citation_entries' v-if="isCitation">
