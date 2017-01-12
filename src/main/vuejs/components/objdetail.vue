@@ -7,26 +7,13 @@
 			<div class='col-md-3'>
 			
 			<div id='goback'>
-			
-		
-			
-			
-				
-				<div id='backButton'>
+			<div id='backButton'>
 				 <a @click='returntolibrary'>BACK TO THE LIBRARY</a>
 				<div class='ot-r1-btn ot-back'>
 				<div class='greyroundbutton'></div>
 			       <div class='btnContent'><img src='../assets/images/Chevron.png' width="5px"/></div>
 			       </div>
-			      
 			</div>
-				
-				
-				
-				
-				
-				
-				
 				</div>
 			</div>
 			<div class='col-md-4'></div>
@@ -84,7 +71,7 @@
 		</div>
 		<div slot='header'>
 		<ul class='nav nav-tabs view' role='tablist' id='tabs'>
-		<li v-for='section in sections' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section.label)"><a >{{section.label}}</a></li>
+		<li v-for='section in sections' v-bind:id='section.name' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section)"><a >{{section.label}}</a></li>
 		<li role='presentation' class='labels accessLevelOne'><a>
 				<div class='labels iconBtn accessLevelOne' id ='more'>
 				</div>
@@ -190,10 +177,10 @@
 			
 		},
 		methods:{
-			selectTab: function(tablabel){
-				console.log("Clicked on "+tablabel);
-				this.activeTab=tablabel;
-				this.autoresize();
+			selectTab: function(section){
+				console.log("Clicked on "+section.label);
+				this.activeTab=section.label;
+				//this.$nextTick(this.autoresize(section.name));
 		},
 			editObj:function(){
 				$.extend(true, editObjModel.object, this.objModel.object);
@@ -210,17 +197,6 @@
 			},
 			unpublish:function(){
 				this.toggleObject(false);
-			},
-			autoresize:function(){
-				var autosize = this.$el.querySelectorAll("ul#tab>li .autosize");
-				for (var i = 0; i < autosize.length; i++) {
-					var e = autosize[i];
-				var sh = e.scrollHeight+5;
-				console.log(e);
-				e.style.height="0px";     //Reset height, so that it not only grows but also shrinks
-				e.style.height = sh + 'px';    //Set new height
-				console.log("New Height = "+sh);
-				}
 			},
 			toggleObject:function(pub){
 				var uri=this.objModel.object.uri;
