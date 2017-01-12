@@ -327,6 +327,9 @@ export default {
 			},function(response) {
 				console.log(response);
 			});
+	  	if(sessionStorage.getItem("sortKey")==null){
+	  	this.setSessionStorage();
+	  	}
 		$("#startdatepicker").val("03/01/16");
 		$("#enddatepicker").val(new Date().format("shortDate"));
 		this.startdate = new Date('March 1, 2016').getTime();
@@ -376,9 +379,7 @@ export default {
 		this.filterStrings=JSON.parse(sessionStorage.getItem("filters"));
 	},
 	updated: function() {
-		sessionStorage.setItem("sortKey", this.sortKey);
-		sessionStorage.setItem("order", this.order);
-		sessionStorage.setItem("filters", JSON.stringify(this.filterStrings));
+		this.setSessionStorage();
 	  },
 	computed : {
 		isLoggedIn:function(){
@@ -478,6 +479,11 @@ export default {
 		}
 	},
 	methods : {
+		setSessionStorage: function(){
+		sessionStorage.setItem("sortKey", this.sortKey);
+		sessionStorage.setItem("order", this.order);
+		sessionStorage.setItem("filters", JSON.stringify(this.filterStrings));
+	},
 		onChange: function(){
 			switch(this.sortKey) {
 			case 'metadata.lastModified':
