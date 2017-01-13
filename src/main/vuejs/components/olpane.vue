@@ -159,7 +159,7 @@ left: 0px;
 }
 
 .overlay-top {
-    height: 120px;
+    height: 100px;
     width: 960px;
     position: absolute;
     top: 0;
@@ -174,7 +174,7 @@ left: 0px;
     position: absolute;
     background: white;
     width: 1020px;
-    top: 120px;
+    top: 100px;
     left: 60px;
     padding: 0px 0px;
 }

@@ -78,6 +78,10 @@
 				    border: 1px solid #e6e6e6;
 				    padding: 0px ;
 				}
+				
+				.ot-usercard.active {
+					border: 1px solid #39b45a;
+				}
 				.ot-usercard#emptyuser{
 					border: 1px dashed #39b45a;
 				}

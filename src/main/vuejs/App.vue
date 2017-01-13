@@ -1,7 +1,7 @@
 <template>
   <div>
     <navbar></navbar>
- 	<router-view :key='$route.path'></router-view>
+ 	<router-view></router-view>
     <div id='ol' v-bind:is='currentOLView'  v-if='showOverlay.show'></div>
   </div>
 </template>
@@ -36,8 +36,9 @@ export default {
 				$.extend(true, self.userModel.user, response);
 			}
 			},function(response) {
-			console.log(response);
+			//console.log(response);
 		});
+		
 	},
   created: function () {
     var self = this  // eslint-disable-line
