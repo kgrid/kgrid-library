@@ -377,6 +377,7 @@ export default {
 		this.sortKey=sessionStorage.getItem("sortKey");
 		this.order=sessionStorage.getItem("order");
 		this.filterStrings=JSON.parse(sessionStorage.getItem("filters"));
+		this.check=JSON.parse(sessionStorage.getItem("check"));
 	},
 	updated: function() {
 		this.setSessionStorage();
@@ -406,7 +407,15 @@ export default {
 			return (this.order == 'asc');
 		},
 		orderedList : function() {
-				return _.orderBy(this.filteredList, this.sortKey, this.order);
+			switch(this.sortKey) {
+			case 'metadata.lastModified':
+				return _.orderBy(this.filteredList, [i=>i.metadata.lastModified], this.order);
+			case 'uri':
+				return _.orderBy(this.filteredList, [i=>i.uri.toLowerCase()], this.order);
+			case 'metadata.title':
+				return _.orderBy(this.filteredList, [i=>i.metadata.title.toLowerCase()], this.order);
+			}
+				
 		},
 		filteredList : function() {
 			  var self = this;
@@ -483,6 +492,7 @@ export default {
 		sessionStorage.setItem("sortKey", this.sortKey);
 		sessionStorage.setItem("order", this.order);
 		sessionStorage.setItem("filters", JSON.stringify(this.filterStrings));
+		sessionStorage.setItem("check", JSON.stringify(this.check));
 	},
 		onChange: function(){
 			switch(this.sortKey) {

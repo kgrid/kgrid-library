@@ -9,10 +9,12 @@
 			  <div id='uList'>
 		        <ul>
 		          <li v-for='(user,index) in umodel.userList' v-bind:key='index'><usercard :user='user' :you='curUserModel.user'
-		      						:tileindex='index' v-on:remove='orderedList.splice(index, 1)'></usercard></li>
+		      						:tileindex='index' v-bind:class="{ active: selectedUserModel.user.username === user.username }" v-on:remove='orderedList.splice(index, 1)'></usercard></li>
 		        </ul>
-		        <div id='emptyuser' @click='adduser'></div>
-		      </div></div>
+		        
+		      </div>
+		      <div id='emptyuser' @click='adduser'></div>
+		      </div>
 		    </div>
 	        <div class='col-md-6 maxheight'>
 			    <div class='ot-sub'>BASIC INFORMATION</div>
@@ -74,8 +76,8 @@
 			</div>
 		</div>
 		<div slot="ol-processing">Processing...</div>
-		<div slot="ol-success">User succesfully updated!!! </div>
-		<div slot="ol-failure">Update Failed! </div>
+		<div slot="ol-success">User succesfully <span v-if='!isNewUser'>updated</span><span v-else>added</span>!!! </div>
+		<div slot="ol-failure">Error during <span v-if='!isNewUser'>updating</span><span v-else>adding</span> the user ! </div>
 		<div slot="ol-warning">Warning !!!</div>
 	</olpane>
 </template>
@@ -93,13 +95,10 @@
 			              {username: 'gqmeng@umich.edu', passwd: '', id: 2, first_name: 'George', last_name: 'Meng', role: 'Informatician'},
 			              {username: 'jrampton@umich.edu', passwd: '', id: 3, first_name: 'James', last_name: 'Rampton', role: 'Designer'}
 			           ]},
-				newobjModel:{object:{metadata:{title:""},uri:"arkid"}},
 				userModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
 				selectedUserModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
-				
 				newuserModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: 'USER'}},
 				newtitle:"",
-				jsonobj:"",
 				curUserModel:{user:{}},
 				isNewUser: false,
 				inEdit: false,
@@ -126,10 +125,16 @@
 				$.extend(true, self.selectedUserModel.user, user);
 				self.isNewUser=false;
 				self.inEdit=true;
+				
 			});
 			eventBus.$on("userAdded", function(user){
-				self.umodel.userList.push(user);
-				self.inEdit=false;
+				var obj = {};
+				$.extend(true, obj, user);
+				self.umodel.userList.push(obj);
+				$.extend(true, self.selectedUserModel.user, user);
+				
+				self.isNewUser=false;
+				self.inEdit=true;
 				
 			});
 			eventBus.$on("userUpdated", function(user){
@@ -157,14 +162,6 @@
 			}
 			return usernameList;
 		},
-		newid:function(){
-			if(!this.newobjModel.object.uri){
-				return "";
-			}else{
-			return this.newobjModel.object.uri;
-			}
-		},
-		
 		userdtoModel:function(){
 			var obj = {username:'',password:'',role:'', profile:{first_name:'',id:-1,last_name:''}};
 			obj.username=this.userModel.user.username;
@@ -181,28 +178,12 @@
 		adduser:function(){
 		  this.isNewUser=true;
 		  $.extend(true, this.userModel.user, this.newuserModel.user);
+		  $.extend(true, this.selectedUserModel.user, this.newuserModel.user);
 		  this.inEdit=true;
 	},
 		undoEdit: function(){
 		  $.extend(true, this.userModel.user, this.selectedUserModel.user);
 	},
-	
-
-		 updatedisplay : function(sec, msg){
-	//	    	console.log("Section:"+sec+" Msg:"+msg);
-		    	var fullobj={};
-		    	if(msg!=""){
-		    	try{
-		    		fullobj=JSON.parse(msg);
-		    		$.extend(true, this.newobjModel.object, fullobj);
-				}catch(e){
-					$("div.warning").text(e.message);
-					$("div.warning").show();
-				}
-		    	}else{
-		    		$.extend(true, this.newobjModel.object, {"metadata":{"title":""}});
-		    	}
-		    },
 		  validateuserform(e) {
 		          this.$validator.validateAll('userform');
 		          if (!this.errors.any('userform')) {
@@ -215,30 +196,6 @@
 			            this.addOrUpdateUser()
 			        }
 			      },
-		    userlogin: function () {
-		      var self = this;  // eslint-disable-line
-		      if (this.test) {
-		        $( 'div.processing' ).fadeIn( 300 );  // eslint-disable-line
-		        $.ajax({  // eslint-disable-line
-		          type: 'POST',
-		          url: '/ObjectTeller/login',
-		          data: self.userModel.user,
-		          dataType: 'json',
-		          success: function (response) {
-		            $( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
-		            $('div.success').fadeIn(300).delay(500).fadeOut(400, function(){  // eslint-disable-line
-		           	$.extend(true, self.userModel.user, response);
-		            eventBus.$emit('userloggedin', self.userModel.user);  // eslint-disable-line
-		            });
-		          },
-		          error: function (response) {
-						$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
-						$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
-		          }
-		        });
-		      } else {
-		      }
-		    },
 		    addOrUpdateUser(){
 		    	var self=this;
 		    	var userObject = self.userdtoModel;
@@ -266,7 +223,8 @@
 		    					},
 
 		    					error : function(response) {
-		    						console.log(response);
+		    						$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
+		    						$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
 		    					}
 		    				});
 		    		
@@ -295,7 +253,8 @@
 		    					},
 
 		    					error : function(response) {
-		    						alert("Error "+response.responseText);
+		    						$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
+		    						$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
 		    					}
 		    				});
 		    		
@@ -317,7 +276,7 @@
 	#uList {
 		margin: 10px 0px;
 		padding: 0px 10px;
-	height: 99%;
+	height: 88%;
 	max-height: 650px;
 	overflow: auto;
 	
@@ -356,7 +315,7 @@
 		border-bottom: 1px solid #b3b3b3;
 		width: 385px;
 	    padding: 5px 0px;
-		margin: 0px 10px;
+		margin: 0px 18px;
 	font-size:14px;
 	}
 	.ot-sub+form{
@@ -429,7 +388,7 @@
 	    width: 385px;
 		height: 75px;
 	    background-color: #fff;
-	    margin: 20px 0px 10px 0px;
+	    margin: 10px 0px 10px 10px;
 	    color: #696969;
 	    font-weight: 400;
 	    border:1px dashed #39b45a;

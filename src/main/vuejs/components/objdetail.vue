@@ -165,9 +165,15 @@
 						.format("mediumDate")}
 				},
 			formattedCreateDate : function() {
-				return new Date(this.objModel.object.metadata.createdOn)
-					.format("mediumDate")
-			},
+					if(!this.objModel.object.metadata.createdOn || this.objModel.object.metadata.createdOn=="" ){
+						return ""
+					}
+					else
+						{return new Date(this.objModel.object.metadata.createdOn)
+							.format("mediumDate")}
+					},
+				
+		
 			downloadLink : function() {
 				return '/ObjectTeller/knowledgeObject/'
 					+ this.objModel.object.uri + '/complete.json'
