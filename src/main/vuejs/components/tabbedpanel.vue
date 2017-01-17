@@ -107,6 +107,11 @@ padding: 0px;
 
 .addtext a span {
 	border-bottom: 1px solid #39b45a;
+	text-decoration: none;
+}
+
+.addtext a:visited span {
+	text-decoration: none;
 }
 
 ul.list li {

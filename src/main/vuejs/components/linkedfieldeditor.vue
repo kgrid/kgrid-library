@@ -27,8 +27,7 @@
 									<div class="addtext">
 										<input class="textbox inEdit" v-model="linkedField.link"
 											type="text" spellcheck="false"
-											placeholder="Please provide the URL. "
-											maxlength="140"/><span>140/140</span>
+											placeholder="Please provide the URL. "/>
 									</div>
 									<label class="errorLabel" for="license_link"> </label>
 								</div>
