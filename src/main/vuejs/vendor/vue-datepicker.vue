@@ -68,7 +68,7 @@
   font-family: 'Open Sans';
   font-weight: 400;
   display: block;
-  width: 386px;
+  width: 348px;
   z-index: 999;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
       border: 1px solid #39b45a;
@@ -79,7 +79,7 @@
 }
 
 .rightalign .cov-date-body {
-  transform: translate(-250px,10px);
+  transform: translate(-214px,0px);
 }
 
 .cov-picker-box {
@@ -93,7 +93,7 @@
   -ms-box-sizing: border-box !important;
   width: 400px;
   max-width: 100%;
-  height: 215px;
+  height: 205px;
   text-align: start!important;
 }
 .cov-picker-box td {

@@ -138,6 +138,7 @@ color: #b3b3b3;
 	position: relative;
 	top: 11px;
 	left: 11px;
+	cursor: pointer;
 }
 .ot-close .greenroundbutton {
 	width: 28px;
@@ -145,7 +146,7 @@ color: #b3b3b3;
 box-shadow: none;
 }
 .ot-close .btnContent {
-	postion: relative;
+	position: relative;
 	top: -24px;
 left: 0px;
 }

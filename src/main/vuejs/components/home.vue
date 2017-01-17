@@ -10,15 +10,19 @@
 				making accessible health knowledge for <br>learning health
 				systems. <br>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
 			</div>
-			<div id='libname'>{{libraryname}}</div>
+			<div id='libname'><span>{{libraryname}}</span>
 			<div id="bannericons" v-show='isLoggedIn'>
 			<ul id="bannericonrow">
 				<li><div style="position: relative">
 						<button class="roundbutton iconBtn" id="userlink"
 							@click="userlink_click">
 						</button>
-						<button class="greenroundbutton iconBtn" id="newuser">
-						</button>
+						
+						<div class='ot-newuser' >
+					       <div class='greenroundbutton' > </div>
+					       <div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="8px"/></div>
+					</div>
+						
 					</div></li>
 				<li>
 					<button class="roundbutton open-overlay iconBtn" type="button"
@@ -30,6 +34,7 @@
 			</ul>
 			<div class="floatingInfo" id="homeIcons">
 				<span></span>
+			</div>
 			</div>
 		</div>
 			
@@ -71,13 +76,13 @@
 
 		<div id='filtercontrol'>
 		<div class='row'>
-			<div class='col-md-2'>
+			<div class='col-md-2 filterBtnCol'>
 				<div id='filterBtn'>
 				<a v-on:click='toggleFilter'> Filters <span><img
 						id='filterdowniconimg' class='down'
 						src='../assets/images/dropdown_chevron.png' width='12px' /></span></a></div>
 			</div>
-			<div class='col-md-10'>
+			<div class='col-md-10 filterCol'>
 				<section class='main' v-show='filterStrings.length'>
 					<ul class='filterlist'>
 						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
@@ -208,12 +213,15 @@
 					</div>
 					<div class='row filter'><p>Search within the following date range:</p></div>
 					<div class='row filter'>
-						<div class='col-md-6'>
-							<p>Start <date-picker :date="startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
+					<div class='col-md-1'></div>
+						<div class='col-md-5 datepick'>
+							<span>Start</span>
+							<p ><date-picker :date="startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
-						<div class='col-md-6'>
-							<p>End  <date-picker :date="endtime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></p>
+						<div class='col-md-5 datepick'>
+						<span>End</span>	<p> <date-picker :date="endtime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></p>
 						</div>
+						<div class='col-md-1'></div>
 					</div>
 			</div>
 		</div>
@@ -771,7 +779,7 @@ padding: 0px 48px 0px 48px;
 	height: 40px;
 	position:absolute;
     bottom:-30px;
-    right:-30px;
+    right:1px;
     margin:0 auto;
     z-index:500;
 }
@@ -794,7 +802,7 @@ padding: 0px 48px 0px 48px;
     font-weight: 300;
     bottom: 20px;
     position: absolute;
-    right: 128px;
+    right: 22px;
 }
 .row.filter {
 	height: 30px;
@@ -860,11 +868,11 @@ padding: 0px 48px 0px 48px;
 
 #bannericons {
 	display: inline-block;
-    position: absolute;
-    width: 20%;
+    position: relative;
+    width: 60px;;
     height: 40px;
-    bottom: 16px;
-    right: 24px;
+    bottom: -10px;
+    right: -20px;
     overflow: visible;
 }
 #bannericonrow {
@@ -904,22 +912,47 @@ button#settinglink {
 		opacity: 0;
 }
 
-
-#newuser{
+.ot-newuser {
+	position:relative;
+bottom:8px;
+right:-10px;
+}
+.ot-newuser .greenroundbutton {
 	width:12px;
 	height:12px;
-        position:absolute;
-    bottom:-5px;
-    right:-5px;
+        position:relative;
+    bottom:0px;
+    right:0px;
     padding:0;
     z-index:12;
     transition: none;
-background-size: 65% 65%;
-background-repeat: no-repeat;
-background-position: center center;
-background-image: url(../assets/images/Plus_Icon.png);
+box-shadow:none;
+}
+
+.ot-newuser .btnContent {
+	position: relative;
+	height: 16px;
+width: 16px;
+	bottom: 26px;
+	right: 2px;
+	z-index: 16;
 }
 #newuser:hover {
 	transform: none;
+}
+
+.datepick>span {
+	position: absolute;
+top: 4px;
+left: 12px;
+}
+.datepick p {
+	position: absolute;
+	top: 0px;
+	left: 30px;
+}
+
+.filterBtnCol {
+	width: 120px;
 }
 </style>

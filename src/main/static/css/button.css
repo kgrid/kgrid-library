@@ -52,6 +52,9 @@
     border:none;
 }
 
+.mediumgreenroundbutton img {
+		margin-bottom: 3px;
+	}
 #closebutton {
   position: absolute;
   top:-18px;

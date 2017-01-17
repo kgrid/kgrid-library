@@ -103,10 +103,27 @@ export default {
 	eventBus.$on("objcreated",function(obj){
 		$.extend(true, self.koModel.object, obj);
 		$.extend(true, editObjModel.object, obj);
-		self.currentOLView="objeditor";
+		
+		if(editObjModel.object.metadata.keywords==null){
+			editObjModel.object.metadata.keywords='';
+		}
+		if(editObjModel.object.metadata.owner==null){
+			editObjModel.object.metadata.owner='';
+		}
+		if(editObjModel.object.metadata.contributors==null){
+			editObjModel.object.metadata.contributors='';
+		}
+		if(editObjModel.object.metadata.description==null){
+			editObjModel.object.metadata.description='';
+		}
 		if(editObjModel.object.metadata.license==null){
 			editObjModel.object.metadata.license={licenseName:"",licenseLink:""};
 		}
+		if(editObjModel.object.metadata.citations==null){
+			editObjModel.object.metadata.citations=[];
+		}
+		self.currentOLView="objeditor";
+		
 	});
 	eventBus.$on('editObj', function(obj){
 		console.log("Edit Obj Button Clicked...");

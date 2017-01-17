@@ -11,7 +11,7 @@
 				 <a @click='returntolibrary'>BACK TO THE LIBRARY
 				<div class='ot-r1-btn ot-back'>
 				<div class='greyroundbutton'></div>
-			       <div class='btnContent'><img src='../assets/images/Chevron.png' width="5px"/></div>
+			       <div class='btnContent'><img src='../assets/images/Chevron.png' width="4px"/></div>
 			       </div></a>
 			</div>
 				</div>
@@ -78,15 +78,15 @@
 		</a></li>
 	</ul>
 					<div class='inline editwrapper accessLevelOne' id='objBtns'
-						style='top: 10px; right: 40px; position: absolute;'>
-						<button class='edit' id='metadataeditBtn' v-on:click='editObj'>EDIT</button>
-						<button class='edit' id='deleteButton'
+						>
+						<button class='edit' id='metadataeditBtn' v-show='isLoggedIn' v-on:click='editObj'>EDIT</button>
+						<button class='edit' id='deleteButton' v-show='isLoggedIn'
 							v-on:click='deleteObject'>DELETE</button>
 						<div id='downloadButton'>
 							<a class='edit' v-bind:href='downloadLink'>DOWNLOAD
 							<div class='ot-r1-btn ot-download'>
 							<div class='greyroundbutton'></div>
-						       <div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="12px"/></div>
+						       <div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="8px"/></div>
 						       </div></a>
 						</div>
 			</div>
@@ -116,6 +116,7 @@
 				sections : sections,
 				isDisabled: 1,
 				isPublic:false,
+				userModel:{user:{username:'',password:''}},
 				activeTab: 'METADATA'
 			}
 		},
@@ -125,12 +126,24 @@
 		},
 		created : function() {
 			var self = this;
-			//tabNav();
+			getCurrentUser(function(response) {
+				if(response!="")
+					$.extend(true, self.userModel.user, response);
+				},function(response) {
+				console.log(response);
+			});
+			this.isLoggedIn = (this.userModel.user.username!='');
 			eventBus.$on("objSaved",function(obj){
 				$.extend(true, objModel.object, obj);
 			});
 			eventBus.$on('objectSelected',function(obj){
 				$.extend(true, objModel.object, obj);	
+			});
+			eventBus.$on('userloggedin',function(obj){
+				self.isLoggedIn=true;
+				$.extend(true, self.userModel.user,obj);
+				//self.isAdmin = (self.userModel.user.role=='ADMIN');
+				
 			});
 			var sessionObj = sessionStorage.getItem("otObj");
 			if(sessionObj){
@@ -156,6 +169,12 @@
 	    	$('.ot-banner').addClass('detail');
 		},
 		computed : {
+			isLoggedIn:function(){
+			var loggedin =false;
+			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
+			loggedin = (userModel.user.username!="");
+			return loggedin;
+		},
 			formattedUpdateDate : function() {
 				if(!this.objModel.object.metadata.lastModified || this.objModel.object.metadata.lastModified=="" ){
 					return ""
@@ -259,7 +278,8 @@
 	</script>
 <style>
 .ot-banner.detail {
-	height: 240px; 
+	height: 220px; 
+padding: 0px 32px 0px 48px;
 }
 .ot-detail-smallrow {
 	height: 20px;
@@ -277,7 +297,16 @@
 	margin-left: -37px;
 	margin-top: 35px;
 }
-
+.ot-detail-daterow div {
+	padding-right: 0px;
+}
+.ot-detail-daterow .col-md-3 {
+	width: 200px;
+}
+.ot-detail-daterow .col-md-2 {
+	width: 120px;
+	padding-left:0px;
+}
 #type-status {
 	width: 10px; 
 	height: 42px; 
@@ -348,7 +377,7 @@ ul#tab>li.active {
 }
 
 #backButton a{
-	padding-left:26px;
+	padding-left:30px;
 	vertical-align:middle;
 	color: #b3b3b3;
 	line-height: 1.8em;
@@ -374,10 +403,11 @@ ul#tab>li.active {
 	transition:  0.5s ease;
 }
 .date-title {
-	font-size: 12px;
+	font-size: 11px;
+margin-bottom: 0px;
 }
 .date-data {
-	font-size: 18px;
+	font-size: 14px;
 }
 #more {
 	opacity: 0.5;
@@ -390,6 +420,11 @@ ul#tab>li.active {
 	background-position-y: center;
 	transition: opacity 0.5s ease;
 
+}
+#objBtns{
+	top: 10px; 
+    right: 68px;
+    position: absolute;
 }
 
 #more:hover {	
@@ -413,16 +448,22 @@ ul#tab>li.active {
 	height: 40px;
 	position:absolute;
     bottom:-20px;
-    right:-32px;
+    right:-40px;
     margin:0 auto;
     z-index:500;
 }
-
+.ot-download .btnContent {
+    position: relative;
+    top: -21px;
+    left: 16px;
+    opacity: 0.5;
+    transition: opacity 0.5s ease;
+}
 .ot-back{
 	width: 40px;
 	height: 40px;
 	position:absolute;
-    bottom:-18px;
+    bottom:-17px;
     right:200px;
     margin:0 auto;
     z-index:500;
@@ -431,7 +472,7 @@ ul#tab>li.active {
 .ot-back .btnContent {
 	position: relative;
     top: -22px;
-    left:17px; 
+    left:18px; 
 }
 
 #backButton:hover .greyroundbutton{
@@ -444,6 +485,12 @@ ul#tab>li.active {
 		}
 .pri-pub {
 	font-size: 12px;
+	padding-right: 0px;
+
+}
+.pri-pub .col-md-3 {
+	padding-right: 0px;
+width: 80px;
 }
 .pri-pub label {
 	margin: 0px;

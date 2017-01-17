@@ -11,7 +11,7 @@
 				</ul>
 				<div id="editWrapper">
 					<button class="edit" v-on:click="undoEdit" id="cancelBtn">UNDO</button>
-					<button class="edit" id="saveObjButton" v-on:click="saveObj">SAVE&CLOSE</button>
+					<button class="edit" id="saveObjButton" v-on:click="saveObj">SAVE & CLOSE</button>
 								</div>
 			</div>
 		</div>
@@ -66,10 +66,10 @@
 								<ul id="citationlist" class="list">
 									<li v-for="(citation,index) in editObjModel.object.metadata.citations" >
 										<div class="row">
-											<div class="col-md-10">
+											<div class="col-md-9">
 												<linkedfieldtile :value="citation.citation_title" :link="citation.citation_at"></linkedfieldtile>
 											</div>
-											<div class="col-md-2">
+											<div class="col-md-3">
 												<button class="edit" v-on:click="selectCitation(citation)">EDIT</button>
 												<button class="edit" v-on:click="deleteCitation(citation)">DELETE</button>
 											</div>
@@ -132,7 +132,7 @@ import fileuploader from './fileuploader.vue';
 import linkedfieldeditor from './linkedfieldeditor.vue'
 import linkedfieldtile from './linkedfield.vue'
 import { objModel, editObjModel, sections, userModel } from '../components/models.js'
-import { editTabNav } from '../ot.js';
+import { editTabNav, overlayHeightResize } from '../ot.js';
 export default {
   	name: "objeditor",
 	data:function(){
@@ -171,6 +171,7 @@ export default {
 	    $('ul#edittab li:first').addClass('active'); 
 		$("ul#edittabs li.active").addClass("middleout");
 		editTabNav();
+		overlayHeightResize();
 	},
 	updated : function() {
 
@@ -318,11 +319,18 @@ export default {
 };
 </script>
 <style scoped>
+h3 {
+	padding-left: 24px;
+}
 #barcontainer {
     height: 36px;
     border-bottom: 1px solid #e3e3e3;
-    width: 96%;
-
+    width: 91%;
+	margin-top: 60px;
+margin-left:24px;
+}
+#barcontainer ul li:first-child {
+	margin-left: 10px; 
 }
 .addtext {
     position: relative;
@@ -333,16 +341,29 @@ export default {
 font-size: 11px;
 }
 .addtext span{
-	position: relative;
+	position: absolute;
 	color: #39b45a;
-top: 5px;
-left: 850px;
+top: 68px;
+right: 55px;
+}
+.addtext textarea+span{
+	top: 108px;
 }
 .addtext span.nearmax {
 	color: #ec2526;
 }
+
+.fieldcontainer {
+    display: block;
+    position: relative;
+    height:100%;
+    overflow: auto;
+margin: 0 auto;
+padding: 0px 20px;
+}
+
 .addtext textarea {
-    width: 900px;
+    width: 96%;
     height: 80px;
     resize: none;
     padding: 8px 16px 8px 16px;
@@ -378,7 +399,7 @@ width:100%;
 	width: 300px;
 	display: inline-block;
 	position: relative;
-	right: -300px;
+	right: -305px;
 	top: 9px;
 }
 select {

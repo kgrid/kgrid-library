@@ -6,7 +6,7 @@
 				<h4>Please enter a title for the new knowledge object, then	click on "Create Object".</h4>
 					<input type="text" maxlength="140" class="metaEdit inEdit" 
 						v-model="newobjModel.object.metadata.title" /> <span  v-bind:class="{ nearmax:newobjModel.object.metadata.title.length>=130 }" >{{newobjModel.object.metadata.title.length}}/140</span>
-					<h4> - Or - </h4>
+					<h4 class='ot-subtitle'> - Or - </h4>
 				</div>
 				<div>
 					<fileuploader section="NEW_OBJECT" v-on:filechange="updatedisplay" :src='jsonobj'></fileuploader>
@@ -128,12 +128,27 @@
 	}
 	.done_btn {
     height: 55px;
-    width: 910px;
-    /* right: 100px; */
+    width: 310px;
+     right: 90px; */
     margin: 55px auto;
     background-color: #39b45a;
     color: #fff;
     border-radius: 10px;
     position: absolute;
 }
+	input[type=text] {
+	    width: 910px;
+	    height: 38px;
+	    padding: 0px 16px;
+	    border: 1px solid #e6e6e6;
+	    border-radius: 10px;
+	    margin: 2px 0;
+	    font-size: 14px;
+	    color: #666666;
+	    font-weight: 400;
+	}
+	.ot-subtitle {
+		margin: 0 auto;
+	text-align: center;
+	}
 	</style>
