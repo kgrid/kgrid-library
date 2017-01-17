@@ -247,7 +247,7 @@ export default {
     name: 'home',
 	data : function() {
 		return {
-			libraryname : 'Department of Learning Health Systems Development Server',
+			libraryname : 'Department of Learning Health Sciences Development Server',
 			sortKey : 'metadata.lastModified',
 			order : 'desc',
 			searchQuery : '',
