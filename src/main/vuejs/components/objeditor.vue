@@ -4,10 +4,10 @@
 		<div slot="ol-title"><h3>{{editObjModel.object.metadata.title}}</h3>
 			<div id="barcontainer">
 				<ul class="inEdit" id="edittabs">
-					<li class="labels active">METADATA</li>
-					<li class="labels">PAYLOAD</li>
-					<li class="labels">INPUT</li>
-					<li class="labels">OUTPUT</li>
+					<li class="labels active">METADATA<span v-show='changed.metadata'>*</span></li>
+					<li class="labels">PAYLOAD<span v-show='changed.payload'>*</span></li>
+					<li class="labels">INPUT<span v-show='changed.input'>*</span></li>
+					<li class="labels">OUTPUT<span v-show='changed.output'>*</span></li>
 				</ul>
 				<div id="editWrapper">
 					<button class="edit" v-on:click="undoEdit" id="cancelBtn">UNDO</button>
@@ -137,6 +137,7 @@ export default {
   	name: "objeditor",
 	data:function(){
 		return {
+			objModel:objModel,
 			editObjModel:editObjModel,
 			sections:sections,
 			isDisabled:false,
@@ -154,6 +155,7 @@ export default {
 	},
 	created:function(){
 		var self=this;
+		this.objModel.object = this.$parent.getObject();
 		$(".ol_pane").css("width","1100px");
 		console.log('Object Editor initiated!');
 		eventBus.$on('slideout',function(id){
@@ -164,7 +166,14 @@ export default {
 	updated:function(){
 	},
 	computed:{
-
+		changed: function(){
+			var changeCheck={metadata:false,payload:false,input:false,moutput:false};
+			changeCheck.metadata= !(_.isEqual(this.editObjModel.object.metadata,this.objModel.object.metadata));
+			changeCheck.payload= !(_.isEqual(this.editObjModel.object.payload,this.objModel.object.payload));
+			changeCheck.input= !(_.isEqual(this.editObjModel.object.input,this.objModel.object.input));
+			changeCheck.output= !(_.isEqual(this.editObjModel.object.output,this.objModel.object.output));
+			return changeCheck;
+	}
 	},
 	mounted:function(){
 		$('ul#edittabs li:first').addClass('active'); 
@@ -208,17 +217,12 @@ export default {
 				data : text,
 				dataType : "json",
 				success : function(response) {
-//					console.log(response);
+				console.log(response);
 					if ((response != 'empty') && (response != null)) {
-						var test = JSON.stringify(response);
-						var obj = JSON.parse(test);
+						eventBus.$emit("objSaved",response);
 					}
-					eventBus.$emit("objSaved",self.editObjModel.object);
-					$("#addObj_f").find("ul#tabs li").each(function() {
-//						console.log("UL li text:" + $(this).text());
-						$(this).text($(this).text().replace("*", ""));
-					});
-					$("div.processing").fadeOut(200);
+					
+				$("div.processing").fadeOut(200);
 					$("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
 							
 						});
