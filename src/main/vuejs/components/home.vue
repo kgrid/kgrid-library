@@ -83,19 +83,18 @@
 						src='../assets/images/dropdown_chevron.png' width='12px' /></span></a></div>
 			</div>
 			<div class='col-md-10 filterCol'>
-				<section class='main' v-show='filterStrings.length'>
-					<ul class='filterlist'>
+						<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
 						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
-							
 								<button class='destroy' @click='removeString(filterstring)'>
 								</button>
 								<label>{{ filterstring.title }}</label>
-							
 						</li>
-						<button id='clearAll' @click='removeAllFilters'>Clear Filters</button>
+						<li class='todo' >
+						<button class='destroy' @click='removeDateFilter'></button>
+						<label>{{ dateTypeText }}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label></li>
+						<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
 					</ul>
-		
-				</section>
+				
 			</div>
 		</div>
 		<div id='filterpanel' v-if='showFilterControl'>
@@ -156,7 +155,7 @@
 					
 					<div class='col-md-12'>
 					<label class="custom-control custom-checkbox">
-					<input v-model='showmyobj' disabled type="checkbox" class="custom-control-input">
+					<input v-model='check.showmyobj' disabled type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">View only My Objects</span>
 				</label>	
@@ -194,7 +193,7 @@
 					<div class='col-md-1'></div>
 					<div class='col-md-4'>
 					<label class="custom-control custom-radio">
-					<input id="radio1" value='lastModified' v-model='datetype' name="radio" type="radio" class="custom-control-input">
+					<input id="radio1" value='lastModified' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Last Updated</span>
 					</label>
@@ -203,7 +202,7 @@
 					<div class='col-md-2'></div>
 					<div class='col-md-4'>
 					<label class="custom-control custom-radio">
-					<input id="radio1" value='createdOn' v-model='datetype' name="radio" type="radio" class="custom-control-input">
+					<input id="radio1" value='createdOn' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Created</span>
 					</label>
@@ -216,10 +215,10 @@
 					<div class='col-md-1'></div>
 						<div class='col-md-5 datepick'>
 							<span>Start</span>
-							<p ><date-picker :date="startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
+							<p ><date-picker :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
 						<div class='col-md-5 datepick'>
-						<span>End</span>	<p> <date-picker :date="endtime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></p>
+						<span>End</span>	<p> <date-picker :date="dateRange.endTime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></p>
 						</div>
 						<div class='col-md-1'></div>
 					</div>
@@ -254,22 +253,19 @@ export default {
 			  model : {
 				koList : []
 			},
-			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false},
- 			showmyobj:false,
+
+			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},			
+			defaultCheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},			
  			filterStrings:[],
  			newstring:'',
- 			datetype:'lastModified',
+ 			dateRange:{datetype:'lastModified',startTime: {time: '09/01/2016'}, endTime: {time: new Date().format("shortDate")}},
+ 			defaultDateRange:{datetype:'lastModified', startTime:{time: '09/01/2016'}, endTime: {time:new Date().format("shortDate")}},
  			startdate:0,
 			enddate:0,
 			userModel:{user:{username:'',password:''}},
 			isAdmin:true,
 			showFilterControl:false,
-			startTime: {
-		        time: '01/01/2016'
-		      },
-		      endtime: {
-		        time: 'Today'
-		      },
+			
 		      option: {
 		          type: 'day',
 		          SundayFirst: true,
@@ -336,7 +332,7 @@ export default {
 				console.log(response);
 			});
 	  	if(sessionStorage.getItem("sortKey")==null){
-	  	this.setSessionStorage();
+	  		this.setSessionStorage();
 	  	}
 		$("#startdatepicker").val("03/01/16");
 		$("#enddatepicker").val(new Date().format("shortDate"));
@@ -345,7 +341,7 @@ export default {
 		console.log('Home created ==> '+ userModel.user.username);
 		$.extend(true,this.userModel,userModel);
 		this.isLoggedIn = (this.userModel.user.username!='');
-		this.check.pri=this.isLoggedIn;
+		//this.check.pri=this.isLoggedIn;
 		retrieveObjectList(function(response) {
 			self.model.koList = response;
 			if(self.model.koList.length>0){
@@ -374,6 +370,11 @@ export default {
 			self.isAdmin=false;
 			$('.ot-banner').removeClass('loggedin');
 		});	
+		eventBus.$on('objcreated', function(obj){
+			var object = {};
+			$.extend(true, object, obj);
+			self.model.koList.push(object);
+		})
 	},
 	mounted:function(){
 		if(this.isLoggedIn){
@@ -386,16 +387,29 @@ export default {
 		this.order=sessionStorage.getItem("order");
 		this.filterStrings=JSON.parse(sessionStorage.getItem("filters"));
 		this.check=JSON.parse(sessionStorage.getItem("check"));
+		this.dateRange=JSON.parse(sessionStorage.getItem("dateRange"));
+		this.setstartdate();
+		this.setenddate();
 	},
 	updated: function() {
 		this.setSessionStorage();
 	  },
 	computed : {
+			dateTypeText: function(){
+		  if(this.dateRange.datatype=='lastModified'){
+			  return 'Last Updated'
+		  }else {
+			  return 'Created'
+		  }
+	  },
+		  hasDateFilter: function(){
+		  return !(_.isEqual(this.dateRange, this.defaultDateRange))
+	  },
 		isLoggedIn:function(){
 			var loggedin =false;
 			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
 			loggedin = (userModel.user.username!="");
-			this.check.pri=loggedin;
+			//this.check.pri=loggedin;
 			return loggedin;
 		},
 		countString : function() {
@@ -439,7 +453,7 @@ export default {
 											id : 0,
 											title : ''
 										};
-										customFilter=customFilter&&(field.metadata[self.datetype]>=self.startdate && field.metadata[self.datetype]<=self.enddate );
+										customFilter=customFilter&&(field.metadata[self.dateRange.datetype]>=self.startdate && field.metadata[self.dateRange.datetype]<=self.enddate );
 										if(!self.check.pub){
 											customFilter=customFilter&&(!field.metadata.published);
 										}
@@ -501,6 +515,8 @@ export default {
 		sessionStorage.setItem("order", this.order);
 		sessionStorage.setItem("filters", JSON.stringify(this.filterStrings));
 		sessionStorage.setItem("check", JSON.stringify(this.check));
+		sessionStorage.setItem("dateRange", JSON.stringify(this.dateRange));
+
 	},
 		onChange: function(){
 			switch(this.sortKey) {
@@ -559,17 +575,24 @@ export default {
 			 },
 	 	removeAllFilters: function(){
 				 this.filterStrings.splice(0);
+				this.removeDateFilter();
+
+			 },
+	 	removeDateFilter : function(){
+				 $.extend(true, this.dateRange, this.defaultDateRange);
+				 this.setstartdate();
+				this.setenddate();
 			 },
 			 removeString: function (s) {
 				   this.filterStrings.splice(this.filterStrings.indexOf(s), 1);
 				 },
 				 setstartdate:  function(){
-					 var sstamp=new Date(this.startTime.time).getTime();
+					 var sstamp=new Date(this.dateRange.startTime.time).getTime();
 					 eventBus.$emit('startdate',sstamp);
 					console.log('Start date:'+ sstamp);
 				 },
 				 setenddate:function(){
-					 var estamp=new Date(this.endtime.time).getTime();
+					 var estamp=new Date(this.dateRange.endTime.time).getTime();
 						eventBus.$emit("enddate",estamp);
 						console.log("End date:"+ estamp);
 					 },

@@ -162,6 +162,11 @@ export default {
 			if(id==1) self.showSecOverlay.show=false;
 			self.resetSrcField();
 		});
+		eventBus.$on('hideOverlay',function(id){
+			if(id==1) self.showSecOverlay.show=false;
+			editObjModel.object.metadata.citations.pop();
+			self.resetSrcField();
+		});
 	},
 	updated:function(){
 	},
@@ -239,6 +244,24 @@ export default {
 		},
 		undoEdit: function(){
 			editObjModel.object = this.$parent.getObject();
+			if(editObjModel.object.metadata.keywords==null){
+				editObjModel.object.metadata.keywords='';
+			}
+			if(editObjModel.object.metadata.owner==null){
+				editObjModel.object.metadata.owner='';
+			}
+			if(editObjModel.object.metadata.contributors==null){
+				editObjModel.object.metadata.contributors='';
+			}
+			if(editObjModel.object.metadata.description==null){
+				editObjModel.object.metadata.description='';
+			}
+			if(editObjModel.object.metadata.license==null){
+				editObjModel.object.metadata.license={licenseName:"",licenseLink:""};
+			}
+			if(editObjModel.object.metadata.citations==null){
+				editObjModel.object.metadata.citations=[];
+			}
 			if(editObjModel.object.outputMessage==null){
 				editObjModel.object.outputMessage="";
 			}
