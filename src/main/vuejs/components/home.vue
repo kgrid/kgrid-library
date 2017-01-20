@@ -91,7 +91,7 @@
 						</li>
 						<li class='todo' >
 						<button class='destroy' @click='removeDateFilter'></button>
-						<label>{{ dateTypeText }}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label></li>
+						<label>Date: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label></li>
 						<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
 					</ul>
 				
@@ -202,7 +202,7 @@
 					<div class='col-md-2'></div>
 					<div class='col-md-4'>
 					<label class="custom-control custom-radio">
-					<input id="radio1" value='createdOn' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
+					<input id="radio2" value='createdOn' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Created</span>
 					</label>
@@ -238,7 +238,7 @@
 import myDatepicker from '../vendor/vue-datepicker.vue'
 import applayout from './applayout.vue';
 import kotile from './kotile.vue';
-import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, setstartdate, otScroll, setBannerbkSize} from '../ot.js';
+import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, otScroll, setBannerbkSize} from '../ot.js';
 import eventBus from '../components/eventBus.js';
 import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 
@@ -395,12 +395,15 @@ export default {
 		this.setSessionStorage();
 	  },
 	computed : {
-			dateTypeText: function(){
-		  if(this.dateRange.datatype=='lastModified'){
-			  return 'Last Updated'
+		dateTypeText: function(){
+		  console.log(this.dateRange.datatype);
+		  var txt=''
+		  if(_.isEqual(this.dateRange.datatype, this.defaultDateRange.datatype)){
+			  txt='Last Updated'
 		  }else {
-			  return 'Created'
+			  txt= 'Created on'
 		  }
+		  return txt
 	  },
 		  hasDateFilter: function(){
 		  return !(_.isEqual(this.dateRange, this.defaultDateRange))
@@ -956,9 +959,14 @@ box-shadow:none;
 	position: relative;
 	height: 16px;
 width: 16px;
-	bottom: 26px;
+	bottom: 14px;
 	right: 2px;
 	z-index: 16;
+}
+
+.ot-newuser .btnContent img {
+    bottom: 12px;
+    position: relative;
 }
 #newuser:hover {
 	transform: none;
