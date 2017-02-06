@@ -1,13 +1,8 @@
 package org.uofm.ot.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import  org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +12,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.uofm.ot.CustomizedUserManager;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.model.OTUser;
+
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -81,7 +74,7 @@ public class AccountController {
 
 	// TODO: Add INFORMATICIAN in hasAuthority 
 	@PreAuthorize("hasAuthority('INFORMATICIAN') OR hasAuthority('ADMIN')")
-	@GetMapping(value = {"/user","/getAllUsers"}
+	@GetMapping(value = {"/user"}
 		,produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<List<OTUser>> getAllUsers( ) {
 		ResponseEntity<List<OTUser>> resultEntity = null;
