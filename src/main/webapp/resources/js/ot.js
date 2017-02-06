@@ -2,7 +2,7 @@
 function retrieveObjectList(fillObjectList){
 		$.ajax({
 			type : "GET",
-			url : "/ObjectTeller/knowledgeObject",
+			url : "/knowledgeObject",
 			xhrFields: {
 			     withCredentials: true
 			},
@@ -24,7 +24,7 @@ function retrieveObject(uri, section, fillObjectContent){
 	console.log("Endpoint:"+endPoint);
 	$.ajax({
 		type : "GET",
-		url : "/ObjectTeller/knowledgeObject/"+endPoint,
+		url : "/knowledgeObject/"+endPoint,
 		xhrFields: {
 		     withCredentials: true
 		},
@@ -98,7 +98,7 @@ function editTabNav(){
 function getCurrentUser(getUser) {
 	$.ajax({
 		type : "GET",
-		url : "/ObjectTeller/user/me",
+		url : "/user/me",
 		success : function(response, tStatus, xhr) {
 			console.log(xhr);
 			getUser(response);

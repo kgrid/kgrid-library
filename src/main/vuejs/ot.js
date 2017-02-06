@@ -100,7 +100,7 @@ export function editTabNav(){
 export function retrieveUserList(fillUserList, errorHandler){
 	$.ajax({
 		type : "GET",
-		url : "getAllUsers",
+		url : "user",
 		xhrFields: {
 		     withCredentials: true
 		},
