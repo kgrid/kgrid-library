@@ -194,7 +194,7 @@
 				
 		
 			downloadLink : function() {
-				return '/ObjectTeller/knowledgeObject/'
+				return 'knowledgeObject/'
 					+ this.objModel.object.uri + '/complete.json'
 			}
 		},
@@ -237,7 +237,7 @@
 						xhrObj.setRequestHeader("Content-Type", "application/json");
 					},
 					type : 'PUT',
-					url : "/ObjectTeller/knowledgeObject/" + uri + "/" + published,
+					url : "knowledgeObject/" + uri + "/" + published,
 					success : function(response) {
 						self.isPublic=pub;
 						objModel.object.metadata.published=pub;
@@ -256,7 +256,7 @@
 					if (r == true) {
 						$.ajax({
 								type : 'DELETE',
-								url : "/ObjectTeller/knowledgeObject/"
+								url : "knowledgeObject/"
 										+ uri,
 								success : function(
 										response) {

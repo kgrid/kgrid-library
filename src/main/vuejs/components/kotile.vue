@@ -61,7 +61,7 @@
 								if (r == true) {
 									$.ajax({
 												type : 'DELETE',
-												url : "/ObjectTeller/knowledgeObject/"
+												url : "knowledgeObject/"
 														+ uri,
 												success : function(
 														response) {

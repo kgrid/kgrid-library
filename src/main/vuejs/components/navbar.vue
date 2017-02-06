@@ -119,7 +119,7 @@ export default {
       this.showDropdown=false;
       $.ajax({ // eslint-disable-line
         type: 'POST',
-        url: '/ObjectTeller/logout',
+        url: 'logout',
         success: function (response) {
           $.extend(true, self.userModel.user, {username: '', password: ''}); // eslint-disable-line
           $.extend(true, userModel.user, {username: '', password: ''});
