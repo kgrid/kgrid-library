@@ -77,7 +77,7 @@ export default {
         $( 'div.processing' ).fadeIn( 300 );  // eslint-disable-line
         $.ajax({  // eslint-disable-line
           type: 'POST',
-          url: '/ObjectTeller/login',
+          url: 'login',
           data: self.userModel.user,
           dataType: 'json',
           success: function (response) {

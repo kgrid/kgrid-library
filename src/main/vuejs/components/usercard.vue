@@ -38,7 +38,7 @@
 								if (r == true) {
 									$.ajax({
 										type : 'DELETE',
-										url : "/ObjectTeller/user/" + userid,
+										url : "user/" + userid,
 
 										success : function(response) {
 										     eventBus.$emit('userdeleted',userid);

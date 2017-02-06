@@ -208,7 +208,7 @@
 		    						xhrObj.setRequestHeader("Accept","application/json");
 		    					},
 		    					type : 'POST',
-		    					url : "/ObjectTeller/user",
+		    					url : "user",
 		    					data : text,
 		    					dataType : "json",
 
@@ -237,7 +237,7 @@
 		    						xhrObj.setRequestHeader("Accept","application/json");
 		    					},
 		    					type : 'PUT',
-		    					url : "/ObjectTeller/user/"+id,
+		    					url : "user/"+id,
 		    					data : text,
 		    					dataType : "json",
 

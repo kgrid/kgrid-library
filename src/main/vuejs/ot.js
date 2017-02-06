@@ -1,7 +1,7 @@
 export function retrieveObjectList(fillObjectList){
 		$.ajax({
 			type : "GET",
-			url : "/ObjectTeller/knowledgeObject",
+			url : "knowledgeObject",
 			xhrFields: {
 			     withCredentials: true
 			},
@@ -23,7 +23,7 @@ export function retrieveObject(uri, section, fillObjectContent){
 	console.log("Endpoint:"+endPoint);
 	$.ajax({
 		type : "GET",
-		url : "/ObjectTeller/knowledgeObject/"+endPoint,
+		url : "knowledgeObject/"+endPoint,
 		xhrFields: {
 		     withCredentials: true
 		},
@@ -100,12 +100,12 @@ export function editTabNav(){
 export function retrieveUserList(fillUserList, errorHandler){
 	$.ajax({
 		type : "GET",
-		url : "/ObjectTeller/getAllUsers",
+		url : "getAllUsers",
 		xhrFields: {
 		     withCredentials: true
 		},
 		success : function(response, tStatus, xhr) {
-		//	console.log(xhr);
+			console.log(xhr);
 			fillUserList(response);
 		},
 		error : function(response) {
@@ -117,7 +117,7 @@ export function retrieveUserList(fillUserList, errorHandler){
 export function getCurrentUser(getUser, errorHandler) {
 	$.ajax({
 		type : "GET",
-		url : "/ObjectTeller/user/me",
+		url : "user/me",
 		success : function(response, tStatus, xhr) {
 			console.log(xhr);
 			getUser(response);

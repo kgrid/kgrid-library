@@ -53,7 +53,7 @@
 					xhrObj.setRequestHeader("Accept", "application/json");
 				},
 				type : "POST",
-				url : "/ObjectTeller/knowledgeObject",
+				url : "knowledgeObject",
 				data : text,
 				dataType : "json",
 				success : function(response) {
