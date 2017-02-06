@@ -40,15 +40,13 @@
 			
 		</div>
 		<div slot='header'>
-				<div v-show='isLoggedIn' class='ot-r-btn ot-newobj'  v-on:click='addObject''>
-			       <div class='greenroundbutton' > </div>
-			       <div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="14px"/></div>
+			<div v-show='isLoggedIn' class='ot-r-btn ot-newobj' v-on:click='addObject'>
+				<div class='greenroundbutton'></div>
+				<div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="14px"/></div>
 			</div>
-				
-				
-				
-					
-				<div class='row'>
+
+
+			<div class='row'>
 						<div class='col-md-6 ot-search'>
 						<img src='../assets/images/Search_Icon-01.png' width="20px"/><input
 								placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
