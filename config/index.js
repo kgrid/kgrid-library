@@ -21,15 +21,28 @@ module.exports = {
     port: 3000,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+      // proxy each backend api route separately, rewrites not needed
 	proxyTable: {
-      '/ObjectTeller': {
-        target: 'http://localhost:8080/ObjectTeller',
-        changeOrigin: true,
-       pathRewrite: {
-          '^/ObjectTeller': '/'
+        '/user': {
+            target: 'http://localhost:8080',
+            changeOrigin: true,
+            // pathRewrite: {
+            //     '^/user': '/user'
+            // },
+        },
+        '/knowledgeObject': {
+            target: 'http://localhost:8080',
+            changeOrigin: true,
+        },
+        '/login': {
+            target: 'http://localhost:8080',
+            changeOrigin: true,
+        },
+        '/publish': {
+            target: 'http://localhost:8080',
+            changeOrigin: true,
         }
-      }
-    },    
+    },
 	// CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)
