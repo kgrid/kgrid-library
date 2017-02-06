@@ -184,7 +184,7 @@
 		$
 				.ajax({
 					type : 'GET',
-					url : "getAllUsers",
+					url : "user",
 
 					success : function(response) {
 						if (response != 'empty') {
