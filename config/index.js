@@ -1,6 +1,10 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+// allow command line override of connected library path, e.g.
+// $ LIBRARY=http://localhost:8080/ObjectTeller npm run dev
+var library = process.env.LIBRARY || 'http://localhost:8080'
+
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -24,22 +28,22 @@ module.exports = {
       // proxy each backend api route separately, rewrites not needed
 	proxyTable: {
         '/user': {
-            target: 'http://localhost:8080',
+            target: library,
             changeOrigin: true,
             // pathRewrite: {
             //     '^/user': '/user'
             // },
         },
         '/knowledgeObject': {
-            target: 'http://localhost:8080',
+            target: library,
             changeOrigin: true,
         },
         '/login': {
-            target: 'http://localhost:8080',
+            target: library,
             changeOrigin: true,
         },
-        '/publish': {
-            target: 'http://localhost:8080',
+        '/logout': {
+            target: library,
             changeOrigin: true,
         }
     },
