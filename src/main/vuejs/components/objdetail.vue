@@ -260,14 +260,14 @@
 										+ uri,
 								success : function(
 										response) {
-									eventBus.$emit('return');
+									eventBus.$emit('objDeleted', self.objModel.object);
 								}
 							});
 					}
 				}
 			},
 			downloadObj: function() {
-				var myWindow = window.open(this.downlaodLink, "myWindow");   // Opens a new window
+				var myWindow = window.open(this.downloadLink, "myWindow");   // Opens a new window
 				myWindow.focus();
 			},
 			returntolibrary: function(){
