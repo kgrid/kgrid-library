@@ -136,6 +136,7 @@ export default {
 		self.showOverlay.show=true;
 		document.body.classList.toggle('noscroll', true);
 	});
+	
 	 eventBus.$on("userloggedin",function(obj){
 		 self.showOverlay.show=false;
 		 document.body.classList.toggle('noscroll', false);

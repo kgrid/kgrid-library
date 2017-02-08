@@ -30,9 +30,6 @@ module.exports = {
         '/user': {
             target: library,
             changeOrigin: true,
-            // pathRewrite: {
-            //     '^/user': '/user'
-            // },
         },
         '/knowledgeObject': {
             target: library,
