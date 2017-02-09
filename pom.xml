@@ -29,6 +29,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope> <!-- See http://docs.spring.io/spring-boot/docs/current/reference/html/howto-traditional-deployment.html -->
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
