@@ -64,18 +64,18 @@
         <property name="sysConfDao" ref="sysConfDao"/>
     </bean>
 
-    <bean id="loginController" class="org.uofm.ot.controller.LoginController">
+<!--     <bean id="loginController" class="org.uofm.ot.controller.LoginController">
         <property name="sysConfDao" ref="sysConfDao"/>
         <property name="fusekiService" ref="fusekiService"/>
-    </bean>
+    </bean> -->
 
     <bean id="accountController" class="org.uofm.ot.controller.AccountController">
     </bean>
 
-    <bean id="objectController" class="org.uofm.ot.controller.ObjectController">
+<!--     <bean id="objectController" class="org.uofm.ot.controller.ObjectController">
         <property name="editFedoraObjectService" ref="editfedoraObjectService"/>
         <property name="deleteFedoraResourceService" ref="deleteFedoraResourceService"/>
-    </bean>
+    </bean> -->
     
 
     <bean id="systemConfController" class="org.uofm.ot.controller.SystemConfController">
