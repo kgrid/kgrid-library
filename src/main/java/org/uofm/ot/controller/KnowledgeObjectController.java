@@ -216,7 +216,9 @@ public class KnowledgeObjectController {
 	}
 	
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/payload/content", 
-			method=RequestMethod.GET )
+			method=RequestMethod.GET,
+			produces = {"application/javascript","application/json","text/*"}
+	)
 	public ResponseEntity<String> getPayloadContentByArkId( ArkId arkId) {
 		ResponseEntity<String> content = null;
 		try {
