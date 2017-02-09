@@ -87,9 +87,9 @@
 								</button>
 								<label>{{ filterstring.title }}</label>
 						</li>
-						<li class='todo' >
+						<li class='todo' v-show='hasDateFilter' >
 						<button class='destroy' @click='removeDateFilter'></button>
-						<label>Date: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label></li>
+						<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label></li>
 						<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
 					</ul>
 				
@@ -263,7 +263,7 @@ export default {
 			userModel:{user:{username:'',password:''}},
 			isAdmin:true,
 			showFilterControl:false,
-			
+			datetypetext:"Last Updated",
 		      option: {
 		          type: 'day',
 		          SundayFirst: true,
@@ -402,9 +402,9 @@ export default {
 	  },
 	computed : {
 		dateTypeText: function(){
-		  console.log(this.dateRange.datatype);
+		  console.log("Date type " + this.dateRange.datetype);
 		  var txt=''
-		  if(_.isEqual(this.dateRange.datatype, this.defaultDateRange.datatype)){
+		  if(_.isEqual(this.dateRange.datetype, this.defaultDateRange.datetype)){
 			  txt='Last Updated'
 		  }else {
 			  txt= 'Created on'
