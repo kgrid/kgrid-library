@@ -372,7 +372,15 @@ export default {
 			var object = {};
 			$.extend(true, object, obj);
 			self.model.koList.push(object);
-		})
+		});
+		eventBus.$on('objDeleted',function(obj){
+		      console.log(obj)
+		      var dIndex = self.model.koList.map(function(e) {return e.uri}).indexOf(obj.uri);
+		      self.model.koList.splice(dIndex,1);
+		      if(self.model.koList.length>0){
+					$.extend(true,objModel.object,self.model.koList[0]);
+				}
+		    })
 	},
 	mounted:function(){
 		if(this.isLoggedIn){

@@ -84,6 +84,9 @@ var vm = new Vue({
 		 eventBus.$on('objSaved', function(obj){
 				self.updateObject(obj);
 		});
+		 eventBus.$on("objDeleted", function(obj){
+				router.push({ path: '/' });
+			 });
 		 
 	},
 	methods: {
