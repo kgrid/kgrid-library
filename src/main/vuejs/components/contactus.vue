@@ -12,8 +12,9 @@
 		We are here
 		<div class="line"><hr></div></div> <div id="divisionname" class="block_info"><span class="firstline">Department of Learning Health Sciences</span><br> Division of
 		Learning and Knowledge Systems<br> University of Michigan
-		Medical School<br> Ann Arbor, MI 48109<br></div> <div id="contactus" class="block_info active"><span class="firstline middleout">Knowledge Grid Development Team</span><br class="middleout"> 
-		dlhs.knowledge.grid@umich.edu
+		Medical School<br> Ann Arbor, MI 48109<br></div> 
+		<br><div id="contactus" class="block_info active"><span class="firstline middleout">Knowledge Grid Development Team</span><br class="middleout"> 
+		<a href="mailto:dlhs.knowledge.grid@umich.edu">dlhs.knowledge.grid@umich.edu</a>
 	</div></div></div>
 		</div>
 		</applayout>

@@ -24,12 +24,12 @@
 				<div class="infoblock">
 					<div class="block_title"><div class="line"><hr></div>Who built ObjectTeller?<div class="line"><hr></div>
 					</div>
-					<div class="block_info">A team of dedicated professioinals  at the University of Michigan.</div>
+					<div class="block_info">A team of dedicated professionals at the University of Michigan.</div>
 				</div>
 				<div class="infoblock">
 					<div class="block_title"><div class="line"><hr></div>Can I help further develop ObjectTeller?<div class="line"><hr></div>
 					</div>
-					<div class="block_info">Yes! Join our technical community by sending us an email to objectteller@umich.edu.</div>
+					<div class="block_info">Yes! Join our technical community by sending us an email to <a href="mailto:dlhs.knowledge.grid@umich.edu">dlhs.knowledge.grid@umich.edu</a>.</div>
 				</div>
 			</div>
 		</div>
