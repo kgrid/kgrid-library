@@ -25,6 +25,7 @@
         <property name="url" value="jdbc:mysql://localhost:3306/ObjectTellerDB"/>
         <property name="username" value="dlhsMySQL"/>
         <property name="password" value="FIxme2day"/>
+        <!--test-->
     </bean>
 
     <bean id="jdbcTemplate"
