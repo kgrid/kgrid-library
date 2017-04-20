@@ -112,21 +112,21 @@ WHERE username NOT IN (SELECT username
 
 -- Uncomment to add test users (may conflict with migrated user w/ same username)
 
-/*
-INSERT INTO users (username, password)
-VALUES
-  ('user', 'user'),
-  ('admin', 'admin');
 
-INSERT INTO authorities (username, authority)
-VALUES
-  ('admin', 'ADMIN'),
-  ('user', 'USER');
+  INSERT INTO users (username, password)
+  VALUES
+    ('user@umich.edu', 'user'),
+    ('admin@umich.edu', 'admin');
 
-INSERT INTO user_profiles (username, first_name, last_name)
-VALUES
-  ('user', 'fuser', 'luser'),
-  ('admin', 'fadmin', 'ladmin');
-*/
+  INSERT INTO authorities (username, authority)
+  VALUES
+    ('admin@umich.edu', 'ADMIN'),
+    ('user@umich.edu', 'USER');
 
+  INSERT INTO user_profiles (username, first_name, last_name)
+  VALUES
+    ('user@umich.edu', 'fuser', 'luser'),
+    ('admin@umich.edu', 'fadmin', 'ladmin');
+
+  commit;
 
