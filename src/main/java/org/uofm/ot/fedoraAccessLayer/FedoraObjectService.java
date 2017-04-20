@@ -11,9 +11,9 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.uofm.ot.dao.SystemConfigurationDAO;
+import org.uofm.ot.services.FedoraConfiguration;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.model.Server_details;
+import org.uofm.ot.model.ServerDetails;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 
 public class FedoraObjectService {
 
-	private SystemConfigurationDAO sysConfDao;
+	private FedoraConfiguration fedoraConfiguration;
 
 	protected String baseURI;
 
@@ -33,8 +33,8 @@ public class FedoraObjectService {
 
 	private static final Logger logger = Logger.getLogger(FedoraObjectService.class);
 
-	public void setSysConfDao(SystemConfigurationDAO sysConfDao) {
-		this.sysConfDao = sysConfDao;
+	public void setFedoraConfiguration(FedoraConfiguration fedoraConfiguration) {
+		this.fedoraConfiguration = fedoraConfiguration;
 		configureBaseURI();
 	}
 
@@ -89,11 +89,11 @@ public class FedoraObjectService {
 	}
 
 	private void configureBaseURI(){
-		Server_details configuration =sysConfDao.getFedoraServerConfiguration();
+		ServerDetails configuration = fedoraConfiguration.getFedoraServerConfiguration();
 		if(configuration != null){
-			baseURI = configuration.getComplete_url() ;
-			userName = configuration.getSvr_username();
-			password= configuration.getSvr_passwd();
+			baseURI = configuration.getUrl() ;
+			userName = configuration.getUsername();
+			password= configuration.getPassword();
 
 		} else{
 			baseURI = null;

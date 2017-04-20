@@ -6,13 +6,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.jena.query.*;
+import org.apache.jena.arq.querybuilder.*;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.log4j.Logger;
-import org.uofm.ot.dao.SystemConfigurationDAO;
+import org.uofm.ot.services.FedoraConfiguration;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.knowledgeObject.*;
-import org.uofm.ot.model.Server_details;
+import org.uofm.ot.model.ServerDetails;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -25,28 +26,31 @@ import java.util.Locale;
 
 public class FusekiService {
 	
-	private SystemConfigurationDAO sysConfDao;
+	private FedoraConfiguration fedoraConfiguration;
 	
 	private String fusekiServerURL;
+
+	private String fedoraServerURL;
 	
-	private String fedoraServerURL; 
+	private String fusekiPrefix;
 	
 	private static final Logger logger = Logger.getLogger(FusekiService.class);
 	
 		
-	public void setSysConfDao(SystemConfigurationDAO sysConfDao) {
-		this.sysConfDao = sysConfDao;
+	public void setFedoraConfiguration(FedoraConfiguration fedoraConfiguration) {
+		this.fedoraConfiguration = fedoraConfiguration;
 		initFusekiUrl();
 	}
 	
 	private void initFusekiUrl(){
-		Server_details fusekiServer = sysConfDao.getFusekiServerConfiguration();
+		ServerDetails fusekiServer = fedoraConfiguration.getFusekiServerConfiguration();
 		if(fusekiServer != null){
-			fusekiServerURL = fusekiServer.getComplete_url();
-		} 
-		Server_details fedoraServer = sysConfDao.getFedoraServerConfiguration();
-		if(fedoraServer != null){
-			fedoraServerURL = fedoraServer.getComplete_url();
+			fusekiServerURL = fusekiServer.getUrl();
+			fusekiPrefix = fusekiServer.getPrefix();
+		}
+		ServerDetails fedoraServer = fedoraConfiguration.getFedoraServerConfiguration();
+		if(fusekiServer != null){
+			fedoraServerURL = fedoraServer.getUrl();
 		}
 	}
 	
@@ -54,7 +58,7 @@ public class FusekiService {
 	public ArrayList<KnowledgeObject> getFedoraObjects(boolean published) throws ObjectTellerException {
 		ArrayList< KnowledgeObject> list = new ArrayList<KnowledgeObject>();
 		try {
-			if(fusekiServerURL != null ) {
+			if(fedoraConfiguration.getFusekiServerConfiguration().getUrl() != null ) {
 				if(testIfFusekiIsRunning()) {
 					String queryString = initQuery(false, null, published);
 
@@ -79,13 +83,13 @@ public class FusekiService {
 	public String getLibraryName() throws ObjectTellerException {
 		String libraryName = null;
 
-		if(fusekiServerURL != null && fedoraServerURL != null) {
+		if(fusekiServerURL != null && fusekiPrefix != null) {
 			if(testIfFusekiIsRunning()) {
 				String queryString = 
 						FusekiConstants.PREFIX_OT+"\n"+  
 								"SELECT  ?libraryName \n"+
 								"WHERE { \n"+ 
-								" <"+fedoraServerURL+">  ot:libraryName ?libraryName. \n"+
+								" <"+ fusekiPrefix +">  ot:libraryName ?libraryName. \n"+
 								"} ";
 
 				Query query = QueryFactory.create(queryString) ;
@@ -130,6 +134,11 @@ public class FusekiService {
 
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
+				SelectBuilder queryBuilder = new SelectBuilder();
+//				Query query = queryBuilder
+//						.addPrefix("ot","<http://uofm.org/objectteller/>")
+//						.addWhere("?s", "?p", "?o")
+//						.build();
 				String queryString = FusekiConstants.PREFIX_OT+"\n"+
 
 			 "SELECT  (COUNT(DISTINCT ?x) AS ?count) \n"+
@@ -197,7 +206,7 @@ public class FusekiService {
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
-				String uri = fedoraServerURL+ arkId.getFedoraPath();
+				String uri = fedoraServerURL + arkId.getFedoraPath();
 			
 				String queryString = initQuery(true, uri, false);
 
@@ -241,7 +250,7 @@ public class FusekiService {
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
-				String uri = fedoraServerURL+objectURI+"/"+ChildType.PAYLOAD.getChildType();
+				String uri = fusekiPrefix +objectURI+"/"+ChildType.PAYLOAD.getChildType();
 				String queryString = FusekiConstants.PREFIX_OT+"\n"+
 
 				 "SELECT  ?p ?o \n"+
@@ -282,7 +291,7 @@ public class FusekiService {
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
 
-				String uri = fedoraServerURL+objectURI;
+				String uri = fusekiPrefix +objectURI;
 				String queryString = FusekiConstants.PREFIX_OT+"\n"+
 
 				 "SELECT  ?p ?o \n"+
@@ -321,7 +330,7 @@ public class FusekiService {
 
 	public List<Citation> getObjectCitations(ArkId arkId) throws ObjectTellerException {
 		ArrayList<Citation> citations = new ArrayList<Citation>();
-		String uri = fedoraServerURL+ arkId.getFedoraPath() +"/"+ChildType.CITATIONS.getChildType();
+		String uri = fusekiPrefix + arkId.getFedoraPath() +"/"+ChildType.CITATIONS.getChildType();
 		
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
@@ -422,10 +431,10 @@ public class FusekiService {
 		KnowledgeObject knowledgeObject =null;
 		if(!isSingleObject){
 			String uri = querySolution.get("x").toString();
-			if(uri.length() > fedoraServerURL.length()){  // check for some bad triples from misconfiguration
-				if(uri.contains(fedoraServerURL)) {
+			if(uri.length() > fusekiPrefix.length()){  // check for some bad triples from misconfiguration
+				if(uri.contains(fusekiPrefix)) {
 					knowledgeObject = new KnowledgeObject();
-					uri = uri.substring(fedoraServerURL.length());
+					uri = uri.substring(fusekiPrefix.length());
 					// setup for ark ids
 					RDFNode ark_node = querySolution.get("arkId");
 					if (ark_node != null ) {
