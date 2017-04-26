@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class BasicHealthIndicator extends AbstractHealthIndicator {
 
     @Autowired
-    ConfigService configService;
+    FedoraConfiguration fedoraConfiguration;
 
     @Value("${library.name:ObjectTeller3000}")
     String libraryName;
@@ -19,7 +19,8 @@ public class BasicHealthIndicator extends AbstractHealthIndicator {
     protected void doHealthCheck(Health.Builder builder) throws Exception {
         builder
             .withDetail("library.name", libraryName)
-            .withDetail("fedora.name", configService.getName())
+            .withDetail("library.fusekiUrl", fedoraConfiguration.getFusekiServerConfiguration().getUrl())
+            .withDetail("library.fedoraUrl", fedoraConfiguration.getFedoraServerConfiguration().getUrl())
             .up()
 //            .withException(new IndexOutOfBoundsException("Uh-oh!"))
         ;

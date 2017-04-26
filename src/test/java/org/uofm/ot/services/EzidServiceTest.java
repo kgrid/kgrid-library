@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.uofm.ot.ObjectTellerApplication;
 import org.uofm.ot.knowledgeObject.ArkId;
@@ -18,13 +18,13 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
- 
-@RunWith(SpringJUnit4ClassRunner.class)
+
+@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {ObjectTellerApplication.class})
-@TestPropertySource("classpath:application.properties")  // Careful: loads test ezid service by default
+@TestPropertySource("classpath:test.properties")  // Careful: loads test ezid service by default
 public class EzidServiceTest {
 
-    @Autowired
+	@Autowired
 	private EzidService ezidService;
 
     @Before
@@ -39,35 +39,35 @@ public class EzidServiceTest {
     @Test
     public void canConnectToEzidService() throws IOException, URISyntaxException {
     	String arkId = ezidService.mint();
-    	
+
         String response = ezidService.get(arkId);
 
         assertTrue(response.contains("_target"));
     }
-   
+
     @Test
     public void createIDandBind() {
     	 // Create
-    	 String arkId = ezidService.mint(); 	 
-    	 
+    	 String arkId = ezidService.mint();
+
     	 ArrayList<String> metadata = new ArrayList<String>();
-    	 
+
     	 //Modify
     	 ezidService.bind(arkId, metadata,  "http://foo.com");
-    	
+
     	 //GET
     	 String modified = ezidService.get(arkId);
     	 assertTrue(modified.contains("_target: http://foo.com"));
-    	 
+
     }
-    
+
 	@Test
 	public void canMintTwoNewArkIdsThatAreDifferent() {
-		
+
 		String arkId = ezidService.mint();
 
 		String arkId2 = ezidService.mint();
-		
+
 		assertNotNull(arkId);
 
 		assertNotEquals("Should be different", arkId, arkId2);
@@ -76,9 +76,9 @@ public class EzidServiceTest {
 
 	@Test
 	public void arkIdsStartWithStringArkColonAndHave3Parts() {
-		
+
 		String arkId = ezidService.mint();
-		
+
 		String[] idParts = arkId.split("/");
 
 		assertEquals(3, idParts.length);
@@ -88,9 +88,9 @@ public class EzidServiceTest {
 
 	 @Test
 	 public void givenReservedStatusCanChangeToPublic() {
-		 
+
 		 // Create
-		 String arkId = ezidService.mint(); 	 
+		 String arkId = ezidService.mint();
 
 		 ArrayList<String> metadata = new ArrayList<String>();
 		 //Modify
@@ -101,17 +101,17 @@ public class EzidServiceTest {
 		 assertTrue(modified.contains("_status: public"));
 
 	 }
-	 
+
 	 @Test
 	 public void changePublicStatusToReservedThrowsException() {
-			 
+
 		 // Create
-		 String arkId = ezidService.mint(); 	 
+		 String arkId = ezidService.mint();
 
 		 //Modify
 		 ArrayList<String> metadata = new ArrayList<String>();
 		 ezidService.status(arkId, metadata, ArkId.Status.PUBLIC);
-		 
+
 		 try {
 			 ezidService.status(arkId, metadata, ArkId.Status.RESERVED);
 			 assertTrue(false);
@@ -121,8 +121,8 @@ public class EzidServiceTest {
 //			 assertTrue(e.getResponseBodyAsString().contains("invalid identifier status change"));
 			 String modified = ezidService.get(arkId);
 			 assertTrue(modified.contains("_status: public"));
-			 
-		 }		 
+
+		 }
 
 	 }
 
