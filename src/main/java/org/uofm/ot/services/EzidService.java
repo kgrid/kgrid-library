@@ -1,5 +1,6 @@
 package org.uofm.ot.services;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -95,7 +96,7 @@ public class EzidService {
 
     }
     
-    public String bind(String id, List<String> metadata, String objectURL){
+    public String bind(String id, List<String> metadata, URI objectURL){
     	String target = "_target: " + objectURL ;
     	metadata.add(target);
     	return  modify(id, metadata);

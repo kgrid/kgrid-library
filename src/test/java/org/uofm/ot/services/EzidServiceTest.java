@@ -1,5 +1,6 @@
 package org.uofm.ot.services;
 
+import java.net.URI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,14 +47,14 @@ public class EzidServiceTest {
     }
 
     @Test
-    public void createIDandBind() {
+    public void createIDandBind() throws Exception {
     	 // Create
     	 String arkId = ezidService.mint();
 
     	 ArrayList<String> metadata = new ArrayList<String>();
 
     	 //Modify
-    	 ezidService.bind(arkId, metadata,  "http://foo.com");
+    	 ezidService.bind(arkId, metadata,  new URI("http://foo.com"));
 
     	 //GET
     	 String modified = ezidService.get(arkId);

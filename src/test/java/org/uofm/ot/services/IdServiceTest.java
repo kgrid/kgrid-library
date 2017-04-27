@@ -1,5 +1,6 @@
 package org.uofm.ot.services;
 
+import java.net.URI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,11 +72,11 @@ public class IdServiceTest {
 		
 		ArrayList<String> metadata = new ArrayList<String>();
 
-		idService.bind(ko, metadata, "http://dev.umich.edu/"+ ARKID_STRING);
+		idService.bind(ko, metadata, new URI("http://dev.umich.edu/"+ ARKID_STRING));
 
 		assertEquals(ARKID_STRING, ko.getURI());
 
-		verify(ezidService).bind(ARKID_STRING, metadata, "http://dev.umich.edu/"+ ARKID_STRING);
+		verify(ezidService).bind(ARKID_STRING, metadata, new URI("http://dev.umich.edu/"+ ARKID_STRING));
 
 		}
 }

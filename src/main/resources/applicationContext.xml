@@ -21,24 +21,8 @@
     <bean id="fedoraConfiguration" class="org.uofm.ot.services.FedoraConfiguration">
     </bean>
 
-    <bean id="fedoraObjectService" class="org.uofm.ot.fedoraAccessLayer.FedoraObjectService">
+    <bean id="fedoraObjectService" class="org.uofm.ot.fedoraAccessLayer.FCRepoService">
         <property name="fedoraConfiguration" ref="fedoraConfiguration"/>
-    </bean>
-
-    <bean id="editfedoraObjectService" parent="fedoraObjectService"
-          class="org.uofm.ot.fedoraAccessLayer.EditFedoraObjectService">
-    </bean>
-
-    <bean id="getfedoraObjectService" parent="fedoraObjectService"
-          class="org.uofm.ot.fedoraAccessLayer.GetFedoraObjectService">
-    </bean>
-
-    <bean id="deleteFedoraResourceService" parent="fedoraObjectService"
-          class="org.uofm.ot.fedoraAccessLayer.DeleteFedoraResourceService">
-    </bean>
-
-    <bean id="createfedoraObjectService" parent="fedoraObjectService"
-          class="org.uofm.ot.fedoraAccessLayer.CreateFedoraObjectService">
     </bean>
 
     <bean id="fusekiService" class="org.uofm.ot.fusekiAccessLayer.FusekiService">
@@ -50,7 +34,7 @@
 
 
     <bean id="restWSController" class="org.uofm.ot.controller.RestWSController">
-        <property name="getFedoraObjectService" ref="getfedoraObjectService"/>
+        <property name="getFedoraObjectService" ref="fedoraObjectService"/>
     </bean>
 
     <!--<context:property-placeholder location="classpath:*.properties"/>-->
