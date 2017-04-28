@@ -32,11 +32,6 @@
     <bean id="accountController" class="org.uofm.ot.controller.AccountController">
     </bean>
 
-
-    <bean id="restWSController" class="org.uofm.ot.controller.RestWSController">
-        <property name="getFedoraObjectService" ref="fedoraObjectService"/>
-    </bean>
-
     <!--<context:property-placeholder location="classpath:*.properties"/>-->
 
 
