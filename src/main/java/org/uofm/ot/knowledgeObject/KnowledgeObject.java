@@ -27,7 +27,7 @@ public class KnowledgeObject {
 
 	public KnowledgeObject(){}
 	
-    public KnowledgeObject(String URI) {
+	public KnowledgeObject(String URI) {
     	this.URI = URI;
     }
 
@@ -96,5 +96,49 @@ public class KnowledgeObject {
 		this.arkId = arkId;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
+		KnowledgeObject that = (KnowledgeObject) o;
+
+		if (metadata != null ? !metadata.equals(that.metadata) : that.metadata != null) {
+			return false;
+		}
+		if (URI != null ? !URI.equals(that.URI) : that.URI != null) {
+			return false;
+		}
+		if (inputMessage != null ? !inputMessage.equals(that.inputMessage)
+				: that.inputMessage != null) {
+			return false;
+		}
+		if (outputMessage != null ? !outputMessage.equals(that.outputMessage)
+				: that.outputMessage != null) {
+			return false;
+		}
+		if (payload != null ? !payload.equals(that.payload) : that.payload != null) {
+			return false;
+		}
+		if (logData != null ? !logData.equals(that.logData) : that.logData != null) {
+			return false;
+		}
+		return arkId != null ? arkId.equals(that.arkId) : that.arkId == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = metadata != null ? metadata.hashCode() : 0;
+		result = 31 * result + (URI != null ? URI.hashCode() : 0);
+		result = 31 * result + (inputMessage != null ? inputMessage.hashCode() : 0);
+		result = 31 * result + (outputMessage != null ? outputMessage.hashCode() : 0);
+		result = 31 * result + (payload != null ? payload.hashCode() : 0);
+		result = 31 * result + (logData != null ? logData.hashCode() : 0);
+		result = 31 * result + (arkId != null ? arkId.hashCode() : 0);
+		return result;
+	}
 }

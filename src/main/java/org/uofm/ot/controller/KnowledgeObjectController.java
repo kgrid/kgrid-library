@@ -34,7 +34,7 @@ public class KnowledgeObjectController {
 			method=RequestMethod.POST , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> createKnowledgeObject(@RequestBody KnowledgeObject KnowledgeObject,@ModelAttribute("loggedInUser") OTUser loggedInUser, HttpServletRequest request ) throws ObjectTellerException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> createKnowledgeObject(@RequestBody KnowledgeObject KnowledgeObject, @ModelAttribute("loggedInUser") OTUser loggedInUser, HttpServletRequest request ) throws ObjectTellerException, URISyntaxException {
 
 		ResponseEntity<KnowledgeObject> entity = null;
 
@@ -111,25 +111,25 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public KnowledgeObject updateKnowledgeObjectByArkId(@RequestBody KnowledgeObject knowledgeObject,ArkId arkId, HttpServletRequest request) throws ObjectTellerException {
+	public KnowledgeObject updateKnowledgeObjectByArkId(@RequestBody KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") OTUser loggedInUser, ArkId arkId, HttpServletRequest request) throws ObjectTellerException, URISyntaxException {
 
 		if (knowledgeObjectService.exists(arkId)) {
 			return knowledgeObjectService.editObject(knowledgeObject,arkId);
 		} else {
 			String libraryURL = request.getRequestURI().toString();
-            return knowledgeObjectService.createFromExistingArkId(knowledgeObject,libraryURL ,arkId);
+			return knowledgeObjectService.createFromExistingArkId(knowledgeObject, loggedInUser, libraryURL ,arkId);
         }
 	}
-	
-	
+
+
 	// TODO: Remove this method after UI switched it to other API
-	@RequestMapping(value="/knowledgeObject/{objectURI}", 
-			method=RequestMethod.PUT , 
+	@RequestMapping(value="/knowledgeObject/{objectURI}",
+			method=RequestMethod.PUT ,
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public KnowledgeObject updateKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject,@PathVariable String objectURI,HttpServletRequest request ) throws ObjectTellerException {
+	public KnowledgeObject updateKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") OTUser loggedInUser, @PathVariable String objectURI,HttpServletRequest request ) throws ObjectTellerException, URISyntaxException {
 		ArkId arkId = new ArkId(objectURI);
-		return updateKnowledgeObjectByArkId(knowledgeObject,arkId, request);
+		return updateKnowledgeObjectByArkId(knowledgeObject, loggedInUser, arkId, request);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}", 
@@ -154,7 +154,7 @@ public class KnowledgeObjectController {
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void addOrUpdatePayload(@RequestBody Payload payload , @PathVariable String objectURI) throws ObjectTellerException {
+	public void addOrUpdatePayload(@RequestBody Payload payload , @PathVariable String objectURI) throws ObjectTellerException, URISyntaxException {
 		ArkId arkId = new ArkId(objectURI);
 		knowledgeObjectService.editPayload(arkId, payload);
 	}
@@ -165,7 +165,7 @@ public class KnowledgeObjectController {
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void addOrUpdatePayloadByArkId(@RequestBody Payload payload , ArkId arkId) throws ObjectTellerException {
+	public void addOrUpdatePayloadByArkId(@RequestBody Payload payload , ArkId arkId) throws ObjectTellerException, URISyntaxException {
 		knowledgeObjectService.editPayload(arkId, payload);	
 	}
 	
@@ -321,7 +321,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage", 
 			method=RequestMethod.PUT)
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void addOrUpdateInputMessage(@RequestBody String inputMessage , @PathVariable String objectURI) throws ObjectTellerException {
+	public void addOrUpdateInputMessage(@RequestBody String inputMessage , @PathVariable String objectURI) throws ObjectTellerException, URISyntaxException {
 		ArkId arkId = new ArkId(objectURI);
 		knowledgeObjectService.editInputMessageContent(arkId, inputMessage);
 	}
@@ -330,7 +330,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/inputMessage", 
 			method=RequestMethod.PUT)
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void addOrUpdateInputMessageByArkId(@RequestBody String inputMessage , ArkId arkId) throws ObjectTellerException {
+	public void addOrUpdateInputMessageByArkId(@RequestBody String inputMessage , ArkId arkId) throws ObjectTellerException, URISyntaxException {
 		knowledgeObjectService.editInputMessageContent(arkId, inputMessage);
 	}
 	
@@ -338,7 +338,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/{objectURI}/outputMessage", 
 			method=RequestMethod.PUT)
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void addOrUpdateOutputMessage(@RequestBody String outputMessage , @PathVariable String objectURI) throws ObjectTellerException {
+	public void addOrUpdateOutputMessage(@RequestBody String outputMessage , @PathVariable String objectURI) throws ObjectTellerException, URISyntaxException {
 		ArkId arkId = new ArkId(objectURI);
 		knowledgeObjectService.editOutputMessageContent(arkId, outputMessage);
 	}
@@ -347,7 +347,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/outputMessage", 
 			method=RequestMethod.PUT)
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void addOrUpdateOutputMessageByArkId(@RequestBody String outputMessage , ArkId arkId) throws ObjectTellerException {
+	public void addOrUpdateOutputMessageByArkId(@RequestBody String outputMessage , ArkId arkId) throws ObjectTellerException, URISyntaxException {
 		knowledgeObjectService.editOutputMessageContent(arkId, outputMessage);
 	}
 	
@@ -355,13 +355,13 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PATCH,
 			consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void patchKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject, ArkId arkId) throws ObjectTellerException {
+	public void patchKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject, ArkId arkId) throws ObjectTellerException, URISyntaxException {
 		knowledgeObjectService.patchKnowledgeObject(knowledgeObject, arkId);
 	}
 
 	@PutMapping("/knowledgeObject/ark:/{naan}/{name}/{published:published|unpublished}")
 	@ResponseStatus(HttpStatus.OK)
-	public String publish(ModelMap map, @ModelAttribute("loggedInUser") OTUser loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException {
+	public String publish(ModelMap map, @ModelAttribute("loggedInUser") OTUser loggedInUser, ArkId arkId, @PathVariable String published) throws ObjectTellerException, URISyntaxException {
 		loggedInUser = (OTUser) map.get("loggedInUser");
 		
 		knowledgeObjectService.publishKnowledgeObject(arkId, "published".equals(published), loggedInUser);
