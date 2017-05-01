@@ -59,7 +59,7 @@ public class FCRepoServiceTest {
     Query query = builder
         .addPrefix("ot", "http://uofm.org/objectteller/")
         .addVar("*")
-        //.addWhere("?s", "?p", "?o")
+        .addWhere("?s", "?p", "?o")
         .addWhere("?s", RDF.type, "ot:KnowledgeObject")
         .build();
 
