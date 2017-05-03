@@ -1,20 +1,23 @@
 package org.uofm.ot.services;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
+import com.complexible.pinto.RDFMapper;
 import org.apache.log4j.Logger;
+import org.openrdf.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.*;
+import org.uofm.ot.fedoraAccessLayer.ChildType;
+import org.uofm.ot.fedoraAccessLayer.FCRepoService;
 import org.uofm.ot.fusekiAccessLayer.FusekiConstants;
 import org.uofm.ot.fusekiAccessLayer.FusekiService;
 import org.uofm.ot.knowledgeObject.*;
 import org.uofm.ot.model.OTUser;
 import org.uofm.ot.model.UserProfile;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -542,4 +545,19 @@ public class KnowledgeObjectService {
 
 		fcRepoService.sendPatchRequestForUpdatingTriples(properties, uri);
 	}
+
+	public Model serializeMetadata() throws Exception {
+		ArkId arkId = new ArkId("ark:/99999/fk4TEST01");
+
+		Metadata md = new Metadata();
+		md.setLastModified(new Date());
+
+		Model model = RDFMapper.builder()
+				.namespace("ot", "http://uofm.org/objectteller/")
+				.build().writeValue(md);
+
+		return model;
+	}
+
 }
+

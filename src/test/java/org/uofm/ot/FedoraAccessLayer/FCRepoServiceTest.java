@@ -1,15 +1,8 @@
 package org.uofm.ot.FedoraAccessLayer;
 
-import static org.junit.Assert.*;
-
 import com.complexible.pinto.RDFMapper;
-import java.net.URI;
 import org.apache.jena.arq.querybuilder.SelectBuilder;
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.*;
 import org.apache.jena.vocabulary.RDF;
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,8 +13,13 @@ import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.FCRepoService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
-import org.uofm.ot.knowledgeObject.Payload;
+import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.services.FedoraConfiguration;
+
+import java.net.URI;
+import java.util.Date;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by nggittle on 4/19/17.
@@ -88,6 +86,20 @@ public class FCRepoServiceTest {
     Model model = RDFMapper.builder()
         .namespace("ot", "http://uofm.org/objectteller/")
         .build().writeValue(ko);
+    String test = model.toString();
+    System.out.println(test);
+  }
+
+  @Test
+  public void serializeMetadata() throws Exception {
+    ArkId arkId = new ArkId("ark:/99999/fk4TEST01");
+
+    Metadata md = new Metadata();
+    md.setLastModified(new Date());
+
+    Model model = RDFMapper.builder()
+        .namespace("ot", "http://uofm.org/objectteller/")
+        .build().writeValue(md);
     String test = model.toString();
     System.out.println(test);
   }
