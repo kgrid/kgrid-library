@@ -2,6 +2,7 @@ package org.uofm.ot.FedoraAccessLayer;
 
 import static org.junit.Assert.*;
 
+import com.complexible.pinto.RDFMapper;
 import java.net.URI;
 import org.apache.jena.arq.querybuilder.SelectBuilder;
 import org.apache.jena.query.Query;
@@ -14,8 +15,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.openrdf.model.Model;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.FCRepoService;
+import org.uofm.ot.knowledgeObject.ArkId;
+import org.uofm.ot.knowledgeObject.KnowledgeObject;
+import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.services.FedoraConfiguration;
 
 /**
@@ -72,6 +77,19 @@ public class FCRepoServiceTest {
       i++;
     }
     assertTrue(i > 0);
+  }
+
+  @Test
+  public void serializeObject() throws Exception {
+    ArkId arkId = new ArkId("ark:/99999/fk4TEST01");
+    KnowledgeObject ko = new KnowledgeObject(arkId);
+    ko.setInputMessage("TESTINPUT");
+    ko.setOutputMessage("TESTOUTOUT");
+    Model model = RDFMapper.builder()
+        .namespace("ot", "http://uofm.org/objectteller/")
+        .build().writeValue(ko);
+    String test = model.toString();
+    System.out.println(test);
   }
 
   @Test
