@@ -337,17 +337,17 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void updateMetadata(@RequestBody Metadata metadata , @PathVariable String objectURI) throws ObjectTellerException {
+	public void updateMetadata(@RequestBody Metadata metadata , @PathVariable String objectURI) throws ObjectTellerException, URISyntaxException {
 		ArkId arkId = new ArkId(objectURI);
-		knowledgeObjectService.addOrEditMetadata(arkId, metadata);
+		knowledgeObjectService.addOrEditMetadataToArkId(arkId, metadata);
 	}
 	
 	@RequestMapping(value="/knowledgeObject/ark:/{naan}/{name}/metadata", 
 			method=RequestMethod.PUT , 
 			consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void updateMetadataByArkId(@RequestBody Metadata metadata , ArkId arkId) throws ObjectTellerException {
-		knowledgeObjectService.addOrEditMetadata(arkId, metadata);
+	public void updateMetadataByArkId(@RequestBody Metadata metadata , ArkId arkId) throws ObjectTellerException, URISyntaxException {
+		knowledgeObjectService.addOrEditMetadataToArkId(arkId, metadata);
 	}
 	
 	// TODO: Remove this method after UI switched it to other API
@@ -399,7 +399,13 @@ public class KnowledgeObjectController {
 		
 		knowledgeObjectService.publishKnowledgeObject(arkId, "published".equals(published), loggedInUser);
 
-		return String.format("User %s %s ko %s at %s", loggedInUser.getUsername(), published, arkId.getArkId(), new Date());
+		String name;
+		if(loggedInUser == null) {
+			name = "anonymous user";
+		} else {
+			name = loggedInUser.getUsername();
+		}
+		return String.format("User %s %s ko %s at %s", name, published, arkId.getArkId(), new Date());
 	}
 
 	@ExceptionHandler(ObjectTellerException.class)
@@ -408,12 +414,5 @@ public class KnowledgeObjectController {
 		ResponseEntity<ObjectTellerException> response = new ResponseEntity<ObjectTellerException>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 
 		return response;
-	}
-
-	@GetMapping("/testme")
-	public Model getTest() throws Exception {
-
-		return knowledgeObjectService.serializeMetadata();
-
 	}
 }

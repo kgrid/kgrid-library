@@ -1,9 +1,14 @@
 package org.uofm.ot.fedoraAccessLayer;
 
+import com.complexible.common.openrdf.model.ModelIO;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
@@ -11,31 +16,33 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
+import org.openrdf.model.Model;
+import org.openrdf.rio.RDFFormat;
 import org.springframework.http.HttpStatus;
-import org.uofm.ot.knowledgeObject.ArkId;
-import org.uofm.ot.services.FedoraConfiguration;
 import org.uofm.ot.exception.ObjectTellerException;
+import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.model.ServerDetails;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import org.uofm.ot.services.FedoraConfiguration;
 
 
 public class FCRepoService {
 
 	private FedoraConfiguration fedoraConfiguration;
 
-	protected URI baseURI;
+	private URI baseURI;
 
-	protected String userName;
+	private String userName;
 
 	protected String password;
 
@@ -78,7 +85,7 @@ public class FCRepoService {
 	}
 
 	public void commitTransaction(URI transactionURI) throws ObjectTellerException, URISyntaxException {
-		URI transactionCommitURL = new URI(transactionURI + "/fcr:tx/fcr:commit/");
+		URI transactionCommitURL = new URI(transactionURI + "/fcr:tx/fcr:commit");
 
 		HttpPost httpPost = new HttpPost(transactionCommitURL);
 		httpPost.addHeader(authenticate(httpPost));
@@ -88,7 +95,7 @@ public class FCRepoService {
 		try {
 			HttpResponse response = httpClient.execute(httpPost) ;
 			if(response.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value()) {
-				logger.info("Transaction " + transactionURI + " committed");
+				logger.info("Transaction " + transactionCommitURL + " committed");
 			} else {
 				String err = "Unable to commit transaction with Id " + transactionURI;
 				logger.error(err);
@@ -147,6 +154,28 @@ public class FCRepoService {
 		return false;
 	}
 
+	public Model getRDFData(URI objectURI) throws ObjectTellerException {
+		HttpClient httpClient = HttpClientBuilder.create().build();
+
+		HttpGet httpGetRequest = new HttpGet(objectURI);
+
+		httpGetRequest.addHeader(authenticate(httpGetRequest));
+		httpGetRequest.addHeader("Accept", "application/n-triples");
+
+		try {
+			HttpResponse httpResponse = httpClient.execute(httpGetRequest);
+			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
+				HttpEntity entity = httpResponse.getEntity();
+				return ModelIO.read(entity.getContent(), RDFFormat.NTRIPLES);
+			}
+		} catch (IOException e) {
+			String err = "Exception occurred while verifying object id "+ objectURI +"."+ e.getMessage();
+			logger.error(err);
+			throw new ObjectTellerException(err, e);
+		}
+		return null;
+	}
+
 	public String getObjectContent(String objectId, String dataStreamId) throws ObjectTellerException  {
 
 		HttpClient httpClient = HttpClientBuilder.create().build();
@@ -154,7 +183,7 @@ public class FCRepoService {
 		HttpGet httpGetRequest = new HttpGet(baseURI+objectId+"/"+dataStreamId+"/");
 		httpGetRequest.addHeader(authenticate(httpGetRequest));
 
-		StringBuffer chunk = new StringBuffer();
+		StringBuilder chunk = new StringBuilder();
 		HttpResponse httpResponse;
 
 		try {
@@ -165,7 +194,7 @@ public class FCRepoService {
 				byte[] buffer = new byte[4096];
 				if (entity != null) {
 					InputStream inputStream = entity.getContent();
-					int bytesRead = 0;
+					int bytesRead;
 					BufferedInputStream bis = new BufferedInputStream(inputStream);
 
 					while ((bytesRead = bis.read(buffer)) != -1) {
@@ -175,15 +204,15 @@ public class FCRepoService {
 				}
 			} else {
 				ObjectTellerException exception = new ObjectTellerException();
-				logger.error("Exception occured while retrieving object content for object "+objectId+"/"+dataStreamId+". Request status code is "+httpResponse.getStatusLine().getStatusCode());
-				exception.setErrormessage("Exception occured while retrieving object content for object "+objectId+"/"+dataStreamId+". Request status code is "+httpResponse.getStatusLine().getStatusCode());
+				logger.error("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId+". Request status code is "+httpResponse.getStatusLine().getStatusCode());
+				exception.setErrormessage("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId+". Request status code is "+httpResponse.getStatusLine().getStatusCode());
 				throw exception;
 			}
 
 		} catch (IOException e) {
 			ObjectTellerException exception = new ObjectTellerException(e);
-			logger.error("Exception occured while retrieving object content for object "+objectId+"/"+dataStreamId + e.getMessage());
-			exception.setErrormessage("Exception occured while retrieving object content for object "+objectId+"/"+dataStreamId + e.getMessage());
+			logger.error("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId + e.getMessage());
+			exception.setErrormessage("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId + e.getMessage());
 			throw exception;
 		}
 		return chunk.toString();
@@ -284,12 +313,46 @@ public class FCRepoService {
 		}
 	}
 
-	//Patch:
-	public URI sendPatchRequestForUpdatingTriples(String data, String objectURI) throws ObjectTellerException, URISyntaxException {
-		URI uri = new URI(baseURI + objectURI);
-		return sendPatchRequestForUpdatingTriples(data, uri);
+	public URI putRDFData(Model data, URI uri) throws ObjectTellerException{
+
+		if(data.size() < 1) {
+			return uri;
+		}
+
+		HttpClient httpClient = HttpClientBuilder.create().build();
+		HttpPut httpPutRequest = new HttpPut(uri + "/fcr:metadata");
+
+		httpPutRequest.addHeader(authenticate(httpPutRequest));
+
+		//This header lets us overwrite triples without providing data for every triple in the fedora object
+		httpPutRequest.addHeader("Prefer", "handling=lenient; received=\"minimal\"");
+
+		try {
+			ContentType textTurtle = ContentType.create("application/n-triples", Charset.forName("UTF-8"));
+			String dataStr = ModelIO.toString(data, RDFFormat.NTRIPLES);
+			StringEntity serializedData = new StringEntity(dataStr, textTurtle);
+
+			httpPutRequest.setEntity(serializedData);
+
+			HttpResponse httpResponse = httpClient.execute(httpPutRequest);
+			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.CREATED.value() ||
+					httpResponse.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value()) {
+				logger.info("Successfully added new rdf data at " + uri +
+						" HttpResponse is " + httpResponse);
+				return uri;
+			} else {
+				String err = "HTTP Error: " + httpResponse.getStatusLine() + " " + httpResponse.getEntity() + " Error occurred while adding rdf data " + data + " at uri " + uri;
+				logger.error(err);
+				throw new ObjectTellerException(err);
+			}
+		} catch (IOException e) {
+			String err = "Exception occurred while adding RDF data " + data + " \n" + e;
+			logger.error(err);
+			throw new ObjectTellerException(err, e);
+		}
 	}
 
+	//Patch:
 	public URI sendPatchRequestForUpdatingTriples(String data, URI objectURI) throws ObjectTellerException {
 
 		logger.info("The Object URI is " + objectURI);

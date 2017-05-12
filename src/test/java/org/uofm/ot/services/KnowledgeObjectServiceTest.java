@@ -34,10 +34,35 @@ import org.uofm.ot.model.UserProfile;
 public class KnowledgeObjectServiceTest {
 
   @Autowired
-  KnowledgeObjectService koService;
+  private KnowledgeObjectService koService;
+
+  private KnowledgeObject dummyKO;
+  private OTUser loggedInUser;
+  private String libraryURL = "http://localhost:8080/knowledgeObject";
 
   @Before
   public void setUp() throws Exception {
+    dummyKO = new KnowledgeObject();
+    dummyKO.setArkId(new ArkId());
+    dummyKO.setInputMessage("Input test");
+    dummyKO.setOutputMessage("Output test");
+    Payload payload = new Payload();
+    payload.setEngineType("Python");
+    payload.setFunctionName("test");
+    payload.setContent("test");
+    dummyKO.setPayload(payload);
+    Metadata metadata = new Metadata();
+    metadata.setTitle("test");
+    metadata.setContributors("test");
+    metadata.setKeywords("test");
+    metadata.setDescription("test");
+    dummyKO.setMetadata(metadata);
+
+    ArrayList<GrantedAuthority> auth = new ArrayList<>();
+    auth.add(new SimpleGrantedAuthority("ADMIN"));
+
+    loggedInUser = new OTUser("test", "test", auth);
+    loggedInUser.setProfile(new UserProfile("ftest", "ltest"));
   }
 
   @After
@@ -46,46 +71,13 @@ public class KnowledgeObjectServiceTest {
 
   @Test
   public void tryToCreateEditAndDeleteKO() throws Exception {
-    KnowledgeObject dummyKO = new KnowledgeObject();
-    dummyKO.setArkId(new ArkId());
-    dummyKO.setInputMessage("Input test");
-    dummyKO.setOutputMessage("Output test");
-    dummyKO.setPayload(new Payload());
-    dummyKO.setMetadata(new Metadata());
 
-    ArrayList<GrantedAuthority> auth = new ArrayList<>();
-    auth.add(new SimpleGrantedAuthority("ADMIN"));
-
-    OTUser loggedInUser = new OTUser("test", "test", auth);
-    loggedInUser.setProfile(new UserProfile("ftest", "ltest"));
-    dummyKO = koService.createObject(dummyKO, loggedInUser, "http://localhost:8080/knowledgeObject", null);
-    assertNotNull(dummyKO.getPayload());
+    KnowledgeObject createdKO = koService.createKnowledgeObject(dummyKO, loggedInUser, libraryURL);
     // Need to wait for the fedora repository to finish creating the KO before getting it
     Thread.sleep(1000);
-    KnowledgeObject retrievedKO = koService.getKnowledgeObject(dummyKO.getArkId());
-    assertNotNull(retrievedKO);
-    KnowledgeObject editedKO = koService.editObject(retrievedKO, dummyKO.getArkId());
-    Thread.sleep(1000);
-    assertNotEquals(retrievedKO, editedKO);
     koService.deleteObject(dummyKO.getArkId());
-    Thread.sleep(1000);
     assertNull(koService.getKnowledgeObject(dummyKO.getArkId()));
 
   }
-
-  @Test
-  public void addAndEditMetadataToKO() throws Exception {
-   KnowledgeObject dummyKO = new KnowledgeObject();
-
-  }
-
-  @Test
-  public void getKnowledgeObject() throws Exception {
-    ArkId arkId = new ArkId("ark:/test/test");
-    KnowledgeObject ko = koService.getKnowledgeObject(arkId);
-    ko.getURI();
-  }
-
-
 
 }
