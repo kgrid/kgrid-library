@@ -1,9 +1,15 @@
 package org.uofm.ot.knowledgeObject;
 
+import com.complexible.pinto.Identifiable;
+import com.complexible.pinto.annotations.RdfProperty;
+import com.complexible.pinto.impl.IdentifableImpl;
 import java.util.Date;
 import java.util.List;
+import org.openrdf.model.Resource;
 
-public class Metadata {
+public class Metadata implements Identifiable {
+
+	private Identifiable mIdentifiable = new IdentifableImpl();
 
 	private String title;
 	
@@ -27,7 +33,7 @@ public class Metadata {
 	
 	private License license ;
 	
-
+	@RdfProperty(value="dc:title")
 	public String getTitle() {
 		return title;
 	}
@@ -36,6 +42,7 @@ public class Metadata {
 		this.title = title;
 	}
 
+	@RdfProperty(value="ot:owner")
 	public String getOwner() {
 		return owner;
 	}
@@ -44,6 +51,7 @@ public class Metadata {
 		this.owner = owner;
 	}
 
+	@RdfProperty(value="ot:description")
 	public String getDescription() {
 		return description;
 	}
@@ -52,6 +60,7 @@ public class Metadata {
 		this.description = description;
 	}
 
+	@RdfProperty(value="ot:contributors")
 	public String getContributors() {
 		return contributors;
 	}
@@ -60,6 +69,7 @@ public class Metadata {
 		this.contributors = contributors;
 	}
 
+	@RdfProperty(value="ot:keywords")
 	public String getKeywords() {
 		return keywords;
 	}
@@ -68,6 +78,7 @@ public class Metadata {
 		this.keywords = keywords;
 	}
 
+	@RdfProperty(value="ot:published")
 	public boolean isPublished() {
 		return published;
 	}
@@ -100,6 +111,7 @@ public class Metadata {
 		this.objectType = objectType;
 	}
 
+	@RdfProperty(value = "ot:citations", isList = true)
 	public List<Citation> getCitations() {
 		return citations;
 	}
@@ -108,6 +120,7 @@ public class Metadata {
 		this.citations = citations;
 	}
 
+	@RdfProperty(value = "ot:license")
 	public License getLicense() {
 		return license;
 	}
@@ -115,6 +128,17 @@ public class Metadata {
 	public void setLicense(License license) {
 		this.license = license;
 	}
+
+	@Override
+	public Resource id() {
+		return mIdentifiable.id();
+	}
+
+	@Override
+	public void id(final Resource resource) {
+		mIdentifiable.id(resource);
+	}
+
 
 	@Override
 	public String toString() {

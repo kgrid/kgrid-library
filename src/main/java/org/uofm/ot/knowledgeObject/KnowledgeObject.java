@@ -1,5 +1,6 @@
 package org.uofm.ot.knowledgeObject;
 
+import com.complexible.pinto.annotations.RdfProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class KnowledgeObject {
@@ -18,8 +19,6 @@ public class KnowledgeObject {
 	
 	@JsonIgnore
 	private ArkId arkId;
-	
-	
 
 	public KnowledgeObject(ArkId arkId) {
 		this.arkId = arkId;
@@ -28,8 +27,8 @@ public class KnowledgeObject {
 	public KnowledgeObject(){}
 	
 	public KnowledgeObject(String URI) {
-    	this.URI = URI;
-    }
+		this.URI = URI;
+	}
 
 	public String getURI() {
 
@@ -88,6 +87,7 @@ public class KnowledgeObject {
 				+ ", outputMessage=" + outputMessage + ", payload=" + payload + ", logData=" + logData + "]";
 	}
 
+	@RdfProperty(value = "ot:arkId")
 	public ArkId getArkId() {
 		return arkId;
 	}

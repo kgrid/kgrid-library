@@ -1,12 +1,23 @@
 package org.uofm.ot.knowledgeObject;
 
-public class Citation {
+import com.complexible.pinto.Identifiable;
+import com.complexible.pinto.annotations.RdfProperty;
+import com.complexible.pinto.annotations.RdfsClass;
+import com.complexible.pinto.impl.IdentifableImpl;
+import org.openrdf.model.Resource;
+
+@RdfsClass(value="ot:citation")
+public class Citation implements Identifiable {
+
+	private Identifiable mIdendifiable = new IdentifableImpl();
+
 	private String citation_id; 
 	
 	private String citation_title;
 	
 	private String citation_at;
 
+	@RdfProperty(value="ot:citationTitle")
 	public String getCitation_title() {
 		return citation_title;
 	}
@@ -15,6 +26,7 @@ public class Citation {
 		this.citation_title = citation_title;
 	}
 
+	@RdfProperty(value="ot:citationAt")
 	public String getCitation_at() {
 		return citation_at;
 	}
@@ -30,6 +42,17 @@ public class Citation {
 	public void setCitation_id(String citation_id) {
 		this.citation_id = citation_id;
 	}
+
+	@Override
+	public Resource id() {
+		return mIdendifiable.id();
+	}
+
+	@Override
+	public void id(final Resource resource) {
+		mIdendifiable.id(resource);
+	}
+
 
 	@Override
 	public String toString() {
