@@ -1,6 +1,5 @@
 package org.uofm.ot.services;
 
-import java.net.URI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +13,7 @@ import org.uofm.ot.ObjectTellerApplication;
 import org.uofm.ot.knowledgeObject.ArkId;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {ObjectTellerApplication.class})
 @TestPropertySource("classpath:test.properties")  // Careful: loads test ezid service by default
-public class EzidServiceTest {
+public class EzidServiceIT {
 
 	@Autowired
 	private EzidService ezidService;

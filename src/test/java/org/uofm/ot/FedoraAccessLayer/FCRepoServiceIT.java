@@ -1,21 +1,6 @@
 package org.uofm.ot.FedoraAccessLayer;
 
-import com.complexible.common.openrdf.model.ModelIO;
 import com.complexible.pinto.RDFMapper;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthenticationException;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.jena.arq.querybuilder.SelectBuilder;
 import org.apache.jena.query.*;
 import org.apache.jena.vocabulary.RDF;
@@ -25,26 +10,21 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.openrdf.model.Model;
 import org.openrdf.model.Namespace;
-import org.openrdf.model.impl.LinkedHashModel;
 import org.openrdf.model.impl.SimpleNamespace;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.Rio;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.FCRepoService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
-import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.services.FedoraConfiguration;
 
 import java.net.URI;
-import java.util.Date;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by nggittle on 4/19/17.
  */
-public class FCRepoServiceTest {
+public class FCRepoServiceIT {
 
   private FCRepoService fos;
 
