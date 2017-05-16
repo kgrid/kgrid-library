@@ -13,6 +13,7 @@ import org.uofm.ot.ObjectTellerApplication;
 import org.uofm.ot.knowledgeObject.ArkId;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {ObjectTellerApplication.class})
 @TestPropertySource("classpath:test.properties")  // Careful: loads test ezid service by default
-public class EzidServiceTest {
+public class EzidServiceIT {
 
 	@Autowired
 	private EzidService ezidService;
@@ -46,14 +47,14 @@ public class EzidServiceTest {
     }
 
     @Test
-    public void createIDandBind() {
+    public void createIDandBind() throws Exception {
     	 // Create
     	 String arkId = ezidService.mint();
 
     	 ArrayList<String> metadata = new ArrayList<String>();
 
     	 //Modify
-    	 ezidService.bind(arkId, metadata,  "http://foo.com");
+    	 ezidService.bind(arkId, metadata,  new URI("http://foo.com"));
 
     	 //GET
     	 String modified = ezidService.get(arkId);
