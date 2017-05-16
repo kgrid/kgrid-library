@@ -2,7 +2,6 @@ package org.uofm.ot.controller;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
-import org.openrdf.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,10 @@ import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.model.OTUser;
 import org.uofm.ot.services.KnowledgeObjectService;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -68,31 +69,36 @@ public class KnowledgeObjectController {
 		return knowledgeObjectService.getKnowledgeObjects(false);
 	}
 
-	
-	@RequestMapping(value="/ark:/{naan}/{name}",
+
+	@RequestMapping(value={"/knowledgeObject/ark:/{naan}/{name}","/ark:/{naan}/{name}"},
 			method=RequestMethod.GET,
 			produces = {MediaType.TEXT_HTML_VALUE})
-	public ResponseEntity<String> redirectToKnowledgeObject(ArkId arkId) throws ObjectTellerException  {
+	public ResponseEntity<String> redirectToKnowledgeObject(ArkId arkId) throws ObjectTellerException, MalformedURLException {
 
-		String location = getKoRelativePageUrl(arkId);
+		URI location = getKoRelativePageUrl(arkId);
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.LOCATION, location);
+		headers.add(HttpHeaders.LOCATION, location.toString());
 
-		ResponseEntity<String> responseEntity = new ResponseEntity<>(headers.getLocation().toString(), headers, HttpStatus.TEMPORARY_REDIRECT);
+		ResponseEntity<String> responseEntity = new ResponseEntity<>(headers.getLocation().toString(), headers, HttpStatus.PERMANENT_REDIRECT);
 
 		return responseEntity;
 
 	}
 
-	private String getKoRelativePageUrl(ArkId arkId) {
-		String location = null;
+	@Autowired
+	private ServletContext servletContext;
+
+	private URI getKoRelativePageUrl(ArkId arkId) {
+		URI location = null;
 		try {
 			location = new URIBuilder()
-                    .setPath("/")
-                    .setFragment( "/object/" + URLEncoder.encode(arkId.getArkId(), "UTF-8"))
-                    .toString();
+                    .setPath(servletContext.getContextPath() + "/")
+                    .setFragment( "/object/" + URLEncoder.encode(arkId.getFedoraPath(), "UTF-8"))
+                    .build();
 		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 		return location;
