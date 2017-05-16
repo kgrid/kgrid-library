@@ -134,11 +134,6 @@ public class FusekiService {
 
 		if(fusekiServerURL != null ) {
 			if(testIfFusekiIsRunning()) {
-				SelectBuilder queryBuilder = new SelectBuilder();
-//				Query query = queryBuilder
-//						.addPrefix("ot","<http://uofm.org/objectteller/>")
-//						.addWhere("?s", "?p", "?o")
-//						.build();
 				String queryString = FusekiConstants.PREFIX_OT+"\n"+
 
 			 "SELECT  (COUNT(DISTINCT ?x) AS ?count) \n"+
@@ -450,10 +445,6 @@ public class FusekiService {
 
 
 		if(knowledgeObject != null ) {
-
-
-
-
 
 			Metadata metadata = new Metadata();
 

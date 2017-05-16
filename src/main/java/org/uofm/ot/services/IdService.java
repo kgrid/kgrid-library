@@ -1,5 +1,6 @@
 package org.uofm.ot.services;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ public class IdService {
 		// TODO: 1. fuseki 2. ezid
 	}
 
-	public KnowledgeObject bind(KnowledgeObject ko,  List<String> metadata, String targetUrl) {
+	public KnowledgeObject bind(KnowledgeObject ko,  List<String> metadata, URI targetUrl) {
 
 		ArkId arkId = ko.getArkId();
 
