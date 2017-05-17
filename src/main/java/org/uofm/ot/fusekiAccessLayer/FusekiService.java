@@ -482,6 +482,9 @@ public class FusekiService {
 			
 			if(querySolution.get("licenseLink") != null)
 				license.setLicenseLink(querySolution.get("licenseLink").toString());
+
+			if(querySolution.get("arkId") != null)
+				metadata.setArkId(querySolution.get("arkId").toString());
 			
 			metadata.setLicense(license);
 			

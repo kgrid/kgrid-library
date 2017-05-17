@@ -94,6 +94,10 @@ public class KnowledgeObject {
 
 	public void setArkId(ArkId arkId) {
 		this.arkId = arkId;
+		if(metadata == null) {
+			metadata = new Metadata();
+		}
+		metadata.setArkId(arkId.getArkId());
 	}
 
 	@Override
