@@ -163,7 +163,6 @@
                     <!--properties set from settings.xml, the command line-->
                     <server>${tomcat-server}</server>
                     <url>${tomcat-url}</url>
-                    <path>${context.path}</path>
                 </configuration>
             </plugin>
             <plugin>
