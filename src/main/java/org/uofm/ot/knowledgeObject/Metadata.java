@@ -12,6 +12,8 @@ public class Metadata implements Identifiable {
 	private Identifiable mIdentifiable = new IdentifableImpl();
 
 	private String title;
+
+	private String arkId;
 	
 	private String owner;
 	
@@ -40,6 +42,15 @@ public class Metadata implements Identifiable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	@RdfProperty(value="ot:arkId")
+	public String getArkId() {
+		return arkId;
+	}
+
+	public void setArkId(String arkId) {
+		this.arkId = arkId;
 	}
 
 	@RdfProperty(value="ot:owner")
@@ -142,10 +153,20 @@ public class Metadata implements Identifiable {
 
 	@Override
 	public String toString() {
-		return "Metadata [title=" + title + ", owner=" + owner + ", description=" + description + ", contributors="
-				+ contributors + ", keywords=" + keywords + ", published=" + published + ", lastModified="
-				+ lastModified + ", createdOn=" + createdOn + ", objectType=" + objectType + ", citations=" + citations
-				+ ", license=" + license + "]";
+		return "Metadata{" +
+				"mIdentifiable=" + mIdentifiable +
+				", title='" + title + '\'' +
+				", arkId='" + arkId + '\'' +
+				", owner='" + owner + '\'' +
+				", description='" + description + '\'' +
+				", contributors='" + contributors + '\'' +
+				", keywords='" + keywords + '\'' +
+				", published=" + published +
+				", lastModified=" + lastModified +
+				", createdOn=" + createdOn +
+				", objectType='" + objectType + '\'' +
+				", citations=" + citations +
+				", license=" + license +
+				'}';
 	}
-
 }
