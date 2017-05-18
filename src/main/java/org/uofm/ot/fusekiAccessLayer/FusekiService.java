@@ -129,6 +129,8 @@ public class FusekiService {
 		return list;
 	}
 
+	// TODO: Fix this to accept values where published = "true" and not just "yes"
+	// This isn't currenly being used anywhere, maybe just delete it?>
 	public Integer getNumberOfPublishedObjects()  throws ObjectTellerException{
 		Integer count = null;
 
@@ -378,7 +380,7 @@ public class FusekiService {
 		}
 	}
 
-	
+	// TODO: Fix this so that it checks for published = "true" and not just "yes"
 	private String initQuery(boolean isSingleObject, String uri , boolean published ) {
 		
 		String subject = "";
@@ -448,8 +450,9 @@ public class FusekiService {
 
 			Metadata metadata = new Metadata();
 
+			String publishedStringUC = querySolution.get("published").toString().toUpperCase();
 			if(querySolution.get("published") != null) {
-				if("YES".equals(querySolution.get("published").toString().toUpperCase()))
+				if(publishedStringUC.startsWith("YES") || publishedStringUC.startsWith("TRUE"))
 					metadata.setPublished(true);
 				else
 					metadata.setPublished(false);
