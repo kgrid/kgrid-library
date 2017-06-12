@@ -172,28 +172,12 @@ export function otScroll() {
 }
 
 $(document).ready(function() {
-	// $("#startdatepicker").datepicker();
-	// $("#enddatepicker").datepicker();
+
 	overlayHeightResize();
-//	$('[data-toggle="tooltip"]').tooltip();
-/*	$('#userDropdown').on('show.bs.dropdown', function(e){
-		  var target = $(e.target).attr("id"); // activated tab
-		  $("img#dropdowniconimg").removeClass('down');
-		  $("img#dropdowniconimg").addClass('up');
-	});
-	$('#userDropdown').on('hide.bs.dropdown', function(e){
-		  var target = $(e.target).attr("id"); // activated tab
-		  $("img#dropdowniconimg").removeClass('up');
-		  $("img#dropdowniconimg").addClass('down');
-	});*/
+
 	$(window).resize(function(){
 			overlayHeightResize();
-			//setBannerbkSize()
-			}
+		}
 	);
- 	//setBannerbkSize();
-/*    $('ul#tabs li:first').addClass('active');
-    $('ul#tab li:first').addClass('active');
-	$("ul#tabs li.active a span").addClass("middleout");
-*/
+
 })
