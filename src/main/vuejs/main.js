@@ -16,10 +16,10 @@ require('tether');
 require('lodash');
 
 
-import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
-import login from './components/login';  
-import objeditor from './components/objeditor'; 
-import objcreator from './components/objcreator'; 
+//import { overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
+//import login from './components/login';  
+//import objeditor from './components/objeditor'; 
+//import objcreator from './components/objcreator'; 
 
 // debug mode
 Vue.config.debug = false;

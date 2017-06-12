@@ -30,14 +30,16 @@ export default {
   },
   beforeCreate:function(){
 		var self=this;
-		getCurrentUser(function(response) {
-			if(response!=""){
-				$.extend(true, userModel.user, response);
-				$.extend(true, self.userModel.user, response);
-			}
-			},function(response) {
+		if(this.isLoggedIn){
+			getCurrentUser(function(response) {
+				if(response!=""){
+					$.extend(true, userModel.user, response);
+					$.extend(true, self.userModel.user, response);
+				}
+				},function(response) {
 			//console.log(response);
-		});
+				});
+		}
 		
 	},
   created: function () {

@@ -322,6 +322,7 @@ export default {
 	
 	created : function() {
 		var self = this;
+		if(this.isLoggedIn){
 	  	getCurrentUser(function(response) {
 				if(response!="")
 					$.extend(true, self.userModel.user, response);
@@ -329,6 +330,7 @@ export default {
 			},function(response) {
 				console.log(response);
 			});
+		}
 	  	if(sessionStorage.getItem("sortKey")==null){
 	  		this.setSessionStorage();
 	  	}
@@ -361,12 +363,14 @@ export default {
 			self.isAdmin = (self.userModel.user.role=='ADMIN');
 			self.check.pri=true;
 			$('.ot-banner').addClass('loggedin');
+			otScroll();
 		});
 		eventBus.$on('logout', function(){
 			$.extend(true, self.userModel.user, {username:'',password:''});
 			self.isLoggedIn=false;
 			self.isAdmin=false;
 			$('.ot-banner').removeClass('loggedin');
+			otScroll();
 		});	
 		eventBus.$on('objcreated', function(obj){
 			var object = {};
