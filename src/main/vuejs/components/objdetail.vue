@@ -126,20 +126,19 @@
 		},
 		created : function() {
 			var self = this;
-			if(this.isLoggedIn){
+
 			getCurrentUser(function(response) {
 				if(response!="")
 					$.extend(true, self.userModel.user, response);
 				},function(response) {
 				console.log(response);
 			});
-			}
-			this.isLoggedIn = (this.userModel.user.username!='');
 			eventBus.$on("objSaved",function(obj){
 				$.extend(true, self.objModel.object, obj);
 			});
 			eventBus.$on('objectSelected',function(obj){
 				$.extend(true, self.objModel.object, obj);	
+				otScroll();
 			});
 			eventBus.$on('userloggedin',function(obj){
 				self.isLoggedIn=true;
@@ -201,7 +200,7 @@
 			}
 		},
 		updated : function() {
-			
+			otScroll();
 		},
 		methods:{
 			selectTab: function(section){

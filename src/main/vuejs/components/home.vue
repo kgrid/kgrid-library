@@ -47,20 +47,20 @@
 
 
 			<div class='row'>
-						<div class='col-md-6 ot-search'>
+						<div class='col-md-6 col-sm-6 col-xs-6 ot-search'>
 						<img src='../assets/images/Search_Icon-01.png' width="20px"/><input
 								placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
 						</div>
-						<div class='col-md-1'></div>
-						<div class='col-md-2 ot-count'>{{countString}}</div>
-						<div class='col-md-2'>
+						<div class='col-md-1 col-sm-1 col-xs-1'></div>
+						<div class='col-md-2 col-sm-2 col-xs-2 ot-count'>{{countString}}</div>
+						<div class='col-md-2 col-sm-2 col-xs-2'>
 							<select class='ot-select' v-model='sortKey' v-on:change="onChange">
 								<option value='metadata.title'>Title</option>
 								<option value='uri'>Object ID</option>
 								<option value='metadata.lastModified'>Last Updated</option>
 							</select>
 						</div>
-						<div class='col-md-1'>
+						<div class='col-md-1 col-sm-1 col-xs-1'>
 							<button v-on:click='toggleOrder()'>
 								<span v-if='orderAsc'
 									class='ot-glybtn glyphicon glyphicon-sort-by-attributes'></span>
@@ -322,7 +322,7 @@ export default {
 	
 	created : function() {
 		var self = this;
-		if(this.isLoggedIn){
+		
 	  	getCurrentUser(function(response) {
 				if(response!="")
 					$.extend(true, self.userModel.user, response);
@@ -330,7 +330,7 @@ export default {
 			},function(response) {
 				console.log(response);
 			});
-		}
+		
 	  	if(sessionStorage.getItem("sortKey")==null){
 	  		this.setSessionStorage();
 	  	}

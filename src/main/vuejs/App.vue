@@ -30,7 +30,7 @@ export default {
   },
   beforeCreate:function(){
 		var self=this;
-		if(this.isLoggedIn){
+
 			getCurrentUser(function(response) {
 				if(response!=""){
 					$.extend(true, userModel.user, response);
@@ -39,7 +39,6 @@ export default {
 				},function(response) {
 			//console.log(response);
 				});
-		}
 		
 	},
   created: function () {
