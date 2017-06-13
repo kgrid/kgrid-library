@@ -66,14 +66,14 @@ export default {
   },
   created: function() {
   	var self = this;
-  	if(this.isLoggedIn){
+ 
   		getCurrentUser(function(response) {
 			if(response!="")
 				$.extend(true, self.userModel.user, response);
 		},function(response) {
 			console.log(response);
 		});
-  	}
+
   	 eventBus.$on('userloggedin',function(obj){
     	console.log(obj);
 		$.extend(true, self.userModel.user, obj);

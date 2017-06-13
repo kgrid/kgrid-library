@@ -1,27 +1,27 @@
 <template> 
 		<div class="container ot-tile" v-bind:id="object.uri" v-on:click="selected">
 				<div class="row ot-2">
-					<div class="col-md-1 ot-type">
+					<div class="col-md-1 col-sm-1 col-xs-1 ot-type">
 						<img v-if="object.metadata.published" src="../assets/images/LittleGreenDot.png" width="10px" height="auto" />
 					</div>
-					<div class="col-md-11 ot-title" data-toggle="tooltip"
+					<div class="col-md-11 col-sm-11 col-xs-11 ot-title" data-toggle="tooltip"
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
 					
 				</div>
 				<div class="row ot-2">
-					<div class="col-md-1 ot-empty"></div>
-					<div class="col-md-11 ot-owner">{{object.metadata.owner}}</div>
+					<div class="col-md-1 col-sm-1 col-xs-1 ot-empty"></div>
+					<div class="col-md-11 col-sm-11 col-xs-11 ot-owner">{{object.metadata.owner}}</div>
 				</div>
 				<div class="row ot-2">
-					<div class="col-md-1 ot-empty"></div>
-					<div class="col-md-5 ot-keywords">Keyword: {{object.metadata.keywords}}</div>
-					<div class='col-md-6 ot-iddate'>
+					<div class="col-md-1 col-sm-1 col-xs-1 ot-empty"></div>
+					<div class="col-md-5 col-sm-5 col-xs-5 ot-keywords">Keyword: {{object.metadata.keywords}}</div>
+					<div class='col-md-6 col-sm-6 col-xs-6 ot-iddate'>
 					<div class='row'>
-					<div class="col-md-7 ot-id">
+					<div class="col-md-7 col-sm-7 col-xs-7 ot-id">
 						<span class="ot-left">Object ID: {{object.uri}}</span>
 					</div>
-					<div class="col-md-5 ot-udate">
+					<div class="col-md-5 col-sm-5 col-xs-5 ot-udate">
 						<span class="ot-right">Last Updated: <span v-text="formattedlastModified"></span></span>
 					</div></div>
 					</div>
