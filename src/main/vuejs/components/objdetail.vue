@@ -4,7 +4,7 @@
 		<div slot='banner'>
 		<div class='row ot-detail-spacer'></div>
 		<div class='row ot-detail-smallrow'>
-			<div class='col-md-3'>
+			<div class='col-md-3 col-sm-3 col-xs-3'>
 			
 			<div id='goback'>
 			<div id='backButton'>
@@ -16,16 +16,16 @@
 			</div>
 				</div>
 			</div>
-			<div class='col-md-4'></div>
-			<div class='col-md-5 pri-pub'>
-			<div class='col-md-7' style="text-align:right;w">VIEW TYPE:</div>
-			<div class='col-md-2'>
+			<div class='col-md-4 col-sm-4 col-xs-4'></div>
+			<div class='col-md-5 col-sm-5 col-xs-5 pri-pub'>
+			<div class='col-md-7 col-sm-7 col-xs-7' style="text-align:right;w">VIEW TYPE:</div>
+			<div class='col-md-2 col-sm-2 col-xs-2'>
 						<label class='ot-pub radio-inline'><input type='radio' value='false' v-on:click='unpublish'/>
 							<span v-if='isPublic'>PRIVATE</span>
 							<span class='active middleout' v-else>PRIVATE</span>
 						</label>
 			</div>
-			<div class='col-md-3'>
+			<div class='col-md-3 col-sm-3 col-xs-3'>
 						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="6px">
 							<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
 							<span v-else>PUBLIC</span>
@@ -47,25 +47,25 @@
 			</div>
 			</div>
 					<div class='row ot-detail-daterow'>
-							<div class='col-md-3'>
+							<div class='col-md-3 col-sm-3 col-xs-3'>
 					<p class='date-title'>Object ID:</p>
 					<p class='date-data'>
 						<span>{{objModel.object.uri}}</span>
 					</p>
 				</div>
-				<div class='col-md-2'>
+				<div class='col-md-2 col-sm-2 col-xs-2'>
 					<p class='date-title'>Last Updated:</p>
 					<p class='date-data'>
 						<span v-text='formattedUpdateDate'></span>
 					</p>
 				</div>
-				<div class='col-md-2'>
+				<div class='col-md-2 col-sm-2 col-xs-2'>
 					<p class='date-title'>Created On:</p>
 					<p class='date-data'>
 						<span v-text='formattedCreateDate'></span>
 					</p>
 				</div>
-				<div class='col-md-5'>
+				<div class='col-md-5 col-sm-5 col-xs-5'>
 				</div>
 						</div>
 		</div>
@@ -166,8 +166,9 @@
 	    	$("html, body").animate({
 	        	scrollTop: 0
 	    	}, 200);
-	    	otScroll();
+
 	    	$('.ot-banner').addClass('detail');
+	    	otScroll();
 		},
 		computed : {
 			isLoggedIn:function(){
