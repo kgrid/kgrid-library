@@ -1,6 +1,6 @@
 <template>
 <div>
-	<olpane layerid=0> 
+	<olpane layerid=0>
 		<div slot="ol-title"><h3>{{editObjModel.object.metadata.title}}</h3>
 			<div id="barcontainer">
 				<ul class="inEdit" id="edittabs">
@@ -12,7 +12,7 @@
 				<div id="editWrapper">
 					<button class="edit" v-on:click="undoEdit" id="cancelBtn">UNDO</button>
 					<button class="edit" id="saveObjButton" v-on:click="saveObj">SAVE & CLOSE</button>
-								</div>
+				</div>
 			</div>
 		</div>
 		<div slot="ol-form">
@@ -24,7 +24,7 @@
 							<h4>TITLE</h4>
 							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" maxlength="140" />
 							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.title.length>=130 }" >{{editObjModel.object.metadata.title.length}}/140</span>
-							</div>
+						</div>
 						<div class="addtext">
 							<h4>DESCRIPTION</h4>
 							<textarea class="metaEdit" v-model="editObjModel.object.metadata.description"></textarea>
@@ -73,10 +73,11 @@
 												<button class="edit" v-on:click="selectCitation(citation)">EDIT</button>
 												<button class="edit" v-on:click="deleteCitation(citation)">DELETE</button>
 											</div>
-										</div>	
+										</div>
 									</li>
 								</ul>
 							</div>
+						</div>
 						</div>
 					</fieldset>
 				</li>
@@ -88,7 +89,7 @@
 								<div class="addtext">
 									<input class="textbox inEdit" type="text" v-model="editObjModel.object.payload.functionName"
 										placeholder="one instance only" maxlength="140">
-									
+
 								</div>
 								</div>
 								<div class="addtext">
@@ -181,8 +182,8 @@ export default {
 	}
 	},
 	mounted:function(){
-		$('ul#edittabs li:first').addClass('active'); 
-	    $('ul#edittab li:first').addClass('active'); 
+		$('ul#edittabs li:first').addClass('active');
+	    $('ul#edittab li:first').addClass('active');
 		$("ul#edittabs li.active").addClass("middleout");
 		editTabNav();
 		overlayHeightResize();
@@ -204,7 +205,7 @@ export default {
 			    		case "outputMessage":
 			    			this.editObjModel.object.outputMessage=msg;
 			    			break;
-			    		
+
 			    	}
 			    },
 		saveObj:function(){
@@ -226,19 +227,19 @@ export default {
 					if ((response != 'empty') && (response != null)) {
 						eventBus.$emit("objSaved",response);
 					}
-					
+
 				$("div.processing").fadeOut(200);
 					$("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
-							
+
 						});
-					
+
 				},
 				error : function(response) {
 //					console.log(response);
 					$("div.processing").fadeOut(200);
 					$("div.failure").text(response.status+"   "+ response.statusText);
 					$("div.faiure").fadeIn(300).delay(1500).fadeOut(400);
-					
+
 				}
 			});
 		},
@@ -321,7 +322,7 @@ export default {
 			editObjModel.object.metadata.citations.splice(editObjModel.object.metadata.citations.indexOf(obj), 1);
 		},
 		update:function(obj){
-			
+
 			this.showSecOverlay.show=false;
 			this.setSrcField(obj);
 	//		console.log(JSON.stringify(obj));
@@ -334,7 +335,7 @@ export default {
 				if(editObjModel.object.metadata.citations.length==0){
 //					editObjModel.object.metadata.citations=[];
 					editObjModel.object.metadata.citations.push({citation_title:obj.title,citation_at:obj.link});
-				}else{			
+				}else{
 					editObjModel.object.metadata.citations[this.citationIndex].citation_title=obj.title;
 					editObjModel.object.metadata.citations[this.citationIndex].citation_at=obj.link;
 				}
@@ -342,7 +343,7 @@ export default {
 			}
 		}
 	}
-	
+
 };
 </script>
 <style scoped>
@@ -357,7 +358,7 @@ h3 {
 margin-left:24px;
 }
 #barcontainer ul li:first-child {
-	margin-left: 10px; 
+	margin-left: 10px;
 }
 .addtext {
     position: relative;

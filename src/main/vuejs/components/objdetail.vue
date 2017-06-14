@@ -2,52 +2,49 @@
 	<div class='content'>
 		<applayout :nothelper='true'>
 		<div slot='banner'>
-		<div class='row ot-detail-spacer'></div>
-		<div class='row ot-detail-smallrow'>
-			<div class='col-md-3 col-sm-3 col-xs-3'>
-			
-			<div id='goback'>
-			<div id='backButton'>
-				 <a @click='returntolibrary'>BACK TO THE LIBRARY
-				<div class='ot-r1-btn ot-back'>
-				<div class='greyroundbutton'></div>
-			       <div class='btnContent'><img src='../assets/images/Chevron.png' width="4px"/></div>
-			       </div></a>
-			</div>
+			<div class='row ot-detail-spacer'></div>
+			<div class='row ot-detail-smallrow'>
+				<div class='col-md-3 col-sm-3 col-xs-3'>
+					<div id='goback'>
+						<div id='backButton'>
+				 			<a @click='returntolibrary'>BACK TO THE LIBRARY
+								<div class='ot-r1-btn ot-back'>
+									<div class='greyroundbutton'></div>
+			       			<div class='btnContent'><img src='../assets/images/Chevron.png' width="4px"/></div>
+			       		</div>
+							</a>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class='col-md-4 col-sm-4 col-xs-4'></div>
-			<div class='col-md-5 col-sm-5 col-xs-5 pri-pub'>
-			<div class='col-md-7 col-sm-7 col-xs-7' style="text-align:right;w">VIEW TYPE:</div>
-			<div class='col-md-2 col-sm-2 col-xs-2'>
+				<div class='col-md-4 col-sm-4 col-xs-4'></div>
+				<div class='col-md-5 col-sm-5 col-xs-5 pri-pub'>
+					<div class='col-md-7 col-sm-7 col-xs-7' style="text-align:right;w">VIEW TYPE:</div>
+					<div class='col-md-2 col-sm-2 col-xs-2'>
 						<label class='ot-pub radio-inline'><input type='radio' value='false' v-on:click='unpublish'/>
 							<span v-if='isPublic'>PRIVATE</span>
 							<span class='active middleout' v-else>PRIVATE</span>
 						</label>
-			</div>
-			<div class='col-md-3 col-sm-3 col-xs-3'>
+					</div>
+					<div class='col-md-3 col-sm-3 col-xs-3'>
 						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="6px">
 							<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
 							<span v-else>PUBLIC</span>
 						</label>
-			</div>
-				
-			</div>
-			</div>
-					<div class='row ot-detail-titlerow'>
-			<div id='ko-title'>
-				<div id= 'type-status' >
-					<img v-if='objModel.object.metadata.published'
-						src='../assets/images/LittleGreenDot.png' width='10px'
-						height='auto' />
+					</div>
 				</div>
-				<h1>
-					<small id='page_title_v'>{{objModel.object.metadata.title}}</small>
-				</h1>
 			</div>
+			<div class='row ot-detail-titlerow'>
+				<div id='ko-title'>
+					<div id= 'type-status' >
+						<img v-if='objModel.object.metadata.published' src='../assets/images/LittleGreenDot.png' width='10px'	height='auto' />
+					</div>
+					<h1>
+						<small id='page_title_v'>{{objModel.object.metadata.title}}</small>
+					</h1>
+				</div>
 			</div>
-					<div class='row ot-detail-daterow'>
-							<div class='col-md-3 col-sm-3 col-xs-3'>
+			<div class='row ot-detail-daterow'>
+				<div class='col-md-3 col-sm-3 col-xs-3'>
 					<p class='date-title'>Object ID:</p>
 					<p class='date-data'>
 						<span>{{objModel.object.uri}}</span>
@@ -67,39 +64,39 @@
 				</div>
 				<div class='col-md-5 col-sm-5 col-xs-5'>
 				</div>
-						</div>
-		</div>
-		<div slot='header'>
-		<ul class='nav nav-tabs view' role='tablist' id='tabs'>
-		<li v-for='section in sections' v-bind:id='section.name' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section)"><a >{{section.label}}</a></li>
-		<li role='presentation' class='labels accessLevelOne'><a>
-				<div class='labels iconBtn accessLevelOne' id ='more'>
-				</div>
-		</a></li>
-	</ul>
-					<div class='inline editwrapper accessLevelOne' id='objBtns'
-						>
-						<button class='edit' id='metadataeditBtn' v-show='isLoggedIn' v-on:click='editObj'>EDIT</button>
-						<button class='edit' id='deleteButton' v-show='isLoggedIn'
-							v-on:click='deleteObject'>DELETE</button>
-						<div id='downloadButton'>
-							<a class='edit' v-bind:href='downloadLink'>DOWNLOAD
-							<div class='ot-r1-btn ot-download'>
-							<div class='greyroundbutton'></div>
-						       <div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="8px"/></div>
-						       </div></a>
-						</div>
 			</div>
 		</div>
-			<div slot='maincontent'>
-					<ul class='tab-content view' id='tab'>
-						<li v-for='section in sections' v-bind:id='section.name'
-								 v-bind:class="{ active: activeTab === section.label }">
-								<tabpane v-bind:section='section.name' v-bind:object='objModel.object' ></tabpane>
-						</li>
-					</ul>
+		<div slot='header'>
+			<ul class='nav nav-tabs view' role='tablist' id='tabs'>
+				<li v-for='section in sections' v-bind:id='section.name' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section)"><a >{{section.label}}</a></li>
+				<li role='presentation' class='labels accessLevelOne'><a>
+					<div class='labels iconBtn accessLevelOne' id ='more'>
+					</div>
+					</a>
+				</li>
+			</ul>
+			<div class='inline editwrapper accessLevelOne' id='objBtns'>
+				<button class='edit' id='metadataeditBtn' v-show='isLoggedIn' v-on:click='editObj'>EDIT</button>
+				<button class='edit' id='deleteButton' v-show='isLoggedIn'
+							v-on:click='deleteObject'>DELETE</button>
+				<div id='downloadButton'>
+					<a class='edit' v-bind:href='downloadLink'>DOWNLOAD
+						<div class='ot-r1-btn ot-download'>
+							<div class='greyroundbutton'></div>
+			       	<div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="8px"/></div>
+						</div>
+					</a>
 				</div>
-			</applayout>
+			</div>
+		</div>
+		<div slot='maincontent'>
+			<ul class='tab-content view' id='tab'>
+				<li v-for='section in sections' v-bind:id='section.name' v-bind:class="{ active: activeTab === section.label }">
+								<tabpane v-bind:section='section.name' v-bind:object='objModel.object' ></tabpane>
+				</li>
+			</ul>
+		</div>
+		</applayout>
 	</div>
 	</template>
 	<script>
@@ -109,7 +106,7 @@
 	import eventBus from '../components/eventBus.js';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
-		name:'ko-detail', 
+		name:'ko-detail',
 		data : function() {
 			return {
 				objModel : objModel,
@@ -137,14 +134,14 @@
 				$.extend(true, self.objModel.object, obj);
 			});
 			eventBus.$on('objectSelected',function(obj){
-				$.extend(true, self.objModel.object, obj);	
+				$.extend(true, self.objModel.object, obj);
 				otScroll();
 			});
 			eventBus.$on('userloggedin',function(obj){
 				self.isLoggedIn=true;
 				$.extend(true, self.userModel.user,obj);
 				//self.isAdmin = (self.userModel.user.role=='ADMIN');
-				
+
 			});
 			var sessionObj = sessionStorage.getItem("otObj");
 			if(sessionObj){
@@ -156,12 +153,12 @@
 			retrieveObject(this.$route.params.uri, "complete", function(response) {
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
-				
+
 			}, function(response){
 				console.log("Error:");
 				console.log(response);
 				eventBus.$emit('404');
-			}); 
+			});
 	    	$('ul#tabs li.active').addClass('middleout');
 	    	$("html, body").animate({
 	        	scrollTop: 0
@@ -193,8 +190,8 @@
 						{return new Date(this.objModel.object.metadata.createdOn)
 							.format("mediumDate")}
 					},
-				
-		
+
+
 			downloadLink : function() {
 				return 'knowledgeObject/'
 					+ this.objModel.object.uri + '/complete.json'
@@ -280,7 +277,7 @@
 	</script>
 <style>
 .ot-banner.detail {
-	height: 220px; 
+	height: 220px;
 padding: 0px 32px 0px 48px;
 }
 .ot-detail-smallrow {
@@ -310,8 +307,8 @@ padding: 0px 32px 0px 48px;
 	padding-left:0px;
 }
 #type-status {
-	width: 10px; 
-	height: 42px; 
+	width: 10px;
+	height: 42px;
 	display: inline-block;
 }
 #type-status img {
@@ -364,7 +361,7 @@ ul#tabs li:after {
 }
 
 ul#tab>li {
-	display:none;	
+	display:none;
 }
 ul#tab>li.active {
 	display:block;
@@ -424,12 +421,12 @@ margin-bottom: 0px;
 
 }
 #objBtns{
-	top: 10px; 
+	top: 10px;
     right: 68px;
     position: absolute;
 }
 
-#more:hover {	
+#more:hover {
 	opacity: 1;
 }
 
@@ -474,7 +471,7 @@ margin-bottom: 0px;
 .ot-back .btnContent {
 	position: relative;
     top: -22px;
-    left:18px; 
+    left:18px;
 }
 
 #backButton:hover .greyroundbutton{

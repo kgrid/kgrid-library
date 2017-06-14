@@ -1,43 +1,42 @@
 <template id="linkedfield_editor">
-	<olpane layerid=1> 
-		<div slot="ol-title"><h3>Add/Edit {{inedit}}</h3>
-		<div classs="row">
-			<div class="col-md-9"></div>
-			<div class="col-md-3">
-				<button class="edit" v-on:click="undoEdit">UNDO</button>
-				<button class="edit" v-on:click="doneEdit">DONE</button>
+	<olpane layerid=1>
+		<div slot="ol-title">
+			<h3>Add/Edit {{inedit}}</h3>
+			<div classs="row">
+				<div class="col-md-9"></div>
+				<div class="col-md-3">
+					<button class="edit" v-on:click="undoEdit">UNDO</button>
+					<button class="edit" v-on:click="doneEdit">DONE</button>
+				</div>
 			</div>
-			</div>
-		
 		</div>
+
 		<div slot="ol-form">
 			<fieldset class="fieldcontainer" id="linkedfields">
-								<div class="licenseField">
-									<h4 title="license_title">{{inedit}} TITLE</h4>
-									<div class="addtext">
-										<input class="textbox inEdit" v-model="linkedField.title" type="text" spellcheck="false"
+				<div class="licenseField">
+					<h4 title="license_title">{{inedit}} TITLE</h4>
+					<div class="addtext">
+						<input class="textbox inEdit" v-model="linkedField.title" type="text" spellcheck="false"
 											placeholder="Enter Title"
 											maxlength="140"/>
-										</div>
-									<label class="errorLabel" for="username"> </label>
-								</div>
-								<div class="licenseField">
-									<h4 title="citation_link">HYPERLINK</h4>
-									<button class="inline edit" v-on:click="preview">PREVIEW</button>
-									<div class="addtext">
-										<input class="textbox inEdit" v-model="linkedField.link"
-											type="text" spellcheck="false"
-											placeholder="Please provide the URL. "/>
-									</div>
-									<label class="errorLabel" for="license_link"> </label>
-								</div>
-								<div>
-									<h4>DETAIL</h4>
-									<div class="addtext">
+					</div>
+					<label class="errorLabel" for="username"> </label>
+				</div>
+				<div class="licenseField">
+					<h4 title="citation_link">HYPERLINK</h4>
+					<button class="inline edit" v-on:click="preview">PREVIEW</button>
+					<div class="addtext">
+						<input class="textbox inEdit" v-model="linkedField.link" type="text" spellcheck="false"	placeholder="Please provide the URL. "/>
+					</div>
+					<label class="errorLabel" for="license_link"> </label>
+				</div>
+				<div>
+					<h4>DETAIL</h4>
+					<div class="addtext">
 									The content will be displayed in a new window.
-
-								</div>
-				</fieldset>
+					</div>
+				</div>
+			</fieldset>
 		</div>
 	</olpane>
 </template>
