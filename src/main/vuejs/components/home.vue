@@ -17,27 +17,27 @@
 						<button class="roundbutton iconBtn" id="userlink"
 							@click="userlink_click">
 						</button>
-						
+
 						<div class='ot-newuser' >
 					       <div class='greenroundbutton' > </div>
 					       <div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="8px"/></div>
 					</div>
-						
+
 					</div></li>
 				<li>
 					<button class="roundbutton open-overlay iconBtn" type="button"
 						id="settinglink" disabled @click="settinglink_click">
-						
+
 					</button>
 				</li>
-				
+
 			</ul>
 			<div class="floatingInfo" id="homeIcons">
 				<span></span>
 			</div>
 			</div>
 		</div>
-			
+
 		</div>
 		<div slot='header'>
 			<div v-show='isLoggedIn' class='ot-r-btn ot-newobj' v-on:click='addObject'>
@@ -92,7 +92,7 @@
 						<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label></li>
 						<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
 					</ul>
-				
+
 			</div>
 		</div>
 		<div id='filterpanel' v-if='showFilterControl'>
@@ -112,7 +112,7 @@
 								<input v-model='check.objectID' type="checkbox" class="custom-control-input">
 								<span class="custom-control-indicator"></span>
 								<span class="custom-control-description">Object ID</span>
-							</label>					
+							</label>
 						</div>
 					</div>
 					<div class='row filter'>
@@ -121,45 +121,45 @@
 					<input v-model='check.owners' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Owners</span>
-				</label>	
+				</label>
 					</div>
 					<div class='col-md-8'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.citations' disabled type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Citations</span>
-				</label>								
+				</label>
 						</div>
-					</div>				
+					</div>
 					<div class='row filter'>
 					<div class='col-md-4'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.title' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Title</span>
-				</label>	
-					
+				</label>
+
 					</div>
 					<div class='col-md-8'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.contributors' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Contributors</span>
-				</label>	
-							
+				</label>
+
 								</div>
 						</div>
 											<div class='row filter'>
-					
+
 					<div class='col-md-12'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.showmyobj' disabled type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">View only My Objects</span>
-				</label>	
-							
-								</div>		
-								<div class='col-md-5'>				
+				</label>
+
+								</div>
+								<div class='col-md-5'>
 					</div>
 					</div>
 				</div>
@@ -167,14 +167,14 @@
 					<div class='row'>
 							<p>Show Knowledge Object:</p></div>
 						<div class='row filter datetype'>
-							
+
 							<div class='col-md-1'></div>
 					<div class='col-md-4'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.pub' id='pub' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Public</span>
-				</label>	
+				</label>
 					 </div>
 							<div class='col-md-2'></div>
 					<div class='col-md-4'>
@@ -182,7 +182,7 @@
 					<input v-model='check.pri' id='pri' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Private</span>
-				</label>	
+				</label>
 								</div>
 								<div class='col-md-1'></div>
 								</div>
@@ -195,7 +195,7 @@
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Last Updated</span>
 					</label>
-						
+
 					</div>
 					<div class='col-md-2'></div>
 					<div class='col-md-4'>
@@ -204,7 +204,7 @@
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Created</span>
 					</label>
-						
+
 					</div>
 					<div class='col-md-1'></div>
 					</div>
@@ -216,14 +216,14 @@
 							<p ><date-picker :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
 						<div class='col-md-5 datepick'>
-						<span>End</span>	<p> <date-picker :date="dateRange.endTime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></p>
+						<span>End</span>	<p> <date-picker :date="dateRange.endTime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></date-picker></p>
 						</div>
 						<div class='col-md-1'></div>
 					</div>
 			</div>
 		</div>
 </div>
-</div>				
+</div>
 <ul>
 <li v-for='(object,index) in orderedList' v-bind:key='index'><kotile :object='object'
 								:listsize='listSize' :tileindex='index' v-on:remove='orderedList.splice(index, 1)'></kotile></li>
@@ -252,8 +252,8 @@ export default {
 				koList : []
 			},
 
-			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},			
-			defaultCheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},			
+			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
+			defaultCheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
  			filterStrings:[],
  			newstring:'',
  			dateRange:{datetype:'lastModified',startTime: {time: '09/01/2016'}, endTime: {time: new Date().format("shortDate")}},
@@ -319,10 +319,10 @@ export default {
 		        }]
 		      }
 		    },
-	
+
 	created : function() {
 		var self = this;
-		
+
 	  	getCurrentUser(function(response) {
 				if(response!="")
 					$.extend(true, self.userModel.user, response);
@@ -330,7 +330,7 @@ export default {
 			},function(response) {
 				console.log(response);
 			});
-		
+
 	  	if(sessionStorage.getItem("sortKey")==null){
 	  		this.setSessionStorage();
 	  	}
@@ -371,7 +371,7 @@ export default {
 			self.isAdmin=false;
 			$('.ot-banner').removeClass('loggedin');
 			otScroll();
-		});	
+		});
 		eventBus.$on('objcreated', function(obj){
 			var object = {};
 			$.extend(true, object, obj);
@@ -450,7 +450,7 @@ export default {
 			case 'metadata.title':
 				return _.orderBy(this.filteredList, [i=>i.metadata.title.toLowerCase()], this.order);
 			}
-				
+
 		},
 		filteredList : function() {
 			  var self = this;
@@ -474,7 +474,7 @@ export default {
 											customFilter=customFilter&&(field.metadata.published);
 										}
 										if (self.filterStrings.length <= 0) {
-											
+
 										} else {
 											for (var i = 0; i < self.filterStrings.length; i++) {
 												var filterResult = false;
@@ -483,7 +483,7 @@ export default {
 													filterResult = true;
 												} else {
 													var fString = new RegExp(filterString.title,'i');
-													
+
 													if (self.check.title) {
 														filterResult = (filterResult || ((field.metadata.title
 																.search(fString))!=-1));
@@ -512,7 +512,7 @@ export default {
 																		  .search(fString))!=-1) || ((field.metadata.citations[i].citation_at.search(fString))!=-1));
 																  } } }
 													   }
-													 
+
 												}
 													customFilter = customFilter	&& filterResult;
 											}
@@ -563,7 +563,7 @@ export default {
 	    	      $('img#filterdowniconimg').removeClass('down');  // eslint-disable-line
 	    	      $('img#filterdowniconimg').addClass('up');  // eslint-disable-line
 	    	      $('#filterBtn').addClass('tall');
-	    	      
+
 	    	}else
 	    	{
 	    	      $('img#filterdowniconimg').removeClass('up');  // eslint-disable-line
@@ -634,7 +634,7 @@ export default {
 					      }, delay)
 					    }
 
-				 
+
 	},
 	components:{
 		'applayout':applayout,
@@ -730,8 +730,8 @@ img#filterdowniconimg.up {
 	background-color:#fff;
 	margin: 0px 0px 12px 0px;
 	padding: 12px;
-		
-		
+
+
 }
 .filterlist li, .filterlist button#clearAll{
 display:inline-block;
@@ -842,10 +842,10 @@ padding: 0px 48px 0px 48px;
 }
 .row.filter {
 	height: 30px;
-	
+
 }
 .custom-control {
-	
+
     position: relative;
     display: inline;
     padding-left: 1.5rem;

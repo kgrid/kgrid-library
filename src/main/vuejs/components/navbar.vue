@@ -19,7 +19,7 @@
 						<ul class='nav navbar-nav'>
 							<li><router-link to='/about'>About</router-link></li>
 							<li><router-link to='/faq'>FAQ</router-link></li>
-							<li><router-link to='/contactus'>Contact Us</a></li>
+							<li><router-link to='/contactus'>Contact Us</router-link></li>
 						</ul>
 						<div v-if='!isLoggedIn'>
 						<ul class='nav navbar-nav navbar-right ot-1'>
@@ -66,7 +66,7 @@ export default {
   },
   created: function() {
   	var self = this;
- 
+
   		getCurrentUser(function(response) {
 			if(response!="")
 				$.extend(true, self.userModel.user, response);
@@ -79,7 +79,7 @@ export default {
 		$.extend(true, self.userModel.user, obj);
 	});
   	 this.showDropdown=false;
-  }, 
+  },
   mounted: function () {
     $('#userDropdown').on('show.bs.dropdown', function (e) { // eslint-disable-line
 		console.log('dropdown shown..');
@@ -151,7 +151,7 @@ export default {
     margin: 9px auto;
     padding-top: 8px;
 	padding-bottom: 8px;
-	
+
 }
 
 .ot-nav {
