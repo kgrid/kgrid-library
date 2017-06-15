@@ -51,7 +51,7 @@ export function overlayHeightResize() {
 	$('.overlay-board').css("height", boardHeight + "px");
 	$('.entryform').css("height", formHeight + "px");
 	$('ul#edittab>li').css("height", liHeight + "px");
-	console.log("Heights:Pane="+ol_pane_height+" Board="+boardHeight+" Form="+formHeight+"Li="+liHeight);
+	// console.log("Heights:Pane="+ol_pane_height+" Board="+boardHeight+" Form="+formHeight+"Li="+liHeight);
 	return ol_pane_height;
 }
 
@@ -60,7 +60,7 @@ export function autoresize() {
 	var sh = $(this)[0].scrollHeight+5;
 	$(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
 	$(this).css('height',sh+ 'px');    //Set new height
-	console.log("New Height = "+sh);
+	// console.log("New Height = "+sh);
 }
 
 export function backToTop() {
@@ -119,11 +119,11 @@ export function getCurrentUser(getUser, errorHandler) {
 		type : "GET",
 		url : "user/me",
 		success : function(response, tStatus, xhr) {
-			console.log(xhr);
+			// console.log(xhr);
 			getUser(response);
 		},
 		error : function(response, tStatus, xhr) {
-			console.log(xhr);
+			// console.log(xhr);
 			errorHandler(response);
 		}
 	});
@@ -146,7 +146,7 @@ export function setenddate(){
 export function otScroll() {
 //	var padLeft = 280;
     var navOffset = $(".header").offset().top;
-    console.log("Offset top: "+navOffset)
+    // console.log("Offset top: "+navOffset)
     $(".header").wrap('<div class="theadwrapper"></div>');
 	$(".theadwrapper").height($(".header").outerHeight(false));
 

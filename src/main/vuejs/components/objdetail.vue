@@ -170,7 +170,6 @@
 		computed : {
 			isLoggedIn:function(){
 			var loggedin =false;
-			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
 			loggedin = (userModel.user.username!="");
 			return loggedin;
 		},
