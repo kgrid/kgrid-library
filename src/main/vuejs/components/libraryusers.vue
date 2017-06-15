@@ -11,12 +11,12 @@
 		          <li v-for='(user,index) in umodel.userList' v-bind:key='index'><usercard :user='user' :you='curUserModel.user'
 		      						:tileindex='index' v-bind:class="{ active: selectedUserModel.user.username === user.username }" v-on:remove='orderedList.splice(index, 1)'></usercard></li>
 		        </ul>
-		        
+
 		      </div>
 		      <div id='emptyuser' @click='adduser'></div>
 		      </div>
 		    </div>
-	        <div class='col-md-6 maxheight'>
+	        <div class='col-md-6 maxheight userentry'>
 			    <div class='ot-sub'>BASIC INFORMATION</div>
 			    <form @submit.prevent="validateuserform" data-vv-scope="userform" autocomplete='off'>
 					<fieldset class='fieldcontainer maxheight' id='first'>
@@ -71,7 +71,7 @@
 						</div>
 					</fieldset>
 					</form>
-		   </div>     
+		   </div>
 		 </div>
 			</div>
 		</div>
@@ -125,29 +125,34 @@
 				$.extend(true, self.selectedUserModel.user, user);
 				self.isNewUser=false;
 				self.inEdit=true;
-				
+				$('.userentry').css("opacity",1);
 			});
 			eventBus.$on("userAdded", function(user){
 				var obj = {};
 				$.extend(true, obj, user);
 				self.umodel.userList.push(obj);
 				$.extend(true, self.selectedUserModel.user, user);
-				
+        $('.userentry').css("opacity",0.1);
+
 				self.isNewUser=false;
 				self.inEdit=true;
-				
+
 			});
 			eventBus.$on("userUpdated", function(user){
 				var dIndex = self.umodel.userList.map(function(e) {return e.id}).indexOf(user.profile.id);
 				console.log(dIndex);
 				$.extend(true, self.umodel.userList[dIndex], user);
 				self.inEdit=false;
+        $('.userentry').css("opacity",0.1);
+
 			});
 			eventBus.$on('userdeleted',function(userid){
 			      console.log(userid)
 			      var dIndex = self.umodel.userList.map(function(e) {return e.id}).indexOf(userid);
 			      self.umodel.userList.splice(dIndex,1);
 				  $.extend(true, self.userModel.user, self.newuserModel.user);
+          $('.userentry').css("opacity",0.1);
+
 			    })
 	},
 	components: {
@@ -172,7 +177,7 @@
 			obj.role=this.userModel.user.role;
 			return obj;
 		}
-			
+
 	},
 	methods:{
 		adduser:function(){
@@ -199,7 +204,7 @@
 		    addOrUpdateUser(){
 		    	var self=this;
 		    	var userObject = self.userdtoModel;
-		    	$( 'div.processing' ).fadeIn( 300 );  
+		    	$( 'div.processing' ).fadeIn( 300 );
 		    	if (self.isNewUser) {
 		    		var text = JSON.stringify(userObject);
 			    		$.ajax({
@@ -227,7 +232,7 @@
 		    						$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
 		    					}
 		    				});
-		    		
+
 		    	}else {
 		    		var text = JSON.stringify(userObject);
 		    		var id = userObject.profile.id;
@@ -257,10 +262,10 @@
 		    						$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
 		    					}
 		    				});
-		    		
+
 		    	}
 		    }
-		    
+
 	}
 };
 	</script>
@@ -279,7 +284,7 @@
 	height: 88%;
 	max-height: 650px;
 	overflow: auto;
-	
+
 	}
 	#uList li {
 		margin-top : 20px;
@@ -351,6 +356,10 @@
 	    padding: 0px 4px 0px 16px;
 	    margin: 0px;
 	}
+  .userentry {
+    opacity: 0.1;
+    transition: opacity 1s ease;
+  }
 	p.control {
 	    position: absolute;
 	    margin: 2px 0;
