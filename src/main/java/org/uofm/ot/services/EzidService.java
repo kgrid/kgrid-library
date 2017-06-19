@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
@@ -55,7 +56,8 @@ public class EzidService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
-        
+
+
         HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
 
         ResponseEntity<String> response = rt.postForEntity(
@@ -67,6 +69,19 @@ public class EzidService {
         arkId = arkId.substring("success: ".length());
         return arkId;
 
+    }
+
+    public void create(String arkId) {
+      RestTemplate rt = new RestTemplate();
+
+      rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.TEXT_PLAIN);
+
+      HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
+      String ezidURL = EZID_BASE_URL + "id/" + arkId;
+
+      ResponseEntity response = rt.exchange(ezidURL, HttpMethod.PUT, requestEntity, String.class);
     }
     
     private String modify(String id, List<String> metadata){
