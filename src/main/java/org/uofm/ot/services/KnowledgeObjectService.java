@@ -13,6 +13,7 @@ import org.openrdf.model.Model;
 import org.openrdf.model.impl.SimpleValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraAccessLayer.ChildType;
 import org.uofm.ot.fedoraAccessLayer.FCRepoService;
@@ -121,23 +122,6 @@ public class KnowledgeObjectService {
 		return knowledgeObject;
 	}
 
-	public KnowledgeObject createKnowledgeObject(KnowledgeObject knowledgeObject, OTUser loggedInUser,
-			String libraryURL) throws ObjectTellerException, URISyntaxException {
-		return createObject(knowledgeObject, loggedInUser, libraryURL, null);
-	}
-
-	public KnowledgeObject createFromExistingArkId(KnowledgeObject knowledgeObject,
-			OTUser loggedInUser, String libraryURL, ArkId existingArkId)
-			throws ObjectTellerException, URISyntaxException {
-
-		// TODO: Check other option for Dummy User
-		UserProfile profile = new UserProfile("MANUAL", "IMPORT");
-		//OTUser loggedInUser = new OTUser(null, null, null, profile);
-
-		return createObject(knowledgeObject, loggedInUser, libraryURL, existingArkId);
-
-	}
-
 	public String getInputMessageContent(ArkId arkId) throws ObjectTellerException {
 		return fcRepoService.getObjectContent(arkId.getFedoraPath(), ChildType.INPUT.getChildType());
 	}
@@ -178,17 +162,15 @@ public class KnowledgeObjectService {
 
 	public void editPayload(ArkId arkId, Payload payload) throws ObjectTellerException, URISyntaxException {
 		fcRepoService.putBinary(payload.getContent(), arkId, ChildType.PAYLOAD.getChildType());
-		//editPayloadMetadata(payload, new URI(fcRepoService.getBaseURI() + arkId.getFedoraPath() + "/Payload"));
 		insertRDFData(payload, new URI(fcRepoService.getBaseURI() + arkId.getFedoraPath() + "/Payload"));
 	}
 
+	@Deprecated
 	public void patchKnowledgeObject(KnowledgeObject knowledgeObject, ArkId arkId)
 			throws ObjectTellerException, URISyntaxException {
-		if (knowledgeObject != null) {
-			if (knowledgeObject.getMetadata() != null) {
-				boolean param = knowledgeObject.getMetadata().isPublished();
-				togglePublishedStatus(arkId, knowledgeObject.getMetadata(), param);
-			}
+		if (knowledgeObject != null && knowledgeObject.getMetadata() != null) {
+			boolean param = knowledgeObject.getMetadata().isPublished();
+			togglePublishedStatus(arkId, knowledgeObject.getMetadata(), param);
 		}
 	}
 
@@ -243,6 +225,10 @@ public class KnowledgeObjectService {
 
 	private void addOrEditMetadataToURI(URI objectURI, Metadata metadata)
 			throws ObjectTellerException, URISyntaxException {
+
+		if (metadata == null) {
+			return;
+		}
 
 		if (metadata.getLicense() != null) {
 			IRI iri = SimpleValueFactory.getInstance().createIRI(objectURI.toString());
@@ -299,6 +285,14 @@ public class KnowledgeObjectService {
 			ArkId arkId = existingArkId;
 			if (arkId == null) {
 				arkId = idService.mint();
+			} try {
+				idService.resolve(arkId);
+			} catch (HttpClientErrorException e) {
+				try {
+					idService.create(arkId);
+				} catch (HttpClientErrorException ex) {
+					throw new ObjectTellerException("Invalid ark id specified for creating/editing an object. " + arkId.getArkId() + " is not valid. " + ex, ex);
+				}
 			}
 
 			knowledgeObject.setArkId(arkId);
@@ -359,8 +353,9 @@ public class KnowledgeObjectService {
 	}
 
 	private void addProvMetadataStart(URI uri, OTUser loggedInUser) throws ObjectTellerException {
-		ProvenanceLogData provLogData = new ProvenanceLogData(loggedInUser.getFullName(),
-				uri.toString(), loggedInUser.getFullName(), uri.toString(), new Date(), null);
+		String username = loggedInUser == null ? null : loggedInUser.getFullName();
+		ProvenanceLogData provLogData = new ProvenanceLogData(username,
+				uri.toString(), username, uri.toString(), new Date(), null);
 		insertRDFData(provLogData, uri);
 	}
 

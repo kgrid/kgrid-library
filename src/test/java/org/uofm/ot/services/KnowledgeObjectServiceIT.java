@@ -70,7 +70,7 @@ public class KnowledgeObjectServiceIT {
   @Test
   public void tryToCreateEditAndDeleteKO() throws Exception {
 
-    KnowledgeObject createdKO = koService.createKnowledgeObject(dummyKO, loggedInUser, libraryURL);
+    KnowledgeObject createdKO = koService.createObject(dummyKO, loggedInUser, libraryURL, null);
     // Need to wait for the fedora repository to finish creating the KO before getting it
     Thread.sleep(1000);
     koService.deleteObject(dummyKO.getArkId());
