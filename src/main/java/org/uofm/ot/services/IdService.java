@@ -25,7 +25,11 @@ public class IdService {
 
 	public ArkId mint() {
         return new ArkId(ezidService.mint());
-    }    
+    }
+
+	public void create(ArkId arkId) {
+		ezidService.create(arkId.getArkId());
+	}
     
 	public void publish(ArkId arkId, List<String> metadata) {
 		ezidService.status(arkId.getArkId(), metadata ,ArkId.Status.PUBLIC);
@@ -35,8 +39,9 @@ public class IdService {
 		ezidService.status(arkId.getArkId(), metadata ,ArkId.Status.UNAVAILABLE);
 	}
 	
-	public void resolve (String arkId){
+	public String resolve (ArkId arkId){
 		// TODO: 1. fuseki 2. ezid
+		return ezidService.get(arkId.getArkId());
 	}
 
 	public KnowledgeObject bind(KnowledgeObject ko,  List<String> metadata, URI targetUrl) {
