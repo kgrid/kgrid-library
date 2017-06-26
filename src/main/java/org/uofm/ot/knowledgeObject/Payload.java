@@ -32,6 +32,7 @@ public class Payload implements Identifiable {
 		return content;
 	}
 
+	@RdfProperty(value="ot:content")
 	public void setContent(String content) {
 		this.content = content;
 	}
@@ -41,6 +42,7 @@ public class Payload implements Identifiable {
 		return functionName;
 	}
 
+	@RdfProperty(value="ot:functionName")
 	public void setFunctionName(String functionName) {
 		this.functionName = functionName;
 	}
@@ -50,6 +52,7 @@ public class Payload implements Identifiable {
 		return engineType;
 	}
 
+	@RdfProperty(value="ot:executorType")
 	public void setEngineType(String engineType) {
 		this.engineType = engineType;
 	}

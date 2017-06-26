@@ -1,4 +1,4 @@
-package org.uofm.ot.services;
+package org.uofm.ot.ezidGateway;
 
 import java.net.URI;
 import java.util.List;

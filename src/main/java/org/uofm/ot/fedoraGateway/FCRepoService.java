@@ -1,4 +1,4 @@
-package org.uofm.ot.fedoraAccessLayer;
+package org.uofm.ot.fedoraGateway;
 
 import com.complexible.common.openrdf.model.ModelIO;
 import java.io.BufferedInputStream;

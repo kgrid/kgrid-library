@@ -40,6 +40,7 @@ public class Metadata implements Identifiable {
 		return title;
 	}
 
+	@RdfProperty(value="dc:title")
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -49,6 +50,7 @@ public class Metadata implements Identifiable {
 		return arkId;
 	}
 
+	@RdfProperty(value="ot:arkId")
 	public void setArkId(String arkId) {
 		this.arkId = arkId;
 	}
@@ -58,6 +60,7 @@ public class Metadata implements Identifiable {
 		return owner;
 	}
 
+	@RdfProperty(value="ot:owner")
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
@@ -67,6 +70,7 @@ public class Metadata implements Identifiable {
 		return description;
 	}
 
+	@RdfProperty(value="ot:description")
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -76,6 +80,7 @@ public class Metadata implements Identifiable {
 		return contributors;
 	}
 
+	@RdfProperty(value="ot:contributors")
 	public void setContributors(String contributors) {
 		this.contributors = contributors;
 	}
@@ -85,6 +90,7 @@ public class Metadata implements Identifiable {
 		return keywords;
 	}
 
+	@RdfProperty(value="ot:keywords")
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
@@ -94,6 +100,7 @@ public class Metadata implements Identifiable {
 		return published;
 	}
 
+	@RdfProperty(value="ot:published")
 	public void setPublished(boolean published) {
 		this.published = published;
 	}
@@ -102,6 +109,7 @@ public class Metadata implements Identifiable {
 		return lastModified;
 	}
 
+	@RdfProperty(value="fedora:lastModified")
 	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
 	}
@@ -110,6 +118,7 @@ public class Metadata implements Identifiable {
 		return createdOn;
 	}
 
+	@RdfProperty(value="fedora:created")
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
@@ -127,6 +136,7 @@ public class Metadata implements Identifiable {
 		return citations;
 	}
 
+	@RdfProperty(value = "ot:citations", isList = true)
 	public void setCitations(List<Citation> citations) {
 		this.citations = citations;
 	}
@@ -136,6 +146,7 @@ public class Metadata implements Identifiable {
 		return license;
 	}
 
+	@RdfProperty(value = "ot:license")
 	public void setLicense(License license) {
 		this.license = license;
 	}

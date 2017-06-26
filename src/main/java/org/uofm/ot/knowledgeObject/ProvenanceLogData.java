@@ -26,6 +26,10 @@ public class ProvenanceLogData implements Identifiable {
 
   private Date endedAtTime;
 
+  public ProvenanceLogData() {
+
+  }
+
   public ProvenanceLogData(String wasAttributedTo, String wasGeneratedBy,
       String wasAssociatedWith, String used, Date startedAtTime, Date endedAtTime) {
     this.wasAttributedTo = wasAttributedTo;
@@ -41,6 +45,7 @@ public class ProvenanceLogData implements Identifiable {
     return wasAttributedTo;
   }
 
+  @RdfProperty("prov:wasAttributedTo")
   public void setWasAttributedTo(String wasAttributedTo) {
     this.wasAttributedTo = wasAttributedTo;
   }
@@ -50,6 +55,7 @@ public class ProvenanceLogData implements Identifiable {
     return wasGeneratedBy;
   }
 
+  @RdfProperty("prov:wasGeneratedBy")
   public void setWasGeneratedBy(String wasGeneratedBy) {
     this.wasGeneratedBy = wasGeneratedBy;
   }
@@ -59,6 +65,7 @@ public class ProvenanceLogData implements Identifiable {
     return wasAssociatedWith;
   }
 
+  @RdfProperty("prov:wasAssociatedWith")
   public void setWasAssociatedWith(String wasAssociatedWith) {
     this.wasAssociatedWith = wasAssociatedWith;
   }
@@ -68,6 +75,7 @@ public class ProvenanceLogData implements Identifiable {
     return used;
   }
 
+  @RdfProperty("prov:used")
   public void setUsed(String used) {
     this.used = used;
   }
@@ -77,6 +85,7 @@ public class ProvenanceLogData implements Identifiable {
     return startedAtTime;
   }
 
+  @RdfProperty("prov:startedAtTime")
   public void setStartedAtTime(Date startedAtTime) {
     this.startedAtTime = startedAtTime;
   }
@@ -86,20 +95,20 @@ public class ProvenanceLogData implements Identifiable {
     return endedAtTime;
   }
 
+  @RdfProperty("prov:endedAtTime")
   public void setEndedAtTime(Date endedAtTime) {
     this.endedAtTime = endedAtTime;
   }
 
   @Override
   public String toString() {
-    return "ProvenanceLogData{" +
-        "wasAttributedTo='" + wasAttributedTo + '\'' +
-        ", wasGeneratedBy='" + wasGeneratedBy + '\'' +
-        ", wasAssociatedWith='" + wasAssociatedWith + '\'' +
-        ", used='" + used + '\'' +
-        ", startedAtTime=" + startedAtTime +
-        ", endedAtTime=" + endedAtTime +
-        '}';
+    return "ProvenanceLogData: " +
+        "\n\t wasAttributedTo: '" + wasAttributedTo + '\'' +
+        ",\n\t wasGeneratedBy: '" + wasGeneratedBy + '\'' +
+        ",\n\t wasAssociatedWith: '" + wasAssociatedWith + '\'' +
+        ",\n\t used: '" + used + '\'' +
+        ",\n\t startedAtTime: " + startedAtTime +
+        ",\n\t endedAtTime: " + endedAtTime;
   }
 
   @Override
