@@ -11,7 +11,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openrdf.model.IRI;
 import org.openrdf.model.Model;
-import org.openrdf.model.impl.ContextStatement;
 import org.openrdf.model.impl.SimpleValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class KnowledgeObjectService {
 		Metadata metadata = fetchAndDeserializeRDFData(Metadata.class, metadataURI, metadataURI.toString());
 
 		URI citationContainerURI = new URI(metadataURI + "/" + ChildType.CITATIONS.getChildType());
-		List<URI> citationURIs = getChildrenURIs(citationContainerURI);
+		List<URI> citationURIs = fcRepoService.getChildrenURIs(citationContainerURI);
 		ArrayList<Citation> citations = new ArrayList<>();
 		for (URI citationURI : citationURIs) {
 			citations.add(fetchAndDeserializeRDFData(Citation.class, citationURI, citationURI.toString()));
@@ -374,18 +373,6 @@ public class KnowledgeObjectService {
 				.build().readValue(model, clazz, SimpleValueFactory.getInstance().createIRI(iri));
 	}
 
-	private List<URI> getChildrenURIs(URI containerURI) throws ObjectTellerException, URISyntaxException {
-		Model container = fcRepoService.getRDFData(containerURI);
-		ArrayList<URI> uris = new ArrayList<>();
-		for (Object item: container.toArray()) {
-			ContextStatement statement = (ContextStatement)item;
-			IRI iri = SimpleValueFactory.getInstance().createIRI(NamespaceConstants.CONTAINS);
-			if(statement.getPredicate().equals(iri)) {
-				uris.add(new URI(statement.getObject().stringValue()));
-			}
-		}
-		return uris;
-	}
 }
 
 
