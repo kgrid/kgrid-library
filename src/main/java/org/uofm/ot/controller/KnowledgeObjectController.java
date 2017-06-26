@@ -65,8 +65,8 @@ public class KnowledgeObjectController {
 
 	@GetMapping(value="/knowledgeObject",
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public List<KnowledgeObject> getKnowledgeObjects() throws ObjectTellerException {
-		return knowledgeObjectService.getKnowledgeObjects(false);
+	public List<KnowledgeObject> getKnowledgeObjects(@RequestParam(value="published", required = false) boolean onlyPublished) throws ObjectTellerException {
+		return knowledgeObjectService.getKnowledgeObjects(onlyPublished);
 	}
 
 	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}", "/ark:/{naan}/{name}", "/knowledgeObject/{naan}-{name}", "/{naan}-{name}"},
@@ -96,7 +96,7 @@ public class KnowledgeObjectController {
 
 	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}","/ark:/{naan}/{name}","/knowledgeObject/{naan}-{name}","/{naan}-{name}"},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId, @RequestParam(value="complete", required=false) boolean complete) throws ObjectTellerException  {
+	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId, @RequestParam(value="complete", required=false) boolean complete) throws ObjectTellerException, URISyntaxException  {
 		ResponseEntity<KnowledgeObject> entity = null;
 
 		KnowledgeObject knowledgeObject;
@@ -117,7 +117,7 @@ public class KnowledgeObjectController {
 	@Deprecated
 	@GetMapping(value="/knowledgeObject/ark:/{naan}/{name}/complete",
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public  ResponseEntity<KnowledgeObject> getCompleteKnowledgeObjectForArkId( ArkId arkId) throws ObjectTellerException  {
+	public  ResponseEntity<KnowledgeObject> getCompleteKnowledgeObjectForArkId( ArkId arkId) throws ObjectTellerException, URISyntaxException {
 		ResponseEntity<KnowledgeObject> entity = null;
 		KnowledgeObject knowledgeObject =  knowledgeObjectService.getCompleteKnowledgeObject(arkId);
 		if(knowledgeObject != null){
@@ -188,7 +188,7 @@ public class KnowledgeObjectController {
 
 	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}/metadata","/knowledgeObject/{naan}-{name}/metadata"},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public Metadata getMetadataByArkId(ArkId arkId) throws ObjectTellerException {
+	public Metadata getMetadataByArkId(ArkId arkId) throws ObjectTellerException, URISyntaxException {
 		return knowledgeObjectService.getKnowledgeObject(arkId).getMetadata();
 	}
 	
@@ -199,7 +199,7 @@ public class KnowledgeObjectController {
 		try {
 			Payload payloadObj = knowledgeObjectService.getPayload(arkId);
 			payload = new ResponseEntity<Payload> (payloadObj,HttpStatus.OK);
-		} catch (ObjectTellerException e) {
+		} catch (ObjectTellerException | URISyntaxException e) {
 			payload = new ResponseEntity<Payload> (HttpStatus.NOT_FOUND);
 		}
 		return payload;
@@ -230,10 +230,10 @@ public class KnowledgeObjectController {
 	}
 	
 	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}/logData","/knowledgeObject/ark:/{naan}/{name}/logData"})
-	public ResponseEntity<String> getLogDataByArkId( ArkId arkId) throws ObjectTellerException {
+	public ResponseEntity<String> getLogDataByArkId( ArkId arkId) throws ObjectTellerException, URISyntaxException {
 		ResponseEntity<String> logData = null;
 		try {
-			String content = knowledgeObjectService.getProvData(arkId);
+			String content = knowledgeObjectService.getProvData(arkId).toString();
 			logData = new ResponseEntity<String>(content, HttpStatus.OK);
 		} catch (ObjectTellerException exception){
 			logData = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
@@ -297,7 +297,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/{objectURI}/complete",
 			method=RequestMethod.GET ,
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public KnowledgeObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException  {
+	public KnowledgeObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws ObjectTellerException, URISyntaxException {
 		ArkId arkId = new ArkId(objectURI);
 		return knowledgeObjectService.getCompleteKnowledgeObject(arkId);
 	}
@@ -340,7 +340,7 @@ public class KnowledgeObjectController {
 	@RequestMapping(value="/knowledgeObject/{objectURI}/metadata",
 			method=RequestMethod.GET ,
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public Metadata getMetadata( @PathVariable String objectURI) throws ObjectTellerException {
+	public Metadata getMetadata( @PathVariable String objectURI) throws ObjectTellerException, URISyntaxException {
 		ArkId arkId = new ArkId(objectURI);
 		return knowledgeObjectService.getKnowledgeObject(arkId).getMetadata();
 	}
@@ -356,7 +356,7 @@ public class KnowledgeObjectController {
 			ArkId arkId = new ArkId(objectURI);
 			Payload payloadObj = knowledgeObjectService.getPayload(arkId);
 			payload = new ResponseEntity<Payload> (payloadObj,HttpStatus.OK);
-		} catch (ObjectTellerException e) {
+		} catch (ObjectTellerException | URISyntaxException e) {
 			payload = new ResponseEntity<Payload> (HttpStatus.NOT_FOUND);
 		}
 		return payload;
@@ -397,11 +397,11 @@ public class KnowledgeObjectController {
 	// TODO: Remove this method after UI switched it to other API
 	@RequestMapping(value="/knowledgeObject/{objectURI}/logData",
 			method=RequestMethod.GET )
-	public ResponseEntity<String> getLogData( @PathVariable String objectURI) throws ObjectTellerException {
+	public ResponseEntity<String> getLogData( @PathVariable String objectURI) throws ObjectTellerException, URISyntaxException {
 		ResponseEntity<String> logData = null;
 		try {
 			ArkId arkId = new ArkId(objectURI);
-			String content = knowledgeObjectService.getProvData(arkId);
+			String content = knowledgeObjectService.getProvData(arkId).toString();
 			logData = new ResponseEntity<String>(content, HttpStatus.OK);
 		} catch (ObjectTellerException exception){
 			logData = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
