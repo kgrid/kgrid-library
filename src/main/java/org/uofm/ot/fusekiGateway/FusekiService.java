@@ -5,6 +5,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.jena.arq.querybuilder.SelectBuilder;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.RDFNode;
@@ -45,7 +46,6 @@ public class FusekiService {
 			fusekiPrefix = fusekiServer.getPrefix();
 		}
 	}
-	
 
 	public ArrayList<KnowledgeObject> getKnowledgeObjects(boolean published) throws ObjectTellerException {
 		ArrayList< KnowledgeObject> list = new ArrayList<>();
@@ -100,7 +100,6 @@ public class FusekiService {
 		return getAllObjects.build();
 	}
 
-
 	private ArrayList<KnowledgeObject> getFedoraObjects(Query query) throws ConnectException, ObjectTellerException {
 		ArrayList< KnowledgeObject> list = new ArrayList<>();
 		QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
@@ -123,7 +122,7 @@ public class FusekiService {
 		String fusekiURL = fusekiServerURL;
 		fusekiURL = fusekiURL.substring(0,fusekiURL.lastIndexOf("/"));
 
-		HttpClient httpClient = new DefaultHttpClient();
+		HttpClient httpClient = HttpClientBuilder.create().build();
 
 		HttpGet httpGetRequest = new HttpGet(fusekiURL);
 		
@@ -132,18 +131,12 @@ public class FusekiService {
 			httpResponse = httpClient.execute(httpGetRequest);
 			if ( 200 == httpResponse.getStatusLine().getStatusCode())
 				result = true;
-		} catch (ClientProtocolException e) {
-			logger.error("Not able to connect to the Fuseki with url "+fusekiURL);
-			ObjectTellerException exception = new ObjectTellerException(e);
-			exception.setErrormessage("Not able to connect to the Fuseki with url "+fusekiURL);
-			throw exception;
 		} catch (IOException e) {
+			logger.error("Not able to connect to the Fuseki with url "+fusekiURL);
 			ObjectTellerException exception = new ObjectTellerException(e);
 			exception.setErrormessage("Not able to connect to the Fuseki with url "+fusekiURL);
-			logger.error("Not able to connect to the Fuseki with url "+fusekiURL);
 			throw exception;
 		}
-		
 		return result;
 	}
 	
