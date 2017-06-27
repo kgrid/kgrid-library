@@ -233,7 +233,7 @@
 		</div>
 </template>
 <script>
-import myDatepicker from '../vendor/vue-datepicker.es6-1.vue'
+import myDatepicker from '../vendor/vue-datepicker-es6.vue'
 import applayout from './applayout.vue';
 import kotile from './kotile.vue';
 import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, otScroll, setBannerbkSize} from '../ot.js';
