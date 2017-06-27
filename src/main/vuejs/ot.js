@@ -1,4 +1,4 @@
-export function retrieveObjectList(fillObjectList){
+export function retrieveObjectList(fillObjectList,errorHandler){
 		$.ajax({
 			type : "GET",
 			url : "knowledgeObject",
@@ -10,7 +10,7 @@ export function retrieveObjectList(fillObjectList){
 				fillObjectList(response);
 			},
 			error : function(response) {
-				// errorHandler(response);
+				 errorHandler(response);
 			}
 		});
 }

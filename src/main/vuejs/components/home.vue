@@ -233,7 +233,7 @@
 		</div>
 </template>
 <script>
-import myDatepicker from '../vendor/vue-datepicker.vue'
+import myDatepicker from '../vendor/vue-datepicker.es6-1.vue'
 import applayout from './applayout.vue';
 import kotile from './kotile.vue';
 import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, otScroll, setBannerbkSize} from '../ot.js';
@@ -347,6 +347,8 @@ export default {
 			if(self.model.koList.length>0){
 				$.extend(true,objModel.object,self.model.koList[0]);
 			}
+		}, function(response){
+			console.log("Error in retrieving the list from the connected library.")
 		});
 		eventBus.$on('objectSelected',function(obj){
 			objModel.object=obj;
@@ -420,7 +422,7 @@ export default {
 	  },
 		isLoggedIn:function(){
 			var loggedin =false;
-			//console.log('Computing isLoggedIn ==> '+ userModel.user.username);
+			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
 			loggedin = (userModel.user.username!="");
 			//this.check.pri=loggedin;
 			return loggedin;
