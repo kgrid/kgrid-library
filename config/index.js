@@ -1,6 +1,10 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+// allow command line override of connected library path, e.g.
+// $ LIBRARY=http://localhost:8080/ObjectTeller npm run dev
+var library = process.env.LIBRARY || 'http://localhost:8080/Object-Teller'
+
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -27,8 +31,26 @@ module.exports = {
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
-    // CSS Sourcemaps off by default because relative paths are "buggy"
+      // proxy each backend api route separately, rewrites not needed
+	proxyTable: {
+        '/user': {
+            target: library,
+            changeOrigin: true,
+        },
+        '/knowledgeObject': {
+            target: library,
+            changeOrigin: true,
+        },
+        '/login': {
+            target: library,
+            changeOrigin: true,
+        },
+        '/logout': {
+            target: library,
+            changeOrigin: true,
+        }
+    },
+	// CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)
     // In our experience, they generally work as expected,
