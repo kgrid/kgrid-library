@@ -1,7 +1,7 @@
 <template id='navbar'>
 		<div class='ot-nav'>
 			<router-link class='navbar-brand ot-1' to='/'>
-				<img alt='Brand' src='../assets/images/logo.png'>
+				<img alt='Brand' src='../assets/images/logo.png' />
 			</router-link>
 			<nav class='navbar navbar-default navbar-fixed-top ot-1'>
 				<div class='container-fluid ot-1'>
@@ -22,10 +22,10 @@
 							<li><router-link to='/contactus'>Contact Us</router-link></li>
 						</ul>
 						<div v-if='!isLoggedIn'>
-						<ul class='nav navbar-nav navbar-right ot-1'>
-							<li class='login-link' v-on:click='login_click'><a>Log In</a></li>
-							<li class='signup-link'><router-link id="signupBtn" to='/soon'>Sign Up</router-link></li>
-						</ul>
+							<ul class='nav navbar-nav navbar-right ot-1'>
+								<li class='login-link' v-on:click='login_click'><a>Log In</a></li>
+								<li class='signup-link'><router-link id="signupBtn" to='/soon'>Sign Up</router-link></li>
+							</ul>
 						</div>
 						<div v-else>
 							<ul class='nav navbar-nav navbar-right ot-1'>
