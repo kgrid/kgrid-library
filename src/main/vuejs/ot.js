@@ -6,11 +6,11 @@ export function retrieveObjectList(fillObjectList){
 			     withCredentials: true
 			},
 			success : function(response, tStatus, xhr) {
-			//	console.log(xhr);
+				console.log(xhr);
 				fillObjectList(response);
 			},
 			error : function(response) {
-				// errorHandler(response);
+				 //errorHandler(response);
 			}
 		});
 }
@@ -114,17 +114,17 @@ export function retrieveUserList(fillUserList, errorHandler){
 	});
 }
 
-export function getCurrentUser(getUser, errorHandler) {
+export function getCurrentUser(getUser) {
 	$.ajax({
 		type : "GET",
 		url : "user/me",
 		success : function(response, tStatus, xhr) {
-			// console.log(xhr);
+			console.log(xhr);
 			getUser(response);
 		},
 		error : function(response, tStatus, xhr) {
-			// console.log(xhr);
-			errorHandler(response);
+			console.log(xhr);
+			//errorHandler(response);
 		}
 	});
 }
