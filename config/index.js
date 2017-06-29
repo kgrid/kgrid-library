@@ -3,7 +3,7 @@ var path = require('path')
 
 // allow command line override of connected library path, e.g.
 // $ LIBRARY=http://localhost:8080/ObjectTeller npm run dev
-var library = process.env.LIBRARY || 'http://localhost:8080/Object-Teller'
+var library = process.env.LIBRARY || 'http://localhost:8080/ObjectTeller'
 
 module.exports = {
   build: {
