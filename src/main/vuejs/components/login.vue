@@ -23,16 +23,16 @@
 									    <!-- 											<button class='edit_btn' >Forgot your password?</button>
 		 -->							</div>
 								<div class='loginField'>
-								
-									
-								
+
+
+
 									<div class='ot-s-btn ot-login'>
 								       <div class='greenbutton' > </div>
 								       <div class='btnContent'><button class='login' type='submit'>LOG IN</button></div>
 								</div>
-									
-									
-									
+
+
+
 									</div>
 				</fieldset>
 				</form>
@@ -98,7 +98,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 p.control {
 	position: absolute;
 	margin: 12px 0;

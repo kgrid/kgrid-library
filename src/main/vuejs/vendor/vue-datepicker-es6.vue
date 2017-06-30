@@ -373,10 +373,6 @@ table {
             </div>
           </div>
         </div>
-        <div class="button-box">
-          <span @click="showInfo.check=false">{{option.buttons? option.buttons.cancel : 'Cancel' }}</span>
-          <span @click="picked">{{option.buttons? option.buttons.ok : 'Ok'}}</span>
-        </div>
       </div>
     </div>
   </div>
@@ -395,14 +391,14 @@ export default {
       default () {
         return {
           type: 'day',
-          SundayFirst: false,
+          SundayFirst: true,
           week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format: 'YYYY-MM-DD',
           color: {
-            checked: '#F50057',
-            header: '#3f51b5',
-            headerText: '#fff'
+            checkedDay: '#e6e6e6',
+            header: '#fff',
+            headerText: '#666666'
           },
           wrapperClass: '',
           inputClass: '',

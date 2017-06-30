@@ -676,7 +676,7 @@ export default {
     width:85%;
 }
 
-input[type=text], input[type=password], input[type=textarea], .addtext a {
+input[type=text], input[type=password], input[type=textarea] {
     width: 900px;
     height: 38px;
     padding: 0px 16px;
