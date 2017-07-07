@@ -5,7 +5,7 @@
 		<div class='row ot-detail-spacer'></div>
 		<div class='row ot-detail-smallrow'>
 			<div class='col-md-3 col-sm-3 col-xs-3'>
-			
+
 			<div id='goback'>
 			<div id='backButton'>
 				 <a @click='returntolibrary'>BACK TO THE LIBRARY
@@ -18,20 +18,8 @@
 			</div>
 			<div class='col-md-4 col-sm-4 col-xs-4'></div>
 			<div class='col-md-5 col-sm-5 col-xs-5 pri-pub'>
-			<div class='col-md-7 col-sm-7 col-xs-7' style="text-align:right;w">VIEW TYPE:</div>
-			<div class='col-md-2 col-sm-2 col-xs-2'>
-						<label class='ot-pub radio-inline'><input type='radio' value='false' v-on:click='unpublish'/>
-							<span v-if='isPublic'>PRIVATE</span>
-							<span class='active middleout' v-else>PRIVATE</span>
-						</label>
-			</div>
-			<div class='col-md-3 col-sm-3 col-xs-3'>
-						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="6px">
-							<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
-							<span v-else>PUBLIC</span>
-						</label>
-			</div>
-				
+
+
 			</div>
 			</div>
 					<div class='row ot-detail-titlerow'>
@@ -42,8 +30,32 @@
 						height='auto' />
 				</div>
 				<h1>
-					<small id='page_title_v'>{{objModel.object.metadata.title}}</small>
+					<small id='page_title_v'>{{objModel.object.metadata.title}}
+						<span class="badge badge-success" v-if='isPublic'>Public</span>
+						<span class="badge badge-warning" v-else>Private</span>
+						<span class="badge badge-success">{{publishState}}</span>
+
+</small>
+
 				</h1>
+				<div id='actionlist'  class="dropdown" style="float:right;display:inline-block;">
+				<button class="ot-btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    					<span class='ot-glybtn glyphicon glyphicon-option-vertical'></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+		<li class="dropdown-header">Access Management</li>
+    <li><a href="#">Change to Private</a></li>
+		<li><a href="#">Add Collaborator</a></li>
+		<li role="separator" class="divider"></li>
+		<li class="dropdown-header">Object Management</li>
+    <li><a href="#">Publish</a></li>
+    <li><a href="#">Withdraw</a></li>
+		<li><a href="#">Delete</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Download</a></li>
+  </ul>
+
+</div>
 			</div>
 			</div>
 					<div class='row ot-detail-daterow'>
@@ -83,7 +95,7 @@
 						<button class='edit' id='deleteButton' v-show='isLoggedIn'
 							v-on:click='deleteObject'>DELETE</button>
 						<div id='downloadButton'>
-							<a class='edit' v-bind:href='downloadLink'>DOWNLOAD
+							<a class='edit' v-bind:href='downloadLink' :download='downloadFile'>DOWNLOAD
 							<div class='ot-r1-btn ot-download'>
 							<div class='greyroundbutton'></div>
 						       <div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="8px"/></div>
@@ -109,13 +121,14 @@
 	import eventBus from '../components/eventBus.js';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
-		name:'ko-detail', 
+		name:'ko-detail',
 		data : function() {
 			return {
 				objModel : objModel,
 				sections : sections,
 				isDisabled: 1,
 				isPublic:false,
+				publishState: 'Reserved',
 				userModel:{user:{username:'',password:''}},
 				activeTab: 'METADATA'
 			}
@@ -137,14 +150,14 @@
 				$.extend(true, self.objModel.object, obj);
 			});
 			eventBus.$on('objectSelected',function(obj){
-				$.extend(true, self.objModel.object, obj);	
+				$.extend(true, self.objModel.object, obj);
 				otScroll();
 			});
 			eventBus.$on('userloggedin',function(obj){
 				self.isLoggedIn=true;
 				$.extend(true, self.userModel.user,obj);
 				//self.isAdmin = (self.userModel.user.role=='ADMIN');
-				
+
 			});
 			var sessionObj = sessionStorage.getItem("otObj");
 			if(sessionObj){
@@ -156,12 +169,12 @@
 			retrieveObject(this.$route.params.uri, "complete", function(response) {
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
-				
+
 			}, function(response){
 				console.log("Error:");
 				console.log(response);
 				eventBus.$emit('404');
-			}); 
+			});
 	    	$('ul#tabs li.active').addClass('middleout');
 	    	$("html, body").animate({
 	        	scrollTop: 0
@@ -193,11 +206,14 @@
 						{return new Date(this.objModel.object.metadata.createdOn)
 							.format("mediumDate")}
 					},
-				
-		
+
+
 			downloadLink : function() {
 				return 'knowledgeObject/'
-					+ this.objModel.object.uri + '/complete.json'
+					+ this.objModel.object.uri 
+			},
+			downloadFile : function() {
+				return this.objModel.object.uri + '.json'
 			}
 		},
 		updated : function() {
@@ -279,8 +295,12 @@
 };
 	</script>
 <style>
+.badge {
+vertical-align:top;
+background-color:#39b45a;
+}
 .ot-banner.detail {
-	height: 220px; 
+	height: 220px;
 padding: 0px 32px 0px 48px;
 }
 .ot-detail-smallrow {
@@ -310,8 +330,8 @@ padding: 0px 32px 0px 48px;
 	padding-left:0px;
 }
 #type-status {
-	width: 10px; 
-	height: 42px; 
+	width: 10px;
+	height: 42px;
 	display: inline-block;
 }
 #type-status img {
@@ -364,7 +384,7 @@ ul#tabs li:after {
 }
 
 ul#tab>li {
-	display:none;	
+	display:none;
 }
 ul#tab>li.active {
 	display:block;
@@ -424,12 +444,12 @@ margin-bottom: 0px;
 
 }
 #objBtns{
-	top: 10px; 
+	top: 10px;
     right: 68px;
     position: absolute;
 }
 
-#more:hover {	
+#more:hover {
 	opacity: 1;
 }
 
@@ -474,7 +494,7 @@ margin-bottom: 0px;
 .ot-back .btnContent {
 	position: relative;
     top: -22px;
-    left:18px; 
+    left:18px;
 }
 
 #backButton:hover .greyroundbutton{

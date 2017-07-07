@@ -10,103 +10,93 @@
 				making accessible health knowledge for <br>learning health
 				systems. <br>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
 			</div>
-			<div id='libname'><span>{{libraryname}}</span>
-			<div id="bannericons" v-show='isLoggedIn'>
-			<ul id="bannericonrow">
-				<li><div style="position: relative">
-						<button class="roundbutton iconBtn" id="userlink"
-							@click="userlink_click">
-						</button>
-
-						<div class='ot-newuser' >
+			<div id='libname'>
+				<span>{{libraryname}}</span>
+				<div id="bannericons" v-show='isLoggedIn'>
+					<ul id="bannericonrow">
+						<li>
+							<div style="position: relative">
+								<button class="roundbutton iconBtn" id="userlink"	@click="userlink_click"></button>
+								<div class='ot-newuser' >
 					       <div class='greenroundbutton' > </div>
 					       <div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="8px"/></div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<button class="roundbutton open-overlay iconBtn" type="button" id="settinglink" disabled @click="settinglink_click"></button>
+						</li>
+					</ul>
+					<div class="floatingInfo" id="homeIcons">
+						<span></span>
 					</div>
-
-					</div></li>
-				<li>
-					<button class="roundbutton open-overlay iconBtn" type="button"
-						id="settinglink" disabled @click="settinglink_click">
-
-					</button>
-				</li>
-
-			</ul>
-			<div class="floatingInfo" id="homeIcons">
-				<span></span>
+				</div>
 			</div>
-			</div>
-		</div>
-
 		</div>
 		<div slot='header'>
 			<div v-show='isLoggedIn' class='ot-r-btn ot-newobj' v-on:click='addObject'>
 				<div class='greenroundbutton'></div>
 				<div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="14px"/></div>
 			</div>
-
-
 			<div class='row'>
-						<div class='col-md-6 col-sm-6 col-xs-6 ot-search'>
-						<img src='../assets/images/Search_Icon-01.png' width="20px"/><input
-								placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
-						</div>
-						<div class='col-md-1 col-sm-1 col-xs-1'></div>
-						<div class='col-md-2 col-sm-2 col-xs-2 ot-count'>{{countString}}</div>
-						<div class='col-md-2 col-sm-2 col-xs-2'>
-							<select class='ot-select' v-model='sortKey' v-on:change="onChange">
-								<option value='metadata.title'>Title</option>
-								<option value='uri'>Object ID</option>
-								<option value='metadata.lastModified'>Last Updated</option>
-							</select>
-						</div>
-						<div class='col-md-1 col-sm-1 col-xs-1'>
-							<button v-on:click='toggleOrder()'>
-								<span v-if='orderAsc'
-									class='ot-glybtn glyphicon glyphicon-sort-by-attributes'></span>
-								<span v-else
-									class='ot-glybtn glyphicon glyphicon-sort-by-attributes-alt'></span>
-							</button>
-						</div>
-					</div>
-					</div>
-				<div slot='maincontent'>
-
-		<div id='filtercontrol'>
-		<div class='row'>
-			<div class='col-md-2 filterBtnCol'>
-				<div id='filterBtn'>
-				<a v-on:click='toggleFilter'> Filters <span><img
-						id='filterdowniconimg' class='down'
-						src='../assets/images/dropdown_chevron.png' width='12px' /></span></a></div>
+				<div class='col-md-6 col-sm-6 col-xs-6 ot-search'>
+					<img src='../assets/images/Search_Icon-01.png' width="20px"/>
+					<input placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
+				</div>
+				<div class='col-md-1 col-sm-1 col-xs-1'></div>
+				<div class='col-md-2 col-sm-2 col-xs-2 ot-count'>{{countString}}</div>
+				<div class='col-md-2 col-sm-2 col-xs-2'>
+					<select class='ot-select' v-model='sortKey' v-on:change="onChange">
+						<option value='metadata.title'>Title</option>
+						<option value='uri'>Object ID</option>
+						<option value='metadata.lastModified'>Last Updated</option>
+					</select>
+				</div>
+				<div class='col-md-1 col-sm-1 col-xs-1'>
+					<button v-on:click='toggleOrder()'>
+						<span v-if='orderAsc'	class='ot-glybtn glyphicon glyphicon-sort-by-attributes'></span>
+						<span v-else class='ot-glybtn glyphicon glyphicon-sort-by-attributes-alt'></span>
+					</button>
+				</div>
 			</div>
-			<div class='col-md-10 filterCol'>
+		</div>
+		<div slot='maincontent'>
+			<div id='filtercontrol'>
+				<div class='row'>
+					<div class='col-md-2 filterBtnCol'>
+						<div id='filterBtn'>
+							<a v-on:click='toggleFilter'> Filters
+								<span><img id='filterdowniconimg' class='down' src='../assets/images/dropdown_chevron.png' width='12px' /></span>
+							</a>
+						</div>
+					</div>
+					<div class='col-md-10 filterCol'>
 						<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
-						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
+							<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
 								<button class='destroy' @click='removeString(filterstring)'>
 								</button>
 								<label>{{ filterstring.title }}</label>
-						</li>
-						<li class='todo' v-show='hasDateFilter' >
-						<button class='destroy' @click='removeDateFilter'></button>
-						<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label></li>
-						<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
-					</ul>
-
-			</div>
-		</div>
-		<div id='filterpanel' v-if='showFilterControl'>
-			<div class='row'>
-				<div class='col-md-6'>
-					<div class='row filter'><p>Search only within the following:</p></div>
-					<div class='row filter'>
-						<div class='col-md-4'>
- 							<label class="custom-control custom-checkbox">
- 								<input v-model='check.keywords' type="checkbox" class="custom-control-input">
- 								<span class="custom-control-indicator"></span>
-								<span class="custom-control-description">Keywords</span>
-							</label>
-						</div>
+							</li>
+							<li class='todo' v-show='hasDateFilter' >
+								<button class='destroy' @click='removeDateFilter'></button>
+								<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label>
+							</li>
+							<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
+						</ul>
+					</div>
+				</div>
+				<div id='filterpanel' v-if='showFilterControl'>
+					<div class='row'>
+						<div class='col-md-6'>
+							<div class='row filter'><p>Search only within the following:</p></div>
+								<div class='row filter'>
+									<div class='col-md-4'>
+ 										<label class="custom-control custom-checkbox">
+ 											<input v-model='check.keywords' type="checkbox" class="custom-control-input">
+ 											<span class="custom-control-indicator"></span>
+											<span class="custom-control-description">Keywords</span>
+										</label>
+									</div>
 						<div class='col-md-8'>
 							<label class="custom-control custom-checkbox">
 								<input v-model='check.objectID' type="checkbox" class="custom-control-input">
@@ -251,7 +241,7 @@ export default {
 			  model : {
 				koList : []
 			},
-
+			confirmrequest:{name:"removeallfilter",statement:"All filteres will be cleared!"},
 			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
 			defaultCheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
  			filterStrings:[],
@@ -386,7 +376,17 @@ export default {
 		      if(self.model.koList.length>0){
 					$.extend(true,objModel.object,self.model.koList[0]);
 				}
-		    })
+		    });
+				eventBus.$on('confirm', function (data) {
+					console.log(data);
+
+						if(data.name=="removeallfilter"){
+						if(data.val==true){
+							self.filterStrings.splice(0);
+							self.removeDateFilter();
+						}
+					}
+				});
 	},
 	mounted:function(){
 		if(this.isLoggedIn){
@@ -589,10 +589,8 @@ export default {
 			   this.newstring = '';
 			 },
 	 	removeAllFilters: function(){
-				 this.filterStrings.splice(0);
-				this.removeDateFilter();
-
-			 },
+			eventBus.$emit("confirmRequest",this.confirmrequest);
+	 },
 	 	removeDateFilter : function(){
 				 $.extend(true, this.dateRange, this.defaultDateRange);
 				 this.setstartdate();

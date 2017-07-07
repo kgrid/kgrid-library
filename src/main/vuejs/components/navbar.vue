@@ -3,10 +3,10 @@
 			<router-link class='navbar-brand ot-1' to='/'>
 				<img alt='Brand' src='../assets/images/logo.png' />
 			</router-link>
-			<nav class='navbar navbar-default navbar-fixed-top ot-1'>
-				<div class='container-fluid ot-1'>
-					<div class='navbar-header ot-1'>
-						<button type='button' class='navbar-toggle collapsed ot-1'
+			<nav class='navbar navbar-default navbar-fixed-top ot-1 kg-bg-color kg-color'>
+				<div class='container-fluid kg-bg-color kg-color ot-1'>
+					<div class='navbar-header kg-bg-color kg-color ot-1'>
+						<button type='button' class='navbar-toggle collapsed ot-1 kg-bg-color kg-font-color-r'
 							data-toggle='collapse'
 							data-target='#bs-example-navbar-collapse-1' aria-expanded='false'>
 							<span class='sr-only'>Toggle navigation</span> <span
