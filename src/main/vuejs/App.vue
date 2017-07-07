@@ -1,16 +1,17 @@
 <template>
   <div>
     <navbar></navbar>
- 	<router-view></router-view>
-    <div id='ol' v-bind:is='currentOLView'  v-if='showOverlay.show'></div>
+ 	  <router-view></router-view>
+    <div id='ol' v-bind:is='currentOLView'  v-bind='request' v-if='showOverlay.show'></div>
   </div>
 </template>
 <script>
 import navbar from './components/navbar.vue';
-import login from './components/login';  // eslint-disable-line
+import login from './components/login';
+import confirmdialog from './components/confirmdialog'; // eslint-disable-line
 import olnpane from './components/olnpane'; // eslint-disable-line
-import objeditor from './components/objeditor'; 
-import objcreator from './components/objcreator'; 
+import objeditor from './components/objeditor';
+import objcreator from './components/objcreator';
 import eventBus from './components/eventBus.js';
 import libraryusers from './components/libraryusers.vue';
 import librarysetting from './components/librarysetting.vue';
@@ -25,7 +26,8 @@ export default {
       userModel: {user: {username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},  // eslint-disable-line
       showSecOverlay:{show:false},
       koModel:objModel,
-      currentOLView: 'login'
+      currentOLView: 'login',
+      request: {name:"",statement:"q"}
     };
   },
   beforeCreate:function(){
@@ -37,9 +39,9 @@ export default {
 					$.extend(true, self.userModel.user, response);
 				}
 				},function(response) {
-			//console.log(response);
+
 				});
-		
+
 	},
   created: function () {
     var self = this  // eslint-disable-line
@@ -51,6 +53,13 @@ export default {
       $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
     	  $('#ol').removeClass('animated slideInRight');
       });
+    });
+    eventBus.$on('confirmRequest', function (data) {
+
+      $.extend(true,self.request, data);
+      console.log(self.request);
+      self.showOverlay.show = true;
+      self.currentOLView = 'confirmdialog';
     });
     eventBus.$on('openUserManagement', function () {
         self.showOverlay.show = true;
@@ -70,6 +79,15 @@ export default {
       	  $('#ol').removeClass('animated slideInRight');
         });
       });
+      eventBus.$on('confirm', function (data) {
+        console.log(data);
+        self.showOverlay.show = false;
+        $('#ol').addClass('animated slideOutRight');
+        $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+          $('#ol').removeClass('animated slideOutRight');
+        });
+        document.body.classList.toggle('noscroll', false);
+        });
     eventBus.$on('hideOverlay', function (layerid) {
       switch (layerid) {
         case '0':
@@ -104,7 +122,7 @@ export default {
 	eventBus.$on("objcreated",function(obj){
 		$.extend(true, self.koModel.object, obj);
 		$.extend(true, editObjModel.object, obj);
-		
+
 		if(editObjModel.object.metadata.keywords==null){
 			editObjModel.object.metadata.keywords='';
 		}
@@ -124,7 +142,7 @@ export default {
 			editObjModel.object.metadata.citations=[];
 		}
 		self.currentOLView="objeditor";
-		
+
 	});
 	eventBus.$on('editObj', function(obj){
 		console.log("Edit Obj Button Clicked...");
@@ -137,7 +155,7 @@ export default {
 		self.showOverlay.show=true;
 		document.body.classList.toggle('noscroll', true);
 	});
-	
+
 	 eventBus.$on("userloggedin",function(obj){
 		 self.showOverlay.show=false;
 		 document.body.classList.toggle('noscroll', false);
@@ -152,7 +170,7 @@ export default {
 			self.showOverlay.show=true;
 			self.currentOLView='login';
 			document.body.classList.toggle('noscroll', true);
-		}); 
+		});
   },
   components: {
     navbar,
@@ -160,7 +178,8 @@ export default {
     objeditor,
     objcreator,
     libraryusers,
-    librarysetting
+    librarysetting,
+    confirmdialog
   },
 	computed:{
 		isLoggedIn:function(){
