@@ -32,23 +32,71 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
       // proxy each backend api route separately, rewrites not needed
-	proxyTable: {
-        '/user': {
+	  proxyTable: {
+        '/':{
             target: library,
+            secure: false,
             changeOrigin: true,
+            cookieDomainRewrite:{"*":"/"},
+            onProxyRes(proxyRes, req, res) {
+              // proxyRes.headers['Set-Cookie']=proxyRes.headers['set-cookie'];
+              var existingCookies = proxyRes.headers['set-cookie'];
+              var rewrittenCookies = [];
+              if (existingCookies !== undefined) {
+                if (!Array.isArray(existingCookies)) {
+                  existingCookies = [existingCookies];
+                }
+                for (let i = 0; i < existingCookies.length; i++) {
+                  var re = /ath=(.*);/;
+                  var match=existingCookies[i].match(re);
+                  if(match!=null){
+                      rewrittenCookies.push(existingCookies[i].replace(match[1], "/"));
+                  }else{
+                    rewrittenCookies.push(existingCookies[i]);
+                  }
+
+                }
+                proxyRes.headers['set-cookie'] = rewrittenCookies;
+              }
+              Object.keys(proxyRes.headers).forEach(function (key) {
+                var newkey = key.replace(/((?:^|-)[a-z])/g, function(val) { return val.toUpperCase(); });
+                // custom hack for X-Parse-Os-Version ==> X-Parse-OS-Version
+                newkey = newkey.replace(/(-Os-)/g, function(val) { return val.toUpperCase(); });
+                proxyRes.headers[newkey] = proxyRes.headers[key];
+
+                res.append(newkey, proxyRes.headers[newkey]);
+              });
+
+              const setCookieHeaders = proxyRes.headers['Set-Cookie'] || []
+
+            },
+            onProxyReq(proxyReq, req, res) {
+              Object.keys(req.headers).forEach(function (key) {
+                proxyReq.setHeader(key, req.headers[key]);
+              });
+            }
         },
-        '/knowledgeObject': {
-            target: library,
-            changeOrigin: true,
-        },
-        '/login': {
-            target: library,
-            changeOrigin: true,
-        },
-        '/logout': {
-            target: library,
-            changeOrigin: true,
-        }
+
+        // '/user': {
+        //     target: library,
+        //     secure: false,
+        //     changeOrigin: true,
+        // },
+        // '/knowledgeObject': {
+        //     target: library,
+        //     secure:false,
+        //     changeOrigin: true,
+        // },
+        // '/login': {
+        //     target: library,
+        //     secure:false,
+        //     changeOrigin: true,
+        // },
+        // '/logout': {
+        //     target: library,
+        //     secure:false,
+        //     changeOrigin: true,
+        // }
     },
 	// CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
