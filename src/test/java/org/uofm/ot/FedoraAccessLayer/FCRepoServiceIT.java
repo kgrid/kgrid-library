@@ -12,7 +12,7 @@ import org.openrdf.model.Model;
 import org.openrdf.model.Namespace;
 import org.openrdf.model.impl.SimpleNamespace;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.FCRepoService;
+import org.uofm.ot.fedoraGateway.FCRepoService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
 import org.uofm.ot.services.FedoraConfiguration;
