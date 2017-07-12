@@ -118,12 +118,15 @@ export function getCurrentUser(getUser) {
 	$.ajax({
 		type : "GET",
 		url : "user/me",
+		xhrFields: {
+	 		withCredentials: true
+		},
 		success : function(response, tStatus, xhr) {
 			console.log(xhr);
 			getUser(response);
 		},
 		error : function(response, tStatus, xhr) {
-			console.log(xhr);
+			console.log(response);
 			//errorHandler(response);
 		}
 	});

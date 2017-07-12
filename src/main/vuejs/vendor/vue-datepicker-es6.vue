@@ -194,7 +194,7 @@ table {
 }
 .day:hover {
 	background: #b3b3b3;
- 	
+
 }
 .unavailable:hover {
   background: none;
@@ -323,17 +323,15 @@ table {
 </style>
 <template>
   <div class="cov-vue-date" :class="option.wrapperClass ? option.wrapperClass : {}">
-    <div class="datepickbox">
-      <input type="text" title="input date" class="cov-datepicker" readonly="readonly" :placeholder="option.placeholder" v-model="date.time" :required="required" @click="showCheck" @focus="showCheck" :style="option.inputStyle ? option.inputStyle : {}" :class="option.inputClass ? option.inputClass : {}" />
+    <div class="datepickbox" >
+      <input type="text" title="input date" class="cov-datepicker" readonly="readonly" :placeholder="option.placeholder" v-model="date.time" :required="required" @click="showCheck" :style="option.inputStyle ? option.inputStyle : {}" :class="option.inputClass ? option.inputClass : {}" />
     </div>
     <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)" v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
       <div class="cov-date-body" :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
         <div class="cov-date-monthly">
           <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
           <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
-            <span @click="showYear"><small>{{checked.year}}</small></span>
-            <br>
-            <span @click="showMonth">{{displayInfo.month}}</span>
+            <span @click="showMonth">{{displayInfo.month}}</span>   <span @click="showYear"><small>{{checked.year}}</small></span>
           </div>
           <div class="cov-date-next" @click="nextMonth('next')">»</div>
         </div>
@@ -728,7 +726,7 @@ export default {
           }
         }
       }
-      this.showInfo.check = true
+      this.showInfo.check = !this.showInfo.check
     },
     setTime (type, obj, list) {
       for (let item of list) {
