@@ -16,68 +16,69 @@
 			</div>
 		</div>
 		<div slot="ol-form">
-		<ul class="inEdit" id="edittab">
-			<li class="active current-tab" id="metadata">
-				<fieldset class="fieldcontainer" id="first">
-					<div id="metadata_fields">
-						<div class="addtext">
-							<h4>TITLE</h4>
-							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" maxlength="140" />
-							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.title.length>=130 }" >{{editObjModel.object.metadata.title.length}}/140</span>
-						</div>
-						<div class="addtext">
-							<h4>DESCRIPTION</h4>
-							<textarea class="metaEdit" v-model="editObjModel.object.metadata.description"></textarea>
-							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.description.length>=480 }" >{{editObjModel.object.metadata.description.length}}/500</span>
-						</div>
-						<div class="addtext">
-							<h4>KEYWORDS</h4>
-							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.keywords" maxlength="140"/>
-							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.keywords.length>=130 }" >{{editObjModel.object.metadata.keywords.length}}/140</span>
-						</div>
-						<div class="addtext">
-							<h4>OWNERS</h4>
-							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.owner" maxlength="140" />
-							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.owner.length>=130 }" >{{editObjModel.object.metadata.owner.length}}/140</span>
-						</div>
-						<div class="addtext">
-							<h4>CONTRIBUTORS</h4>
-							<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" maxlength="140" />
-							<span  v-bind:class="{ nearmax:editObjModel.object.metadata.contributors.length>=130 }" >{{editObjModel.object.metadata.contributors.length}}/140</span>
-						</div>
-						<div class="addtext">
-							<h4>LICENSE  </h4>
-							<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName"><button class="mediumgreenroundbutton" v-on:click="addLicense"><img src="../assets/images/Plus_Icon.png" width="12px"></button></div>
-							<div class="row" v-else>
-								<div class="col-md-9">
-									<linkedfieldtile v-bind:link="editObjModel.object.metadata.license.licenseLink"
-										v-bind:value="editObjModel.object.metadata.license.licenseName"></linkedfieldtile>
+			<ul class="inEdit" id="edittab">
+				<li class="active current-tab" id="metadata">
+					<fieldset class="fieldcontainer" id="first">
+						<div id="metadata_fields">
+							<div class="addtext">
+								<h4>TITLE</h4>
+								<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" maxlength="140" />
+								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.title.length>=130 }" >{{editObjModel.object.metadata.title.length}}/140</span>
+							</div>
+							<div class="addtext">
+								<h4>DESCRIPTION</h4>
+								<textarea class="metaEdit" v-model="editObjModel.object.metadata.description"></textarea>
+								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.description.length>=480 }" >{{editObjModel.object.metadata.description.length}}/500</span>
+							</div>
+							<div class="addtext">
+								<h4>KEYWORDS</h4>
+								<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.keywords" maxlength="140"/>
+								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.keywords.length>=130 }" >{{editObjModel.object.metadata.keywords.length}}/140</span>
+							</div>
+							<div class="addtext">
+								<h4>OWNERS</h4>
+								<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.owner" maxlength="140" />
+								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.owner.length>=130 }" >{{editObjModel.object.metadata.owner.length}}/140</span>
+							</div>
+							<div class="addtext">
+								<h4>CONTRIBUTORS</h4>
+								<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" maxlength="140" />
+								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.contributors.length>=130 }" >{{editObjModel.object.metadata.contributors.length}}/140</span>
+							</div>
+							<div class="addtext">
+								<h4>LICENSE  </h4>
+								<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName">
+									<button class="mediumgreenroundbutton" v-on:click="addLicense"><img src="../assets/images/Plus_Icon.png" width="12px"></button>
 								</div>
-								<div class="col-md-3">
-									<button class="edit" v-on:click="selectLicense(editObjModel.object.metadata.license)">EDIT</button>
-									<button class="edit" v-on:click="deleteLicense">DELETE</button>
+								<div class="row" v-else>
+									<div class="col-md-9">
+										<linkedfieldtile v-bind:link="editObjModel.object.metadata.license.licenseLink" v-bind:value="editObjModel.object.metadata.license.licenseName"></linkedfieldtile>
+									</div>
+									<div class="col-md-3">
+										<button class="edit" v-on:click="selectLicense(editObjModel.object.metadata.license)">EDIT</button>
+										<button class="edit" v-on:click="deleteLicense">DELETE</button>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="addtext">
-							<h4>CITATIONS</h4>
-							<button class="mediumgreenroundbutton" v-on:click="addCitation"><img src="../assets/images/Plus_Icon.png" width="12px"></button>
-							<div class='entryArea'>
-								<ul id="citationlist" class="list">
-									<li v-for="(citation,index) in editObjModel.object.metadata.citations" >
-										<div class="row">
-											<div class="col-md-9">
-												<linkedfieldtile :value="citation.citation_title" :link="citation.citation_at"></linkedfieldtile>
+							<div class="addtext">
+								<h4>CITATIONS</h4>
+								<button class="mediumgreenroundbutton" v-on:click="addCitation"><img src="../assets/images/Plus_Icon.png" width="12px"></button>
+								<div class='entryArea'>
+									<ul id="citationlist" class="list">
+										<li v-for="(citation,index) in editObjModel.object.metadata.citations" >
+											<div class="row">
+												<div class="col-md-9">
+													<linkedfieldtile :value="citation.citation_title" :link="citation.citation_at"></linkedfieldtile>
+												</div>
+												<div class="col-md-3">
+													<button class="edit" v-on:click="selectCitation(citation)">EDIT</button>
+													<button class="edit" v-on:click="deleteCitation(citation)">DELETE</button>
+												</div>
 											</div>
-											<div class="col-md-3">
-												<button class="edit" v-on:click="selectCitation(citation)">EDIT</button>
-												<button class="edit" v-on:click="deleteCitation(citation)">DELETE</button>
-											</div>
-										</div>
-									</li>
-								</ul>
+										</li>
+									</ul>
+								</div>
 							</div>
-						</div>
 						</div>
 					</fieldset>
 				</li>
@@ -89,32 +90,29 @@
 								<div class="addtext">
 									<input class="textbox inEdit" type="text" v-model="editObjModel.object.payload.functionName"
 										placeholder="one instance only" maxlength="140">
-
 								</div>
-								</div>
-								<div class="addtext">
-									<h4>ENGINE TYPE
-									</h4>
-									<select required class="options" v-model="editObjModel.object.payload.engineType">
-										<option value="Python">PYTHON</option>
-									</select> <br>
-								</div>
-								<fileuploader section="payload" v-on:filechange="updatedisplay" :src='editObjModel.object.payload.content'></fileuploader>
-								</div>
-
-
-						</li>
-					<li id="input">
- 							<div id="input_fields">
-								<fileuploader section="inputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.inputMessage'></fileuploader>
 							</div>
+							<div class="addtext">
+								<h4>ENGINE TYPE
+									</h4>
+								<select required class="options" v-model="editObjModel.object.payload.engineType">
+										<option value="Python">PYTHON</option>
+								</select> <br>
+							</div>
+							<fileuploader section="payload" v-on:filechange="updatedisplay" :src='editObjModel.object.payload.content'></fileuploader>
+						</div>
+					</li>
+					<li id="input">
+						<div id="input_fields">
+							<fileuploader section="inputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.inputMessage'></fileuploader>
+						</div>
 					</li>
 					<li id="output">
-					<div id="output_fields">
+						<div id="output_fields">
 							<fileuploader section="outputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.outputMessage'></fileuploader>
-					</div>
-				</li>
-			</ul>
+						</div>
+					</li>
+				</ul>
 		</div>
 		<div slot="ol-processing">Processing...</div>
 		<div slot="ol-success">Update Successful !!!</div>
