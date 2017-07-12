@@ -10,15 +10,12 @@
 				</div>
 			</div>
 		</div>
-
 		<div slot="ol-form">
 			<fieldset class="fieldcontainer" id="linkedfields">
 				<div class="licenseField">
 					<h4 title="license_title">{{inedit}} TITLE</h4>
 					<div class="addtext">
-						<input class="textbox inEdit" v-model="linkedField.title" type="text" spellcheck="false"
-											placeholder="Enter Title"
-											maxlength="140"/>
+						<input class="textbox inEdit" v-model="linkedField.title" type="text" spellcheck="false" placeholder="Enter Title"	maxlength="140"/>
 					</div>
 					<label class="errorLabel" for="username"> </label>
 				</div>
@@ -33,7 +30,7 @@
 				<div>
 					<h4>DETAIL</h4>
 					<div class="addtext">
-									The content will be displayed in a new window.
+						The content will be displayed in a new window.
 					</div>
 				</div>
 			</fieldset>

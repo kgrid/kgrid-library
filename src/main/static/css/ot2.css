@@ -3,9 +3,9 @@
 body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, input, textarea, blockquote, button {
   margin: 0;
   padding: 0;
-  border: 0; 
+  border: 0;
   font-family: 'Open Sans', sans-serif;
-  color: #666666;	
+  color: #666666;
 }
 
 * {
@@ -25,12 +25,12 @@ a:hover {
 ::-webkit-scrollbar {
     width: 12px;
 }
- 
+
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
     border-radius: 10px;
 }
- 
+
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
 /*     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);  */
@@ -38,16 +38,16 @@ a:hover {
 ::-webkit-scrollbar-track {
       background-color: #fff;
 } /* the new scrollbar will have a flat appearance with the set background color */
- 
+
 ::-webkit-scrollbar-thumb {
-      background-color: #e6e6e6; 
+      background-color: #e6e6e6;
 } /* this will style the thumb, ignoring the track */
- 
+
 ::-webkit-scrollbar-button {
     display:none;
       background-color: #e6e6e6;
 } /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
- 
+
 ::-webkit-scrollbar-corner {
       background-color: #fff;
 } /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
@@ -149,7 +149,7 @@ span.ot-right{
 	line-height:2.2em;
 	font-size:large;
 	color:#39b54a;
-	background-color: #fff;	
+	background-color: #fff;
 }
 
 .ot-small-glybtn{
@@ -157,7 +157,7 @@ span.ot-right{
 	line-height:1em;
 	font-size:small;
 	color:#39b54a;
-	background-color: #fff;	
+	background-color: #fff;
 	font-weight:200;
 }
 
@@ -169,7 +169,7 @@ span.ot-right{
 }
 
 .main-content {
-	min-height: 1500px;	
+	min-height: 1500px;
 	width:100%;
 	padding:30px;
 }
@@ -297,7 +297,7 @@ ul#edittabs li, ul#tabs li {
 	cursor: pointer;
 	vertical-align: bottom;
 	padding: 0px 0px 0px 0px;
-	transition: color 0.5s ease; 
+	transition: color 0.5s ease;
 }
 
 ul#edittabs li span:before {
@@ -398,8 +398,7 @@ ul#citationlist li {
 
 input[type=text],
 input[type=password],
-input[type=textarea],
-.addtext a 
+input[type=textarea]
  {
   width:900px;
   height: 38px;
@@ -451,25 +450,25 @@ h4 {
 }
 
 #objEditor_overlay .ol_pane {
-	left: 30%;	
+	left: 30%;
 }
 .addBtn {
 	display: inline;
 }
 
 .entryform {
-	height: 600px; 
+	height: 600px;
     padding: 16px 22px;
     margin-top:0px;
     }
     #linkedfields{
     width:100%;}
-    
+
     .ol-slot {
     	width: 96%;
     	margin: 0 auto;
     }
-    
+
     img#dropdowniconimg.up {
    -moz-transform: scaleY(1);
     -o-transform: scaleY(1);
@@ -501,18 +500,18 @@ img#dropdowniconimg.down {
 input[id$="datepicker"]{
 		width:150px;
 	}
-	
-	
+
+
 	 #filterBtn a:hover, #filterBtn a:visited {
 	 	color: #666666;
 	 }
 
-	
+
 	label {
 		font-weight: 400;
 		margin:10px 0px;
 	}
-	
+
 	input[type=radio] {
 		display: inline-block;
 	}
@@ -520,12 +519,12 @@ input[id$="datepicker"]{
 		margin-left:20px;
 		margin-bottom:6px;
 	}
-	
+
 
 	.date2 {
 		padding: 0px;
 	}
-	
+
 	.ot-pub input[type=radio]{
 	  display: none;
 	}
@@ -538,20 +537,20 @@ input[id$="datepicker"]{
 	padding-bottom:2px;
 	border-bottom: 2px solid #39b45a;
 	}
-	
+
 	.datetype {
 	 margin:0px 0px 10px 0px;
 	}
-	
+
 	.login-link {
 		cursor:pointer;
 	}
-	
+
 	.signup-link {
 		cursor: default;
 		color: #333333;
 	}
-	
+
 #dLabel{
     line-height: 3.4em;
     margin: 25px 30px 0px 30px;

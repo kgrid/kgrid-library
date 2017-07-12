@@ -123,7 +123,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <!--  Security Dependency  -->
         <dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -139,8 +139,8 @@
         <frontend-maven-plugin.version>0.0.27</frontend-maven-plugin.version>
 		<lombok.version>1.16.6</lombok.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
-		<frontend-maven-plugin.nodeVersion>v6.9.1</frontend-maven-plugin.nodeVersion>
-		<frontend-maven-plugin.npmVersion>4.0.2</frontend-maven-plugin.npmVersion>
+		<frontend-maven-plugin.nodeVersion>v6.11.0</frontend-maven-plugin.nodeVersion>
+		<frontend-maven-plugin.npmVersion>5.0.3</frontend-maven-plugin.npmVersion>
    </properties>
 
 
@@ -188,8 +188,8 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v6.9.1</nodeVersion>
-                            <npmVersion>4.0.2</npmVersion> <!-- version already included in Node.js-->
+                            <nodeVersion>v6.11.0</nodeVersion>
+                            <npmVersion>5.0.3</npmVersion> <!-- version already included in Node.js-->
                         </configuration>
                     </execution>
                     <execution>
