@@ -28,6 +28,7 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.openrdf.model.IRI;
 import org.openrdf.model.Model;
@@ -226,12 +227,15 @@ public class FCRepoService {
 
 	public List<URI> getChildrenURIs(URI containerURI) throws ObjectTellerException, URISyntaxException {
 		Model container = getRDFData(containerURI);
+
 		ArrayList<URI> uris = new ArrayList<>();
-		for (Object item: container.toArray()) {
-			ContextStatement statement = (ContextStatement)item;
-			IRI iri = SimpleValueFactory.getInstance().createIRI(NamespaceConstants.CONTAINS);
-			if(statement.getPredicate().equals(iri)) {
-				uris.add(new URI(statement.getObject().stringValue()));
+		if(container != null && container.size() > 0) {
+			for (Object item : container.toArray()) {
+				ContextStatement statement = (ContextStatement) item;
+				IRI iri = SimpleValueFactory.getInstance().createIRI(NamespaceConstants.CONTAINS);
+				if (statement.getPredicate().equals(iri)) {
+					uris.add(new URI(statement.getObject().stringValue()));
+				}
 			}
 		}
 		return uris;
@@ -269,13 +273,16 @@ public class FCRepoService {
 
 	// Put:
 	public void putBinary(String binary, ArkId objIdentifier, String type) throws ObjectTellerException, URISyntaxException {
-		URI objURI = new URI(baseURI + objIdentifier.getFedoraPath());
-		putBinary(binary, objURI, type);
+		putBinary(binary, new URI(baseURI + objIdentifier.getFedoraPath() + "/" + type));
 	}
 
-	public void putBinary(String binary, URI objectURI, String type) throws ObjectTellerException {
+	public void putBinary(String binary, URI objectURI, String type) throws ObjectTellerException, URISyntaxException {
+		putBinary(binary, new URI(objectURI + "/" + type));
+	}
 
-		HttpPut httpPutRequestPayload = new HttpPut(objectURI + "/" + type);
+	public void putBinary(String binary, URI objectURI) throws ObjectTellerException {
+
+		HttpPut httpPutRequestPayload = new HttpPut(objectURI);
 
 		httpPutRequestPayload.addHeader(authenticate(httpPutRequestPayload));
 
@@ -291,21 +298,29 @@ public class FCRepoService {
 							response.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value())) {
 				logger.info("Binary added successfully in the Object " + httpPutRequestPayload.getURI());
 			} else {
-				String err = "Exception occurred while creating binary of type" + type + " for object " + objectURI + ". HTTPResponse is " + response;
+				String err = "Exception occurred while creating binary for object " + objectURI + ". HTTPResponse is " + response;
 				logger.error(err);
 				throw new ObjectTellerException(err);
 			}
 		} catch (IOException e) {
-			String errString = "Exception occurred while creating binary of type" + type + " for object " + objectURI + ". " + e.getMessage();
+			String errString = "Exception occurred while creating binary for object " + objectURI + ". " + e.getMessage();
 			logger.error(errString);
 			throw new ObjectTellerException(errString, e);
 		}
 	}
 
+	public URI createContainer(URI uri) throws ObjectTellerException, URISyntaxException {
+		return createContainer(uri, "");
+	}
+
 	public URI createContainer(URI uri, String objectID) throws ObjectTellerException, URISyntaxException {
 		HttpClient httpClient = HttpClientBuilder.create().build();
-		URI objectURI = new URI(uri + "/" + objectID);
-
+		URI objectURI;
+		if(uri.toString().endsWith("/")) {
+			objectURI = new URI(uri + objectID);
+		} else {
+			objectURI = new URI(uri + "/" + objectID);
+		}
 		HttpPut httpPutRequest = new HttpPut(objectURI);
 
 		httpPutRequest.addHeader(authenticate(httpPutRequest));
@@ -421,7 +436,7 @@ public class FCRepoService {
 					|| response.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value()) {
 				logger.info("Fedora resource " + deleteResourceURI + " deleted.");
 			} else {
-				String err = "Unable to delete fedora resource " + deleteResourceURI;
+				String err = "Unable to delete fedora resource " + deleteResourceURI + " due to " + EntityUtils.toString(response.getEntity());
 				logger.error(err);
 				throw new ObjectTellerException(err);
 			}
@@ -453,7 +468,7 @@ public class FCRepoService {
 		}
 	}
 
-	private Header authenticate(HttpRequest request) throws ObjectTellerException {
+	public Header authenticate(HttpRequest request) throws ObjectTellerException {
 		Header header;
 		try {
 			header = new BasicScheme(StandardCharsets.UTF_8).authenticate(

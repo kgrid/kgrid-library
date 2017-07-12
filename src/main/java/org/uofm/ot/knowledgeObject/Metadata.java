@@ -14,6 +14,8 @@ public class Metadata implements Identifiable {
 	private String title;
 
 	private String arkId;
+
+	private Version version;
 	
 	private String owner;
 	
@@ -53,6 +55,20 @@ public class Metadata implements Identifiable {
 	@RdfProperty(value="ot:arkId")
 	public void setArkId(String arkId) {
 		this.arkId = arkId;
+	}
+
+	@RdfProperty(value="ot:version")
+	public String getVersion() {
+		return version == null ? "" : version.toString();
+	}
+
+	@RdfProperty(value = "ot:version")
+	public void setVersion(String version) {
+		this.version = new Version(version);
+	}
+
+	public void setVersion(Version version) {
+		this.version = version;
 	}
 
 	@RdfProperty(value="ot:owner")
@@ -168,6 +184,7 @@ public class Metadata implements Identifiable {
 				"mIdentifiable=" + mIdentifiable +
 				", title='" + title + '\'' +
 				", arkId='" + arkId + '\'' +
+				", version='" + version + '\'' +
 				", owner='" + owner + '\'' +
 				", description='" + description + '\'' +
 				", contributors='" + contributors + '\'' +
