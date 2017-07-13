@@ -21,11 +21,11 @@
     <bean id="fedoraConfiguration" class="org.uofm.ot.services.FedoraConfiguration">
     </bean>
 
-    <bean id="fedoraObjectService" class="org.uofm.ot.fedoraAccessLayer.FCRepoService">
+    <bean id="fedoraObjectService" class="org.uofm.ot.fedoraGateway.FCRepoService">
         <property name="fedoraConfiguration" ref="fedoraConfiguration"/>
     </bean>
 
-    <bean id="fusekiService" class="org.uofm.ot.fusekiAccessLayer.FusekiService">
+    <bean id="fusekiService" class="org.uofm.ot.fusekiGateway.FusekiService">
         <property name="fedoraConfiguration" ref="fedoraConfiguration"/>
     </bean>
 

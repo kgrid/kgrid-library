@@ -11,7 +11,7 @@
 				 <a @click='returntolibrary'>BACK TO THE LIBRARY
 				<div class='ot-r1-btn ot-back'>
 				<div class='greyroundbutton'></div>
-			       <div class='btnContent'><img src='../assets/images/Chevron.png' width="4px"/></div>
+			       <div class='btnContent'><img src='../assets/images/Chevron_left.png' width="4px"/></div>
 			       </div></a>
 			</div>
 				</div>
@@ -210,7 +210,7 @@
 
 			downloadLink : function() {
 				return 'knowledgeObject/'
-					+ this.objModel.object.uri 
+					+ this.objModel.object.uri
 			},
 			downloadFile : function() {
 				return this.objModel.object.uri + '.json'

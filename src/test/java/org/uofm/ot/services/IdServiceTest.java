@@ -6,9 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.uofm.ot.ezidGateway.EzidService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
-import org.uofm.ot.model.UserRoles;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -23,7 +23,7 @@ public class IdServiceTest {
 	private IdService idService;
 	
 	@Mock
-	private EzidService ezidService; 
+	private EzidService ezidService;
 	
 	public IdServiceTest() {
 		MockitoAnnotations.initMocks(this);
