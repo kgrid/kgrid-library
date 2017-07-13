@@ -1,4 +1,4 @@
-package org.uofm.ot.fedoraAccessLayer;
+package org.uofm.ot.fedoraGateway;
 
 public enum ChildType {
 	PAYLOAD ("Payload"),

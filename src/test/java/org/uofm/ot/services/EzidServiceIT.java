@@ -10,6 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.uofm.ot.ObjectTellerApplication;
+import org.uofm.ot.ezidGateway.EzidService;
 import org.uofm.ot.knowledgeObject.ArkId;
 
 import java.io.IOException;

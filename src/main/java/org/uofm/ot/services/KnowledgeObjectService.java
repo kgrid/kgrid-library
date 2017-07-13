@@ -5,6 +5,7 @@ import com.complexible.pinto.Identifiable;
 import com.complexible.pinto.RDFMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -15,9 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.uofm.ot.exception.ObjectTellerException;
-import org.uofm.ot.fedoraAccessLayer.ChildType;
-import org.uofm.ot.fedoraAccessLayer.FCRepoService;
-import org.uofm.ot.fusekiAccessLayer.FusekiService;
+import org.uofm.ot.fedoraGateway.ChildType;
+import org.uofm.ot.fedoraGateway.FCRepoService;
+import org.uofm.ot.fusekiGateway.FusekiService;
+import org.uofm.ot.fusekiGateway.NamespaceConstants;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
@@ -25,7 +27,6 @@ import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.knowledgeObject.ProvenanceLogData;
 import org.uofm.ot.model.OTUser;
-import org.uofm.ot.model.UserProfile;
 
 
 @Service
@@ -42,30 +43,28 @@ public class KnowledgeObjectService {
 
 	private static final Logger logger = Logger.getLogger(KnowledgeObjectService.class);
 
-	private static final String OT_NAMESPACE_PREFIX = "ot";
 
-	private static final String OT_NAMESPACE_URL = "http://uofm.org/objectteller/";
-
-	private static final String FEDORA_NAMESPACE_PREFIX = "fedora";
-
-	private static final String FEDORA_NAMESPACE_URL = "http://fedora.info/definitions/v4/repository#";
-
-	private static final String PROV_NAMESPACE_PREFIX = "prov";
-
-	private static final String PROV_NAMESPACE_URL = "http://www.w3.org/ns/prov#";
-
-	// We can use namespace objects (like below) instead of passing namespace strings to the serializer
-	// when this pinto bug is fixed: https://github.com/stardog-union/pinto/issues/21
+	// We can use namespace objects (like below) or a list of namespaces instead of passing namespace
+	// strings to the serializer when this pinto bug is fixed: https://github.com/stardog-union/pinto/issues/21
 	//private static final Namespace OT_NAMESPACE = new SimpleNamespace("ot", "http://uofm.org/objectteller/");
 
 
-	public KnowledgeObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException {
+	public KnowledgeObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException, URISyntaxException{
+		URI metadataURI = new URI(fcRepoService.getBaseURI() + arkId.getFedoraPath());
+		Metadata metadata = fetchAndDeserializeRDFData(Metadata.class, metadataURI, metadataURI.toString());
 
-		KnowledgeObject object = fusekiService.getKnowledgeObject(arkId);
-		if (object != null) {
-			List<Citation> citations = fusekiService.getObjectCitations(arkId);
-			object.getMetadata().setCitations(citations);
+		URI citationContainerURI = new URI(metadataURI + "/" + ChildType.CITATIONS.getChildType());
+		List<URI> citationURIs = fcRepoService.getChildrenURIs(citationContainerURI);
+		ArrayList<Citation> citations = new ArrayList<>();
+		for (URI citationURI : citationURIs) {
+			citations.add(fetchAndDeserializeRDFData(Citation.class, citationURI, citationURI.toString()));
 		}
+
+		metadata.setCitations(citations);
+		KnowledgeObject object = new KnowledgeObject();
+		object.setMetadata(metadata);
+		object.setURI(arkId.toString());
+		object.setArkId(arkId);
 		return object;
 	}
 
@@ -90,29 +89,21 @@ public class KnowledgeObjectService {
 		}
 	}
 
-	public List<KnowledgeObject> getKnowledgeObjects(boolean published) throws ObjectTellerException {
-		return fusekiService.getFedoraObjects(published);
+	public List<KnowledgeObject> getKnowledgeObjects(boolean onlyPublished) throws ObjectTellerException {
+		return fusekiService.getKnowledgeObjects(onlyPublished);
 	}
 
-	public Integer getNumberOfPublishedObjects() throws ObjectTellerException {
-		return fusekiService.getNumberOfPublishedObjects();
-	}
-
-	public KnowledgeObject getCompleteKnowledgeObject(ArkId arkId) throws ObjectTellerException {
-
-		String uri = arkId.getFedoraPath();
+	public KnowledgeObject getCompleteKnowledgeObject(ArkId arkId) throws ObjectTellerException, URISyntaxException {
 
 		KnowledgeObject knowledgeObject = getKnowledgeObject(arkId);
 
 		if (knowledgeObject != null) {
 
-			Payload payload = fusekiService.getPayloadProperties(uri);
-
-			payload.setContent(getPayloadContent(uri));
+			Payload payload = getPayload(arkId);
 
 			knowledgeObject.setPayload(payload);
 
-			knowledgeObject.setLogData(getProvData(arkId));
+			knowledgeObject.setLogData(getProvData(arkId).toString());
 
 			knowledgeObject.setInputMessage(getInputMessageContent(arkId));
 
@@ -134,14 +125,11 @@ public class KnowledgeObjectService {
 		return fcRepoService.getObjectContent(objectURI, ChildType.PAYLOAD.getChildType());
 	}
 
-	public String getProvData(ArkId arkId) throws ObjectTellerException {
-		String provDataPart1 = fusekiService.getObjectProvProperties(arkId.getFedoraPath());
+	public ProvenanceLogData getProvData(ArkId arkId) throws ObjectTellerException, URISyntaxException {
+		URI provDataURI = new URI(fcRepoService.getBaseURI() + arkId.getFedoraPath() +
+				"/" + ChildType.LOG.getChildType() + "/" + ChildType.CREATEACTIVITY.getChildType());
 
-		String provDataPart2 = fusekiService.getObjectProvProperties(
-				arkId.getFedoraPath() + "/" + ChildType.LOG.getChildType() + "/" + ChildType.CREATEACTIVITY
-						.getChildType());
-
-		return provDataPart1 + provDataPart2;
+		return  fetchAndDeserializeRDFData(ProvenanceLogData.class, provDataURI, provDataURI.toString());
 	}
 
 	public void editInputMessageContent(ArkId arkId, String inputMessage)
@@ -154,15 +142,15 @@ public class KnowledgeObjectService {
 		fcRepoService.putBinary(outputMessage, arkId, ChildType.OUTPUT.getChildType());
 	}
 
-	public Payload getPayload(ArkId arkId) throws ObjectTellerException {
-		Payload payload = fusekiService.getPayloadProperties(arkId.getFedoraPath());
-		payload.setContent(getPayloadContent(arkId.getFedoraPath()));
-		return payload;
+	public Payload getPayload(ArkId arkId) throws ObjectTellerException, URISyntaxException {
+		String payloadIRI = fcRepoService.getBaseURI() + arkId.getFedoraPath() + "/" + ChildType.PAYLOAD.getChildType();
+		URI payloadURI = new URI(payloadIRI + "/fcr:metadata");
+		return fetchAndDeserializeRDFData(Payload.class, payloadURI, payloadIRI);
 	}
 
 	public void editPayload(ArkId arkId, Payload payload) throws ObjectTellerException, URISyntaxException {
 		fcRepoService.putBinary(payload.getContent(), arkId, ChildType.PAYLOAD.getChildType());
-		insertRDFData(payload, new URI(fcRepoService.getBaseURI() + arkId.getFedoraPath() + "/Payload"));
+		serializeAndInsertRDFData(payload, new URI(fcRepoService.getBaseURI() + arkId.getFedoraPath() + "/" + ChildType.PAYLOAD.getChildType()));
 	}
 
 	@Deprecated
@@ -248,7 +236,7 @@ public class KnowledgeObjectService {
 		metadata.setLastModified(null);
 		metadata.setCreatedOn(null);
 
-		insertRDFData(metadata, objectURI);
+		serializeAndInsertRDFData(metadata, objectURI);
 	}
 
 	private void addCitations(List<Citation> citations, URI objectURI)
@@ -270,7 +258,7 @@ public class KnowledgeObjectService {
 			for (Citation citation : citations) {
 
 				URI citationURI = fcRepoService.createContainerWithAutoGeneratedName(citationParentURI);
-				insertRDFData(citation, citationURI);
+				serializeAndInsertRDFData(citation, citationURI);
 			}
 		}
 	}
@@ -327,7 +315,7 @@ public class KnowledgeObjectService {
 				fcRepoService.putBinary(knowledgeObject.getOutputMessage(), koParentURI,
 						ChildType.OUTPUT.getChildType());
 
-				insertRDFData(knowledgeObject.getPayload(), new URI(koParentURI + "/Payload"));
+				serializeAndInsertRDFData(knowledgeObject.getPayload(), new URI(koParentURI + "/Payload"));
 
 				addProvMetadataEnd(provLogURI);
 
@@ -356,25 +344,35 @@ public class KnowledgeObjectService {
 		String username = loggedInUser == null ? null : loggedInUser.getFullName();
 		ProvenanceLogData provLogData = new ProvenanceLogData(username,
 				uri.toString(), username, uri.toString(), new Date(), null);
-		insertRDFData(provLogData, uri);
+		serializeAndInsertRDFData(provLogData, uri);
 	}
 
 	private void addProvMetadataEnd(URI uri) throws ObjectTellerException {
 		ProvenanceLogData provLogData = new ProvenanceLogData(null,
 				null, null, null, null, new Date());
-		insertRDFData(provLogData, uri);
+		serializeAndInsertRDFData(provLogData, uri);
 	}
 
-	private void insertRDFData(Identifiable data, URI objectURI) throws ObjectTellerException {
+	private void serializeAndInsertRDFData(Identifiable data, URI objectURI) throws ObjectTellerException {
 		IRI iri = SimpleValueFactory.getInstance().createIRI(objectURI.toString());
 		data.id(iri);
 		Model dataModel = RDFMapper.builder()
-				.namespace(OT_NAMESPACE_PREFIX, OT_NAMESPACE_URL)
-				.namespace(FEDORA_NAMESPACE_PREFIX, FEDORA_NAMESPACE_URL)
-				.namespace(PROV_NAMESPACE_PREFIX, PROV_NAMESPACE_URL)
+				.namespace(NamespaceConstants.OT_NAMESPACE_PREFIX, NamespaceConstants.OT_NAMESPACE_URL)
+				.namespace(NamespaceConstants.FEDORA_NAMESPACE_PREFIX, NamespaceConstants.FEDORA_NAMESPACE_URL)
+				.namespace(NamespaceConstants.PROV_NAMESPACE_PREFIX, NamespaceConstants.PROV_NAMESPACE_URL)
 				.build().writeValue(data);
 		fcRepoService.putRDFData(dataModel, objectURI);
 	}
+
+	private <T> T fetchAndDeserializeRDFData(Class<T> clazz, URI objectURI, String iri) throws ObjectTellerException{
+		Model model = fcRepoService.getRDFData(objectURI);
+		return RDFMapper.builder()
+				.namespace(NamespaceConstants.OT_NAMESPACE_PREFIX, NamespaceConstants.OT_NAMESPACE_URL)
+				.namespace(NamespaceConstants.FEDORA_NAMESPACE_PREFIX, NamespaceConstants.FEDORA_NAMESPACE_URL)
+				.namespace(NamespaceConstants.PROV_NAMESPACE_PREFIX, NamespaceConstants.PROV_NAMESPACE_URL)
+				.build().readValue(model, clazz, SimpleValueFactory.getInstance().createIRI(iri));
+	}
+
 }
 
 
