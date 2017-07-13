@@ -1,5 +1,5 @@
 {
-  "name": "objectteller",
+  "name": "kgridlibraryfront",
   "version": "1.0.0",
   "description": "Object Teller User Management Page",
   "author": "George Meng <gqmeng@umich.edu>",
@@ -16,7 +16,8 @@
     "tether": "^1.4.0",
     "vee-validate": "^2.0.0-rc.5",
     "vue": "^2.3.4",
-    "vue-router": "2.5.3"
+    "vue-router": "2.5.3",
+    "webpack": "^2.7.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
@@ -48,7 +49,6 @@
     "vue-loader": "^12.1.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.3.3",
-    "webpack": "^3.0.0",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.18.0",
