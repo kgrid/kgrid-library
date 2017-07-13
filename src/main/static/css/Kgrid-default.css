@@ -8,11 +8,20 @@ body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldse
   color: #666666;
 }
 
+h1    { font-size: 28px; }
+h2    { font-size: 24px; }
+h3    { font-size: 21px; }
+h4    { font-size: 18px; }
+h5    { font-size: 16px; }
+h6    { font-size: 14px; }
+h7    { font-size: 12px; }
+small { font-size:  70%; }
+
 * {
 	outline:none;
 }
 
-a, a:hover, a:visited, a:focused {
+a, a:hover, a:visited, a:focus {
 	text-decoration:none;
 	color: #b3b3b3;
 	cursor: pointer;
