@@ -66,7 +66,7 @@
 					<div class='col-md-2 filterBtnCol'>
 						<div id='filterBtn'>
 							<a v-on:click='toggleFilter'> Filters
-								<span><img id='filterdowniconimg' class='down' src='../assets/images/dropdown_chevron.png' width='12px' /></span>
+								<span><img id='filterdowniconimg' class='down' src='../assets/images/Chevron.png' width='12px' /></span>
 							</a>
 						</div>
 					</div>
@@ -85,7 +85,8 @@
 						</ul>
 					</div>
 				</div>
-				<div id='filterpanel' v-if='showFilterControl'>
+				<transition name='expand'>
+				<div id='filterpanel' v-if='showFilterControl' >
 					<div class='row'>
 						<div class='col-md-6'>
 							<div class='row filter'><p>Search only within the following:</p></div>
@@ -213,6 +214,7 @@
 			</div>
 		</div>
 </div>
+</transition>
 </div>
 <ul>
 <li v-for='(object,index) in orderedList' v-bind:key='index'><kotile :object='object'
@@ -714,6 +716,10 @@ input[id$="datepicker"] {
 #filterBtn a span {
 	margin: 0px -15px 0px 12px;
 }
+img#filterdowniconimg
+{
+transition: transform 0.8s ease;
+}
 img#filterdowniconimg.down {
     -moz-transform: scaleY(1);
     -o-transform: scaleY(1);
@@ -730,8 +736,6 @@ img#filterdowniconimg.up {
 	background-color:#fff;
 	margin: 0px 0px 12px 0px;
 	padding: 12px;
-
-
 }
 .filterlist li, .filterlist button#clearAll{
 display:inline-block;
@@ -766,17 +770,17 @@ vertical-align: top;
 }
 select {
     background: transparent;
-	background-size: 18px;
-    background-image: url(../assets/images/dropdown_chevron.png);
+	background-size: 12px;
+    background-image: url(../assets/images/Chevron.png);
     background-repeat: no-repeat;
-    background-position: 90%;
+    background-position: 75%;
     line-height: 1;
     -webkit-appearance: none;
     -moz-appearance: none;
     width: 100%;
     padding: 6px;
     height: 40px;
-    border: 1px solid #e6e6e6;
+    border: none;
     border-radius: 10px;
     margin: 2px 0;
     font-size: 14px;
@@ -995,5 +999,17 @@ left: 12px;
 
 .filterBtnCol {
 	width: 120px;
+}
+.expand-enter-active, .expand-leave-active {
+  transition: all .8s linear;
+  height: 220px;
+  overflow: hidden;
+	opacity:1;
+}
+
+.expand-enter, .expand-leave {
+  height: 0;
+	overflow:hidden;
+  opacity: 0;
 }
 </style>
