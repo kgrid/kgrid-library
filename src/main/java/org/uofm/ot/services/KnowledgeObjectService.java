@@ -149,7 +149,7 @@ public class KnowledgeObjectService {
 	public void patchKnowledgeObject(KnowledgeObject knowledgeObject, ArkId arkId)
 			throws ObjectTellerException, URISyntaxException {
 		if (knowledgeObject != null && knowledgeObject.getMetadata() != null) {
-			boolean param = knowledgeObject.getMetadata().isPublished();
+			boolean param = !knowledgeObject.getMetadata().getPublished();
 			togglePublishedStatus(arkId, knowledgeObject.getMetadata(), param);
 		}
 	}
@@ -191,7 +191,7 @@ public class KnowledgeObjectService {
 	private void togglePublishedStatus(ArkId arkId, Metadata metadata, boolean value)
 			throws ObjectTellerException, URISyntaxException {
 
-		metadata.setPublished(value ? "yes" : "no");
+		metadata.setPublished(value);
 		addOrEditMetadataToArkId(arkId, metadata);
 	}
 
@@ -408,6 +408,7 @@ public class KnowledgeObjectService {
 			addProvMetadataStart(provLogURI, loggedInUser);
 			knowledgeObject.setArkId(arkId);
 			knowledgeObject.getMetadata().setVersion(new Version());
+			knowledgeObject.getMetadata().setPublished(false);
 			addOrEditMetadataToURI(koURI, knowledgeObject.getMetadata());
 
 			fcRepoService.putBinary(knowledgeObject.getPayload().getContent(), koURI,
