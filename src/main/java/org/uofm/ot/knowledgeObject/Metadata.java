@@ -25,7 +25,7 @@ public class Metadata implements Identifiable {
 	
 	private String keywords; 
 	
-	private boolean published;
+	private String published;
 	
 	private Date lastModified;
 	
@@ -112,12 +112,16 @@ public class Metadata implements Identifiable {
 	}
 
 	@RdfProperty(value="ot:published")
-	public boolean isPublished() {
+	public String getPublished() {
 		return published;
 	}
 
+	public boolean isPublished() {
+		return published.equalsIgnoreCase("yes");
+	}
+
 	@RdfProperty(value="ot:published")
-	public void setPublished(boolean published) {
+	public void setPublished(String published) {
 		this.published = published;
 	}
 

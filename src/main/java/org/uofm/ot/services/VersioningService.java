@@ -16,6 +16,7 @@ import org.openrdf.rio.RDFFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.uofm.ot.exception.ObjectNotFoundException;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraGateway.FCRepoService;
 import org.uofm.ot.knowledgeObject.ArkId;
@@ -59,6 +60,9 @@ public class VersioningService {
         throw new ObjectTellerException("Error creating new version, this version already exists!");
       }
       if (response.getStatusLine().getStatusCode() != HttpStatus.CREATED.value()) {
+        if(response.getStatusLine().getStatusCode() == HttpStatus.NOT_FOUND.value()) {
+          throw new ObjectNotFoundException("Could not find object at URI " + parentURI + " with version " + versionName);
+        }
         throw new ObjectTellerException("Error creating new version, expected status of 201 but got " + response.getStatusLine());
       }
     } catch (IOException e) {
@@ -77,7 +81,7 @@ public class VersioningService {
     try {
       HttpResponse response = client.execute(patch);
       if(response.getStatusLine().getStatusCode() != HttpStatus.NO_CONTENT.value()) {
-        throw new ObjectTellerException("Error deleting version at " + versionURI + " Expected status of 204 but got " +
+        throw new ObjectTellerException("Error deleting version at " + versionURI + " Got error code " +
             response.getStatusLine().getStatusCode());
       }
     } catch (IOException e) {
@@ -100,7 +104,7 @@ public class VersioningService {
         if(response.getStatusLine().getStatusCode() == HttpStatus.BAD_REQUEST.value()) {
           throw new ObjectTellerException("Error deleting version at " + versionURI + " Cannot delete the most recent version.");
         }
-        throw new ObjectTellerException("Error deleting version at " + versionURI + " Expected status of 204 but got " +
+        throw new ObjectNotFoundException("Error deleting version at " + versionURI + "Got error code " +
         response.getStatusLine().getStatusCode());
       }
     } catch (IOException e) {
