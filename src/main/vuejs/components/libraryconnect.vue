@@ -1,45 +1,29 @@
-<template id='login_overlay'>
+<template id='libcon_overlay'>
 	<olnpane layerid=0>
-		<div slot='ol-title'><h3>Log in</h3></div>
+		<div slot='ol-title'><h3>Connect To A Library</h3></div>
 		<div slot='ol-form'>
-		   <form @submit.prevent="validateLoginForm" data-vv-scope="loginform" autocomplete='on'>
+		   <form @submit.prevent="validateLibForm" data-vv-scope="libform" autocomplete='on'>
 			<fieldset class='fieldcontainer' id='first'>
 			<div class='loginField'>
-               <label class="label">Username</label>
+               <label class="label">Library URL</label>
                 <p class="control has-icon has-icon-right">
-                    <input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'loginform') }" type="text" placeholder="Email">
-                    <i v-show="errors.has('email', 'loginform')" class="fa fa-warning"></i>
-                    <span v-show="errors.has('email', 'loginform')" class="help is-danger">{{ errors.first('email', 'loginform') }}</span>
+                    <input spellcheck=false v-model='baseurl' name="url" v-validate data-vv-delay="1000" data-vv-rules="required|url" :class="{'input': true, 'is-danger': errors.has('url', 'libform') }" type="text" placeholder="http://127.0.0.1:8080">
+                    <i v-show="errors.has('url', 'libform')" class="fa fa-warning"></i>
+                    <span v-show="errors.has('url', 'libform')" class="help is-danger">{{ errors.first('url', 'libform') }}</span>
                 </p>
-					    <!--<button class='edit_btn' >Need to create an account?</button>-->
 				</div>
 				<div class='loginField'>
-				 <label class="label">Password</label>
-                 <p class="control has-icon has-icon-right">
-                     <input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
-                     <i v-show="errors.has('password', 'loginform')" class="fa fa-warning"></i>
-                     <span v-show="errors.has('password', 'loginform')" class="help is-danger">{{ errors.first('password', 'loginform') }}</span>
-                 </p>
-									    <!-- 											<button class='edit_btn' >Forgot your password?</button>
-		 -->							</div>
-								<div class='loginField'>
-
-
-
 									<div class='ot-s-btn ot-login'>
 								       <div class='greenbutton' > </div>
-								       <div class='btnContent'><button class='login' type='submit'>LOG IN</button></div>
+								       <div class='btnContent'><button class='login' type='submit'>CONNECT</button></div>
 								</div>
-
-
-
-									</div>
+							</div>
 				</fieldset>
 				</form>
 		</div>
-		<div slot='ol-processing'>Log in ...</div>
-		<div slot='ol-success'>Login Successful !!!</div>
-		<div slot='ol-failure'>Unable to login. Please check your username and password! </div>
+		<div slot='ol-processing'>Connecting ...</div>
+		<div slot='ol-success'>Library Connected!!!</div>
+		<div slot='ol-failure'>Unable to Connect. Please check the URL! </div>
 		<div slot='ol-warning'>Warning !!!</div>
 	</olnpane>
 </template>
@@ -47,10 +31,11 @@
 import olnpane from '../components/olnpane';
 import eventBus from '../components/eventBus.js';
 export default {
-  name: 'login',
+  name: 'libcon',
   data: function () {
     return {
-      userModel: {user: {username: '', password: ''}},
+    	baseurl:'',
+      role: 'default',
       test: true
     };
   },
@@ -58,33 +43,43 @@ export default {
     olnpane
   },
   methods: {
-	  validateLoginForm(e) {
-          this.$validator.validateAll('loginform');
-          if (!this.errors.any('loginform')) {
-	            this.userlogin()
+	  validateLibForm(e) {
+          this.$validator.validateAll('libform');
+          if (!this.errors.any('libform')) {
+	            this.libconnect()
 	        }
       },
 	  validateBeforeSubmit(e) {
 	        this.$validator.validateAll();
 	        if (!this.errors.any()) {
-	            this.userlogin()
+	            this.libconnect()
 	        }
 	      },
-    userlogin: function () {
+    libconnect: function () {
       var self = this;  // eslint-disable-line
+			console.log(this.baseurl.length);
+			if(this.baseurl.substring(this.baseurl.length)!='/'){
+				this.baseurl=this.baseurl+"/";
+			}
+			this.$store.commit('seturl',this.baseurl);
       if (this.test) {
         $( 'div.processing' ).fadeIn( 300 );  // eslint-disable-line
         $.ajax({  // eslint-disable-line
-          type: 'POST',
-          url: 'login',
-          data: self.userModel.user,
-          dataType: 'json',
+          type: 'GET',
+					beforeSend: function (jqxhr) {
+            jqxhr.setRequestHeader("Access-Control-Allow-Origin", self.baseurl);
+        	},
+          url: this.baseurl+'knowledgeObject',
           success: function (response) {
             $( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
-            $('div.success').fadeIn(300).delay(500).fadeOut(400, function(){  // eslint-disable-line
-						self.$store.commit('setuser',response);
-						eventBus.$emit('userloggedin',response);
-            });
+						if(response instanceof Array){
+            	$('div.success').fadeIn(300).delay(500).fadeOut(400, function(){  // eslint-disable-line
+            		eventBus.$emit('libConnected', self.baseurl);  // eslint-disable-line
+            	});
+						}else {
+							$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
+							$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
+						}
           },
           error: function (response) {
 				$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
