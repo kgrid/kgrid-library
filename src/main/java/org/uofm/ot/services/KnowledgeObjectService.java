@@ -16,6 +16,7 @@ import org.openrdf.model.impl.SimpleValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.uofm.ot.exception.ObjectNotFoundException;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraGateway.ChildType;
 import org.uofm.ot.fedoraGateway.FCRepoService;
@@ -55,8 +56,13 @@ public class KnowledgeObjectService {
 
 	public KnowledgeObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException, URISyntaxException{
 		URI metadataURI = constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath());
-
-		Metadata metadata = fetchAndDeserializeRDFData(Metadata.class, metadataURI, metadataURI.toString());
+		Metadata metadata;
+		try {
+			metadata = fetchAndDeserializeRDFData(Metadata.class, metadataURI,
+					metadataURI.toString());
+		} catch (NullPointerException e) {
+			throw new ObjectNotFoundException("Cannot find knowledge object with ark id " + arkId);
+		}
 
 		URI citationContainerURI = constructURI(metadataURI, ChildType.CITATIONS.getChildType());
 		List<URI> citationURIs = fcRepoService.getChildrenURIs(citationContainerURI);
@@ -185,7 +191,7 @@ public class KnowledgeObjectService {
 	private void togglePublishedStatus(ArkId arkId, Metadata metadata, boolean value)
 			throws ObjectTellerException, URISyntaxException {
 
-		metadata.setPublished(value);
+		metadata.setPublished(value ? "yes" : "no");
 		addOrEditMetadataToArkId(arkId, metadata);
 	}
 

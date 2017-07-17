@@ -1,15 +1,14 @@
 package org.uofm.ot.fusekiGateway;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.jena.arq.querybuilder.SelectBuilder;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.log4j.Logger;
+import org.uofm.ot.exception.ObjectNotFoundException;
 import org.uofm.ot.services.FedoraConfiguration;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.knowledgeObject.*;
@@ -56,7 +55,6 @@ public class FusekiService {
 
 					list = getFedoraObjects(query);
 				}
-
 			} else {
 				logger.error("Fuseki Server URL is not configured");
 				throw new ObjectTellerException("Fuseki Server URL is not configured");
@@ -117,7 +115,7 @@ public class FusekiService {
 	}
 	
 	private boolean testIfFusekiIsRunning() throws ObjectTellerException{
-		boolean result = false; 
+		boolean result;
 
 		String fusekiURL = fusekiServerURL;
 		fusekiURL = fusekiURL.substring(0,fusekiURL.lastIndexOf("/"));
@@ -129,13 +127,15 @@ public class FusekiService {
 		HttpResponse httpResponse;
 		try {
 			httpResponse = httpClient.execute(httpGetRequest);
-			if ( 200 == httpResponse.getStatusLine().getStatusCode())
+			if ( 200 == httpResponse.getStatusLine().getStatusCode()) {
 				result = true;
+			} else {
+				throw new ObjectNotFoundException("Cannot connect to fuseki service, throws " +
+				httpResponse.getStatusLine() + " error. Check the application configuration fuseki url and your fuseki server");
+			}
 		} catch (IOException e) {
 			logger.error("Not able to connect to the Fuseki with url "+fusekiURL);
-			ObjectTellerException exception = new ObjectTellerException(e);
-			exception.setErrormessage("Not able to connect to the Fuseki with url "+fusekiURL);
-			throw exception;
+			throw new ObjectTellerException("Not able to connect to the Fuseki with url "+fusekiURL, e);
 		}
 		return result;
 	}
@@ -148,9 +148,7 @@ public class FusekiService {
 			convertedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(date);
 		} catch (ParseException e) {
 			logger.error("Unable to parse created on date or last updated date" + e.getCause());
-			ObjectTellerException exception = new ObjectTellerException(e);
-			exception.setErrormessage("Unable to parse created on date or last updated date" + e.getCause());
-			throw exception;
+			throw new ObjectTellerException("Unable to parse created on date or last updated date" + e.getCause(), e);
 		}
 		return convertedDate;
 	}
@@ -177,11 +175,11 @@ public class FusekiService {
 		if(querySolution.get("published") != null) {
 			String publishedStringUC = querySolution.get("published").toString().toUpperCase();
 			if(publishedStringUC.startsWith("YES") || publishedStringUC.startsWith("TRUE"))
-				metadata.setPublished(true);
+				metadata.setPublished("yes");
 			else
-				metadata.setPublished(false);
+				metadata.setPublished("yes");
 		} else {
-				metadata.setPublished(false);
+				metadata.setPublished("no");
 		}
 
 		metadata.setTitle(querySolution.get("title").toString());

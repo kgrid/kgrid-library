@@ -210,17 +210,13 @@ public class FCRepoService {
 					}
 				}
 			} else {
-				ObjectTellerException exception = new ObjectTellerException();
 				logger.error("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId+". Request status code is "+httpResponse.getStatusLine().getStatusCode());
-				exception.setErrormessage("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId+". Request status code is "+httpResponse.getStatusLine().getStatusCode());
-				throw exception;
+				throw new ObjectTellerException("\"Exception occurred while retrieving object content for object \"+objectId+\"/\"+dataStreamId+\". Request status code is \"+httpResponse.getStatusLine().getStatusCode()");
 			}
 
 		} catch (IOException e) {
-			ObjectTellerException exception = new ObjectTellerException(e);
 			logger.error("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId + e.getMessage());
-			exception.setErrormessage("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId + e.getMessage());
-			throw exception;
+			throw new ObjectTellerException("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId + e.getMessage(), e);
 		}
 		return chunk.toString();
 	}

@@ -2,8 +2,6 @@ package org.uofm.ot.exception;
 
 public class ObjectTellerException extends Exception{
 
-	private String errormessage;
-	
 	public ObjectTellerException() {
 		super();
 	}
@@ -24,14 +22,5 @@ public class ObjectTellerException extends Exception{
 	public ObjectTellerException(Throwable cause) {
 		super(cause);
 	}
-
-	public String getErrormessage() {
-		return errormessage;
-	}
-
-	public void setErrormessage(String errormessage) {
-		this.errormessage = errormessage;
-	}
-	
 	
 }
