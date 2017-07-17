@@ -3,14 +3,12 @@
 	<applayout :nothelper='true'>
 		<div slot='banner'>
 			<div v-if="isLoggedIn">
-				<h1>Hello, {{userModel.user.first_name}}!<br>Need to invite others? <router-link to='/soon'>Add Users.</router-link></h1>
+				<h1>Hello, {{firstname}}!<br>Need to invite others? <router-link to='/soon'>Add Users.</router-link></h1>
 			</div>
 			<div v-else>
-				<h1>Object Teller is a repository for storing, curating, managing,<br> and
-				making accessible health knowledge for <br>learning health
-				systems. <br>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
+				<h1>Knowledge Grid Library is a digital repository for storing, <br> curating, and managing computer-processable knowledge. <br>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
 			</div>
-			<div id='libname'>
+			<div id='libname' v-if='libConnected'>
 				<span>{{libraryname}}</span>
 				<div id="bannericons" v-show='isLoggedIn'>
 					<ul id="bannericonrow">
@@ -31,6 +29,9 @@
 						<span></span>
 					</div>
 				</div>
+			</div>
+			<div id='libConBtn' v-if='!libConnected' @click='setlibrary'>
+				<span>{{libraryname}}</span>
 			</div>
 		</div>
 		<div slot='header'>
@@ -236,7 +237,8 @@ export default {
     name: 'home',
 	data : function() {
 		return {
-			libraryname : 'Department of Learning Health Sciences Development Server',
+			libConnected:false,
+			libraryname : '',
 			sortKey : 'metadata.lastModified',
 			order : 'desc',
 			searchQuery : '',
@@ -313,16 +315,7 @@ export default {
 		    },
 
 	created : function() {
-		var self = this;
-
-	  	getCurrentUser(function(response) {
-				if(response!="")
-					$.extend(true, self.userModel.user, response);
-				$('.ot-banner').addClass('loggedin');
-			},function(response) {
-				console.log(response);
-			});
-
+			var self = this;
 	  	if(sessionStorage.getItem("sortKey")==null){
 	  		this.setSessionStorage();
 	  	}
@@ -330,14 +323,19 @@ export default {
 		$("#enddatepicker").val(new Date().format("shortDate"));
 		this.startdate = new Date('March 1, 2016').getTime();
 		this.enddate=new Date().getTime();
-		console.log('Home created ==> '+ userModel.user.username);
 		$.extend(true,this.userModel,userModel);
-		this.isLoggedIn = (this.userModel.user.username!='');
-		//this.check.pri=this.isLoggedIn;
-		retrieveObjectList(function(response) {
-			self.model.koList = response;
-			if(self.model.koList.length>0){
-				$.extend(true,objModel.object,self.model.koList[0]);
+		retrieveObjectList(this.$store.state.baseurl, function(response) {
+			console.log("Object List Retrieval:");
+			if(response instanceof Array){
+				self.libraryname='Department of Learning Health Sciences Development Server';
+				self.libConnected=true;
+				self.model.koList = response;
+				if(self.model.koList.length>0){
+					$.extend(true,objModel.object,self.model.koList[0]);
+				}
+			}else {
+				self.libraryname='No Library is found. Click here to connect.';
+				self.libConnected=false;
 			}
 		}, function(response){
 			console.log("Error in retrieving the list from the connected library.")
@@ -352,7 +350,6 @@ export default {
 			self.enddate=date;
 		});
 		eventBus.$on('userloggedin',function(obj){
-			self.isLoggedIn=true;
 			$.extend(true, self.userModel.user,obj);
 			self.isAdmin = (self.userModel.user.role=='ADMIN');
 			self.check.pri=true;
@@ -361,7 +358,6 @@ export default {
 		});
 		eventBus.$on('logout', function(){
 			$.extend(true, self.userModel.user, {username:'',password:''});
-			self.isLoggedIn=false;
 			self.isAdmin=false;
 			$('.ot-banner').removeClass('loggedin');
 			otScroll();
@@ -422,12 +418,11 @@ export default {
 		  hasDateFilter: function(){
 		  return !(_.isEqual(this.dateRange, this.defaultDateRange))
 	  },
-		isLoggedIn:function(){
-			var loggedin =false;
-			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
-			loggedin = (userModel.user.username!="");
-			//this.check.pri=loggedin;
-			return loggedin;
+		firstname: function(){
+			return (this.$store.state.currentUser.first_name || "")
+		},
+		isLoggedIn: function () {
+			return this.$store.getters.isLoggedIn;
 		},
 		countString : function() {
 			var count = this.orderedList.length;
@@ -554,6 +549,9 @@ export default {
 		settinglink_click: function () {
 		      eventBus.$emit('openLibSetting'); // eslint-disable-line
 		    },
+				setlibrary: function () {
+							eventBus.$emit('openLibCon'); // eslint-disable-line
+						},
 		toggleOrder : function() {
 			if (this.order == 'asc') {
 				this.order = 'desc';
@@ -794,13 +792,11 @@ select {
     width: 1024px;
     overflow: visible;
     z-index: 10;
-    height: 400px;
+    height: 220px;
     margin: 0 auto;
 padding: 0px 48px 0px 48px;
 }
-.ot-banner.loggedin {
-	height: 220px;
-}
+
 .ot-banner h1 {
     font-size: 32px;
     font-weight: 300;
@@ -810,7 +806,7 @@ padding: 0px 48px 0px 48px;
     color: dimgrey;
     margin: 0 auto;
     line-height: 1.3em;
-    padding-top: 100px;
+    padding-top: 40px;
     background: transparent;
 }
 
@@ -834,15 +830,18 @@ padding: 0px 48px 0px 48px;
 .ot-banner h1 a:hover {
 	color: #666666;
 }
-#libname {
+#libname, #libConBtn {
     text-align: right;
-    font-size: 24px;
+    font-size: 20px;
     /* margin-top: 30px; */
     color: #666666;
     font-weight: 300;
     bottom: 20px;
     position: absolute;
     right: 22px;
+}
+#libConBtn:hover {
+	cursor:pointer;
 }
 .row.filter {
 	height: 30px;
