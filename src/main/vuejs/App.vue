@@ -7,6 +7,7 @@
 </template>
 <script>
 import navbar from './components/navbar.vue';
+import libcon from './components/libraryconnect.vue';
 import login from './components/login';
 import confirmdialog from './components/confirmdialog'; // eslint-disable-line
 import olnpane from './components/olnpane'; // eslint-disable-line
@@ -31,20 +32,33 @@ export default {
     };
   },
   beforeCreate:function(){
-		var self=this;
-
-			getCurrentUser(function(response) {
-				if(response!=""){
-					$.extend(true, userModel.user, response);
-					$.extend(true, self.userModel.user, response);
-				}
+		  var self=this;
+			getCurrentUser("", function(response) {
+			  if(response!=""){
+					     $.extend(true, userModel.user, response);
+					     $.extend(true, self.userModel.user, response);
+   						self.$store.commit('setuser',response);
+			  }
 				},function(response) {
-
-				});
+            console.log("Error in getting current user:");
+            console.log(response);
+				}
+      );
 
 	},
   created: function () {
     var self = this  // eslint-disable-line
+    getCurrentUser("", function(response) {
+      if(response!=""){
+             $.extend(true, userModel.user, response);
+             $.extend(true, self.userModel.user, response);
+            self.$store.commit('setuser',response);
+      }
+      },function(response) {
+          console.log("Error in getting current user:");
+          console.log(response);
+      }
+    );
     eventBus.$on('openLogin', function () {
       self.showOverlay.show = true;
       self.currentOLView = 'login';
@@ -79,6 +93,15 @@ export default {
       	  $('#ol').removeClass('animated slideInRight');
         });
       });
+      eventBus.$on('openLibCon', function () {
+          self.showOverlay.show = true;
+          self.currentOLView = 'libcon';
+          document.body.classList.toggle('noscroll', true);
+          $('#ol').addClass('animated slideInRight');
+          $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            $('#ol').removeClass('animated slideInRight');
+          });
+        });
       eventBus.$on('confirm', function (data) {
         console.log(data);
         self.showOverlay.show = false;
@@ -159,12 +182,15 @@ export default {
 	 eventBus.$on("userloggedin",function(obj){
 		 self.showOverlay.show=false;
 		 document.body.classList.toggle('noscroll', false);
-		 getCurrentUser(function(response) {
+		 getCurrentUser(self.$store.state.baseurl, function(response) {
 			if(response!=""){
 				$.extend(true, self.userModel.user, response);
 				$.extend(true, userModel.user, response);
 			}
-		})
+		},function(response) {
+        console.log("Error in getting current user:");
+        console.log(response);
+    })
 	 });
 		eventBus.$on("open", function(x){
 			self.showOverlay.show=true;
@@ -179,7 +205,8 @@ export default {
     objcreator,
     libraryusers,
     librarysetting,
-    confirmdialog
+    confirmdialog,
+    libcon
   },
 	computed:{
 		isLoggedIn:function(){
@@ -187,7 +214,10 @@ export default {
 			console.log('Computing isLoggedIn for App ==> '+ userModel.user.username);
 			loggedin = (userModel.user.username!="");
 			return loggedin;
-		}
+		},
+    ifDebug: function(){
+      return this.store.state.debugEnabled;
+    },
 	},
 	mounted:function(){
 		overlayHeightResize();

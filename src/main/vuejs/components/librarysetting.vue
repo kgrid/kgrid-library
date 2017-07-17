@@ -1,14 +1,45 @@
 <template>
 	<olpane layerid=0>
-		<div slot="ol-title"><h3>Libray Setting</h3></div>
+		<div slot="ol-title"><h3>Enter the URL of the libray to Connect</h3></div>
 		<div slot="ol-form">
-			<div class="addtext">
-				 To be Added ... 
-			</div>
+		<form @submit.prevent="validateLibForm" data-vv-scope="loginform" autocomplete='on'>
+	 <fieldset class='fieldcontainer' id='first'>
+	 <div class='loginField'>
+						<label class="label">Username</label>
+						 <p class="control has-icon has-icon-right">
+								 <input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'loginform') }" type="text" placeholder="Email">
+								 <i v-show="errors.has('email', 'loginform')" class="fa fa-warning"></i>
+								 <span v-show="errors.has('email', 'loginform')" class="help is-danger">{{ errors.first('email', 'loginform') }}</span>
+						 </p>
+					 <!--<button class='edit_btn' >Need to create an account?</button>-->
+		 </div>
+		 <div class='loginField'>
+			<label class="label">Password</label>
+							<p class="control has-icon has-icon-right">
+									<input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
+									<i v-show="errors.has('password', 'loginform')" class="fa fa-warning"></i>
+									<span v-show="errors.has('password', 'loginform')" class="help is-danger">{{ errors.first('password', 'loginform') }}</span>
+							</p>
+									 <!-- 											<button class='edit_btn' >Forgot your password?</button>
+	-->							</div>
+						 <div class='loginField'>
+
+
+
+							 <div class='ot-s-btn ot-login'>
+										<div class='greenbutton' > </div>
+										<div class='btnContent'><button class='login' type='submit'>LOG IN</button></div>
+						 </div>
+
+
+
+							 </div>
+		 </fieldset>
+		 </form>
 				 </div>
 		<div slot="ol-processing">Processing...</div>
-		<div slot="ol-success">New object succesfully created!!! Object ID:{{newobjModel.object.uri}}</div>
-		<div slot="ol-failure">Creation of new object Failed! </div>
+		<div slot="ol-success">Library Connected</div>
+		<div slot="ol-failure">Connection Failed! </div>
 		<div slot="ol-warning">Warning !!!</div>
 	</olpane>
 </template>
@@ -27,7 +58,7 @@
 			}
 		},
 	created:function(){
-		
+
 	},
 	components: {
 		olpane:olpane,
@@ -74,11 +105,11 @@
 					$("div.processing").fadeOut(200);
 					$("div.warning").text(response.status+"   "+response.statusText);
 					$("div.warning").show();
-					
-					//test code, to be removed 
+
+					//test code, to be removed
 					eventBus.$emit("objcreated",{"metadata":{"title":"error"}});
 				}
-			});	
+			});
 		},
 		 updatedisplay : function(sec, msg){
 	//	    	console.log("Section:"+sec+" Msg:"+msg);
@@ -95,7 +126,7 @@
 		    		$.extend(true, this.newobjModel.object, {"metadata":{"title":""}});
 		    	}
 		    },
-		    
+
 	}
 };
 	</script>

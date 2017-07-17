@@ -1,11 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VeeValidate from 'vee-validate';
-
+import Vuex from 'vuex';
 
 //import VueResource from 'vue-resource';
 import App from './App';
+import store from './store';
 import eventBus from './components/eventBus.js';
+import {getCurrentUser} from './ot.js';
 import { objModel, editObjModel, sections, userModel } from './components/models.js'
 
 require('es6-promise').polyfill();
@@ -15,11 +17,10 @@ require('jquery');
 require('tether');
 require('lodash');
 
-
 //import { overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
-//import login from './components/login';  
-//import objeditor from './components/objeditor'; 
-//import objcreator from './components/objcreator'; 
+//import login from './components/login';
+//import objeditor from './components/objeditor';
+//import objcreator from './components/objcreator';
 
 // debug mode
 Vue.config.debug = false;
@@ -33,6 +34,9 @@ Vue.use(VueRouter);
 // install Vee-Validate
 Vue.use(VeeValidate);
 
+//install vuex
+Vue.use(Vuex);
+
 // create router
 const routes = [
                 { path : '/', component : require('./components/home.vue')	},
@@ -43,8 +47,8 @@ const routes = [
                 	   	console.log("current URI"+ this.$route.params.uri);
                 	    }	} ,
                 {path:'/soon', component: require('./components/comingsoon.vue')},
-                 { path : '*', component : require('./components/notfound.vue')	},
-                        
+                 { path : '/*', component : require('./components/notfound.vue')	},
+
                 	    ];
 
 const router = new VueRouter({
@@ -56,6 +60,7 @@ const router = new VueRouter({
 var vm = new Vue({
 	router : router,
 	el: '#app',
+  store,
 	data : {
 		currentOLView:'objeditor',
 		koModel:objModel,
@@ -68,13 +73,23 @@ var vm = new Vue({
 	},
 	created: function(){
 		var self=this;
+    getCurrentUser("http://localhost:3000/", function(response) {
+      if(response!=""){
+          console.log(response);
+          store.commit('setuser',response);
+      }
+      },function(response) {
+          console.log("Error in getting current user:");
+          console.log(response);
+      }
+    );
 		eventBus.$on('404', function(){
 			router.push({path:'*'});
 		});
 		eventBus.$on('soon', function(){
 			router.push({path:'/soon'});
 		});
-		
+
 		 eventBus.$on("return", function(){
 			router.push({ path: '/' });
 		 });
@@ -87,7 +102,7 @@ var vm = new Vue({
 		 eventBus.$on("objDeleted", function(obj){
 				router.push({ path: '/' });
 			 });
-		 
+
 	},
 	methods: {
 		updateObject:function(obj){
@@ -95,4 +110,3 @@ var vm = new Vue({
 		},
 	}
 	}).$mount('#app');
-
