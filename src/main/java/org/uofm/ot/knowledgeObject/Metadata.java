@@ -25,8 +25,8 @@ public class Metadata implements Identifiable {
 	
 	private String keywords; 
 	
-	private String published;
-	
+	private Boolean published;
+
 	private Date lastModified;
 	
 	private Date createdOn;
@@ -112,33 +112,31 @@ public class Metadata implements Identifiable {
 	}
 
 	@RdfProperty(value="ot:published")
-	public String getPublished() {
+	public Boolean getPublished() {
 		return published;
 	}
 
-	public boolean isPublished() {
-		return published.equalsIgnoreCase("yes");
-	}
-
 	@RdfProperty(value="ot:published")
-	public void setPublished(String published) {
+	public void setPublished(Boolean published) {
 		this.published = published;
 	}
 
+	@RdfProperty(value="fedora:lastModified", datatype = "String")
 	public Date getLastModified() {
 		return lastModified;
 	}
 
-	@RdfProperty(value="fedora:lastModified")
+	@RdfProperty(value="fedora:lastModified", datatype = "String")
 	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
 	}
 
+	@RdfProperty(value="fedora:created", datatype = "String")
 	public Date getCreatedOn() {
 		return createdOn;
 	}
 
-	@RdfProperty(value="fedora:created")
+	@RdfProperty(value="fedora:created", datatype = "String")
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}

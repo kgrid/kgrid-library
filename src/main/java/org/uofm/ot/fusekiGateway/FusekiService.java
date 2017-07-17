@@ -175,11 +175,11 @@ public class FusekiService {
 		if(querySolution.get("published") != null) {
 			String publishedStringUC = querySolution.get("published").toString().toUpperCase();
 			if(publishedStringUC.startsWith("YES") || publishedStringUC.startsWith("TRUE"))
-				metadata.setPublished("yes");
+				metadata.setPublished(true);
 			else
-				metadata.setPublished("yes");
+				metadata.setPublished(false);
 		} else {
-				metadata.setPublished("no");
+				metadata.setPublished(false);
 		}
 
 		metadata.setTitle(querySolution.get("title").toString());
