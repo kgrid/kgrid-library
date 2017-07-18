@@ -31,21 +31,6 @@ export default {
       request: {name:"",statement:"q"}
     };
   },
-  beforeCreate:function(){
-		  var self=this;
-			getCurrentUser("", function(response) {
-			  if(response!=""){
-					     $.extend(true, userModel.user, response);
-					     $.extend(true, self.userModel.user, response);
-   						self.$store.commit('setuser',response);
-			  }
-				},function(response) {
-            console.log("Error in getting current user:");
-            console.log(response);
-				}
-      );
-
-	},
   created: function () {
     var self = this  // eslint-disable-line
     getCurrentUser("", function(response) {
@@ -69,7 +54,6 @@ export default {
       });
     });
     eventBus.$on('confirmRequest', function (data) {
-
       $.extend(true,self.request, data);
       console.log(self.request);
       self.showOverlay.show = true;
