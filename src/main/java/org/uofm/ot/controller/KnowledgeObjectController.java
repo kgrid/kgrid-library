@@ -21,7 +21,6 @@ import org.uofm.ot.knowledgeObject.Version;
 import org.uofm.ot.model.ErrorInfo;
 import org.uofm.ot.model.OTUser;
 import org.uofm.ot.services.KnowledgeObjectService;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -280,9 +279,9 @@ public class KnowledgeObjectController {
 		ResponseEntity<Payload> payload = null;
 		try {
 			Payload payloadObj = knowledgeObjectService.getPayload(arkId);
-			payload = new ResponseEntity<Payload> (payloadObj,HttpStatus.OK);
+			payload = new ResponseEntity<> (payloadObj,HttpStatus.OK);
 		} catch (ObjectTellerException e) {
-			payload = new ResponseEntity<Payload> (HttpStatus.NOT_FOUND);
+			payload = new ResponseEntity<> (HttpStatus.NOT_FOUND);
 		}
 		return payload;
 	}
@@ -292,11 +291,11 @@ public class KnowledgeObjectController {
 		ResponseEntity<String> inputMessage = null;
 		try {
 			String content = knowledgeObjectService.getInputMessageContent(arkId);
-			inputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
+			inputMessage = new ResponseEntity<>(content, HttpStatus.OK);
 		} catch (ObjectTellerException exception){
-			inputMessage = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
+			inputMessage = new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
 		}
-		return inputMessage ; 
+		return inputMessage;
 	}
 	
 	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}/outputMessage","/knowledgeObject/{naan}-{name}/outputMessage"})
