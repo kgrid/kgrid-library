@@ -278,6 +278,8 @@ public class KnowledgeObjectService {
 			if(version.usesSemVer() && oldVersion.usesSemVer() && version.compareTo(oldVersion) < 0) {
 				throw new ObjectTellerException("Cannot create a version with a number before the current version. " +
 				versionString + " is not after " + ko.getMetadata().getVersion());
+			} else if (!versionString.matches("[A-Za-z][A-Za-z0-9-_.]*")) {
+				throw new ObjectTellerException("Version id must start with a letter an cannot contain any special characters besides hyphen(-) underscore(_) and period(.)");
 			}
 		}
 		try {

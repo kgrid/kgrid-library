@@ -99,7 +99,7 @@ public class KnowledgeObjectController {
 	 */
 	@GetMapping(value="/knowledgeObject",
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<KnowledgeObject>> getKnowledgeObjects(@RequestParam(value="published", required = false) boolean onlyPublished) throws ObjectTellerException{
+	public ResponseEntity<List<KnowledgeObject>> getKnowledgeObjects(@RequestParam(value="published", required = false) boolean onlyPublished) throws ObjectTellerException, ObjectNotFoundException {
 			return new ResponseEntity<>(knowledgeObjectService.getKnowledgeObjects(onlyPublished), HttpStatus.OK);
 	}
 
@@ -173,7 +173,7 @@ public class KnowledgeObjectController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}/{version}", "/ark:/{naan}/{name}/{version}","/knowledgeObject/{naan}-{name}/{version}","/{naan}-{name}/{version}"},
+	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}/{version:.+}", "/ark:/{naan}/{name}/{version:.+}","/knowledgeObject/{naan}-{name}/{version:.+}","/{naan}-{name}/{version:.+}"},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId, @PathVariable Version version) throws ObjectTellerException, URISyntaxException  {
 
@@ -189,7 +189,12 @@ public class KnowledgeObjectController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KnowledgeObject> versionKnowledgeObjectByRef(ArkId arkId, @ModelAttribute("loggedInUser") OTUser loggedInUser, @RequestParam(name="version", required=false) String version) throws ObjectTellerException, URISyntaxException {
 
-		KnowledgeObject ko = knowledgeObjectService.createVersion(arkId, version);
+		KnowledgeObject ko;
+		try {
+			ko = knowledgeObjectService.createVersion(arkId, version);
+		} catch (IllegalArgumentException e) {
+			throw new ObjectTellerException("Illegal version id " + e);
+		}
 		return new ResponseEntity<>(ko, HttpStatus.OK);
 	}
 
@@ -250,7 +255,7 @@ public class KnowledgeObjectController {
 
 
 	@DeleteMapping(value = {"/knowledgeObject/ark:/{naan}/{name}/{version}","/knowledgeObject/{naan}-{name}/{version}"})
-	public ResponseEntity<String> deleteKnowledgeObjectVersion(ArkId arkId, Version version) {
+	public ResponseEntity<String> deleteKnowledgeObjectVersion(ArkId arkId, Version version) throws ObjectNotFoundException {
 		try {
 			knowledgeObjectService.deleteVersion(arkId, version);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -362,24 +367,18 @@ public class KnowledgeObjectController {
 	//Exception handling:
 
 	@ExceptionHandler(ObjectTellerException.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	@ResponseBody
-	public ErrorInfo handleObjectTellerExceptions(ObjectTellerException e, WebRequest request) {
-		return new ErrorInfo(e.getLocalizedMessage(), e.getMessage(), request.getContextPath());
+	public ResponseEntity<ErrorInfo> handleObjectTellerExceptions(ObjectTellerException e, WebRequest request) {
+		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getContextPath(), new Date()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(ObjectNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ResponseBody
-	public ErrorInfo handleObjectNotFoundExceptions(ObjectTellerException e, WebRequest request) {
-		return new ErrorInfo(e.getLocalizedMessage(), e.getMessage(), request.getContextPath());
+	public ResponseEntity<ErrorInfo> handleObjectNotFoundExceptions(ObjectNotFoundException e, WebRequest request) {
+		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getContextPath(), new Date()), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(URISyntaxException.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	@ResponseBody
-	public ErrorInfo handleURISyntaxExceptions (URISyntaxException e, WebRequest request){
-		return new ErrorInfo(e.getLocalizedMessage(), e.getMessage(), request.getContextPath());
+	public ResponseEntity<ErrorInfo> handleURISyntaxExceptions(URISyntaxException e, WebRequest request){
+		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getContextPath(), new Date()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	//-----------------------------------Outdated Methods-------------------------------------------//
