@@ -60,10 +60,6 @@ public class Version implements Comparator<Version> {
     // Semantic version string must be in the format "##.##.##" or "##-##-##" with optional alphanumeric "-tag"
     if(!version.matches("(?:auto-snapshot-before-)?v?\\d+\\.\\d+\\.\\d+(?:-\\w*)?") && !version.matches("(?:auto-snapshot-before-)?v?\\d+-\\d+-\\d+(?:-\\w*)?")) {
 
-      if(version.contains(".")) {
-        throw new IllegalArgumentException("Version strings cannot contain periods unless they are in the semantic "
-            + "version format: xx.yy.zz-optionalTag");
-      }
       this.isSemVer = false;
       this.uncompareableVersion = version;
 
