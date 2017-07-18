@@ -14,7 +14,7 @@ export function retrieveObjectList(baseurl, fillObjectList){
 		});
 }
 
-export function retrieveObject(baseurl, uri, section, fillObjectContent){
+export function retrieveObject(baseurl, uri, section, fillObjectContent,errorHandler){
 	var endPoint = uri;
 	if(section!=""){
 		endPoint = endPoint+ "/"+section;
@@ -30,7 +30,7 @@ export function retrieveObject(baseurl, uri, section, fillObjectContent){
 			fillObjectContent(response);
 		},
 		error : function(response) {
-			//errorHandler(response);
+			errorHandler(response);
 		}
 	});
 }
