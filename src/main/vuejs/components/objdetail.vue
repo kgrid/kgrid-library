@@ -18,45 +18,59 @@
 			</div>
 			<div class='col-md-4 col-sm-4 col-xs-4'></div>
 			<div class='col-md-5 col-sm-5 col-xs-5 pri-pub'>
-
+			<div class='col-md-7 col-sm-7 col-xs-7' style="text-align:right;w">VIEW TYPE:</div>
+						<div class='col-md-2 col-sm-2 col-xs-2'>
+									<label class='ot-pub radio-inline'><input type='radio' value='false' v-on:click='unpublish'/>
+										<span v-if='isPublic'>PRIVATE</span>
+										<span class='active middleout' v-else>PRIVATE</span>
+									</label>
+						</div>
+						<div class='col-md-3 col-sm-3 col-xs-3'>
+									<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="6px">
+										<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
+										<span v-else>PUBLIC</span>
+									</label>
+						</div>
 
 			</div>
 			</div>
-					<div class='row ot-detail-titlerow'>
-			<div id='ko-title'>
-				<div id= 'type-status' >
-					<img v-if='objModel.object.metadata.published'
-						src='../assets/images/LittleGreenDot.png' width='10px'
-						height='auto' />
+			<div class='row ot-detail-titlerow'>
+				<div id='ko-title' class='col-md-11 col-sm-11'>
+					<div id= 'type-status' >
+						<img v-if='objModel.object.metadata.published' src='../assets/images/LittleGreenDot.png' width='10px' height='auto' />
+					</div>
+					<h1>
+						<small id='page_title_v'>{{objModel.object.metadata.title}}</small>
+					</h1>
 				</div>
-				<h1>
-					<small id='page_title_v'>{{objModel.object.metadata.title}}
-						<span class="badge badge-success" v-if='isPublic'>Public</span>
-						<span class="badge badge-warning" v-else>Private</span>
-						<span class="badge badge-success">{{publishState}}</span>
-
-</small>
-
-				</h1>
-				<div id='actionlist'  class="dropdown" style="float:right;display:inline-block;">
-				<button class="ot-btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				<div class="col-md-1 col-sm-1" id="actiondiv" v-click-outside='outside'>
+					<div id='actionlist'  class="dropdown">
+						<a class="ot-btn btn-default dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" v-on:click='toggleActionList'>
     					<span class='ot-glybtn glyphicon glyphicon-option-vertical'></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-		<li class="dropdown-header">Access Management</li>
-    <li><a href="#">Change to Private</a></li>
-		<li><a href="#">Add Collaborator</a></li>
-		<li role="separator" class="divider"></li>
-		<li class="dropdown-header">Object Management</li>
-    <li><a href="#">Publish</a></li>
-    <li><a href="#">Withdraw</a></li>
-		<li><a href="#">Delete</a></li>
-    <li role="separator" class="divider"></li>
-    <li><a href="#">Download</a></li>
-  </ul>
-
-</div>
-			</div>
+						</a>
+  					<ul class="dropdown-menu" v-if='showActionList'>
+							<li class="dropdown-header" v-show='false'>Access Management</li>
+    					<li><a href="#" v-show='false'>Change to Private</a></li>
+							<li><a href="#" v-show='false'>Add Collaborator</a></li>
+							<li role="separator" class="divider" v-show='false'></li>
+							<li class="dropdown-header" v-show='false'>Object Management</li>
+    					<li><a href="#" v-show='false'>Publish</a></li>
+    					<li><a v-show='isLoggedIn'  v-on:click='editObj' >Edit</a></li>
+							<li><a v-show='isLoggedIn'  v-on:click='deleteObject'>Delete</a></li>
+    					<li role="separator" class="divider" v-show='false'></li>
+							<li>
+								<div id='downloadButton'>
+									<a class='edit' v-bind:href='downloadLink' :download='downloadFile' >
+										<div class='ot-r1-btn ot-download'>
+											<div class='greyroundbutton'></div>
+							       	<div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="8px"/></div>
+							      </div>Download
+									</a>
+								</div>
+							</li>
+  					</ul>
+					</div>
+				</div>
 			</div>
 					<div class='row ot-detail-daterow'>
 							<div class='col-md-3 col-sm-3 col-xs-3'>
@@ -89,19 +103,6 @@
 				</div>
 		</a></li>
 	</ul>
-					<div class='inline editwrapper accessLevelOne' id='objBtns'
-						>
-						<button class='edit' id='metadataeditBtn' v-show='isLoggedIn' v-on:click='editObj'>EDIT</button>
-						<button class='edit' id='deleteButton' v-show='isLoggedIn'
-							v-on:click='deleteObject'>DELETE</button>
-						<div id='downloadButton'>
-							<a class='edit' v-bind:href='downloadLink' :download='downloadFile'>DOWNLOAD
-							<div class='ot-r1-btn ot-download'>
-							<div class='greyroundbutton'></div>
-						       <div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="8px"/></div>
-						       </div></a>
-						</div>
-			</div>
 		</div>
 			<div slot='maincontent'>
 					<ul class='tab-content view' id='tab'>
@@ -115,9 +116,10 @@
 	</div>
 	</template>
 	<script>
+	var $ = require('jquery');
 	import applayout from './applayout.vue';
 	import tabpane from './tabbedpanel.vue';
-	import {tabNav, getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
+	import {tabNav, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
 	import eventBus from '../components/eventBus.js';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
@@ -128,9 +130,10 @@
 				sections : sections,
 				isDisabled: 1,
 				isPublic:false,
-				publishState: 'Reserved',
+				publishState: 'Unpublished',
 				userModel:{user:{username:'',password:''}},
-				activeTab: 'METADATA'
+				activeTab: 'METADATA',
+						showActionList:false,
 			}
 		},
 			components:{
@@ -139,13 +142,6 @@
 		},
 		created : function() {
 			var self = this;
-
-			getCurrentUser(function(response) {
-				if(response!="")
-					$.extend(true, self.userModel.user, response);
-				},function(response) {
-				console.log(response);
-			});
 			eventBus.$on("objSaved",function(obj){
 				$.extend(true, self.objModel.object, obj);
 			});
@@ -159,6 +155,12 @@
 				//self.isAdmin = (self.userModel.user.role=='ADMIN');
 
 			});
+			$('.dropdown').on('show.bs.dropdown', function(e){
+				$(this).find('.dropdown-menu').first().stop(true, true).slideDown(300);
+				});
+			$('.dropdown').on('hide.bs.dropdown', function(e){
+				$(this).find('.dropdown-menu').first().stop(true, true).slideUp(200);
+				});
 			var sessionObj = sessionStorage.getItem("otObj");
 			if(sessionObj){
 				$.extend(true, self.objModel.object, JSON.parse(sessionObj));
@@ -166,7 +168,7 @@
 		},
 		mounted:function() {
 			var self = this;
-			retrieveObject(this.$route.params.uri, "complete", function(response) {
+			retrieveObject(this.$store.state.baseurl, this.$route.params.uri, "complete", function(response) {
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
 
@@ -185,10 +187,7 @@
 		},
 		computed : {
 			isLoggedIn:function(){
-			var loggedin =false;
-			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
-			loggedin = (userModel.user.username!="");
-			return loggedin;
+				return this.$store.getters.isLoggedIn;
 		},
 			formattedUpdateDate : function() {
 				if(!this.objModel.object.metadata.lastModified || this.objModel.object.metadata.lastModified=="" ){
@@ -220,6 +219,9 @@
 			otScroll();
 		},
 		methods:{
+		toggleActionList: function(){
+			this.showActionList=!this.showActionList;
+		},
 			selectTab: function(section){
 				console.log("Clicked on "+section.label);
 				this.activeTab=section.label;
@@ -233,6 +235,7 @@
 				if(editObjModel.object.inputMessage==null){
 					editObjModel.object.inputMessage="";
 				}
+				this.showActionList=!this.showActionList;
 				eventBus.$emit('editObj', this.objModel.obj);
 			},
 			publish:function(){
@@ -269,6 +272,7 @@
 				var self=this;
 				var uri = this.objModel.object.uri;
 				var txt;
+				this.showActionList=!this.showActionList;
 				if (uri != "") {
 					var r = confirm("Do you really want to delete the object ? ");
 					if (r == true) {
@@ -291,6 +295,10 @@
 			returntolibrary: function(){
 				eventBus.$emit("return");
 			},
+			outside: function(){
+			if(this.showActionList)
+				this.showActionList=!this.showActionList;
+			}
 		}
 };
 	</script>
@@ -391,7 +399,20 @@ ul#tab>li.active {
 	padding: 36px 36px;
 }
 
+#actiondiv {
+margin-top: 16px;
+text-align: right;
+padding-right: 0px;
+}
+#actionlist {
+ float:right;
+ display:inline-block;
+ text-align: left;
 
+ right:-15px;
+ height:80px;
+ overflow-y: visible;
+}
 #goback {
 	display: inline-block;
 	font-size: 12px;
@@ -454,12 +475,13 @@ margin-bottom: 0px;
 }
 
 #downloadButton {
+width:100%;
 	display: inline-block;
 }
 
 #downloadButton:hover .greyroundbutton{
 	  transform: scale(1.2);
-      border: 1px solid #666666;
+    border: 1px solid #666666;
 	  margin: auto;
 	}
 #downloadButton:hover .btnContent{
@@ -469,14 +491,13 @@ margin-bottom: 0px;
 	width: 40px;
 	height: 40px;
 	position:absolute;
-    bottom:-20px;
-    right:-40px;
-    margin:0 auto;
-    z-index:500;
+  bottom:-13px;
+  margin:0 auto;
+  z-index:500;
 }
 .ot-download .btnContent {
     position: relative;
-    top: -21px;
+    top: -29px;
     left: 16px;
     opacity: 0.5;
     transition: opacity 0.5s ease;
@@ -530,5 +551,48 @@ width: 80px;
 .pri-pub label span.active {
 	color: #666666;
 }
+.dropdown-menu {
+position: absolute;
+top: auto;
+right: 0;
+left: auto;
+z-index: 10000;
+float: left;
+min-width: 160px;
+display: block;
+padding: 0;
+margin: 2px 0 0;
+font-size: 14px;
+text-align: left;
+list-style: none;
+background-color: #fff;
+-webkit-background-clip: padding-box;
+background-clip: padding-box;
+border: 1px solid #ccc;
+border: 1px solid rgba(0,0,0,.15);
+border-radius: 4px;
+-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.dropdown ul {
+	background-color: #fff;
+	color: #333;
+}
+.dropdown-menu > li > a, #downloadButton a {
+    padding: 0px 35px;
+    line-height: 2.5em;
+		text-decoration: none;
+    color: #b3b3b3;
+    cursor: pointer;
+    transition: color 0.5s ease;
+		background-color:transparent;
+
+		}
+
+.dropdown-menu > li>a :hover, #downloadButton:hover, #downloadButton:hover a{
+	background-color: #f5f5f5;
+	color:#666666;
+}
+
 
 </style>

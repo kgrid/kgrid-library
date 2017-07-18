@@ -7,14 +7,14 @@ import Vuex from 'vuex';
 import App from './App';
 import store from './store';
 import eventBus from './components/eventBus.js';
-import {getCurrentUser} from './ot.js';
-import { objModel, editObjModel, sections, userModel } from './components/models.js'
+import { objModel} from './components/models.js'
 
 require('es6-promise').polyfill();
 // Bootstrap 4
-require('bootstrap');
+
 require('jquery');
 require('tether');
+require('bootstrap');
 require('lodash');
 
 //import { overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
@@ -57,32 +57,61 @@ const router = new VueRouter({
   hashbang : false,
 });
 
+Vue.directive(
+  'click-outside', {
+    bind: function(el, binding, vNode) {
+      // Provided expression must evaluate to a function.
+      if (typeof binding.value !== 'function') {
+        const compName = vNode.context.name
+        let warn = `[Vue-click-outside:] provided expression '${binding.expression}' is not a function, but has to be`
+        if (compName) { warn += `Found in component '${compName}'` }
+
+        console.warn(warn)
+      }
+      // Define Handler and cache it on the element
+      const bubble = binding.modifiers.bubble
+      const handler = (e) => {
+        if (bubble || (!el.contains(e.target) && el !== e.target)) {
+          binding.value(e)
+        }
+      }
+      el.__vueClickOutside__ = handler
+
+      // add Event Listeners
+      document.addEventListener('click', handler)
+    },
+
+    unbind: function(el, binding) {
+      // Remove Event Listeners
+      document.removeEventListener('click', el.__vueClickOutside__)
+      el.__vueClickOutside__ = null
+
+    }
+  }
+)
+
 var vm = new Vue({
 	router : router,
 	el: '#app',
   store,
 	data : {
-		currentOLView:'objeditor',
-		koModel:objModel,
-		showOverlay:{show:false},
-		showSecOverlay:{show:false},
-		userModel:userModel
+
 	},
 	components:{
 		App: App,
 	},
 	created: function(){
 		var self=this;
-    getCurrentUser("http://localhost:3000/", function(response) {
-      if(response!=""){
-          console.log(response);
-          store.commit('setuser',response);
-      }
-      },function(response) {
-          console.log("Error in getting current user:");
-          console.log(response);
-      }
-    );
+    // getCurrentUser("http://localhost:3000/", function(response) {
+    //   if(response!=""){
+    //       console.log(response);
+    //       store.commit('setuser',response);
+    //   }
+    //   },function(response) {
+    //       console.log("Error in getting current user:");
+    //       console.log(response);
+    //   }
+    // );
 		eventBus.$on('404', function(){
 			router.push({path:'*'});
 		});
@@ -108,5 +137,6 @@ var vm = new Vue({
 		updateObject:function(obj){
 			$.extend(true, objModel.object, obj);
 		},
-	}
+	},
+
 	}).$mount('#app');

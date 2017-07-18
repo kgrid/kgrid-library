@@ -229,7 +229,7 @@
 import myDatepicker from '../vendor/vue-datepicker-es6.vue'
 import applayout from './applayout.vue';
 import kotile from './kotile.vue';
-import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, otScroll, setBannerbkSize} from '../ot.js';
+import { overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, otScroll, setBannerbkSize} from '../ot.js';
 import eventBus from '../components/eventBus.js';
 import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 
