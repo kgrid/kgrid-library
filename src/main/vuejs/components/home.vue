@@ -3,110 +3,102 @@
 	<applayout :nothelper='true'>
 		<div slot='banner'>
 			<div v-if="isLoggedIn">
-				<h1>Hello, {{userModel.user.first_name}}!<br>Need to invite others? <router-link to='/soon'>Add Users.</router-link></h1>
+				<h1>Hello, {{firstname}}!<br>Need to invite others? <router-link to='/soon'>Add Users.</router-link></h1>
 			</div>
 			<div v-else>
-				<h1>Object Teller is a repository for storing, curating, managing,<br> and
-				making accessible health knowledge for <br>learning health
-				systems. <br>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
+				<h1>Knowledge Grid Library is a digital repository for storing, <br> curating, and managing computer-processable knowledge. <br>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
 			</div>
-			<div id='libname'><span>{{libraryname}}</span>
-			<div id="bannericons" v-show='isLoggedIn'>
-			<ul id="bannericonrow">
-				<li><div style="position: relative">
-						<button class="roundbutton iconBtn" id="userlink"
-							@click="userlink_click">
-						</button>
-
-						<div class='ot-newuser' >
+			<div id='libname' v-if='libConnected'>
+				<span>{{libraryname}}</span>
+				<div id="bannericons" v-show='isLoggedIn'>
+					<ul id="bannericonrow">
+						<li>
+							<div style="position: relative">
+								<button class="roundbutton iconBtn" id="userlink"	@click="userlink_click"></button>
+								<div class='ot-newuser' >
 					       <div class='greenroundbutton' > </div>
 					       <div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="8px"/></div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<button class="roundbutton open-overlay iconBtn" type="button" id="settinglink" disabled @click="settinglink_click"></button>
+						</li>
+					</ul>
+					<div class="floatingInfo" id="homeIcons">
+						<span></span>
 					</div>
-
-					</div></li>
-				<li>
-					<button class="roundbutton open-overlay iconBtn" type="button"
-						id="settinglink" disabled @click="settinglink_click">
-
-					</button>
-				</li>
-
-			</ul>
-			<div class="floatingInfo" id="homeIcons">
-				<span></span>
+				</div>
 			</div>
+			<div id='libConBtn' v-if='!libConnected' @click='setlibrary'>
+				<span>{{libraryname}}</span>
 			</div>
-		</div>
-
 		</div>
 		<div slot='header'>
 			<div v-show='isLoggedIn' class='ot-r-btn ot-newobj' v-on:click='addObject'>
 				<div class='greenroundbutton'></div>
 				<div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="14px"/></div>
 			</div>
-
-
 			<div class='row'>
-						<div class='col-md-6 col-sm-6 col-xs-6 ot-search'>
-						<img src='../assets/images/Search_Icon-01.png' width="20px"/><input
-								placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
-						</div>
-						<div class='col-md-1 col-sm-1 col-xs-1'></div>
-						<div class='col-md-2 col-sm-2 col-xs-2 ot-count'>{{countString}}</div>
-						<div class='col-md-2 col-sm-2 col-xs-2'>
-							<select class='ot-select' v-model='sortKey' v-on:change="onChange">
-								<option value='metadata.title'>Title</option>
-								<option value='uri'>Object ID</option>
-								<option value='metadata.lastModified'>Last Updated</option>
-							</select>
-						</div>
-						<div class='col-md-1 col-sm-1 col-xs-1'>
-							<button v-on:click='toggleOrder()'>
-								<span v-if='orderAsc'
-									class='ot-glybtn glyphicon glyphicon-sort-by-attributes'></span>
-								<span v-else
-									class='ot-glybtn glyphicon glyphicon-sort-by-attributes-alt'></span>
-							</button>
-						</div>
-					</div>
-					</div>
-				<div slot='maincontent'>
-
-		<div id='filtercontrol'>
-		<div class='row'>
-			<div class='col-md-2 filterBtnCol'>
-				<div id='filterBtn'>
-				<a v-on:click='toggleFilter'> Filters <span><img
-						id='filterdowniconimg' class='down'
-						src='../assets/images/dropdown_chevron.png' width='12px' /></span></a></div>
+				<div class='col-md-6 col-sm-6 col-xs-6 ot-search'>
+					<img src='../assets/images/Search_Icon-01.png' width="20px"/>
+					<input placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
+				</div>
+				<div class='col-md-1 col-sm-1 col-xs-1'></div>
+				<div class='col-md-2 col-sm-2 col-xs-2 ot-count'>{{countString}}</div>
+				<div class='col-md-2 col-sm-2 col-xs-2'>
+					<select class='ot-select' v-model='sortKey' v-on:change="onChange">
+						<option value='metadata.title'>Title</option>
+						<option value='uri'>Object ID</option>
+						<option value='metadata.lastModified'>Last Updated</option>
+					</select>
+				</div>
+				<div class='col-md-1 col-sm-1 col-xs-1'>
+					<button v-on:click='toggleOrder()'>
+						<span v-if='orderAsc'	class='ot-glybtn glyphicon glyphicon-sort-by-attributes'></span>
+						<span v-else class='ot-glybtn glyphicon glyphicon-sort-by-attributes-alt'></span>
+					</button>
+				</div>
 			</div>
-			<div class='col-md-10 filterCol'>
+		</div>
+		<div slot='maincontent'>
+			<div id='filtercontrol'>
+				<div class='row'>
+					<div class='col-md-2 filterBtnCol'>
+						<div id='filterBtn'>
+							<a v-on:click='toggleFilter'> Filters
+								<span><img id='filterdowniconimg' class='down' src='../assets/images/Chevron.png' width='12px' /></span>
+							</a>
+						</div>
+					</div>
+					<div class='col-md-10 filterCol'>
 						<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
-						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
+							<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
 								<button class='destroy' @click='removeString(filterstring)'>
 								</button>
 								<label>{{ filterstring.title }}</label>
-						</li>
-						<li class='todo' v-show='hasDateFilter' >
-						<button class='destroy' @click='removeDateFilter'></button>
-						<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label></li>
-						<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
-					</ul>
-
-			</div>
-		</div>
-		<div id='filterpanel' v-if='showFilterControl'>
-			<div class='row'>
-				<div class='col-md-6'>
-					<div class='row filter'><p>Search only within the following:</p></div>
-					<div class='row filter'>
-						<div class='col-md-4'>
- 							<label class="custom-control custom-checkbox">
- 								<input v-model='check.keywords' type="checkbox" class="custom-control-input">
- 								<span class="custom-control-indicator"></span>
-								<span class="custom-control-description">Keywords</span>
-							</label>
-						</div>
+							</li>
+							<li class='todo' v-show='hasDateFilter' >
+								<button class='destroy' @click='removeDateFilter'></button>
+								<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label>
+							</li>
+							<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
+						</ul>
+					</div>
+				</div>
+				<transition name='expand'>
+				<div id='filterpanel' v-if='showFilterControl' >
+					<div class='row'>
+						<div class='col-md-6'>
+							<div class='row filter'><p>Search only within the following:</p></div>
+								<div class='row filter'>
+									<div class='col-md-4'>
+ 										<label class="custom-control custom-checkbox">
+ 											<input v-model='check.keywords' type="checkbox" class="custom-control-input">
+ 											<span class="custom-control-indicator"></span>
+											<span class="custom-control-description">Keywords</span>
+										</label>
+									</div>
 						<div class='col-md-8'>
 							<label class="custom-control custom-checkbox">
 								<input v-model='check.objectID' type="checkbox" class="custom-control-input">
@@ -223,6 +215,7 @@
 			</div>
 		</div>
 </div>
+</transition>
 </div>
 <ul>
 <li v-for='(object,index) in orderedList' v-bind:key='index'><kotile :object='object'
@@ -236,7 +229,7 @@
 import myDatepicker from '../vendor/vue-datepicker-es6.vue'
 import applayout from './applayout.vue';
 import kotile from './kotile.vue';
-import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, otScroll, setBannerbkSize} from '../ot.js';
+import { overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, otScroll, setBannerbkSize} from '../ot.js';
 import eventBus from '../components/eventBus.js';
 import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 
@@ -244,14 +237,15 @@ export default {
     name: 'home',
 	data : function() {
 		return {
-			libraryname : 'Department of Learning Health Sciences Development Server',
+			libConnected:false,
+			libraryname : '',
 			sortKey : 'metadata.lastModified',
 			order : 'desc',
 			searchQuery : '',
 			  model : {
 				koList : []
 			},
-
+			confirmrequest:{name:"removeallfilter",statement:"All filteres will be cleared!"},
 			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
 			defaultCheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
  			filterStrings:[],
@@ -321,16 +315,7 @@ export default {
 		    },
 
 	created : function() {
-		var self = this;
-
-	  	getCurrentUser(function(response) {
-				if(response!="")
-					$.extend(true, self.userModel.user, response);
-				$('.ot-banner').addClass('loggedin');
-			},function(response) {
-				console.log(response);
-			});
-
+			var self = this;
 	  	if(sessionStorage.getItem("sortKey")==null){
 	  		this.setSessionStorage();
 	  	}
@@ -338,14 +323,19 @@ export default {
 		$("#enddatepicker").val(new Date().format("shortDate"));
 		this.startdate = new Date('March 1, 2016').getTime();
 		this.enddate=new Date().getTime();
-		console.log('Home created ==> '+ userModel.user.username);
 		$.extend(true,this.userModel,userModel);
-		this.isLoggedIn = (this.userModel.user.username!='');
-		//this.check.pri=this.isLoggedIn;
-		retrieveObjectList(function(response) {
-			self.model.koList = response;
-			if(self.model.koList.length>0){
-				$.extend(true,objModel.object,self.model.koList[0]);
+		retrieveObjectList(this.$store.state.baseurl, function(response) {
+			console.log("Object List Retrieval:");
+			if(response instanceof Array){
+				self.libraryname='Department of Learning Health Sciences Development Server';
+				self.libConnected=true;
+				self.model.koList = response;
+				if(self.model.koList.length>0){
+					$.extend(true,objModel.object,self.model.koList[0]);
+				}
+			}else {
+				self.libraryname='No Library is found. Click here to connect.';
+				self.libConnected=false;
 			}
 		}, function(response){
 			console.log("Error in retrieving the list from the connected library.")
@@ -360,7 +350,6 @@ export default {
 			self.enddate=date;
 		});
 		eventBus.$on('userloggedin',function(obj){
-			self.isLoggedIn=true;
 			$.extend(true, self.userModel.user,obj);
 			self.isAdmin = (self.userModel.user.role=='ADMIN');
 			self.check.pri=true;
@@ -369,7 +358,6 @@ export default {
 		});
 		eventBus.$on('logout', function(){
 			$.extend(true, self.userModel.user, {username:'',password:''});
-			self.isLoggedIn=false;
 			self.isAdmin=false;
 			$('.ot-banner').removeClass('loggedin');
 			otScroll();
@@ -386,7 +374,17 @@ export default {
 		      if(self.model.koList.length>0){
 					$.extend(true,objModel.object,self.model.koList[0]);
 				}
-		    })
+		    });
+				eventBus.$on('confirm', function (data) {
+					console.log(data);
+
+						if(data.name=="removeallfilter"){
+						if(data.val==true){
+							self.filterStrings.splice(0);
+							self.removeDateFilter();
+						}
+					}
+				});
 	},
 	mounted:function(){
 		if(this.isLoggedIn){
@@ -420,12 +418,11 @@ export default {
 		  hasDateFilter: function(){
 		  return !(_.isEqual(this.dateRange, this.defaultDateRange))
 	  },
-		isLoggedIn:function(){
-			var loggedin =false;
-			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
-			loggedin = (userModel.user.username!="");
-			//this.check.pri=loggedin;
-			return loggedin;
+		firstname: function(){
+			return (this.$store.state.currentUser.first_name || "")
+		},
+		isLoggedIn: function () {
+			return this.$store.getters.isLoggedIn;
 		},
 		countString : function() {
 			var count = this.orderedList.length;
@@ -552,6 +549,9 @@ export default {
 		settinglink_click: function () {
 		      eventBus.$emit('openLibSetting'); // eslint-disable-line
 		    },
+				setlibrary: function () {
+							eventBus.$emit('openLibCon'); // eslint-disable-line
+						},
 		toggleOrder : function() {
 			if (this.order == 'asc') {
 				this.order = 'desc';
@@ -589,10 +589,8 @@ export default {
 			   this.newstring = '';
 			 },
 	 	removeAllFilters: function(){
-				 this.filterStrings.splice(0);
-				this.removeDateFilter();
-
-			 },
+			eventBus.$emit("confirmRequest",this.confirmrequest);
+	 },
 	 	removeDateFilter : function(){
 				 $.extend(true, this.dateRange, this.defaultDateRange);
 				 this.setstartdate();
@@ -716,6 +714,10 @@ input[id$="datepicker"] {
 #filterBtn a span {
 	margin: 0px -15px 0px 12px;
 }
+img#filterdowniconimg
+{
+transition: transform 0.8s ease;
+}
 img#filterdowniconimg.down {
     -moz-transform: scaleY(1);
     -o-transform: scaleY(1);
@@ -732,8 +734,6 @@ img#filterdowniconimg.up {
 	background-color:#fff;
 	margin: 0px 0px 12px 0px;
 	padding: 12px;
-
-
 }
 .filterlist li, .filterlist button#clearAll{
 display:inline-block;
@@ -768,17 +768,17 @@ vertical-align: top;
 }
 select {
     background: transparent;
-	background-size: 18px;
-    background-image: url(../assets/images/dropdown_chevron.png);
+	background-size: 12px;
+    background-image: url(../assets/images/Chevron.png);
     background-repeat: no-repeat;
-    background-position: 90%;
+    background-position: 75%;
     line-height: 1;
     -webkit-appearance: none;
     -moz-appearance: none;
     width: 100%;
     padding: 6px;
     height: 40px;
-    border: 1px solid #e6e6e6;
+    border: none;
     border-radius: 10px;
     margin: 2px 0;
     font-size: 14px;
@@ -792,13 +792,11 @@ select {
     width: 1024px;
     overflow: visible;
     z-index: 10;
-    height: 400px;
+    height: 220px;
     margin: 0 auto;
 padding: 0px 48px 0px 48px;
 }
-.ot-banner.loggedin {
-	height: 220px;
-}
+
 .ot-banner h1 {
     font-size: 32px;
     font-weight: 300;
@@ -808,7 +806,7 @@ padding: 0px 48px 0px 48px;
     color: dimgrey;
     margin: 0 auto;
     line-height: 1.3em;
-    padding-top: 100px;
+    padding-top: 40px;
     background: transparent;
 }
 
@@ -832,15 +830,18 @@ padding: 0px 48px 0px 48px;
 .ot-banner h1 a:hover {
 	color: #666666;
 }
-#libname {
+#libname, #libConBtn {
     text-align: right;
-    font-size: 24px;
+    font-size: 20px;
     /* margin-top: 30px; */
     color: #666666;
     font-weight: 300;
     bottom: 20px;
     position: absolute;
     right: 22px;
+}
+#libConBtn:hover {
+	cursor:pointer;
 }
 .row.filter {
 	height: 30px;
@@ -971,7 +972,7 @@ box-shadow:none;
 	position: relative;
 	height: 16px;
 width: 16px;
-	bottom: 14px;
+	bottom: 10px;
 	right: 2px;
 	z-index: 16;
 }
@@ -997,5 +998,17 @@ left: 12px;
 
 .filterBtnCol {
 	width: 120px;
+}
+.expand-enter-active, .expand-leave-active {
+  transition: all .8s linear;
+  height: 220px;
+  overflow: hidden;
+	opacity:1;
+}
+
+.expand-enter, .expand-leave {
+  height: 0;
+	overflow:hidden;
+  opacity: 0;
 }
 </style>

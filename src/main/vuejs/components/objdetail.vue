@@ -5,13 +5,13 @@
 		<div class='row ot-detail-spacer'></div>
 		<div class='row ot-detail-smallrow'>
 			<div class='col-md-3 col-sm-3 col-xs-3'>
-			
+
 			<div id='goback'>
 			<div id='backButton'>
 				 <a @click='returntolibrary'>BACK TO THE LIBRARY
 				<div class='ot-r1-btn ot-back'>
 				<div class='greyroundbutton'></div>
-			       <div class='btnContent'><img src='../assets/images/Chevron.png' width="4px"/></div>
+			       <div class='btnContent'><img src='../assets/images/Chevron_left.png' width="4px"/></div>
 			       </div></a>
 			</div>
 				</div>
@@ -19,32 +19,58 @@
 			<div class='col-md-4 col-sm-4 col-xs-4'></div>
 			<div class='col-md-5 col-sm-5 col-xs-5 pri-pub'>
 			<div class='col-md-7 col-sm-7 col-xs-7' style="text-align:right;w">VIEW TYPE:</div>
-			<div class='col-md-2 col-sm-2 col-xs-2'>
-						<label class='ot-pub radio-inline'><input type='radio' value='false' v-on:click='unpublish'/>
-							<span v-if='isPublic'>PRIVATE</span>
-							<span class='active middleout' v-else>PRIVATE</span>
-						</label>
+						<div class='col-md-2 col-sm-2 col-xs-2'>
+									<label class='ot-pub radio-inline'><input type='radio' value='false' v-on:click='unpublish'/>
+										<span v-if='isPublic'>PRIVATE</span>
+										<span class='active middleout' v-else>PRIVATE</span>
+									</label>
+						</div>
+						<div class='col-md-3 col-sm-3 col-xs-3'>
+									<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="6px">
+										<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
+										<span v-else>PUBLIC</span>
+									</label>
+						</div>
+
 			</div>
-			<div class='col-md-3 col-sm-3 col-xs-3'>
-						<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="6px">
-							<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
-							<span v-else>PUBLIC</span>
-						</label>
 			</div>
-				
-			</div>
-			</div>
-					<div class='row ot-detail-titlerow'>
-			<div id='ko-title'>
-				<div id= 'type-status' >
-					<img v-if='objModel.object.metadata.published'
-						src='../assets/images/LittleGreenDot.png' width='10px'
-						height='auto' />
+			<div class='row ot-detail-titlerow'>
+				<div id='ko-title' class='col-md-11 col-sm-11'>
+					<div id= 'type-status' >
+						<img v-if='objModel.object.metadata.published' src='../assets/images/LittleGreenDot.png' width='10px' height='auto' />
+					</div>
+					<h1>
+						<small id='page_title_v'>{{objModel.object.metadata.title}}</small>
+					</h1>
 				</div>
-				<h1>
-					<small id='page_title_v'>{{objModel.object.metadata.title}}</small>
-				</h1>
-			</div>
+				<div class="col-md-1 col-sm-1" id="actiondiv" v-click-outside='outside'>
+					<div id='actionlist'  class="dropdown">
+						<a class="ot-btn btn-default dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" v-on:click='toggleActionList'>
+    					<span class='ot-glybtn glyphicon glyphicon-option-vertical'></span>
+						</a>
+  					<ul class="dropdown-menu" v-if='showActionList'>
+							<li class="dropdown-header" v-show='false'>Access Management</li>
+    					<li><a href="#" v-show='false'>Change to Private</a></li>
+							<li><a href="#" v-show='false'>Add Collaborator</a></li>
+							<li role="separator" class="divider" v-show='false'></li>
+							<li class="dropdown-header" v-show='false'>Object Management</li>
+    					<li><a href="#" v-show='false'>Publish</a></li>
+    					<li><a v-show='isLoggedIn'  v-on:click='editObj' >Edit</a></li>
+							<li><a v-show='isLoggedIn'  v-on:click='deleteObject'>Delete</a></li>
+    					<li role="separator" class="divider" v-show='false'></li>
+							<li>
+								<div id='downloadButton'>
+									<a class='edit' v-bind:href='downloadLink' :download='downloadFile' >
+										<div class='ot-r1-btn ot-download'>
+											<div class='greyroundbutton'></div>
+							       	<div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="8px"/></div>
+							      </div>Download
+									</a>
+								</div>
+							</li>
+  					</ul>
+					</div>
+				</div>
 			</div>
 					<div class='row ot-detail-daterow'>
 							<div class='col-md-3 col-sm-3 col-xs-3'>
@@ -77,19 +103,6 @@
 				</div>
 		</a></li>
 	</ul>
-					<div class='inline editwrapper accessLevelOne' id='objBtns'
-						>
-						<button class='edit' id='metadataeditBtn' v-show='isLoggedIn' v-on:click='editObj'>EDIT</button>
-						<button class='edit' id='deleteButton' v-show='isLoggedIn'
-							v-on:click='deleteObject'>DELETE</button>
-						<div id='downloadButton'>
-							<a class='edit' v-bind:href='downloadLink'>DOWNLOAD
-							<div class='ot-r1-btn ot-download'>
-							<div class='greyroundbutton'></div>
-						       <div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="8px"/></div>
-						       </div></a>
-						</div>
-			</div>
 		</div>
 			<div slot='maincontent'>
 					<ul class='tab-content view' id='tab'>
@@ -103,21 +116,26 @@
 	</div>
 	</template>
 	<script>
+	var $ = require('jquery');
 	import applayout from './applayout.vue';
 	import tabpane from './tabbedpanel.vue';
-	import {tabNav, getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
+	import {tabNav, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
 	import eventBus from '../components/eventBus.js';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
-		name:'ko-detail', 
+		name:'ko-detail',
 		data : function() {
 			return {
 				objModel : objModel,
 				sections : sections,
 				isDisabled: 1,
 				isPublic:false,
+				publishState: 'Unpublished',
 				userModel:{user:{username:'',password:''}},
-				activeTab: 'METADATA'
+				activeTab: 'METADATA',
+						showActionList:false,
+						confirmrequest:{name:"deleteObject",statement:"This Object will be deleted!"},
+
 			}
 		},
 			components:{
@@ -126,26 +144,46 @@
 		},
 		created : function() {
 			var self = this;
-
-			getCurrentUser(function(response) {
-				if(response!="")
-					$.extend(true, self.userModel.user, response);
-				},function(response) {
-				console.log(response);
-			});
 			eventBus.$on("objSaved",function(obj){
 				$.extend(true, self.objModel.object, obj);
 			});
 			eventBus.$on('objectSelected',function(obj){
-				$.extend(true, self.objModel.object, obj);	
+				$.extend(true, self.objModel.object, obj);
 				otScroll();
 			});
 			eventBus.$on('userloggedin',function(obj){
 				self.isLoggedIn=true;
 				$.extend(true, self.userModel.user,obj);
 				//self.isAdmin = (self.userModel.user.role=='ADMIN');
-				
+
 			});
+			eventBus.$on('confirm', function (data) {
+				console.log(data);
+				if(data.name=="deleteObject"){
+				if(data.val==true){
+					var self=this;
+					var uri = this.objModel.object.uri;
+					var txt;
+					if (uri != "") {
+							$.ajax({
+									type : 'DELETE',
+									url : "knowledgeObject/"
+											+ uri,
+									success : function(
+											response) {
+										eventBus.$emit('objDeleted', self.objModel.object);
+									}
+								});
+					}
+				}
+				}
+			});
+			$('.dropdown').on('show.bs.dropdown', function(e){
+				$(this).find('.dropdown-menu').first().stop(true, true).slideDown(300);
+				});
+			$('.dropdown').on('hide.bs.dropdown', function(e){
+				$(this).find('.dropdown-menu').first().stop(true, true).slideUp(200);
+				});
 			var sessionObj = sessionStorage.getItem("otObj");
 			if(sessionObj){
 				$.extend(true, self.objModel.object, JSON.parse(sessionObj));
@@ -153,15 +191,15 @@
 		},
 		mounted:function() {
 			var self = this;
-			retrieveObject(this.$route.params.uri, "complete", function(response) {
+			retrieveObject(this.$store.state.baseurl, this.$route.params.uri, "complete", function(response) {
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
-				
+
 			}, function(response){
 				console.log("Error:");
 				console.log(response);
 				eventBus.$emit('404');
-			}); 
+			});
 	    	$('ul#tabs li.active').addClass('middleout');
 	    	$("html, body").animate({
 	        	scrollTop: 0
@@ -172,10 +210,7 @@
 		},
 		computed : {
 			isLoggedIn:function(){
-			var loggedin =false;
-			console.log('Computing isLoggedIn ==> '+ userModel.user.username);
-			loggedin = (userModel.user.username!="");
-			return loggedin;
+				return this.$store.getters.isLoggedIn;
 		},
 			formattedUpdateDate : function() {
 				if(!this.objModel.object.metadata.lastModified || this.objModel.object.metadata.lastModified=="" ){
@@ -193,17 +228,23 @@
 						{return new Date(this.objModel.object.metadata.createdOn)
 							.format("mediumDate")}
 					},
-				
-		
+
+
 			downloadLink : function() {
 				return 'knowledgeObject/'
-					+ this.objModel.object.uri + '/complete.json'
+					+ this.objModel.object.uri
+			},
+			downloadFile : function() {
+				return this.objModel.object.uri + '.json'
 			}
 		},
 		updated : function() {
 			otScroll();
 		},
 		methods:{
+		toggleActionList: function(){
+			this.showActionList=!this.showActionList;
+		},
 			selectTab: function(section){
 				console.log("Clicked on "+section.label);
 				this.activeTab=section.label;
@@ -217,6 +258,7 @@
 				if(editObjModel.object.inputMessage==null){
 					editObjModel.object.inputMessage="";
 				}
+				this.showActionList=!this.showActionList;
 				eventBus.$emit('editObj', this.objModel.obj);
 			},
 			publish:function(){
@@ -250,23 +292,8 @@
 				});
 			},
 			deleteObject : function() {
-				var self=this;
-				var uri = this.objModel.object.uri;
-				var txt;
-				if (uri != "") {
-					var r = confirm("Do you really want to delete the object ? ");
-					if (r == true) {
-						$.ajax({
-								type : 'DELETE',
-								url : "knowledgeObject/"
-										+ uri,
-								success : function(
-										response) {
-									eventBus.$emit('objDeleted', self.objModel.object);
-								}
-							});
-					}
-				}
+					this.showActionList=!this.showActionList;
+					eventBus.$emit("confirmRequest",this.confirmrequest);
 			},
 			downloadObj: function() {
 				var myWindow = window.open(this.downloadLink, "myWindow");   // Opens a new window
@@ -275,12 +302,20 @@
 			returntolibrary: function(){
 				eventBus.$emit("return");
 			},
+			outside: function(){
+			if(this.showActionList)
+				this.showActionList=!this.showActionList;
+			}
 		}
 };
 	</script>
 <style>
+.badge {
+vertical-align:top;
+background-color:#39b45a;
+}
 .ot-banner.detail {
-	height: 220px; 
+	height: 220px;
 padding: 0px 32px 0px 48px;
 }
 .ot-detail-smallrow {
@@ -310,8 +345,8 @@ padding: 0px 32px 0px 48px;
 	padding-left:0px;
 }
 #type-status {
-	width: 10px; 
-	height: 42px; 
+	width: 10px;
+	height: 42px;
 	display: inline-block;
 }
 #type-status img {
@@ -364,14 +399,27 @@ ul#tabs li:after {
 }
 
 ul#tab>li {
-	display:none;	
+	display:none;
 }
 ul#tab>li.active {
 	display:block;
 	padding: 36px 36px;
 }
 
+#actiondiv {
+margin-top: 16px;
+text-align: right;
+padding-right: 0px;
+}
+#actionlist {
+ float:right;
+ display:inline-block;
+ text-align: left;
 
+ right:-15px;
+ height:80px;
+ overflow-y: visible;
+}
 #goback {
 	display: inline-block;
 	font-size: 12px;
@@ -424,22 +472,23 @@ margin-bottom: 0px;
 
 }
 #objBtns{
-	top: 10px; 
+	top: 10px;
     right: 68px;
     position: absolute;
 }
 
-#more:hover {	
+#more:hover {
 	opacity: 1;
 }
 
 #downloadButton {
+width:100%;
 	display: inline-block;
 }
 
 #downloadButton:hover .greyroundbutton{
 	  transform: scale(1.2);
-      border: 1px solid #666666;
+    border: 1px solid #666666;
 	  margin: auto;
 	}
 #downloadButton:hover .btnContent{
@@ -449,14 +498,13 @@ margin-bottom: 0px;
 	width: 40px;
 	height: 40px;
 	position:absolute;
-    bottom:-20px;
-    right:-40px;
-    margin:0 auto;
-    z-index:500;
+  bottom:-13px;
+  margin:0 auto;
+  z-index:500;
 }
 .ot-download .btnContent {
     position: relative;
-    top: -21px;
+    top: -29px;
     left: 16px;
     opacity: 0.5;
     transition: opacity 0.5s ease;
@@ -474,7 +522,7 @@ margin-bottom: 0px;
 .ot-back .btnContent {
 	position: relative;
     top: -22px;
-    left:18px; 
+    left:18px;
 }
 
 #backButton:hover .greyroundbutton{
@@ -510,5 +558,48 @@ width: 80px;
 .pri-pub label span.active {
 	color: #666666;
 }
+.dropdown-menu {
+position: absolute;
+top: auto;
+right: 0;
+left: auto;
+z-index: 10000;
+float: left;
+min-width: 160px;
+display: block;
+padding: 0;
+margin: 2px 0 0;
+font-size: 14px;
+text-align: left;
+list-style: none;
+background-color: #fff;
+-webkit-background-clip: padding-box;
+background-clip: padding-box;
+border: 1px solid #ccc;
+border: 1px solid rgba(0,0,0,.15);
+border-radius: 4px;
+-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.dropdown ul {
+	background-color: #fff;
+	color: #333;
+}
+.dropdown-menu > li > a, #downloadButton a {
+    padding: 0px 35px;
+    line-height: 2.5em;
+		text-decoration: none;
+    color: #b3b3b3;
+    cursor: pointer;
+    transition: color 0.5s ease;
+		background-color:transparent;
+
+		}
+
+.dropdown-menu > li>a :hover, #downloadButton:hover, #downloadButton:hover a{
+	background-color: #f5f5f5;
+	color:#666666;
+}
+
 
 </style>

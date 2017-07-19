@@ -3,10 +3,10 @@
 			<router-link class='navbar-brand ot-1' to='/'>
 				<img alt='Brand' src='../assets/images/logo.png' />
 			</router-link>
-			<nav class='navbar navbar-default navbar-fixed-top ot-1'>
-				<div class='container-fluid ot-1'>
-					<div class='navbar-header ot-1'>
-						<button type='button' class='navbar-toggle collapsed ot-1'
+			<nav class='navbar navbar-default navbar-fixed-top ot-1 kg-bg-color kg-color'>
+				<div class='container-fluid kg-bg-color kg-color ot-1'>
+					<div class='navbar-header kg-bg-color kg-color ot-1'>
+						<button type='button' class='navbar-toggle collapsed ot-1 kg-bg-color kg-font-color-r'
 							data-toggle='collapse'
 							data-target='#bs-example-navbar-collapse-1' aria-expanded='false'>
 							<span class='sr-only'>Toggle navigation</span> <span
@@ -24,7 +24,7 @@
 						<div v-if='!isLoggedIn'>
 							<ul class='nav navbar-nav navbar-right ot-1'>
 								<li class='login-link' v-on:click='login_click'><a>Log In</a></li>
-								<li class='signup-link'><router-link id="signupBtn" to='/soon'>Sign Up</router-link></li>
+								<li class='signup-link' v-show='false'><router-link id="signupBtn" to='/soon'>Sign Up</router-link></li>
 							</ul>
 						</div>
 						<div v-else>
@@ -32,7 +32,7 @@
 								<li class='login-link1'>
 									<div class='dropdown' id="userDropdown" style='height:55px;'>
 										<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>Hello,
-											{{userModel.user.first_name}}<span><img
+											{{firstname}}<span><img
 											id='dropdowniconimg' class='down'
 											src='../assets/images/Chevron_Icon.png' width='12px' /></span></a>
 										<ul v-if='showDropdown'>
@@ -48,37 +48,20 @@
 				<!-- /.container-fluid -->
 			</nav>
 		</div>
-
 </template>
 
 <script>
 import eventBus from '../components/eventBus.js'
-import {getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList} from '../ot.js';
-import { userModel } from '../components/models.js'
 
 export default {
   name: 'navbar',
   data: function () {
     return {
-        userModel: {user: {username: '', password: '', id: -1, first_name: '', last_name: '', role: ''}},
- 		showDropdown : false
+ 			showDropdown : false
     };
   },
   created: function() {
-  	var self = this;
-
-  		getCurrentUser(function(response) {
-			if(response!="")
-				$.extend(true, self.userModel.user, response);
-		},function(response) {
-			console.log(response);
-		});
-
-  	 eventBus.$on('userloggedin',function(obj){
-    	console.log(obj);
-		$.extend(true, self.userModel.user, obj);
-	});
-  	 this.showDropdown=false;
+	  this.showDropdown=false;
   },
   mounted: function () {
     $('#userDropdown').on('show.bs.dropdown', function (e) { // eslint-disable-line
@@ -95,10 +78,11 @@ export default {
     });
   },
   computed: {
+		firstname: function(){
+			return (this.$store.state.currentUser.first_name || "")
+		},
     isLoggedIn: function () {
-      var loggedin = false;
-      loggedin = (this.userModel.user.username !== '');
-      return loggedin;
+      return this.$store.getters.isLoggedIn;
     }
   },
   methods: {
@@ -123,10 +107,8 @@ export default {
         type: 'POST',
         url: 'logout',
         success: function (response) {
-          $.extend(true, self.userModel.user, {username: '', password: ''}); // eslint-disable-line
-          $.extend(true, userModel.user, {username: '', password: ''});
-          this.showDropdown = false;
-          eventBus.$emit('logout');
+          self.showDropdown = false;
+					self.$store.commit('setuser',{username: '', password: ''});
         }
       });
     }
