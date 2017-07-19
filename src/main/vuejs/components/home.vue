@@ -972,7 +972,7 @@ box-shadow:none;
 	position: relative;
 	height: 16px;
 width: 16px;
-	bottom: 14px;
+	bottom: 10px;
 	right: 2px;
 	z-index: 16;
 }
