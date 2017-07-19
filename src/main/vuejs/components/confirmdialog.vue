@@ -5,24 +5,23 @@
 				<div class='loginField'>
 						<span>{{statement}}</span>
 						<span>{{question}}</span>
-									    			</div>
-								<div class='loginField'>
-								<div class='ot-s-btn ot-login'>
-								       <div class='greenbutton' > </div>
-								       <div class='btnContent'>
-											 		<button class='login' @click="ok_clicked">OK</button></div>
-								</div>
-								<div class='ot-s-btn ot-login'>
-											 <div class='greenbutton' > </div>
-											 <div class='btnContent'>
-													<button class='login' @click="cancel_clicked">Cancel</button></div>
-								</div>
-
-
-									</div>
-
+				</div>
+				<div class='loginField'>
+					<div class='ot-s-btn ot-login'  @click="ok_clicked">
+					  <div class='greenbutton' > </div>
+					  <div class='btnContent'>
+						 		<button class='login'>OK</button></div>
+						</div>
+				</div>
+				<div class='loginField'>
+						<div class='ot-s-btn ot-login'>
+							<div class='greenbutton' id='cancelBtn'> </div>
+							<div class='btnContent'>
+								<button class='login' @click="cancel_clicked">Cancel</button></div>
+							</div>
+						</div>
+				</div>
 		</div>
-
 	</olnpane>
 </template>
 <script>
@@ -83,6 +82,12 @@ font-size: 12px;
 color: #ec2526;
 
 
+}
+div.greenbutton#cancelBtn {
+	background-color: #666666;
+}
+div.greeButton#cancelBtn:hover {
+	background-color: #7e7e7e;
 }
 .fieldcontainer {
     display: block;

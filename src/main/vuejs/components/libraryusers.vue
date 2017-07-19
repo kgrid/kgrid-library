@@ -111,7 +111,7 @@
 			},function(response){
 				console.log(response);
 			});
-			getCurrentUser(function(response) {
+			getCurrentUser(self.$store.state.baseurl, function(response) {
 				if(response!="")
 					$.extend(true, self.curUserModel.user, response);
 			},function(response) {

@@ -134,6 +134,8 @@
 				userModel:{user:{username:'',password:''}},
 				activeTab: 'METADATA',
 						showActionList:false,
+						confirmrequest:{name:"deleteObject",statement:"This Object will be deleted!"},
+
 			}
 		},
 			components:{
@@ -154,6 +156,27 @@
 				$.extend(true, self.userModel.user,obj);
 				//self.isAdmin = (self.userModel.user.role=='ADMIN');
 
+			});
+			eventBus.$on('confirm', function (data) {
+				console.log(data);
+				if(data.name=="deleteObject"){
+				if(data.val==true){
+					var self=this;
+					var uri = this.objModel.object.uri;
+					var txt;
+					if (uri != "") {
+							$.ajax({
+									type : 'DELETE',
+									url : "knowledgeObject/"
+											+ uri,
+									success : function(
+											response) {
+										eventBus.$emit('objDeleted', self.objModel.object);
+									}
+								});
+					}
+				}
+				}
 			});
 			$('.dropdown').on('show.bs.dropdown', function(e){
 				$(this).find('.dropdown-menu').first().stop(true, true).slideDown(300);
@@ -269,24 +292,8 @@
 				});
 			},
 			deleteObject : function() {
-				var self=this;
-				var uri = this.objModel.object.uri;
-				var txt;
-				this.showActionList=!this.showActionList;
-				if (uri != "") {
-					var r = confirm("Do you really want to delete the object ? ");
-					if (r == true) {
-						$.ajax({
-								type : 'DELETE',
-								url : "knowledgeObject/"
-										+ uri,
-								success : function(
-										response) {
-									eventBus.$emit('objDeleted', self.objModel.object);
-								}
-							});
-					}
-				}
+					this.showActionList=!this.showActionList;
+					eventBus.$emit("confirmRequest",this.confirmrequest);
 			},
 			downloadObj: function() {
 				var myWindow = window.open(this.downloadLink, "myWindow");   // Opens a new window
