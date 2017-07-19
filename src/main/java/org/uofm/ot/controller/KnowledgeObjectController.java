@@ -130,7 +130,7 @@ public class KnowledgeObjectController {
 
 	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}","/ark:/{naan}/{name}","/knowledgeObject/{naan}-{name}","/{naan}-{name}"},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId, @RequestParam(value="complete", required=false) boolean complete) throws ObjectTellerException, URISyntaxException  {
+	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId, @RequestHeader(value = "complete", required = false) boolean complete) throws ObjectTellerException, URISyntaxException  {
 
 		KnowledgeObject knowledgeObject;
 		if(complete) {

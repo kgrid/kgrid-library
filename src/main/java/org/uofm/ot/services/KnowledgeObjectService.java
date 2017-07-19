@@ -25,6 +25,7 @@ import org.uofm.ot.fusekiGateway.NamespaceConstants;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.Citation;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
+import org.uofm.ot.knowledgeObject.License;
 import org.uofm.ot.knowledgeObject.Metadata;
 import org.uofm.ot.knowledgeObject.Payload;
 import org.uofm.ot.knowledgeObject.ProvenanceLogData;
@@ -56,15 +57,19 @@ public class KnowledgeObjectService {
 
 	public KnowledgeObject getKnowledgeObject(ArkId arkId) throws ObjectTellerException, URISyntaxException{
 		URI metadataURI = constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath());
+
+		return getKnowledgeObject(metadataURI);
+	}
+
+	public KnowledgeObject getKnowledgeObject(URI uri) throws ObjectTellerException, URISyntaxException {
 		Metadata metadata;
 		try {
-			metadata = fetchAndDeserializeRDFData(Metadata.class, metadataURI,
-					metadataURI.toString());
+			metadata = fetchAndDeserializeRDFData(Metadata.class, uri, uri.toString());
 		} catch (NullPointerException e) {
-			throw new ObjectNotFoundException("Cannot find knowledge object with ark id " + arkId);
+			throw new ObjectNotFoundException("Cannot find knowledge object at url " + uri);
 		}
 
-		URI citationContainerURI = constructURI(metadataURI, ChildType.CITATIONS.getChildType());
+		URI citationContainerURI = constructURI(uri, ChildType.CITATIONS.getChildType());
 		List<URI> citationURIs = fcRepoService.getChildrenURIs(citationContainerURI);
 		ArrayList<Citation> citations = new ArrayList<>();
 		for (URI citationURI : citationURIs) {
@@ -74,8 +79,8 @@ public class KnowledgeObjectService {
 		metadata.setCitations(citations);
 		KnowledgeObject object = new KnowledgeObject();
 		object.setMetadata(metadata);
-		object.setURI(arkId.toString());
-		object.setArkId(arkId);
+		object.setURI(metadata.getArkId());
+		object.setArkId(new ArkId(metadata.getArkId()));
 		return object;
 	}
 
@@ -101,6 +106,24 @@ public class KnowledgeObjectService {
 		return knowledgeObject;
 	}
 
+	public KnowledgeObject getCompleteKnowledgeObject(URI objectURI) throws ObjectTellerException, URISyntaxException {
+
+		KnowledgeObject knowledgeObject = getKnowledgeObject(objectURI);
+
+		if (knowledgeObject != null) {
+
+			knowledgeObject.setPayload(getPayload(constructURI(objectURI, ChildType.PAYLOAD.getChildType())));
+
+			knowledgeObject.setLogData(getProvData(constructURI(objectURI, ChildType.LOG.getChildType(), ChildType.CREATEACTIVITY.getChildType())).toString());
+
+			knowledgeObject.setInputMessage(getInputMessageContent(constructURI(objectURI, ChildType.INPUT.getChildType())));
+
+			knowledgeObject.setOutputMessage(getOutputMessageContent(constructURI(objectURI, ChildType.OUTPUT.getChildType())));
+		}
+
+		return knowledgeObject;
+	}
+
 	public void deleteObject(ArkId arkId) throws ObjectTellerException {
 		fcRepoService.deleteFedoraResource(constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath()));
 	}
@@ -109,17 +132,30 @@ public class KnowledgeObjectService {
 		return fcRepoService.getObjectContent(arkId.getFedoraPath(), ChildType.INPUT.getChildType());
 	}
 
+	public String getInputMessageContent(URI objectURI) throws ObjectTellerException {
+		return fcRepoService.getObjectContent(objectURI);
+	}
+
 	public String getOutputMessageContent(ArkId arkId) throws ObjectTellerException {
 		return fcRepoService.getObjectContent(arkId.getFedoraPath(), ChildType.OUTPUT.getChildType());
 	}
 
-	public String getPayloadContent(String objectURI) throws ObjectTellerException {
-		return fcRepoService.getObjectContent(objectURI, ChildType.PAYLOAD.getChildType());
+	public String getOutputMessageContent(URI objectURI) throws ObjectTellerException {
+		return fcRepoService.getObjectContent(objectURI);
+	}
+
+	public String getPayloadContent(String arkId) throws ObjectTellerException {
+		return fcRepoService.getObjectContent(arkId, ChildType.PAYLOAD.getChildType());
 	}
 
 	public ProvenanceLogData getProvData(ArkId arkId) throws ObjectTellerException {
 		URI provDataURI = constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath(), ChildType.LOG.getChildType(), ChildType.CREATEACTIVITY.getChildType());
 		return  fetchAndDeserializeRDFData(ProvenanceLogData.class, provDataURI, provDataURI.toString());
+	}
+
+	public ProvenanceLogData getProvData(URI objectURI) throws ObjectTellerException {
+
+		return  fetchAndDeserializeRDFData(ProvenanceLogData.class, objectURI, objectURI.toString());
 	}
 
 	public void editInputMessageContent(ArkId arkId, String inputMessage)
@@ -134,8 +170,16 @@ public class KnowledgeObjectService {
 
 	public Payload getPayload(ArkId arkId) throws ObjectTellerException {
 		URI payloadURI = constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath(), ChildType.PAYLOAD.getChildType());
+
+		return getPayload(payloadURI);
+	}
+
+	public Payload getPayload(URI payloadURI) throws ObjectTellerException {
 		URI payloadMetadataURI = constructURI(payloadURI, "fcr:metadata");
-		return fetchAndDeserializeRDFData(Payload.class, payloadMetadataURI, payloadURI.toString());
+
+		Payload payload = fetchAndDeserializeRDFData(Payload.class, payloadMetadataURI, payloadURI.toString());
+		payload.setContent(fcRepoService.getObjectContent(payloadURI));
+		return payload;
 	}
 
 	public void editPayload(ArkId arkId, Payload payload) throws ObjectTellerException, URISyntaxException {
@@ -201,12 +245,6 @@ public class KnowledgeObjectService {
 		addOrEditMetadataToURI(objectURI, metadata);
 	}
 
-	public void addOrEditMetadataToArkId(ArkId arkID, Version version, Metadata metadata)
-			throws ObjectTellerException, URISyntaxException {
-		URI objectURI = constructURI(fcRepoService.getBaseURI(), arkID.getFedoraPath(), version.getFedoraVersion());
-		addOrEditMetadataToURI(objectURI, metadata);
-	}
-
 	private void addOrEditMetadataToURI(URI objectURI, Metadata metadata)
 			throws ObjectTellerException, URISyntaxException {
 
@@ -214,10 +252,13 @@ public class KnowledgeObjectService {
 			return;
 		}
 
-		if (metadata.getLicense() != null) {
+		License license = metadata.getLicense();
+		if (license != null && license.getLicenseLink() !=null && license.getLicenseName() != null) {
 			IRI iri = SimpleValueFactory.getInstance().createIRI(objectURI.toString());
 			metadata.getLicense().id(iri);
 		}
+
+
 
 		if (metadata.getVersion() == null || metadata.getVersion().equals("")) {
 			metadata.setVersion(new Version());
@@ -264,7 +305,7 @@ public class KnowledgeObjectService {
 	}
 
 	public KnowledgeObject createVersion(ArkId arkId, String versionString) throws ObjectTellerException, URISyntaxException {
-		KnowledgeObject ko = getKnowledgeObject(arkId);
+		KnowledgeObject ko = getCompleteKnowledgeObject(arkId);
 		Version oldVersion = new Version(ko.getMetadata().getVersion());
 		Version version;
 		if(versionString == null || versionString.equals("")) {
@@ -280,6 +321,8 @@ public class KnowledgeObjectService {
 				versionString + " is not after " + ko.getMetadata().getVersion());
 			} else if (!versionString.matches("[A-Za-z][A-Za-z0-9-_.]*")) {
 				throw new ObjectTellerException("Version id must start with a letter an cannot contain any special characters besides hyphen(-) underscore(_) and period(.)");
+			} else if (versionString.equalsIgnoreCase("versions")) {
+				throw new ObjectTellerException("Version id cannot be the word \"versions\" as that is used to retrieve the list of versions for the object.");
 			}
 		}
 		try {
@@ -311,23 +354,8 @@ public class KnowledgeObjectService {
 	}
 
 	public KnowledgeObject getVersionSnapshot(ArkId arkId, Version version) throws ObjectTellerException, URISyntaxException {
-		URI metadataURI = constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath(), "fcr:versions", version.toString());
-
-		Metadata metadata = fetchAndDeserializeRDFData(Metadata.class, metadataURI, metadataURI.toString());
-
-		URI citationContainerURI = constructURI(metadataURI, ChildType.CITATIONS.getChildType());
-		List<URI> citationURIs = fcRepoService.getChildrenURIs(citationContainerURI);
-		ArrayList<Citation> citations = new ArrayList<>();
-		for (URI citationURI : citationURIs) {
-			citations.add(fetchAndDeserializeRDFData(Citation.class, citationURI, citationURI.toString()));
-		}
-
-		metadata.setCitations(citations);
-		KnowledgeObject object = new KnowledgeObject();
-		object.setMetadata(metadata);
-		object.setURI(arkId.toString());
-		object.setArkId(arkId);
-		return object;
+		URI versionURI = constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath(), "fcr:versions", version.toString());
+		return getCompleteKnowledgeObject(versionURI);
 	}
 
 	public void rollbackToPriorVersionSnapshot(ArkId arkId, Version version) throws ObjectTellerException, URISyntaxException {

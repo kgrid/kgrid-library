@@ -40,7 +40,7 @@ public class VersioningService {
     try {
       HttpResponse response = client.execute(get);
       if(response.getStatusLine().getStatusCode() == HttpStatus.NOT_FOUND.value()) {
-        throw new ObjectTellerException("No versions found");
+        throw new ObjectNotFoundException("No versions found for object at " + parentURI);
       }
       Model koModel = ModelIO.read(response.getEntity().getContent(), RDFFormat.NTRIPLES);
       return koModel;
