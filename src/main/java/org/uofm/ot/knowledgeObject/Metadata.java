@@ -3,6 +3,7 @@ package org.uofm.ot.knowledgeObject;
 import com.complexible.pinto.Identifiable;
 import com.complexible.pinto.annotations.RdfProperty;
 import com.complexible.pinto.impl.IdentifableImpl;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.openrdf.model.Resource;
@@ -17,13 +18,13 @@ public class Metadata implements Identifiable {
 
 	private Version version;
 	
-	private String owner;
+	private String owner = "";
 	
-	private String description;
+	private String description = "";
 	
-	private String contributors;
+	private String contributors = "";
 	
-	private String keywords; 
+	private String keywords = "";
 	
 	private Boolean published;
 
@@ -33,9 +34,9 @@ public class Metadata implements Identifiable {
 	
 	private String objectType;
 	
-	private List<Citation> citations;
-	
-	private License license ;
+	private List<Citation> citations = Arrays.asList(new Citation());
+
+	private License license; //= new License();
 	
 	@RdfProperty(value="dc:title")
 	public String getTitle() {

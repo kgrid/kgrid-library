@@ -183,11 +183,18 @@ public class FCRepoService {
 		return null;
 	}
 
-	public String getObjectContent(String objectId, String dataStreamId) throws ObjectTellerException  {
+	public String getObjectContent(String objectId, String dataStreamId) throws ObjectTellerException {
+		try {
+			return getObjectContent(new URI(baseURI + objectId + "/" + dataStreamId + "/"));
+		} catch (URISyntaxException e) {
+			throw new ObjectTellerException("Invalid object uri " + baseURI + objectId + "/" + dataStreamId + "/");
+		}
+	}
 
+	public String getObjectContent(URI objectURI) throws ObjectTellerException {
 		HttpClient httpClient = HttpClientBuilder.create().build();
 
-		HttpGet httpGetRequest = new HttpGet(baseURI+objectId+"/"+dataStreamId+"/");
+		HttpGet httpGetRequest = new HttpGet(objectURI);
 		httpGetRequest.addHeader(authenticate(httpGetRequest));
 
 		StringBuilder chunk = new StringBuilder();
@@ -196,7 +203,7 @@ public class FCRepoService {
 		try {
 			httpResponse = httpClient.execute(httpGetRequest);
 			HttpEntity entity = httpResponse.getEntity();
-			if(httpResponse.getStatusLine().getStatusCode() == 200){
+			if(httpResponse.getStatusLine().getStatusCode() == 200) {
 
 				byte[] buffer = new byte[4096];
 				if (entity != null) {
@@ -210,13 +217,14 @@ public class FCRepoService {
 					}
 				}
 			} else {
-				logger.error("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId+". Request status code is "+httpResponse.getStatusLine().getStatusCode());
-				throw new ObjectTellerException("\"Exception occurred while retrieving object content for object \"+objectId+\"/\"+dataStreamId+\". Request status code is \"+httpResponse.getStatusLine().getStatusCode()");
+				logger.error("Exception occurred while retrieving object content for object " + objectURI + ". Request status code is "+httpResponse.getStatusLine().getStatusCode());
+				throw new ObjectTellerException("\"Exception occurred while retrieving object content for object " + objectURI + ". Request status code is "+
+						httpResponse.getStatusLine().getStatusCode());
 			}
 
 		} catch (IOException e) {
-			logger.error("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId + e.getMessage());
-			throw new ObjectTellerException("Exception occurred while retrieving object content for object "+objectId+"/"+dataStreamId + e.getMessage(), e);
+			logger.error("Exception occurred while retrieving object content for object " +objectURI  + e.getMessage());
+			throw new ObjectTellerException("Exception occurred while retrieving object content for object "+ objectURI + e.getMessage(), e);
 		}
 		return chunk.toString();
 	}
