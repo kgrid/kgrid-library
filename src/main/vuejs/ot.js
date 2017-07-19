@@ -1,13 +1,12 @@
-export function retrieveObjectList(fillObjectList){
+export function retrieveObjectList(baseurl, fillObjectList){
 		$.ajax({
 			type : "GET",
-			url : "knowledgeObject",
+			url : baseurl+"knowledgeObject",
 			xhrFields: {
 			     withCredentials: true
 			},
 			success : function(response, tStatus, xhr) {
-				console.log(xhr);
-				fillObjectList(response);
+					fillObjectList(response);
 			},
 			error : function(response) {
 				 //errorHandler(response);
@@ -15,7 +14,7 @@ export function retrieveObjectList(fillObjectList){
 		});
 }
 
-export function retrieveObject(uri, section, fillObjectContent){
+export function retrieveObject(baseurl, uri, section, fillObjectContent,errorHandler){
 	var endPoint = uri;
 	if(section!=""){
 		endPoint = endPoint+ "/"+section;
@@ -23,7 +22,7 @@ export function retrieveObject(uri, section, fillObjectContent){
 	console.log("Endpoint:"+endPoint);
 	$.ajax({
 		type : "GET",
-		url : "knowledgeObject/"+endPoint,
+		url : baseurl+"knowledgeObject/"+endPoint,
 		xhrFields: {
 		     withCredentials: true
 		},
@@ -31,7 +30,7 @@ export function retrieveObject(uri, section, fillObjectContent){
 			fillObjectContent(response);
 		},
 		error : function(response) {
-			//errorHandler(response);
+			errorHandler(response);
 		}
 	});
 }
@@ -114,17 +113,22 @@ export function retrieveUserList(fillUserList, errorHandler){
 	});
 }
 
-export function getCurrentUser(getUser) {
+export function getCurrentUser(baseurl, getUser, errorhandler) {
+	console.log("Baseurl:"+baseurl);
 	$.ajax({
 		type : "GET",
-		url : "user/me",
+		url : baseurl+"user/me",
+		xhrFields: {
+	 		withCredentials: true
+		},
 		success : function(response, tStatus, xhr) {
-			console.log(xhr);
-			getUser(response);
+			// console.log(xhr);
+			// if(response instanceof Array){
+				getUser(response);
+			// }
 		},
 		error : function(response, tStatus, xhr) {
-			console.log(xhr);
-			//errorHandler(response);
+			errorhandler(response);
 		}
 	});
 }
