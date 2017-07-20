@@ -12,9 +12,9 @@ h1    { font-size: 28px; }
 h2    { font-size: 24px; }
 h3    { font-size: 21px; }
 h4    { font-size: 18px; }
-h5    { font-size: 16px; }
-h6    { font-size: 14px; }
-h7    { font-size: 12px; }
+h5    { font-size: 16px; display: inline-block;line-height:1.8em;}
+h6    { font-size: 14px; display: inline-block;}
+h7    { font-size: 12px; display: inline-block;}
 small { font-size:  70%; }
 
 * {
@@ -23,17 +23,51 @@ small { font-size:  70%; }
 
 a, a:hover, a:visited, a:focus {
 	text-decoration:none;
-	color: #b3b3b3;
 	cursor: pointer;
 	transition: color 0.5s ease;
 }
 
-a:hover {
-	color: #666666;
+.wrapper {
+	background-color: transparent;
+	width: 1584px;
+	margin: 0 auto;
+}
+
+.login-wrapper {
+  position:fixed;
+  top:0px;
+  right:60px;
+  float:right;
+}
+.datagrid {
+	margin:0 auto;
+	position: relative;
+	width: 1024px;
+	overflow: hidden;
+	max-width: 1028px;
+}
+
+.nav .datagrid {
+  	min-height: 58px;
+}
+.e6backing .datagrid {
+  	min-height: 880px;
+    	padding-bottom: 30px;
+}
+
+
+.middleout li>a>span:after {
+	content: '';
+	display: block;
+	margin: auto;
+	height: 2px;
+	width: 0px;
+	background: transparent;
+	transition: width .5s ease, background-color .5s ease;
 }
 
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -50,7 +84,7 @@ a:hover {
 } /* the new scrollbar will have a flat appearance with the set background color */
 
 ::-webkit-scrollbar-thumb {
-      background-color: #e6e6e6;
+      background-color: #eeeeee;
 } /* this will style the thumb, ignoring the track */
 
 ::-webkit-scrollbar-button {

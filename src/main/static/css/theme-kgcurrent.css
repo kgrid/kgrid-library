@@ -1,0 +1,33 @@
+.kg-fg-color {
+  color: ##39b45a;
+}
+
+.kg-bg-color {
+  background-color: #39b45a;
+}
+
+.kg-glybtn-color {
+  color: #39b45a;
+}
+
+.kg-font-color-1 {
+  color: #666666;
+}
+
+.kg-font-color-r {
+  color: #ffffff;
+}
+
+
+.navbar {
+	border-bottom: 1px solid #39b45a;
+}
+
+.navbar-nav>li>a, .navbar-nav>li>a:hover, a, a:hover, a:visited, a:focus {
+	color: #fff;
+}
+
+.middleout li.active>a>span:after, .middleout li:hover>a>span:after {
+  width:100%;
+	background-color: #fff;
+}

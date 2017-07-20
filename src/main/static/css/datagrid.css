@@ -1,5 +1,4 @@
-.datagrid, .infogrid {
-	/* 	background-color:pink; */
+.infogrid {
 	position: relative;
 	width: 1024px;
 	font-family: 'Open Sans', sans-serif;
@@ -68,7 +67,7 @@
 }
 
 .view-obj div {
- 	margin: 22px 0px; 
+ 	margin: 22px 0px;
 }
 
 .inline {
@@ -119,7 +118,7 @@
 /* 	border-bottom: 2px solid #39b54a; */
 	padding-bottom:2px;
 	color:#666666;
-	
+
 }
 
 

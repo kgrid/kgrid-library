@@ -46,7 +46,7 @@
 				<div class="col-md-1 col-sm-1" id="actiondiv" v-click-outside='outside'>
 					<div id='actionlist'  class="dropdown">
 						<a class="ot-btn btn-default dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" v-on:click='toggleActionList'>
-    					<span class='ot-glybtn glyphicon glyphicon-option-vertical'></span>
+    					<span class='ot-glybtn kg-glybtn-color glyphicon glyphicon-option-vertical'></span>
 						</a>
   					<ul class="dropdown-menu" v-if='showActionList'>
 							<li class="dropdown-header" v-show='false'>Access Management</li>

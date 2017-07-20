@@ -1,51 +1,35 @@
 <template id='navbar'>
 		<div class='ot-nav'>
 			<router-link class='navbar-brand ot-1' to='/'>
-				<img alt='Brand' src='../assets/images/logo.png' />
 			</router-link>
-			<nav class='navbar navbar-default navbar-fixed-top ot-1 kg-bg-color kg-color'>
-				<div class='container-fluid kg-bg-color kg-color ot-1'>
-					<div class='navbar-header kg-bg-color kg-color ot-1'>
-						<button type='button' class='navbar-toggle collapsed ot-1 kg-bg-color kg-font-color-r'
-							data-toggle='collapse'
-							data-target='#bs-example-navbar-collapse-1' aria-expanded='false'>
-							<span class='sr-only'>Toggle navigation</span> <span
-								class='icon-bar'></span> <span class='icon-bar'></span> <span
-								class='icon-bar'></span>
-						</button>
-					</div>
-					<div class='collapse navbar-collapse ot-1'
-						id='bs-example-navbar-collapse-1'>
-						<ul class='nav navbar-nav'>
-							<li><router-link to='/about'>About</router-link></li>
-							<li><router-link to='/faq'>FAQ</router-link></li>
-							<li><router-link to='/contactus'>Contact Us</router-link></li>
+			<nav class='navbar navbar-fixed-top ot-1 kg-bg-color kg-color'>
+				<div class='wrapper'>
+					<div class='datagrid'>
+						<ul class='nav navbar-nav middleout'>
+							<router-link tag='li' :class="{'active': $route.fullPath === '/about'}" to='/about'><a><span>About</span></a></router-link>
+							<router-link tag='li' :class="{'active': $route.fullPath === '/faq'}" to='/faq'><a><span>FAQ</span></a></router-link>
+							<router-link tag='li' :class="{'active': $route.fullPath === '/contactus'}" to='/contactus'><a><span>Contact Us</span></a></router-link>
 						</ul>
-						<div v-if='!isLoggedIn'>
-							<ul class='nav navbar-nav navbar-right ot-1'>
-								<li class='login-link' v-on:click='login_click'><a>Log In</a></li>
-								<li class='signup-link' v-show='false'><router-link id="signupBtn" to='/soon'>Sign Up</router-link></li>
-							</ul>
-						</div>
-						<div v-else>
-							<ul class='nav navbar-nav navbar-right ot-1'>
-								<li class='login-link1'>
-									<div class='dropdown' id="userDropdown" style='height:55px;'>
-										<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>Hello,
-											{{firstname}}<span><img
-											id='dropdowniconimg' class='down'
-											src='../assets/images/Chevron_Icon.png' width='12px' /></span></a>
-										<ul v-if='showDropdown'>
-											<li><a id='logoutBtn' v-on:click='userlogout'>Logout</a></li>
-										</ul>
-									</div>
-								</li>
-							</ul>
-						</div>
 					</div>
-					<!-- /.navbar-collapse -->
 				</div>
-				<!-- /.container-fluid -->
+				<div class='login-wrapper' >
+					<ul class='nav navbar-nav navbar-right ot-1 middleout' v-if='!isLoggedIn'>
+						<li class='login-link' v-on:click='login_click'><a><span>Log In</span></a></li>
+						<li class='signup-link' v-show='false'><router-link id="signupBtn" to='/soon'>Sign Up</router-link></li>
+					</ul>
+					<ul class='nav navbar-nav navbar-right ot-1'  v-else  v-click-outside='outside'>
+						<li class='login-link1'>
+							<div class='dropdown' id="userDropdown" style='height:55px;'>
+								<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>Welcome,	{{firstname}}
+									<span><img id='dropdowniconimg' class='down' src='../assets/images/Chevron.png' width='12px' /></span>
+								</a>
+								<ul class='dropdown-menu' v-if='showDropdown'>
+									<li><a id='logoutBtn' v-on:click='userlogout'><span>Logout</span></a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
 			</nav>
 		</div>
 </template>
@@ -63,20 +47,6 @@ export default {
   created: function() {
 	  this.showDropdown=false;
   },
-  mounted: function () {
-    $('#userDropdown').on('show.bs.dropdown', function (e) { // eslint-disable-line
-		console.log('dropdown shown..');
-      var target = $(e.target).attr('id');  // eslint-disable-line
-      $('img#dropdowniconimg').removeClass('down');  // eslint-disable-line
-      $('img#dropdowniconimg').addClass('up');  // eslint-disable-line
-    });
-    $('#userDropdown').on('hide.bs.dropdown', function(e){ // eslint-disable-line
-    console.log('doprdown hidden');
-      var target = $(e.target).attr('id');  // eslint-disable-line
-      $('img#dropdowniconimg').removeClass('up');  // eslint-disable-line
-      $('img#dropdowniconimg').addClass('down');  // eslint-disable-line
-    });
-  },
   computed: {
 		firstname: function(){
 			return (this.$store.state.currentUser.first_name || "")
@@ -86,6 +56,11 @@ export default {
     }
   },
   methods: {
+		outside: function(){
+			if(this.showDropdown){
+				this.toggleDropdown();
+			}
+		},
     login_click: function () {
       eventBus.$emit('openLogin'); // eslint-disable-line
     },
@@ -109,7 +84,10 @@ export default {
         success: function (response) {
           self.showDropdown = false;
 					self.$store.commit('setuser',{username: '', password: ''});
-        }
+        },
+				error:function(response){
+					console.log(response);
+				}
       });
     }
   }
@@ -118,56 +96,32 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-.navbar-fixed-top.ot-1{
-	background-image: none;
-	background-color: #39b45a;
-	height:60px;
-	margin-bottom:15px;
-}
-.ot-1 .navbar-nav>li>a {
-	color: #fff;
+.ot-1 .navbar-nav>li>a, #dLabel{
 	font-size:14px;
-	font-weight: 700;
-	line-height: 1.8;
-    letter-spacing: 0.05em;
-    margin: 9px auto;
-    padding-top: 8px;
-	padding-bottom: 8px;
-
+	font-weight: 400;
+	line-height: 2.6em;
+  letter-spacing: 0.05em;
+	background-color: transparent;
+  background-image: none;
+	position: relative;
+  display: block;
+  padding: 4px 0px 4px 0px;
+  margin: 7px 0px;
 }
-
 .ot-nav {
 	z-index:50;
 }
-.ot-1 .navbar-nav>li a:hover {
-    color: #fff;
-    background-color: transparent;
-    background-image: none;
-}
 
-.ot-1 .navbar-collapse {
-	padding: 0px 0px 0px 220px;
-}
-
-.ot-1 .navbar-nav>li a:focus {
-    color: #fff;
-}
-
-.ot-1 .navbar-toggle .icon-bar {
-    background-color: #fff;
-}
-
-.ot-1 .navbar-toggle:hover {
-    background-color: #39b450;
-}
-
-.navbar-brand.ot-1{
-	background-color:transparent;
+.navbar-brand{
+	background-color:#fff;
 	position:fixed;
 	padding: 0px 30px;
 	z-index:200;
 	top:0;
-	left:0;
+	width:200px;
+	left:60px;
+	height:75px;
+	border:1px solid #e5e5e5;
 }
 
 .ot-1 .navbar-right {
@@ -182,23 +136,6 @@ export default {
 	text-align: center;
 }
 
-#dLabel{
-    line-height: 3.8em;
-    margin: 25px 30px 0px 30px;
-    text-decoration: none;
-    color: #fff;
-    border: none;
-    Padding: 18px;
-    padding-top: 10px;
-    Padding-left: 5px;
-    Padding-bottom: 10px;
-    Padding-right: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: bold;
-		background-color: transparent;
-}
 
 #dLabel span {
 	padding: 0px 5px;
@@ -206,47 +143,55 @@ export default {
 .login-link1 .dropdown{
 	height:55px;
 }
-.dropdown-menu>li> a {
-	color:#fff;
-}
 
+img#dropdowniconimg {
+	transition: transform 0.5s linear;
+}
 img#dropdowniconimg.up {
--moz-transform: scaleY(1);
--o-transform: scaleY(1);
--webkit-transform: scaleY(1);
-transform: scaleY(1);
-}
-
-img#dropdowniconimg.down {
 -moz-transform: scaleY(-1);
 -o-transform: scaleY(-1);
 -webkit-transform: scaleY(-1);
 transform: scaleY(-1);
 }
 
+img#dropdowniconimg.down {
+-moz-transform: scaleY(1);
+-o-transform: scaleY(1);
+-webkit-transform: scaleY(1);
+transform: scaleY(1);
+}
+
 .dropdown ul{
-background-color:#39b45a;
 border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px;
 transition: all .5s ease;
+padding: 0px;
+left: initial;
+right: 5px;
+margin-top: -12px;
+box-shadow: none;
+border-radius: 0px;
+display:block;
+min-width:130px;
 }
 
 .dropdown ul li {
-	display: table-cell;
+    height: 2.4em;
+    line-height: 2.4em;
+    text-align: left;
+		display: table-cell;
 }
-.dropdown a{
-color: #fff;
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-color: #e8e8e8;
 }
-
 #logoutBtn {
-    line-height: 3.4em;
+    line-height: 2.4em;
     text-decoration: none;
-    color: #fff;
     border: none;
     cursor: pointer;
     font-size: 14px;
     font-style: normal;
-    font-weight: bold;
-padding-left: 34px;
+    font-weight: 400;
+min-width: 150px;
 }
 </style>
