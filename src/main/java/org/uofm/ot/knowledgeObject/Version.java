@@ -1,6 +1,7 @@
 package org.uofm.ot.knowledgeObject;
 
 import java.util.Comparator;
+import java.util.Date;
 import org.uofm.ot.exception.ObjectTellerException;
 
 /**
@@ -94,6 +95,13 @@ public class Version implements Comparator<Version> {
     if(!isSemVer) {
       throw new IllegalStateException("Cannot increment version that does not implement semantic versioning");
     }
+  }
+
+  public Version increment(){
+    if(isSemVer){
+      return incPatch();
+    }
+    return nextVersion = new Version(uncompareableVersion + "-" + new Date().getTime());
   }
 
   public Version incMajor() {
