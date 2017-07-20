@@ -321,7 +321,7 @@ public class KnowledgeObjectService {
 		Version version;
 		if(versionString == null || versionString.equals("")) {
 			if(ko.getMetadata() != null && ko.getMetadata().getVersion() != null) {
-				version = new Version(ko.getMetadata().getVersion()).incPatch();
+				version = new Version(ko.getMetadata().getVersion()).increment();
 			} else {
 				version = new Version();
 			}
