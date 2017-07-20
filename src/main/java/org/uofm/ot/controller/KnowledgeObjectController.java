@@ -187,7 +187,7 @@ public class KnowledgeObjectController {
 
 	@PostMapping(value={"/knowledgeObject/ark:/{naan}/{name}", "/knowledgeObject/{naan}-{name}"},
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KnowledgeObject> versionKnowledgeObjectByRef(ArkId arkId, @ModelAttribute("loggedInUser") OTUser loggedInUser, @RequestParam(name="version", required=false) String version) throws ObjectTellerException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> versionKnowledgeObjectByRef(ArkId arkId, @ModelAttribute("loggedInUser") OTUser loggedInUser, @RequestHeader(value = "version", required = false) String version) throws ObjectTellerException, URISyntaxException {
 
 		KnowledgeObject ko;
 		try {
