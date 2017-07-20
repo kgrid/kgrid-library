@@ -3,13 +3,15 @@
 	<applayout :nothelper='true'>
 		<div slot='banner'>
 			<div v-if="isLoggedIn">
-				<h1>Hello, {{firstname}}!<br>Need to invite others? <router-link to='/soon'>Add Users.</router-link></h1>
+				<h1>Hello, {{firstname}}!</h1>
+				<h1>Need to invite others? <router-link to='/soon'>Add Users.</router-link></h1>
 			</div>
 			<div v-else>
-				<h1>Knowledge Grid Library is a digital repository for storing, <br> curating, and managing computer-processable knowledge. <br>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
+				<h1>Knowledge Grid Library is a digital repository for storing, curating, and managing computer-processable knowledge. <br></h1>
+				<h1>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
 			</div>
 			<div id='libname' v-if='libConnected'>
-				<span>{{libraryname}}</span>
+				<h5><span>{{libraryname}}</span></h5>
 				<div id="bannericons" v-show='isLoggedIn'>
 					<ul id="bannericonrow">
 						<li>
@@ -40,25 +42,44 @@
 				<div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="14px"/></div>
 			</div>
 			<div class='row'>
-				<div class='col-md-6 col-sm-6 col-xs-6 ot-search'>
+				<div class='col-md-5 col-sm-5 col-xs-5 ot-search'>
 					<img src='../assets/images/Search_Icon-01.png' width="20px"/>
 					<input placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
 				<div class='col-md-1 col-sm-1 col-xs-1'></div>
 				<div class='col-md-2 col-sm-2 col-xs-2 ot-count'>{{countString}}</div>
-				<div class='col-md-2 col-sm-2 col-xs-2'>
+
+
+
+
+
+
+
+
+
+				<div class='col-md-3 col-sm-3 col-xs-3 ot-sort'>
+				<div>
+					<h6><span>Sort by:</span></h6>
 					<select class='ot-select' v-model='sortKey' v-on:change="onChange">
 						<option value='metadata.title'>Title</option>
 						<option value='uri'>Object ID</option>
 						<option value='metadata.lastModified'>Last Updated</option>
 					</select>
-				</div>
-				<div class='col-md-1 col-sm-1 col-xs-1'>
-					<button v-on:click='toggleOrder()'>
-						<span v-if='orderAsc'	class='ot-glybtn glyphicon glyphicon-sort-by-attributes'></span>
-						<span v-else class='ot-glybtn glyphicon glyphicon-sort-by-attributes-alt'></span>
+					<button id='sortordertoggle' class='kg-bg-color' v-on:click='toggleOrder()'>
+						<span v-if='orderAsc'	class='down'><img src='../assets/images/Down_Arrow_Dark.png' width="12px"/></span>
+						<span v-else class='up'><img src='../assets/images/Down_Arrow_Dark.png' width="12px"/></span>
 					</button>
+					</div>
 				</div>
+
+
+
+
+
+
+
+
+
 			</div>
 		</div>
 		<div slot='maincontent'>
@@ -242,7 +263,7 @@ export default {
 			sortKey : 'metadata.lastModified',
 			order : 'desc',
 			searchQuery : '',
-			  model : {
+			model : {
 				koList : []
 			},
 			confirmrequest:{name:"removeallfilter",statement:"All filteres will be cleared!"},
@@ -427,11 +448,11 @@ export default {
 		countString : function() {
 			var count = this.orderedList.length;
 			if (count <= 1) {
-				return count + ' Object';
-			} else if (count > 200) {
+				return 'Viewing ' +count + ' Object';
+			} else if (count > 1000) {
 				return 'Many many Objects';
 			} else {
-				return count + ' Objects';
+				return 'Viewing ' + count + ' Objects';
 			}
 		},
 		listSize : function() {
@@ -654,7 +675,6 @@ export default {
     top: 0px;
     line-height: 2.2em;
     font-size: large;
-    color: #39b54a;
     background-color: #fff;
     padding: 0 0 0 12px;
 }
@@ -666,6 +686,11 @@ export default {
     margin-left: 15px;
 }
 
+
+.ot-count, .ot-sort {
+	line-height: 3em;
+padding-right: 0px;
+}
 
 .ot-search input {
     line-height: 2.8em;
@@ -771,7 +796,7 @@ select {
 	background-size: 12px;
     background-image: url(../assets/images/Chevron.png);
     background-repeat: no-repeat;
-    background-position: 75%;
+    background-position: 90%;
     line-height: 1;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -779,8 +804,9 @@ select {
     padding: 6px;
     height: 40px;
     border: none;
-    border-radius: 10px;
-    margin: 2px 0;
+    border-radius: 0px;
+		border-right: 1px solid #666666;
+    margin: 2px 12px 2px 0px;
     font-size: 14px;
     color: #666666;
     font-weight: 400;
@@ -794,19 +820,23 @@ select {
     z-index: 10;
     height: 220px;
     margin: 0 auto;
-padding: 0px 48px 0px 48px;
+		padding: 0px 12px;
 }
-
+.ot-select {
+	width:auto;
+	padding: 0px 36px 0px 6px;
+	height:auto;
+	display: inline-block;
+}
 .ot-banner h1 {
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 300;
     margin-top: 75px;
     text-align: left;
     margin-bottom: 20px;
-    color: dimgrey;
     margin: 0 auto;
     line-height: 1.3em;
-    padding-top: 40px;
+    padding-top: 30px;
     background: transparent;
 }
 
@@ -820,7 +850,7 @@ padding: 0px 48px 0px 48px;
     z-index:500;
 }
 .ot-banner.loggedin h1 {
-    padding-top: 52px;
+    padding-top: 30px;
 }
 .ot-banner h1 a {
 	color: #e3e3e3;
@@ -995,16 +1025,35 @@ left: 12px;
 	top: 0px;
 	left: 30px;
 }
-
+#sortordertoggle>span img {
+	margin-bottom:3px;
+	}
+#sortordertoggle>span.up img {
+	transform: scaleY(-1);
+}
+#sortordertoggle>span.down img {
+	transform: scaleY(1);
+}
 .filterBtnCol {
 	width: 120px;
 }
+
+select >option {
+	background-color:#fff;
+	color:#666666;
+}
+select >option:hover {
+	background-color:#e5e5e5;
+	color:#666666;
+}
+
 .expand-enter-active, .expand-leave-active {
   transition: all .8s linear;
   height: 220px;
   overflow: hidden;
 	opacity:1;
 }
+
 
 .expand-enter, .expand-leave {
   height: 0;

@@ -3,14 +3,37 @@
 }
 
 .kg-bg-color {
-  background-color: #39b45a;
-  /*background-color: #00274c;*/
+  /*background-color: #39b45a;*/
+  background-color: #fff;
 }
-
+.kg-glybtn-color {
+    color: #00274c;
+}
 .kg-font-color-1 {
   color: #666666;
 }
 
 .kg-font-color-r {
   color: #ffffff;
+}
+
+
+.navbar {
+	border-bottom: 1px solid #d7d7d7;
+}
+
+.navbar-nav>li>a, a, a:hover, a:visited, a:focus {
+	color: #666666;
+}
+
+.navbar-nav>li>a:hover {
+	color: #666666;
+}
+
+.middleout li.active>a>span:after, .middleout li:hover>a>span:after {
+  width:100%;
+	background-color: #00274c;
+}
+.dropdown-menu > li > a, .dropdown-menu > li > a:focus {
+    color:#666666;
 }
