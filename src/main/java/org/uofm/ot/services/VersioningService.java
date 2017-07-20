@@ -80,8 +80,10 @@ public class VersioningService {
     patch.addHeader(fcRepoService.authenticate(patch));
     try {
       HttpResponse response = client.execute(patch);
-      if(response.getStatusLine().getStatusCode() != HttpStatus.NO_CONTENT.value()) {
-        throw new ObjectTellerException("Error deleting version at " + versionURI + " Got error code " +
+      if(response.getStatusLine().getStatusCode() == HttpStatus.NOT_FOUND.value()) {
+        throw new ObjectNotFoundException("Error reverting to version at " + versionURI + " Version does not exist.");
+      } else if (response.getStatusLine().getStatusCode() != HttpStatus.NO_CONTENT.value()) {
+        throw new ObjectNotFoundException("Error reverting to version at " + versionURI + " Got error code " +
             response.getStatusLine().getStatusCode());
       }
     } catch (IOException e) {
