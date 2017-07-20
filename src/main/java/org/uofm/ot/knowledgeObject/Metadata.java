@@ -3,6 +3,7 @@ package org.uofm.ot.knowledgeObject;
 import com.complexible.pinto.Identifiable;
 import com.complexible.pinto.annotations.RdfProperty;
 import com.complexible.pinto.impl.IdentifableImpl;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,7 @@ public class Metadata implements Identifiable {
 	
 	private List<Citation> citations = Arrays.asList(new Citation());
 
-	private License license; //= new License();
+	private License license = new License();
 	
 	@RdfProperty(value="dc:title")
 	public String getTitle() {
@@ -160,14 +161,14 @@ public class Metadata implements Identifiable {
 		this.citations = citations;
 	}
 
-	@RdfProperty(value = "ot:license")
-	public License getLicense() {
-		return license;
-	}
-
-	@RdfProperty(value = "ot:license")
+	@RdfProperty("ot:license")
 	public void setLicense(License license) {
 		this.license = license;
+	}
+
+	@RdfProperty("ot:license")
+	public License getLicense(){
+		return license;
 	}
 
 	@Override
