@@ -72,7 +72,7 @@ public class IdServiceTest {
 		
 		ArrayList<String> metadata = new ArrayList<String>();
 
-		idService.bind(ko, metadata, new URI("http://dev.umich.edu/"+ ARKID_STRING));
+		idService.bind(ko.getArkId(), metadata, new URI("http://dev.umich.edu/"+ ARKID_STRING));
 
 		assertEquals(ARKID_STRING, ko.getURI());
 

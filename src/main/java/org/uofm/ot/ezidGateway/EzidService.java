@@ -85,29 +85,26 @@ public class EzidService {
     }
     
     private String modify(String id, List<String> metadata){
-        RestTemplate rt = new RestTemplate();
+      RestTemplate rt = new RestTemplate();
 
-        rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
+      rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
 
-        String metadataRequestBody = "" ;
-        
-        for (String string : metadata) {
-			metadataRequestBody += string + "\n";
-		}
-        
-        HttpHeaders headers = new HttpHeaders();
-       headers.setContentType(MediaType.TEXT_PLAIN);
-        
-        HttpEntity<String> requestEntity = new HttpEntity<>(metadataRequestBody, headers);
+      StringBuilder metadataRequestBody = new StringBuilder("") ;
 
-        String url = EZID_BASE_URL+"id/"+id ; 
-        
-        ResponseEntity<String> response = rt.postForEntity(
-                url,
-                requestEntity,
-                String.class);
+      for (String string : metadata) {
+        metadataRequestBody.append(string).append("\n");
+      }
 
-        return response.getBody();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.TEXT_PLAIN);
+
+      HttpEntity<String> requestEntity = new HttpEntity<>(metadataRequestBody.toString(), headers);
+
+      String url = EZID_BASE_URL+"id/"+id ;
+
+      ResponseEntity<String> response = rt.postForEntity(url, requestEntity, String.class);
+
+      return response.getBody();
 
     }
     
