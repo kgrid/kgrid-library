@@ -45,13 +45,9 @@ public class IdService {
 		return ezidService.get(arkId.getArkId());
 	}
 
-	public KnowledgeObject bind(KnowledgeObject ko,  List<String> metadata, URI targetUrl) {
-
-		ArkId arkId = ko.getArkId();
+	public void bind(ArkId arkId,  List<String> metadata, URI targetUrl) {
 
 		ezidService.bind(arkId.getArkId(), metadata, targetUrl);
-
-		return ko;
 	}
 	
 	public List<String> createBasicMetadata(String who, String what){

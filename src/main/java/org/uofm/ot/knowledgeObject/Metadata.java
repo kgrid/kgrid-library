@@ -3,6 +3,8 @@ package org.uofm.ot.knowledgeObject;
 import com.complexible.pinto.Identifiable;
 import com.complexible.pinto.annotations.RdfProperty;
 import com.complexible.pinto.impl.IdentifableImpl;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.openrdf.model.Resource;
@@ -14,26 +16,28 @@ public class Metadata implements Identifiable {
 	private String title;
 
 	private String arkId;
+
+	private Version version;
 	
-	private String owner;
+	private String owner = "";
 	
-	private String description;
+	private String description = "";
 	
-	private String contributors;
+	private String contributors = "";
 	
-	private String keywords; 
+	private String keywords = "";
 	
-	private boolean published;
-	
+	private Boolean published;
+
 	private Date lastModified;
 	
 	private Date createdOn;
 	
 	private String objectType;
 	
-	private List<Citation> citations;
-	
-	private License license ;
+	private List<Citation> citations = Arrays.asList(new Citation());
+
+	private License license = new License();
 	
 	@RdfProperty(value="dc:title")
 	public String getTitle() {
@@ -53,6 +57,20 @@ public class Metadata implements Identifiable {
 	@RdfProperty(value="ot:arkId")
 	public void setArkId(String arkId) {
 		this.arkId = arkId;
+	}
+
+	@RdfProperty(value="ot:version")
+	public String getVersion() {
+		return version == null ? "" : version.toString();
+	}
+
+	@RdfProperty(value = "ot:version")
+	public void setVersion(String version) {
+		this.version = new Version(version);
+	}
+
+	public void setVersion(Version version) {
+		this.version = version;
 	}
 
 	@RdfProperty(value="ot:owner")
@@ -96,29 +114,31 @@ public class Metadata implements Identifiable {
 	}
 
 	@RdfProperty(value="ot:published")
-	public boolean isPublished() {
+	public Boolean getPublished() {
 		return published;
 	}
 
 	@RdfProperty(value="ot:published")
-	public void setPublished(boolean published) {
+	public void setPublished(Boolean published) {
 		this.published = published;
 	}
 
+	@RdfProperty(value="fedora:lastModified", datatype = "String")
 	public Date getLastModified() {
 		return lastModified;
 	}
 
-	@RdfProperty(value="fedora:lastModified")
+	@RdfProperty(value="fedora:lastModified", datatype = "String")
 	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
 	}
 
+	@RdfProperty(value="fedora:created", datatype = "String")
 	public Date getCreatedOn() {
 		return createdOn;
 	}
 
-	@RdfProperty(value="fedora:created")
+	@RdfProperty(value="fedora:created", datatype = "String")
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
@@ -141,14 +161,14 @@ public class Metadata implements Identifiable {
 		this.citations = citations;
 	}
 
-	@RdfProperty(value = "ot:license")
-	public License getLicense() {
-		return license;
-	}
-
-	@RdfProperty(value = "ot:license")
+	@RdfProperty("ot:license")
 	public void setLicense(License license) {
 		this.license = license;
+	}
+
+	@RdfProperty("ot:license")
+	public License getLicense(){
+		return license;
 	}
 
 	@Override
@@ -168,6 +188,7 @@ public class Metadata implements Identifiable {
 				"mIdentifiable=" + mIdentifiable +
 				", title='" + title + '\'' +
 				", arkId='" + arkId + '\'' +
+				", version='" + version + '\'' +
 				", owner='" + owner + '\'' +
 				", description='" + description + '\'' +
 				", contributors='" + contributors + '\'' +
