@@ -4,7 +4,7 @@
 		<div slot="ol-form">
 			<div class="addtext">
 				<h4>Please enter a title for the new knowledge object, then	click on "Create Object".</h4>
-					<input type="text" maxlength="140" class="metaEdit inEdit" 
+					<input type="text" maxlength="140" class="metaEdit inEdit"
 						v-model="newobjModel.object.metadata.title" /> <span  v-bind:class="{ nearmax:newobjModel.object.metadata.title.length>=130 }" >{{newobjModel.object.metadata.title.length}}/140</span>
 					<h4 class='ot-subtitle'> - Or - </h4>
 				</div>
@@ -36,7 +36,7 @@
 			}
 		},
 	created:function(){
-		
+
 	},
 	components: {
 		olpane:olpane,
@@ -55,7 +55,7 @@
 		createObj:function(){
 			var self=this;
 			var text = JSON.stringify(self.newobjModel.object);
-//			console.log("data to sent:"+text);
+			$("div.processing").fadeIn(300);
 			$.ajax({
 				beforeSend : function(xhrObj) {
 					xhrObj.setRequestHeader("Content-Type", "application/json");
@@ -66,6 +66,7 @@
 				data : text,
 				dataType : "json",
 				success : function(response) {
+					console.log("After creation response:");
 					console.log(response);
 					if ((response != 'empty') && (response != null)) {
 						var test = JSON.stringify(response);
@@ -75,7 +76,7 @@
 					}
 					$("div.processing").fadeOut(200);
 					$("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
-							eventBus.$emit("objcreated",obj);
+							eventBus.$emit("objcreated",response);
 					});
 				},
 				error : function(response) {
@@ -83,11 +84,11 @@
 					$("div.processing").fadeOut(200);
 					$("div.warning").text(response.status+"   "+response.statusText);
 					$("div.warning").show();
-					
-					//test code, to be removed 
+
+					//test code, to be removed
 					eventBus.$emit("objcreated",{"metadata":{"title":"error"}});
 				}
-			});	
+			});
 		},
 		 updatedisplay : function(sec, msg){
 	//	    	console.log("Section:"+sec+" Msg:"+msg);
@@ -104,7 +105,7 @@
 		    		$.extend(true, this.newobjModel.object, {"metadata":{"title":""}});
 		    	}
 		    },
-		    
+
 	}
 };
 	</script>

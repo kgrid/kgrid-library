@@ -161,8 +161,7 @@
 				console.log(data);
 				if(data.name=="deleteObject"){
 				if(data.val==true){
-					var self=this;
-					var uri = this.objModel.object.uri;
+					var uri = self.objModel.object.uri;
 					var txt;
 					if (uri != "") {
 							$.ajax({
