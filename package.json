@@ -1,7 +1,7 @@
 {
   "name": "kgridlibraryfront",
   "version": "1.0.0",
-  "description": "Object Teller User Management Page",
+  "description": "Knowledge Grid Library Web App",
   "author": "George Meng <gqmeng@umich.edu>",
   "private": true,
   "scripts": {
