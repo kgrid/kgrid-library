@@ -13,9 +13,9 @@ public class ErrorInfo {
 
   private String url;
 
-  private Date timestamp;
+  private String timestamp;
 
-  public ErrorInfo(String exMessage, String url, Date timestamp) {
+  public ErrorInfo(String exMessage, String url, String timestamp) {
     this.message = exMessage;
     this.url = url;
     this.timestamp = timestamp;
@@ -37,11 +37,11 @@ public class ErrorInfo {
     this.message = message;
   }
 
-  public Date getTimestamp() {
+  public String getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(Date timestamp) {
+  public void setTimestamp(String timestamp) {
     this.timestamp = timestamp;
   }
 }

@@ -46,35 +46,8 @@ public class FCRepoServiceIT {
   }
 
   @Test
-  public void testCheckObjectWhenObjectExists() throws Exception {
-    assertTrue(fos.checkIfObjectExists(new URI("https://dlhs-fedora.med.umich.edu/fcrepo/rest/99999-fk41265c2w")));
-  }
-
-  @Test
   public void testCheckObjectWhenObjectDoesntExist() throws Exception {
     assertFalse(fos.checkIfObjectExists(new URI("https://dlhs-fedora.med.umich.edu/fcrepo/rest/null")));
-  }
-
-  @Test
-  public void testGetNumberOfObjects() throws Exception {
-    SelectBuilder builder = new SelectBuilder();
-    //?s rdf:type ot:KnowledgeObject
-    Query query = builder
-        .addPrefix("ot", "http://uofm.org/objectteller/")
-        .addVar("*")
-        .addWhere("?s", "?p", "?o")
-        .addWhere("?s", RDF.type, "ot:KnowledgeObject")
-        .build();
-
-    QueryExecution execution = QueryExecutionFactory
-        .sparqlService("https://dlhs-fedora.med.umich.edu/fuseki/test/query", query);
-    ResultSet resultSet = execution.execSelect();
-    int i = 0;
-    while(resultSet.hasNext()) {
-      QuerySolution binding = resultSet.nextSolution();
-      i++;
-    }
-    assertTrue(i > 0);
   }
 
   @Test

@@ -3,7 +3,6 @@ package org.uofm.ot.knowledgeObject;
 import com.complexible.pinto.Identifiable;
 import com.complexible.pinto.annotations.RdfProperty;
 import com.complexible.pinto.impl.IdentifableImpl;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
