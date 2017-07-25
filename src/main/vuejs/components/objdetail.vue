@@ -92,7 +92,7 @@
 					</p>
 				</div>
 				<div class='col-md-5 col-sm-5 col-xs-5'>
-				</div>
+					</div>
 						</div>
 		</div>
 		<div slot='header'>
@@ -103,6 +103,7 @@
 				</div>
 		</a></li>
 	</ul>
+
 		</div>
 			<div slot='maincontent'>
 					<ul class='tab-content view' id='tab'>
@@ -121,6 +122,7 @@
 	import tabpane from './tabbedpanel.vue';
 	import {tabNav, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
 	import eventBus from '../components/eventBus.js';
+	import vselect from '../vendor/vue-select.vue';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
 		name:'ko-detail',
@@ -130,6 +132,8 @@
 				sections : sections,
 				isDisabled: 1,
 				isPublic:false,
+				kgselect:'',
+				optionlist:[{'label':'Public', 'value':'public'},{'label':'Private','value':'private'}],
 				publishState: 'Unpublished',
 				userModel:{user:{username:'',password:''}},
 				activeTab: 'METADATA',
@@ -140,7 +144,8 @@
 		},
 			components:{
 		'applayout':applayout,
-		'tabpane':tabpane
+		'tabpane':tabpane,
+		vselect
 		},
 		created : function() {
 			var self = this;
@@ -183,17 +188,17 @@
 			$('.dropdown').on('hide.bs.dropdown', function(e){
 				$(this).find('.dropdown-menu').first().stop(true, true).slideUp(200);
 				});
-			var sessionObj = sessionStorage.getItem("otObj");
-			if(sessionObj){
-				$.extend(true, self.objModel.object, JSON.parse(sessionObj));
-			}
-		},
+			},
 		mounted:function() {
 			var self = this;
 			retrieveObject(this.$store.state.baseurl, this.$route.params.uri, "complete", function(response) {
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
-
+				if(self.isPublic){
+					self.kgselect='Public';
+				}else {
+								self.kgselect='Private';
+				}
 			}, function(response){
 				console.log("Error:");
 				console.log(response);
@@ -241,6 +246,23 @@
 			otScroll();
 		},
 		methods:{
+		selectCallback: function(val){
+			 console.log(val);
+			 console.log("After callback" + this.sortKey+"  ==="+val);
+			 this.sortKey=val.value;
+			 switch(val) {
+			 case 'Last Updated':
+					this.sortKey='metadata.lastModified';
+					break;
+			 case 'Object ID':
+					this.sortKey='uri';
+					break;
+			 case 'Title':
+					this.sortKey='metadata.title';
+					break;
+					}
+							sessionStorage.setItem("sortKey", this.sortKey);
+		},
 		toggleActionList: function(){
 			this.showActionList=!this.showActionList;
 		},
@@ -342,6 +364,12 @@ padding: 0px 32px 0px 48px;
 .ot-detail-daterow .col-md-2 {
 	width: 120px;
 	padding-left:0px;
+}
+.ot-detail-daterow .col-md-5 {
+	width: 550px;
+	line-hegiht:3em;
+	padding-left:10px;
+	margin-top:10px;
 }
 #type-status {
 	width: 10px;
@@ -579,6 +607,7 @@ border: 1px solid rgba(0,0,0,.15);
 border-radius: 4px;
 -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
 box-shadow: 0 6px 12px rgba(0,0,0,.175);
+z-index:99999;
 }
 .dropdown ul {
 	background-color: #fff;
@@ -599,6 +628,18 @@ box-shadow: 0 6px 12px rgba(0,0,0,.175);
 	background-color: #f5f5f5;
 	color:#666666;
 }
-
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 0px 0px;
+    margin: 5px 0px;
+}
+.nav-tabs>li>a, .nav-tabs>li>a:focus, .nav-tabs>li>a:hover {
+    color: #666;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-bottom-color: transparent;
+}
 
 </style>
