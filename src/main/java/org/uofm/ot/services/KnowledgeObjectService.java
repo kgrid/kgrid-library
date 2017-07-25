@@ -6,9 +6,9 @@ import com.complexible.pinto.RDFMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import javax.validation.constraints.Null;
 import org.apache.log4j.Logger;
 import org.openrdf.model.IRI;
 import org.openrdf.model.Model;
@@ -275,10 +275,16 @@ public class KnowledgeObjectService {
 		// and we're not allowed to set these values directly through a put request
 		// There's currently no way to set the fields in the object to not be serialized
 		// see pinto issue https://github.com/stardog-union/pinto/issues/14 for updates
+		Date lastModified = metadata.getLastModified();
+		Date createdOn = metadata.getCreatedOn();
 		metadata.setLastModified(null);
 		metadata.setCreatedOn(null);
 
 		serializeAndInsertRDFData(metadata, objectURI);
+
+		// Reset these values so that when the object is returned it has the correct data
+		metadata.setLastModified(lastModified);
+		metadata.setCreatedOn(createdOn);
 	}
 
 	private void addCitations(List<Citation> citations, URI objectURI)
@@ -319,6 +325,7 @@ public class KnowledgeObjectService {
 		KnowledgeObject ko = getCompleteKnowledgeObject(arkId);
 		Version oldVersion = new Version(ko.getMetadata().getVersion());
 		Version version;
+		String[] reservedWords = {"versions", "metadata", "payload", "inputmessage", "outputmessage", "logdata", "published"};
 		if(versionString == null || versionString.equals("")) {
 			if(ko.getMetadata() != null && ko.getMetadata().getVersion() != null) {
 				version = new Version(ko.getMetadata().getVersion()).increment();
@@ -332,8 +339,8 @@ public class KnowledgeObjectService {
 				versionString + " is not after " + ko.getMetadata().getVersion());
 			} else if (!versionString.matches("[A-Za-z][A-Za-z0-9-_.]*")) {
 				throw new ObjectTellerException("Version id must start with a letter an cannot contain any special characters besides hyphen(-) underscore(_) and period(.)");
-			} else if (versionString.equalsIgnoreCase("versions")) {
-				throw new ObjectTellerException("Version id cannot be the word \"versions\" as that is used to retrieve the list of versions for the object.");
+			} else if (Arrays.asList(reservedWords).contains(versionString.toLowerCase())) {
+				throw new ObjectTellerException("Version id cannot be the word " + versionString + " as that is reserved for retrieving a subset of the knowledge object");
 			}
 		}
 		try {
@@ -364,9 +371,12 @@ public class KnowledgeObjectService {
 		return versionList;
 	}
 
-	public KnowledgeObject getVersionSnapshot(ArkId arkId, Version version) throws ObjectTellerException, URISyntaxException {
+	public KnowledgeObject getVersionSnapshot(ArkId arkId, Version version, boolean complete) throws ObjectTellerException, URISyntaxException {
 		URI versionURI = constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath(), "fcr:versions", version.toString());
-		return getCompleteKnowledgeObject(versionURI);
+		if(complete)
+			return getCompleteKnowledgeObject(versionURI);
+		else
+			return getKnowledgeObject(versionURI);
 	}
 
 	public void rollbackToPriorVersionSnapshot(ArkId arkId, Version version) throws ObjectTellerException, URISyntaxException {
@@ -398,11 +408,10 @@ public class KnowledgeObjectService {
 		Version version = new Version();
 		knowledgeObject.getMetadata().setVersion(new Version());
 
-		return createKnowledgeObject(arkId, version, loggedInUser, knowledgeObject);
+		return createKnowledgeObject(arkId, loggedInUser, knowledgeObject);
 	}
 
-	public KnowledgeObject copyKnowledgeObject(KnowledgeObject knowledgeObject, OTUser loggedInUser,
-			boolean newVersion, boolean incrementMajor, boolean incrementMinor, boolean incrementPatch, String tagLabel)
+	public KnowledgeObject copyKnowledgeObject(KnowledgeObject knowledgeObject, OTUser loggedInUser)
 			throws ObjectTellerException, URISyntaxException {
 		ArkId arkId = knowledgeObject.getArkId();
 		try {
@@ -417,22 +426,10 @@ public class KnowledgeObjectService {
 			}
 		}
 
-		Version version = knowledgeObject.getMetadata().getVersion() == null ? new Version() : new Version(knowledgeObject.getMetadata().getVersion());
-		if (newVersion) {
-			if (incrementMajor)
-				version = version.incMajor();
-			if (incrementMinor)
-				version = version.incMinor();
-			if (incrementPatch)
-				version = version.incPatch();
-			if (tagLabel != null && !tagLabel.equals(""))
-				version = version.setTag(tagLabel);
-		}
-
-		return createKnowledgeObject(arkId, version, loggedInUser, knowledgeObject);
+		return createKnowledgeObject(arkId, loggedInUser, knowledgeObject);
 	}
 
-	private KnowledgeObject createKnowledgeObject(ArkId arkId, Version version, OTUser loggedInUser, KnowledgeObject knowledgeObject)
+	private KnowledgeObject createKnowledgeObject(ArkId arkId, OTUser loggedInUser, KnowledgeObject knowledgeObject)
 			throws ObjectTellerException, URISyntaxException {
 		URI transactionURI = fcRepoService.createTransaction();
 		try {

@@ -1,5 +1,14 @@
 package org.uofm.ot.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.List;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +17,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.WebRequest;
 import org.uofm.ot.exception.ObjectNotFoundException;
@@ -21,15 +45,6 @@ import org.uofm.ot.knowledgeObject.Version;
 import org.uofm.ot.model.ErrorInfo;
 import org.uofm.ot.model.OTUser;
 import org.uofm.ot.services.KnowledgeObjectService;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.util.Date;
-import java.util.List;
 
 @RestController
 public class KnowledgeObjectController {
@@ -43,7 +58,7 @@ public class KnowledgeObjectController {
 	private static final Logger logger = Logger.getLogger(KnowledgeObjectController.class);
 
 	/**
-	 * Creates a new knowlege object with a new ark id by parsing the body of the request
+	 * Creates a new knowledge object with a new ark id by parsing the body of the request
 	 * @param knowledgeObject
 	 * @param loggedInUser
 	 * @param request
@@ -69,7 +84,7 @@ public class KnowledgeObjectController {
 		} else {
 			entity = new ResponseEntity<> (HttpStatus.UNAUTHORIZED);
 		}
-		return entity ; 
+		return entity;
 	}
 
 	/**
@@ -95,7 +110,7 @@ public class KnowledgeObjectController {
 	 * @param onlyPublished if this is false or not supplied will return the full list of knowledge objects,
 	 * 		if true will return only published knowledge objects
 	 * @return a list of knowledge objects in json format
-	 * @throws ObjectTellerException if
+	 * @throws ObjectTellerException
 	 */
 	@GetMapping(value="/knowledgeObject",
 			produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -130,19 +145,9 @@ public class KnowledgeObjectController {
 
 	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}","/ark:/{naan}/{name}","/knowledgeObject/{naan}-{name}","/{naan}-{name}"},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId, @RequestHeader(value = "complete", required = false) boolean complete) throws ObjectTellerException, URISyntaxException  {
+	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId, @RequestHeader(value = "Prefer", required = false) String prefer) throws ObjectTellerException, URISyntaxException  {
 
-		KnowledgeObject knowledgeObject;
-		if(complete) {
-			knowledgeObject = knowledgeObjectService.getCompleteKnowledgeObject(arkId);
-		} else {
-			knowledgeObject =  knowledgeObjectService.getKnowledgeObject(arkId);
-		}
-
-		if(knowledgeObject != null){
-			return new ResponseEntity<>(knowledgeObject, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return getKnowledgeObject(arkId, null, prefer);
 	}
 
 	@Deprecated // use the above method
@@ -152,6 +157,7 @@ public class KnowledgeObjectController {
 		ResponseEntity<KnowledgeObject> entity = null;
 		KnowledgeObject knowledgeObject =  knowledgeObjectService.getCompleteKnowledgeObject(arkId);
 		if(knowledgeObject != null){
+			knowledgeObject.setArkId(arkId);
 			entity = new ResponseEntity<>(knowledgeObject,HttpStatus.OK);
 		} else {
 			entity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -175,19 +181,34 @@ public class KnowledgeObjectController {
 
 	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}/{version:.+}", "/ark:/{naan}/{name}/{version:.+}","/knowledgeObject/{naan}-{name}/{version:.+}","/{naan}-{name}/{version:.+}"},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId, @PathVariable Version version) throws ObjectTellerException, URISyntaxException  {
+	public ResponseEntity<KnowledgeObject> getKnowledgeObject(ArkId arkId, @PathVariable Version version, @RequestHeader(value = "Prefer", required = false) String prefer) throws ObjectTellerException, URISyntaxException  {
 
-		KnowledgeObject knowledgeObject = knowledgeObjectService.getVersionSnapshot(arkId, version);
-
-		if(knowledgeObject != null){
-			return new ResponseEntity<>(knowledgeObject, HttpStatus.OK);
+		KnowledgeObject knowledgeObject;
+		boolean complete = prefer == null || !prefer.matches(".*return\\s*=\\s*minimal.*");
+		if(version != null) {
+			knowledgeObject = knowledgeObjectService.getVersionSnapshot(arkId, version, complete);
+		} else {
+			if (complete)
+				knowledgeObject = knowledgeObjectService.getCompleteKnowledgeObject(arkId);
+			else
+				knowledgeObject = knowledgeObjectService.getKnowledgeObject(arkId);
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<>(knowledgeObject, HttpStatus.OK);
 	}
 
+	/**
+	 * Creates a new version of an existing knowledge object
+	 * @param arkId the knowledge object to be versioned
+	 * @param loggedInUser the user who is creating the new version
+	 * @param version the version name, provided in a slug header
+	 * @return the new version of the knowledge object
+	 * @throws ObjectTellerException
+	 * @throws URISyntaxException
+	 */
 	@PostMapping(value={"/knowledgeObject/ark:/{naan}/{name}", "/knowledgeObject/{naan}-{name}"},
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KnowledgeObject> versionKnowledgeObjectByRef(ArkId arkId, @ModelAttribute("loggedInUser") OTUser loggedInUser, @RequestHeader(value = "version", required = false) String version) throws ObjectTellerException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> versionKnowledgeObjectByRef(ArkId arkId, @ModelAttribute("loggedInUser") OTUser loggedInUser, @RequestHeader(value = "Slug", required = false) String version) throws ObjectTellerException, URISyntaxException {
 
 		KnowledgeObject ko;
 		try {
@@ -225,21 +246,28 @@ public class KnowledgeObjectController {
 	@PutMapping(value={"/knowledgeObject/ark:/{naan}/{name}","/knowledgeObject/{naan}-{name}"},
 			consumes = {MediaType.TEXT_PLAIN_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> createOrUpdateKnowledgeObjectFromURL(@RequestBody String koURL, @ModelAttribute("loggedInUser") OTUser loggedInUser, ArkId arkId, HttpServletRequest request) throws ObjectTellerException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> createOrUpdateKnowledgeObjectFromURL(@RequestBody String koURL, @ModelAttribute("loggedInUser") OTUser loggedInUser, ArkId arkId) throws ObjectTellerException, URISyntaxException {
 		if (loggedInUser != null ) {
 			KnowledgeObject ko = getRemoteKO(koURL);
-			KnowledgeObject object = knowledgeObjectService.editObject(ko, arkId);
+			if(knowledgeObjectService.exists(new ArkId(ko.getMetadata().getArkId()))) {
+				throw new IllegalStateException("Object with ark id " + arkId + " already exists in this library.");
+			}
+			KnowledgeObject object = knowledgeObjectService.copyKnowledgeObject(ko, loggedInUser);
 			return new ResponseEntity<>(object, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 	}
 
-	private KnowledgeObject getRemoteKO (String koUrl) {
+	private KnowledgeObject getRemoteKO (String koUrl) throws ObjectTellerException {
+
 		RestTemplate rt = new RestTemplate();
-
-		ResponseEntity<KnowledgeObject> response = rt.getForEntity(koUrl, KnowledgeObject.class);
-
+		ResponseEntity<KnowledgeObject> response;
+		try {
+			response = rt.getForEntity(koUrl, KnowledgeObject.class);
+		} catch (HttpClientErrorException e) {
+			throw new ObjectNotFoundException("Cannot find remote object at URL " + koUrl);
+		}
 		return response.getBody();
 	}
 	
@@ -368,17 +396,22 @@ public class KnowledgeObjectController {
 
 	@ExceptionHandler(ObjectTellerException.class)
 	public ResponseEntity<ErrorInfo> handleObjectTellerExceptions(ObjectTellerException e, WebRequest request) {
-		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getContextPath(), new Date()), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getDescription(false), new Date().toString()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(ObjectNotFoundException.class)
 	public ResponseEntity<ErrorInfo> handleObjectNotFoundExceptions(ObjectNotFoundException e, WebRequest request) {
-		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getContextPath(), new Date()), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getDescription(false), new Date().toString()), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(URISyntaxException.class)
 	public ResponseEntity<ErrorInfo> handleURISyntaxExceptions(URISyntaxException e, WebRequest request){
-		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getContextPath(), new Date()), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getDescription(false), new Date().toString()), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<ErrorInfo> handleIllegalStateExceptions(IllegalStateException e, WebRequest request){
+		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getDescription(false), new Date().toString()), HttpStatus.CONFLICT);
 	}
 
 	//-----------------------------------Outdated Methods-------------------------------------------//
