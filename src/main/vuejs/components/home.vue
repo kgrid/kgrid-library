@@ -8,7 +8,7 @@
 			</div>
 			<div v-else>
 				<h1>Knowledge Grid Library is a digital repository for storing, curating, and managing computer-processable knowledge. <br></h1>
-				<h1>Get Started, <router-link to='/soon'>Sign-Up.</router-link></h1>
+				<h1>Get Started, <router-link to='/soon'>Sign-Up</router-link> or <a v-on:click='login_click'> Log In </a>.</h1>
 			</div>
 			<div id='libname' v-if='libConnected'>
 				<h5><span>{{libraryname}}</span></h5>
@@ -47,50 +47,40 @@
 					<input placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
 				<div class='col-md-1 col-sm-1 col-xs-1'></div>
-				<div class='col-md-2 col-sm-2 col-xs-2 ot-count'>{{countString}}</div>
-
-
-
-
-
-
-
-
-
-				<div class='col-md-3 col-sm-3 col-xs-3 ot-sort'>
-				<div>
-					<h6><span>Sort by:</span></h6>
-					<select class='ot-select' v-model='sortKey' v-on:change="onChange">
-						<option value='metadata.title'>Title</option>
-						<option value='uri'>Object ID</option>
-						<option value='metadata.lastModified'>Last Updated</option>
-					</select>
-					<button id='sortordertoggle' class='kg-bg-color' v-on:click='toggleOrder()'>
-						<span v-if='orderAsc'	class='down'><img src='../assets/images/Down_Arrow_Dark.png' width="12px"/></span>
-						<span v-else class='up'><img src='../assets/images/Down_Arrow_Dark.png' width="12px"/></span>
-					</button>
-					</div>
-				</div>
-
-
-
-
-
-
-
-
-
+				<div class='col-md-2 col-sm-2 col-xs-2'></div>
+				<div class='col-md-3 col-sm-3 col-xs-3 ot-sort'></div>
 			</div>
 		</div>
 		<div slot='maincontent'>
 			<div id='filtercontrol'>
-				<div class='row'>
+				<div class='row mar-top30'>
 					<div class='col-md-2 filterBtnCol'>
 						<div id='filterBtn'>
 							<a v-on:click='toggleFilter'> Filters
 								<span><img id='filterdowniconimg' class='down' src='../assets/images/Chevron.png' width='12px' /></span>
 							</a>
 						</div>
+					</div>
+					<div class='col-md-7 ot-count'>
+						{{countString}}
+					</div>
+					<div class='col-md-3 lh-3 bg-white float-r'>
+					<div class=''>
+						<h6><span>Sort by:</span></h6>
+
+<span  class='brd-r lh-1'><vselect :value.sync="kgselect" :options="optionlist" :searchable='false' :onChange='selectCallback'></vselect></span>
+
+						<button id='sortordertoggle' class='bg-trans' v-on:click='toggleOrder()'>
+							<span v-if='orderAsc'	class='down'><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
+							<span v-else class='up'><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
+						</button>
+						</div>
+
+					</div>
+				</div>
+				<div class='row' v-show='filterStrings.length|hasDateFilter'>
+					<div class='col-md-2 filterBtnCol'>
+						<div id='fillerdiv' class='bg-white'></div>
 					</div>
 					<div class='col-md-10 filterCol'>
 						<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
@@ -249,6 +239,7 @@
 <script>
 import myDatepicker from '../vendor/vue-datepicker-es6.vue'
 import applayout from './applayout.vue';
+import vselect from '../vendor/vue-select.vue';
 import kotile from './kotile.vue';
 import { overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, otScroll, setBannerbkSize} from '../ot.js';
 import eventBus from '../components/eventBus.js';
@@ -266,6 +257,9 @@ export default {
 			model : {
 				koList : []
 			},
+			dlabel:"Select sort key",
+			kgselect:'Last Updated',
+			optionlist:[{'label':'Last Updated', 'value':'metadata.lastModified'},{'label':'Title','value':'metadata.title'},{'label':'Object ID','value':'uri'}],
 			confirmrequest:{name:"removeallfilter",statement:"All filteres will be cleared!"},
 			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
 			defaultCheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
@@ -337,6 +331,7 @@ export default {
 
 	created : function() {
 			var self = this;
+			console.log('Init Sort Key'+this.sortKey);
 	  	if(sessionStorage.getItem("sortKey")==null){
 	  		this.setSessionStorage();
 	  	}
@@ -398,7 +393,6 @@ export default {
 		    });
 				eventBus.$on('confirm', function (data) {
 					console.log(data);
-
 						if(data.name=="removeallfilter"){
 						if(data.val==true){
 							self.filterStrings.splice(0);
@@ -414,13 +408,17 @@ export default {
 			$('.ot-banner').removeClass('loggedin');
 		}
 		otScroll();
+		console.log('before'+this.sortKey)
+		if(sessionStorage.getItem("sortKey")!=null){
 		this.sortKey=sessionStorage.getItem("sortKey");
+		console.log('after'+this.sortKey)
 		this.order=sessionStorage.getItem("order");
 		this.filterStrings=JSON.parse(sessionStorage.getItem("filters"));
 		this.check=JSON.parse(sessionStorage.getItem("check"));
 		this.dateRange=JSON.parse(sessionStorage.getItem("dateRange"));
 		this.setstartdate();
 		this.setenddate();
+		}
 	},
 	updated: function() {
 		this.setSessionStorage();
@@ -469,6 +467,8 @@ export default {
 				return _.orderBy(this.filteredList, [i=>i.uri.toLowerCase()], this.order);
 			case 'metadata.title':
 				return _.orderBy(this.filteredList, [i=>i.metadata.title.toLowerCase()], this.order);
+			default:
+				return this.filteredList;
 			}
 
 		},
@@ -544,13 +544,30 @@ export default {
 	},
 	methods : {
 		setSessionStorage: function(){
-		sessionStorage.setItem("sortKey", this.sortKey);
-		sessionStorage.setItem("order", this.order);
-		sessionStorage.setItem("filters", JSON.stringify(this.filterStrings));
-		sessionStorage.setItem("check", JSON.stringify(this.check));
-		sessionStorage.setItem("dateRange", JSON.stringify(this.dateRange));
-
-	},
+			console.log("setting sort key" + this.sortKey);
+			sessionStorage.setItem("sortKey", this.sortKey);
+			sessionStorage.setItem("order", this.order);
+			sessionStorage.setItem("filters", JSON.stringify(this.filterStrings));
+			sessionStorage.setItem("check", JSON.stringify(this.check));
+			sessionStorage.setItem("dateRange", JSON.stringify(this.dateRange));
+			},
+		selectCallback: function(val){
+		   console.log(val);
+			 console.log("After callback" + this.sortKey+"  ==="+val);
+			 this.sortKey=val.value;
+			 switch(val) {
+			 case 'Last Updated':
+			 		this.sortKey='metadata.lastModified';
+					break;
+			 case 'Object ID':
+			 		this.sortKey='uri';
+					break;
+			 case 'Title':
+			 		this.sortKey='metadata.title';
+					break;
+					}
+							sessionStorage.setItem("sortKey", this.sortKey);
+		},
 		onChange: function(){
 			switch(this.sortKey) {
 			case 'metadata.lastModified':
@@ -563,6 +580,9 @@ export default {
 				this.order ='asc';
 				break
 			}
+	},
+	login_click: function () {
+		eventBus.$emit('openLogin'); // eslint-disable-line
 	},
 		userlink_click: function () {
 	      eventBus.$emit('openUserManagement'); // eslint-disable-line
@@ -586,12 +606,13 @@ export default {
 	    	      $('img#filterdowniconimg').removeClass('down');  // eslint-disable-line
 	    	      $('img#filterdowniconimg').addClass('up');  // eslint-disable-line
 	    	      $('#filterBtn').addClass('tall');
-
+							$('#fillerdiv').addClass('tall');
 	    	}else
 	    	{
 	    	      $('img#filterdowniconimg').removeClass('up');  // eslint-disable-line
 	    	      $('img#filterdowniconimg').addClass('down');  // eslint-disable-line
 	    	      $('#filterBtn').removeClass('tall');
+							$('#fillerdiv').removeClass('tall');
 	    	}
 		},
 		addObject:function(){
@@ -660,7 +681,8 @@ export default {
 	components:{
 		'applayout':applayout,
 		'kotile':kotile,
-		'date-picker': myDatepicker
+		'date-picker': myDatepicker,
+		vselect
 		}
 };
 </script>
@@ -677,6 +699,9 @@ export default {
     font-size: large;
     background-color: #fff;
     padding: 0 0 0 12px;
+}
+kgdropdown {
+	border-right: 1px solid #666666;
 }
 .ot-search {
     display: inline-block;
@@ -713,18 +738,24 @@ input[type=text], input[type=password], input[type=textarea] {
 input[id$="datepicker"] {
     width: 150px;
 }
-#filterBtn {
+#filterBtn, #fillerdiv {
     background-color: #fff;
-    margin: 25px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
     padding: 12px 0px 12px 0px;
     text-align: center;
 	cursor: pointer;
 	width: 100px;
 	height: 45px;
 }
-
+#fillerdiv {
+height: 55px;
+}
 #filterBtn.tall{
 	height: 57px;
+}
+
+ #fillerdiv.tall{
+	height: 77px;
 }
 #filterBtn a {
     background-color: #fff;
@@ -763,7 +794,7 @@ img#filterdowniconimg.up {
 .filterlist li, .filterlist button#clearAll{
 display:inline-block;
 background-color:#fff;
-margin:25px 10px 0px 10px;
+margin:10px 10px 15px 10px;
 padding:12px;
 height: 44px;
 }
@@ -1054,6 +1085,9 @@ select >option:hover {
 	opacity:1;
 }
 
+#sortordertoggle{
+    margin-left: 6px;
+}
 
 .expand-enter, .expand-leave {
   height: 0;

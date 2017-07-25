@@ -55,7 +55,6 @@ a, a:hover, a:visited, a:focus {
     	padding-bottom: 30px;
 }
 
-
 .middleout li>a>span:after {
 	content: '';
 	display: block;
@@ -95,3 +94,26 @@ a, a:hover, a:visited, a:focus {
 ::-webkit-scrollbar-corner {
       background-color: #fff;
 } /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
+
+.mar-top30 {
+  margin-top:30px;
+}
+
+.bg-trans {
+  background-color: transparent;
+}
+.bg-white {
+    background-color: #fff;
+}
+.brd-r {
+  border-right: 1px solid #666666;
+}
+.lh-1 {
+  line-height: 1em;
+}
+.lh-3 {
+  line-height: 3em;
+}
+.float-r {
+  float: right;
+}
