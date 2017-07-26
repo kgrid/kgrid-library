@@ -61,12 +61,14 @@
 					</p>
 				</div>
 				<div class='col-md-5 col-sm-5 col-xs-5'>
-				<div class='float-r mar-r-30'>
-					<h6><span>View Type:</span></h6>
-					<span  class='lh-1'><vselect :value.sync="kgselect.value" :options="optionlist" :searchable='false' :loading='settingPubPri':onChange='selectCallback'></vselect></span>
-</div>
+					<div class='float-r mar-r-30'>
+						<h6><span>View Type:</span></h6>
+
+							<vselect :value.sync="kgselect.value" :options="optionlist" :searchable='false' :noDrop='!isLoggedIn' :loading='settingPubPri':onChange='selectCallback'></vselect>
+	
 					</div>
-						</div>
+				</div>
+			</div>
 		</div>
 		<div slot='header'>
 		<ul class='nav nav-tabs view' role='tablist' id='tabs'>
