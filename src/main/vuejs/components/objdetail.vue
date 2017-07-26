@@ -3,25 +3,7 @@
 		<applayout :nothelper='true'>
 		<div slot='banner'>
 		<div class='row ot-detail-spacer'></div>
-		<div class='row ot-detail-smallrow'>
-			<div class='col-md-3 col-sm-3 col-xs-3'>
-
-			<div id='goback'>
-			<div id='backButton'>
-				 <a @click='returntolibrary'>BACK TO THE LIBRARY
-				<div class='ot-r1-btn ot-back'>
-				<div class='greyroundbutton'></div>
-			       <div class='btnContent'><img src='../assets/images/Chevron_left.png' width="4px"/></div>
-			       </div></a>
-			</div>
-				</div>
-			</div>
-			<div class='col-md-4 col-sm-4 col-xs-4'></div>
-			<div class='col-md-5 col-sm-5 col-xs-5'>
-
-			</div>
-			</div>
-			<div class='row ot-detail-titlerow'>
+		<div class='row ot-detail-titlerow'>
 				<div id='ko-title' class='col-md-11 col-sm-11'>
 					<div id= 'type-status' >
 						<img v-if='objModel.object.metadata.published' src='../assets/images/LittleGreenDot.png' width='10px' height='auto' />
@@ -426,7 +408,7 @@ padding-right: 0px;
 
 #actionlist {
 	position: absolute;
-	top:165px;
+	top:199px;
  float:right;
  display:inline-block;
  text-align: left;
