@@ -343,7 +343,7 @@ public class KnowledgeObjectController {
 		return outputMessage ;
 	}
 	
-	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}/logData","/knowledgeObject/ark:/{naan}/{name}/logData"})
+	@GetMapping(value={"/knowledgeObject/ark:/{naan}/{name}/logData","/knowledgeObject/{naan}-{name}/logData"})
 	public ResponseEntity<String> getLogDataByArkId( ArkId arkId) throws ObjectTellerException, URISyntaxException {
 		String content = knowledgeObjectService.getProvData(arkId).toString();
 		return new ResponseEntity<>(content, HttpStatus.OK);
