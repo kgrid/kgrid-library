@@ -260,7 +260,7 @@ export default {
 			dlabel:"Select sort key",
 			kgselect:'Last Updated',
 			optionlist:[{'label':'Last Updated', 'value':'metadata.lastModified'},{'label':'Title','value':'metadata.title'},{'label':'Object ID','value':'uri'}],
-			confirmrequest:{name:"removeallfilter",statement:"All filteres will be cleared!"},
+			confirmrequest:{name:"removeallfilter",statement:"All filters will be cleared!"},
 			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
 			defaultCheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
  			filterStrings:[],
