@@ -200,7 +200,7 @@
     opacity: 0;
     position: absolute;
     top: 5px;
-    right: 10px;
+    right: 50px;
     font-size: 5px;
     text-indent: -9999em;
     overflow: hidden;
@@ -215,8 +215,8 @@
   .v-select .spinner,
   .v-select .spinner:after {
     border-radius: 50%;
-    width: 1em;
-    height: 1em;
+    width: 5em;
+    height: 5em;
   }
   /* Loading Spinner States */
   .v-select.loading .spinner {
@@ -591,7 +591,7 @@
        */
       select(option) {
         if (this.isOptionSelected(option)) {
-          
+
         } else {
           if (this.taggable && !this.optionExists(option)) {
             option = this.createOption(option)

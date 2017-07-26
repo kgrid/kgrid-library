@@ -1,4 +1,4 @@
-<template> 
+<template>
 		<div class="container ot-tile" v-bind:id="object.uri" v-on:click="selected">
 				<div class="row ot-2">
 					<div class="col-md-1 col-sm-1 col-xs-1 ot-type">
@@ -7,7 +7,7 @@
 					<div class="col-md-11 col-sm-11 col-xs-11 ot-title" data-toggle="tooltip"
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
-					
+
 				</div>
 				<div class="row ot-2">
 					<div class="col-md-1 col-sm-1 col-xs-1 ot-empty"></div>
@@ -80,7 +80,7 @@
 						}
 					}
 				};
-				</script>	
+				</script>
 				<style>
 				.ot-type {
 				    vertical-align: middle;
@@ -92,7 +92,7 @@
 			    height: 0px;
 			    width: 60px;
 				}
-				
+
 				.ot-tile {
 				    text-align: left;
 				    width: 1024px;
@@ -114,15 +114,15 @@
 				}
 				.ot-tile:hover:after{
 					width:100%;
-				background: #39b45a;
+				background: #00274c;
 				}
 				.ot-tile>.row {
 					margin: 10px 0px;
 				}
-					
+
 				.ot-type>img{
 					margin: 13px 10px 0px 10px;
-					
+						filter: grayscale(100%);
 					}
 
 .ot-title{
@@ -163,7 +163,7 @@
 	right:-10px;
 }
 .ot-id span {
-	
+
 }
 .ot-udate {
 	text-align: right;

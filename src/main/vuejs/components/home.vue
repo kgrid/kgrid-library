@@ -18,7 +18,7 @@
 							<div style="position: relative">
 								<button class="roundbutton iconBtn" id="userlink"	@click="userlink_click"></button>
 								<div class='ot-newuser' >
-					       <div class='greenroundbutton' > </div>
+					       <div class='greenroundbutton kg-btn-bg-primary' > </div>
 					       <div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="8px"/></div>
 								</div>
 							</div>
@@ -38,7 +38,7 @@
 		</div>
 		<div slot='header'>
 			<div v-show='isLoggedIn' class='ot-r-btn ot-newobj' v-on:click='addObject'>
-				<div class='greenroundbutton'></div>
+				<div class='greenroundbutton kg-btn-bg-primary'></div>
 				<div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="14px"/></div>
 			</div>
 			<div class='row'>
@@ -843,16 +843,7 @@ select {
     font-weight: 400;
     font-family: 'Open Sans', sans-serif;
 }
-.ot-banner {
-    background-color: transparent;
-    position: relative;
-    width: 1024px;
-    overflow: visible;
-    z-index: 10;
-    height: 220px;
-    margin: 0 auto;
-		padding: 0px 12px;
-}
+
 .ot-select {
 	width:auto;
 	padding: 0px 36px 0px 6px;
@@ -875,7 +866,7 @@ select {
 	width: 40px;
 	height: 40px;
 	position:absolute;
-    bottom:-30px;
+    bottom:0px;
     right:1px;
     margin:0 auto;
     z-index:500;
