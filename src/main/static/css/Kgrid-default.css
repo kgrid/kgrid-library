@@ -10,9 +10,9 @@ body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldse
 
 h1    { font-size: 28px; }
 h2    { font-size: 24px; }
-h3    { font-size: 21px; }
-h4    { font-size: 18px; }
-h5    { font-size: 16px; display: inline-block;line-height:1.8em;}
+h3    { font-size: 21px; display: inline-block; }
+h4    { font-size: 18px; display: inline-block; }
+h5    { font-size: 16px; display: inline-block; line-height:1.8em;}
 h6    { font-size: 14px; display: inline-block;}
 h7    { font-size: 12px; display: inline-block;}
 small { font-size:  70%; }
@@ -88,7 +88,7 @@ a, a:hover, a:visited, a:focus {
 
 ::-webkit-scrollbar-button {
     display:none;
-      background-color: #e6e6e6;
+    background-color: #e6e6e6;
 } /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
 
 ::-webkit-scrollbar-corner {
@@ -98,7 +98,9 @@ a, a:hover, a:visited, a:focus {
 .mar-top30 {
   margin-top:30px;
 }
-
+.mar-r-30 {
+  margin-right:50px;
+}
 .bg-trans {
   background-color: transparent;
 }
@@ -116,4 +118,15 @@ a, a:hover, a:visited, a:focus {
 }
 .float-r {
   float: right;
+}
+
+.ot-banner {
+    background-color: transparent;
+    position: relative;
+    width: 1024px;
+    overflow: visible;
+    z-index: 10;
+    height: 220px;
+    margin: 0 auto;
+    padding: 0px 12px;
 }

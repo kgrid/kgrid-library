@@ -54,22 +54,6 @@
 	padding-right: 22px;
 }
 
-
-.view-obj {
-	padding: 0px;
-}
-
-.view-obj p, h4 {
-	color: #666666;
-	font-weight: 400;
-	font-size: 14px;
-	padding-left:16px;
-}
-
-.view-obj div {
- 	margin: 22px 0px;
-}
-
 .inline {
 	display: inline-block;
 	margin:0px 0px 0px 50px;
