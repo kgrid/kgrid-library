@@ -116,7 +116,7 @@ export default {
 	background-color:#fff;
 	position:fixed;
 	padding: 0px 30px;
-	z-index:200;
+	z-index:400;
 	top:0;
 	width:200px;
 	left:60px;

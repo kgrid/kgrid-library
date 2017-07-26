@@ -110,11 +110,14 @@ span.ot-right{
 .header.affix {
 	position: fixed;
 	top:0;
+		z-index: 500;
 }
 
 
 .whitebacking {
 	background-color:transparent;
+	position: relative;
+	z-index:200;
 }
 
 
@@ -331,7 +334,7 @@ h4 {
   margin: 0 auto;
   text-align: center;
   align-content: center;
-
+	z-index:350;
 }
 
 #objEditor_overlay .ol_pane {
@@ -463,10 +466,10 @@ input[id$="datepicker"]{
 .greenroundbutton {
     border-radius: 100%;
     color: white;
-    background-color: #39b54a;
     border: none;
-	transition: all 0.5s ease;
+		transition: all 0.5s ease;
 }
+
 .greenroundbutton:hover {
     transform: scale(1.2);
 }

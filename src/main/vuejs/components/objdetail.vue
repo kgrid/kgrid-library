@@ -17,20 +17,7 @@
 				</div>
 			</div>
 			<div class='col-md-4 col-sm-4 col-xs-4'></div>
-			<div class='col-md-5 col-sm-5 col-xs-5 pri-pub'>
-			<div class='col-md-7 col-sm-7 col-xs-7' style="text-align:right;w">VIEW TYPE:</div>
-						<div class='col-md-2 col-sm-2 col-xs-2'>
-									<label class='ot-pub radio-inline'><input type='radio' value='false' v-on:click='unpublish'/>
-										<span v-if='isPublic'>PRIVATE</span>
-										<span class='active middleout' v-else>PRIVATE</span>
-									</label>
-						</div>
-						<div class='col-md-3 col-sm-3 col-xs-3'>
-									<label class='ot-pub radio-inline'><input type='radio' value='true' v-on:click='publish'/><img src='../assets/images/LittleGreenDot.png' width="6px">
-										<span class='active middleout'  v-if='isPublic'>PUBLIC</span>
-										<span v-else>PUBLIC</span>
-									</label>
-						</div>
+			<div class='col-md-5 col-sm-5 col-xs-5'>
 
 			</div>
 			</div>
@@ -92,6 +79,10 @@
 					</p>
 				</div>
 				<div class='col-md-5 col-sm-5 col-xs-5'>
+				<div class='float-r mar-r-30'>
+					<h6><span>View Type:</span></h6>
+					<span  class='lh-1'><vselect :value.sync="kgselect.value" :options="optionlist" :searchable='false' :loading='settingPubPri':onChange='selectCallback'></vselect></span>
+</div>
 					</div>
 						</div>
 		</div>
@@ -132,7 +123,8 @@
 				sections : sections,
 				isDisabled: 1,
 				isPublic:false,
-				kgselect:'',
+				settingPubPri:false,
+				kgselect:{'value':''},
 				optionlist:[{'label':'Public', 'value':'public'},{'label':'Private','value':'private'}],
 				publishState: 'Unpublished',
 				userModel:{user:{username:'',password:''}},
@@ -195,9 +187,9 @@
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
 				if(self.isPublic){
-					self.kgselect='Public';
+					self.kgselect.value='Public';
 				}else {
-								self.kgselect='Private';
+								self.kgselect.value='Private';
 				}
 			}, function(response){
 				console.log("Error:");
@@ -247,21 +239,16 @@
 		},
 		methods:{
 		selectCallback: function(val){
-			 console.log(val);
-			 console.log("After callback" + this.sortKey+"  ==="+val);
-			 this.sortKey=val.value;
-			 switch(val) {
-			 case 'Last Updated':
-					this.sortKey='metadata.lastModified';
+			var value=val.value;
+			 console.log(value);
+			 switch(value) {
+			 case 'public':
+					this.toggleObject(true);
 					break;
-			 case 'Object ID':
-					this.sortKey='uri';
-					break;
-			 case 'Title':
-					this.sortKey='metadata.title';
+			 case 'private':
+ 					this.toggleObject(false);
 					break;
 					}
-							sessionStorage.setItem("sortKey", this.sortKey);
 		},
 		toggleActionList: function(){
 			this.showActionList=!this.showActionList;
@@ -282,12 +269,6 @@
 				this.showActionList=!this.showActionList;
 				eventBus.$emit('editObj', this.objModel.obj);
 			},
-			publish:function(){
-				this.toggleObject(true);
-			},
-			unpublish:function(){
-				this.toggleObject(false);
-			},
 			toggleObject:function(pub){
 				var uri=this.objModel.object.uri;
 				var published='';
@@ -297,6 +278,7 @@
 				}else{
 					published='unpublished';
 				}
+				self.settingPubPri=true;
 				$.ajax({
 					beforeSend : function(xhrObj) {
 						xhrObj.setRequestHeader("Content-Type", "application/json");
@@ -306,9 +288,11 @@
 					success : function(response) {
 						self.isPublic=pub;
 						objModel.object.metadata.published=pub;
+						self.settingPubPri=false;
 					},
 					error : function(response, tStatus, xhr) {
 						console.log(response);
+							self.settingPubPri=false;
 					}
 				});
 			},
@@ -332,12 +316,12 @@
 	</script>
 <style>
 .badge {
-vertical-align:top;
-background-color:#39b45a;
+	vertical-align:top;
 }
 .ot-banner.detail {
 	height: 220px;
 padding: 0px 32px 0px 48px;
+margin:0 auto;
 }
 .ot-detail-smallrow {
 	height: 20px;
@@ -375,6 +359,7 @@ padding: 0px 32px 0px 48px;
 	width: 10px;
 	height: 42px;
 	display: inline-block;
+	filter: grayscale(100%);
 }
 #type-status img {
 	position: absolute;
@@ -413,7 +398,7 @@ left: 5px;
 }
 ul#tabs li.active:after {
     width: 100%;
-    background: #39b45a;
+    background: #00274c;
 }
 ul#tabs li:after {
     content: '';
@@ -438,11 +423,13 @@ margin-top: 16px;
 text-align: right;
 padding-right: 0px;
 }
+
 #actionlist {
+	position: absolute;
+	top:165px;
  float:right;
  display:inline-block;
  text-align: left;
-
  right:-15px;
  height:80px;
  overflow-y: visible;
@@ -560,31 +547,7 @@ width:100%;
 #backButton:hover .btnContent{
 		 opacity: 1;
 		}
-.pri-pub {
-	font-size: 12px;
-	padding-right: 0px;
 
-}
-.pri-pub .col-md-3 {
-	padding-right: 0px;
-width: 80px;
-}
-.pri-pub label {
-	margin: 0px;
-}
-
-.pri-pub label span {
-	color: #b3b3b3;
-	transition: color 0.5s ease;
-}
-
-.pri-pub label span:hover {
-	color: #666666;
-}
-
-.pri-pub label span.active {
-	color: #666666;
-}
 .dropdown-menu {
 position: absolute;
 top: auto;
@@ -625,7 +588,7 @@ z-index:99999;
 		}
 
 .dropdown-menu > li>a :hover, #downloadButton:hover, #downloadButton:hover a{
-	background-color: #f5f5f5;
+
 	color:#666666;
 }
 .nav>li>a {
