@@ -54,13 +54,13 @@
 					"formdata": [
 						{
 							"key": "username",
-							"value": "admin@umich.edu",
+							"value": "{{username}}",
 							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "admin",
+							"value": "{{password}}",
 							"description": "",
 							"type": "text"
 						}
