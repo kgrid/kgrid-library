@@ -11,7 +11,7 @@
 	import fieldtile from './fieldtile.vue';
 	import { loadFieldsConfig } from '../ot.js';
 	export default {
-		name:'tabpane', 
+		name:'tabpane',
 		props:['section','object','isDisabled'],
 		data: function(){
 			return {
@@ -31,13 +31,13 @@
 			});
 		},
 		updated : function() {
-			
+
 		},
 		created : function() {
-			
+
 		},
 		mounted : function() {
-			
+
 		},
 		computed : {
 			filteredFields :function(){
@@ -49,7 +49,7 @@
 			}
 		},
 		methods: {
-			
+
 		}
 	};
 	</script>
@@ -106,7 +106,7 @@ padding: 0px;
 }
 
 .addtext a span {
-	border-bottom: 1px solid #39b45a;
+	border-bottom: 1px solid #00274c;
 	text-decoration: none;
 }
 
@@ -121,4 +121,3 @@ ul.list li {
 
 
 </style>
-	

@@ -20,9 +20,13 @@
   color: #ffffff;
 }
 
+.kg-btn-bg-primary {
+  background-color: #00274c;
+}
 
 .navbar {
 	border-bottom: 1px solid #d7d7d7;
+  z-index: 250;
 }
 
 .navbar-nav>li>a, a, a:hover, a:visited, a:focus {
@@ -37,11 +41,13 @@
   width:100%;
 	background-color: #00274c;
 }
+
 .dropdown-menu > li > a, .dropdown-menu > li > a:focus {
     color:#666666;
     line-height:2.2em;
     padding:0px 12px;
 }
+
 .dropdown-menu {
   padding: 0px;
 }
