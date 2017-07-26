@@ -77,4 +77,4 @@
 #### /knowledgeObject/ark:/{naan}/{name}/{version}
 - Deletes the specified version of the knowledge object, returns a 204 - no content on success
 
-*Note: in all requests ark:/{naan}/{name} can be substituted by {naan}-{name}*
+*Note: in all requests {naan}-{name} can be used in place of ark:/{naan}/{name}*
