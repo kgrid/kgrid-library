@@ -216,7 +216,7 @@ public class KnowledgeObjectController {
 		} catch (IllegalArgumentException e) {
 			throw new ObjectTellerException("Illegal version id " + e);
 		}
-		return new ResponseEntity<>(ko, HttpStatus.OK);
+		return new ResponseEntity<>(ko, HttpStatus.CREATED);
 	}
 
 	@PatchMapping(value={"/knowledgeObject/ark:/{naan}/{name}/{version}", "/ark:/{naan}/{name}/{version}","/knowledgeObject/{naan}-{name}/{version}","/{naan}-{name}/{version}"})

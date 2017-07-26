@@ -325,7 +325,7 @@ public class KnowledgeObjectService {
 		KnowledgeObject ko = getCompleteKnowledgeObject(arkId);
 		Version oldVersion = new Version(ko.getMetadata().getVersion());
 		Version version;
-		String[] reservedWords = {"versions", "metadata", "payload", "inputmessage", "outputmessage", "logdata", "published"};
+		String[] reservedWords = {"versions", "metadata", "payload", "inputmessage", "outputmessage", "logdata", "published", "unpublished"};
 		if(versionString == null || versionString.equals("")) {
 			if(ko.getMetadata() != null && ko.getMetadata().getVersion() != null) {
 				version = new Version(ko.getMetadata().getVersion()).increment();
