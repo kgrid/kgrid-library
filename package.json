@@ -2,7 +2,7 @@
   "name": "kgridlibraryfront",
   "version": "1.0.0",
   "description": "Knowledge Grid Library Web App",
-  "author": "George Meng <gqmeng@umich.edu>",
+  "author": "<dlhs.knowledge.grid@umich.edu>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
