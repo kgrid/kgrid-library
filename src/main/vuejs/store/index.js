@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as getters from './getters'
 
 Vue.use(Vuex)
 
@@ -11,7 +10,8 @@ export default new Vuex.Store({
   state:{
     debugEnabled:true,
     baseurl:'',
-    currentUser:{username:"",password:""}
+    currentUser:{username:"",password:"",admin:false},
+    libraryname:'DLHS Development Server'
   },
   mutations: {
     seturl(state, url) {
@@ -24,6 +24,9 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn: state => {
      return (state.currentUser.username!='')
+    },
+    isAdmin: state => {
+     return (state.currentUser.admin)
     },
     getfirstname: state => {
       return (state.currentUser.first_name || '')

@@ -20,8 +20,18 @@
 					<ul class='nav navbar-nav navbar-right ot-1'  v-else  v-click-outside='outside'>
 						<li class='login-link1'>
 							<div class='dropdown' id="userDropdown" style='height:55px;'>
-								<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>Welcome,	{{firstname}}
+								<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>
+								<div class='row'>
+								<div class='col-md-11'>
+									<div class='row pad-t-2 pad-b-5 lh-1'>
+										<span class='float-r'>Welcome, {{firstname}}</span></div>
+									<div class='row pad-b-5 lh-1'>
+									<span class='float-r ft-sz-12'>{{libraryname}}</span></div>
+									</div>
+									<div class='col-md-1 pad-0'>
 									<span><img id='dropdowniconimg' class='down' src='../assets/images/Chevron.png' width='12px' /></span>
+									</div>
+									</div>
 								</a>
 								<ul class='dropdown-menu' v-if='showDropdown'>
 									<li><a id='logoutBtn' v-on:click='userlogout'><span>Logout</span></a></li>
@@ -53,7 +63,10 @@ export default {
 		},
     isLoggedIn: function () {
       return this.$store.getters.isLoggedIn;
-    }
+    },
+		libraryname : function(){
+			return this.$store.state.libraryname;
+		}
   },
   methods: {
 		outside: function(){
@@ -167,12 +180,12 @@ border-bottom-right-radius: 10px;
 transition: all .5s ease;
 padding: 0px;
 left: initial;
-right: 5px;
+right: -18px;
 margin-top: -12px;
 box-shadow: none;
 border-radius: 0px;
 display:block;
-min-width:130px;
+min-width:200px;
 }
 
 .dropdown ul li {
@@ -192,6 +205,6 @@ min-width:130px;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-min-width: 150px;
+min-width: 200px;
 }
 </style>
