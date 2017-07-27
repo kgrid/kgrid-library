@@ -4,13 +4,13 @@
 		<div slot='banner'>
 			<div v-if="isLoggedIn">
 				<h1>Hello, {{firstname}}!</h1>
-				<h1>Need to invite others? <router-link to='/soon'>Add Users.</router-link></h1>
+				<div v-if='isAdmin'><h1>Need to invite others? <a v-on:click='userlink_click'>Add Users.</a></h1> </div>
 			</div>
 			<div v-else>
 				<h1>Knowledge Grid Library is a digital repository for storing, curating, and managing computer-processable knowledge. <br></h1>
 				<h1>Get Started, <router-link to='/soon'>Sign-Up</router-link> or <a v-on:click='login_click'> Log In </a>.</h1>
 			</div>
-			<div id='libname' v-if='libConnected'>
+			<div id='libname' v-show='false'>
 				<h5><span>{{libraryname}}</span></h5>
 				<div id="bannericons" v-show='isLoggedIn'>
 					<ul id="bannericonrow">
@@ -32,7 +32,7 @@
 					</div>
 				</div>
 			</div>
-			<div id='libConBtn' v-if='!libConnected' @click='setlibrary'>
+			<div id='libConBtn' v-show='false' @click='setlibrary'>
 				<span>{{libraryname}}</span>
 			</div>
 		</div>
@@ -53,7 +53,23 @@
 		</div>
 		<div slot='maincontent'>
 			<div id='filtercontrol'>
-				<div class='row mar-top30'>
+			<div class='row  mar-top30' v-show='filterStrings.length|hasDateFilter'>
+				<div class='col-md-12 filterCol'>
+					<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
+						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
+							<button class='destroy' @click='removeString(filterstring)'>
+							</button>
+							<label>{{ filterstring.title }}</label>
+						</li>
+						<li class='todo' v-show='hasDateFilter' >
+							<button class='destroy' @click='removeDateFilter'></button>
+							<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label>
+						</li>
+						<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
+					</ul>
+				</div>
+			</div>
+				<div class='row  mar-top30'>
 					<div class='col-md-2 filterBtnCol'>
 						<div id='filterBtn'>
 							<a v-on:click='toggleFilter'> Filters
@@ -78,25 +94,7 @@
 
 					</div>
 				</div>
-				<div class='row' v-show='filterStrings.length|hasDateFilter'>
-					<div class='col-md-2 filterBtnCol'>
-						<div id='fillerdiv' class='bg-white'></div>
-					</div>
-					<div class='col-md-10 filterCol'>
-						<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
-							<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
-								<button class='destroy' @click='removeString(filterstring)'>
-								</button>
-								<label>{{ filterstring.title }}</label>
-							</li>
-							<li class='todo' v-show='hasDateFilter' >
-								<button class='destroy' @click='removeDateFilter'></button>
-								<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label>
-							</li>
-							<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
-						</ul>
-					</div>
-				</div>
+
 				<transition name='expand'>
 				<div id='filterpanel' v-if='showFilterControl' >
 					<div class='row'>
@@ -250,7 +248,6 @@ export default {
 	data : function() {
 		return {
 			libConnected:false,
-			libraryname : '',
 			sortKey : 'metadata.lastModified',
 			order : 'desc',
 			searchQuery : '',
@@ -269,8 +266,7 @@ export default {
  			defaultDateRange:{datetype:'lastModified', startTime:{time: '09/01/2016'}, endTime: {time:new Date().format("shortDate")}},
  			startdate:0,
 			enddate:0,
-			userModel:{user:{username:'',password:''}},
-			isAdmin:true,
+			userModel:{user:{username:'',password:'',admin:false}},
 			showFilterControl:false,
 			datetypetext:"Last Updated",
 		      option: {
@@ -434,7 +430,10 @@ export default {
 		  }
 		  return txt
 	  },
-		  hasDateFilter: function(){
+		libraryname : function(){
+			return this.$store.state.libraryname;
+		},
+	  hasDateFilter: function(){
 		  return !(_.isEqual(this.dateRange, this.defaultDateRange))
 	  },
 		firstname: function(){
@@ -442,6 +441,9 @@ export default {
 		},
 		isLoggedIn: function () {
 			return this.$store.getters.isLoggedIn;
+		},
+		isAdmin: function() {
+			return this.$store.getters.isAdmin;
 		},
 		countString : function() {
 			var count = this.orderedList.length;
@@ -794,7 +796,7 @@ img#filterdowniconimg.up {
 .filterlist li, .filterlist button#clearAll{
 display:inline-block;
 background-color:#fff;
-margin:10px 10px 15px 10px;
+margin:10px 20px 15px 0px;
 padding:12px;
 height: 44px;
 }

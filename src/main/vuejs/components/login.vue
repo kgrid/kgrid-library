@@ -8,7 +8,7 @@
                <label class="label">Username</label>
                 <p class="control has-icon has-icon-right">
                     <input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'loginform') }" type="text" placeholder="Email">
-                    <i v-show="errors.has('email', 'loginform')" class="fa fa-warning"></i>
+<!--                    <i v-show="errors.has('email', 'loginform')" class="validationsign fa fa-warning"></i>  -->
                     <span v-show="errors.has('email', 'loginform')" class="help is-danger">{{ errors.first('email', 'loginform') }}</span>
                 </p>
 					    <!--<button class='edit_btn' >Need to create an account?</button>-->
@@ -17,7 +17,7 @@
 				 <label class="label">Password</label>
                  <p class="control has-icon has-icon-right">
                      <input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
-                     <i v-show="errors.has('password', 'loginform')" class="fa fa-warning"></i>
+<!--                     <i v-show="errors.has('password', 'loginform')" class="fa fa-warning"></i>  -->
                      <span v-show="errors.has('password', 'loginform')" class="help is-danger">{{ errors.first('password', 'loginform') }}</span>
                  </p>
 									    <!-- 											<button class='edit_btn' >Forgot your password?</button>

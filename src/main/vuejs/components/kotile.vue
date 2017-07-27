@@ -100,10 +100,14 @@
 				    margin: 10px 0px 0px 0px;
 				    color: #696969;
 				    font-weight: 400;
-				    border: none;
+				    border-left: 3px solid #fff;
 				    padding: 0px ;
+						transition: all 0.8s ease;
 				}
-				.ot-tile:after {
+				.ot-tile:hover {
+				   border-left: 3px solid #00274c;
+				}
+		/*				.ot-tile:after {
 					content: '';
 					display: block;
 					margin: auto;
@@ -112,10 +116,10 @@
 					background: transparent;
 					transition: width 0.8s ease, background-color .5s ease;
 				}
-				.ot-tile:hover:after{
+		.ot-tile:hover:after{
 					width:100%;
 				background: #00274c;
-				}
+				}    */
 				.ot-tile>.row {
 					margin: 10px 0px;
 				}
