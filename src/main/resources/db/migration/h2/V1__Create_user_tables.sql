@@ -1,18 +1,10 @@
 /*
 This script creates the minimal standard spring security user tables, plus
 a user_profile table for any extra user information.
-
-The script is intended to be run manually. See inline comments for details.
 */
 
 
--- set to your schema if different
-
--- CREATE SCHEMA IF NOT EXISTS library2;
---
--- SET SCHEMA library2; -- database specific
-
--- Uncomment to allow script to be rerun, drop tables in this order to avoid fk constraints
+-- uses default "PUBLIC" schema and "sa" user with no password
 
 DROP TABLE IF EXISTS authorities, user_profiles, users;
 
@@ -46,23 +38,4 @@ CREATE TABLE user_profiles
   REFERENCES users (username)
   ON DELETE CASCADE ON UPDATE CASCADE
 );
-
--- Uncomment to add test users (may conflict with migrated user w/ same username)
-
-  INSERT INTO users (username, password)
-  VALUES
-    ('user@kgrid.org', 'user123'),
-    ('admin@kgrid.org', 'admin123');
-
-  INSERT INTO authorities (username, authority)
-  VALUES
-    ('admin@kgrid.org', 'ADMIN'),
-    ('user@kgrid.org', 'USER');
-
-  INSERT INTO user_profiles (username, first_name, last_name)
-  VALUES
-    ('user@kgrid.org', 'Ulrich', 'User'),
-    ('admin@kgrid.org', 'Alvin', 'Admin');
-
-  commit;
 
