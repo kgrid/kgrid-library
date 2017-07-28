@@ -42,19 +42,19 @@
 				<div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="14px"/></div>
 			</div>
 			<div class='row'>
-				<div class='col-md-5 col-sm-5 col-xs-5 ot-search'>
+				<div class='col-md-10 col-sm-10 col-xs-10 ot-search'>
 					<img src='../assets/images/Search_Icon-01.png' width="20px"/>
 					<input placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
-				<div class='col-md-1 col-sm-1 col-xs-1'></div>
+
 				<div class='col-md-2 col-sm-2 col-xs-2'></div>
-				<div class='col-md-3 col-sm-3 col-xs-3 ot-sort'></div>
+
 			</div>
 		</div>
 		<div slot='maincontent'>
 			<div id='filtercontrol'>
 			<div class='row  mar-top30' v-show='filterStrings.length|hasDateFilter'>
-				<div class='col-md-12 filterCol'>
+				<div class='col-md-12 col-sm-12 col-xs-12 filterCol'>
 					<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
 						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
 							<button class='destroy' @click='removeString(filterstring)'>
@@ -70,17 +70,17 @@
 				</div>
 			</div>
 				<div class='row  mar-top30'>
-					<div class='col-md-2 filterBtnCol'>
+					<div class='col-md-2  col-sm-2 col-xs-2 filterBtnCol'>
 						<div id='filterBtn'>
 							<a v-on:click='toggleFilter'> Filters
 								<span><img id='filterdowniconimg' class='down' src='../assets/images/Chevron.png' width='12px' /></span>
 							</a>
 						</div>
 					</div>
-					<div class='col-md-7 ot-count'>
+					<div class='col-md-7  col-sm-7 col-xs-7 ot-count'>
 						{{countString}}
 					</div>
-					<div class='col-md-3 lh-3 bg-white float-r'>
+					<div class='col-md-3  col-sm-3 col-xs-3 lh-3 bg-white float-r'>
 					<div class=''>
 						<h6><span>Sort by:</span></h6>
 
@@ -98,17 +98,17 @@
 				<transition name='expand'>
 				<div id='filterpanel' v-if='showFilterControl' >
 					<div class='row'>
-						<div class='col-md-6'>
+						<div class='col-md-6  col-sm-6 col-xs-6'>
 							<div class='row filter'><p>Search only within the following:</p></div>
 								<div class='row filter'>
-									<div class='col-md-4'>
+									<div class='col-md-4  col-sm-4 col-xs-4'>
  										<label class="custom-control custom-checkbox">
  											<input v-model='check.keywords' type="checkbox" class="custom-control-input">
  											<span class="custom-control-indicator"></span>
 											<span class="custom-control-description">Keywords</span>
 										</label>
 									</div>
-						<div class='col-md-8'>
+						<div class='col-md-8  col-sm-8 col-xs-8'>
 							<label class="custom-control custom-checkbox">
 								<input v-model='check.objectID' type="checkbox" class="custom-control-input">
 								<span class="custom-control-indicator"></span>
@@ -117,14 +117,14 @@
 						</div>
 					</div>
 					<div class='row filter'>
-					<div class='col-md-4'>
+					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.owners' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Owners</span>
 				</label>
 					</div>
-					<div class='col-md-8'>
+					<div class='col-md-8 col-sm-8 col-xs-8'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.citations' disabled type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
@@ -133,7 +133,7 @@
 						</div>
 					</div>
 					<div class='row filter'>
-					<div class='col-md-4'>
+					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.title' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
@@ -141,7 +141,7 @@
 				</label>
 
 					</div>
-					<div class='col-md-8'>
+					<div class='col-md-8 col-sm-8 col-xs-8'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.contributors' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
@@ -152,7 +152,7 @@
 						</div>
 											<div class='row filter'>
 
-					<div class='col-md-12'>
+					<div class='col-md-12 col-sm-12 col-xs-12'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.showmyobj' disabled type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
@@ -160,37 +160,37 @@
 				</label>
 
 								</div>
-								<div class='col-md-5'>
+								<div class='col-md-5 col-sm-5 col-xs-5'>
 					</div>
 					</div>
 				</div>
-				<div class='col-md-6'>
+				<div class='col-md-6 col-sm-6 col-xs-6'>
 					<div class='row'>
 							<p>Show Knowledge Object:</p></div>
 						<div class='row filter datetype'>
 
-							<div class='col-md-1'></div>
-					<div class='col-md-4'>
+							<div class='col-md-1 col-sm-1 col-xs-1'></div>
+					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.pub' id='pub' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Public</span>
 				</label>
 					 </div>
-							<div class='col-md-2'></div>
-					<div class='col-md-4'>
+							<div class='col-md-2 col-sm-2 col-xs-2'></div>
+					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label v-if='isLoggedIn' class="custom-control custom-checkbox">
 					<input v-model='check.pri' id='pri' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
 					<span class="custom-control-description">Private</span>
 				</label>
 								</div>
-								<div class='col-md-1'></div>
+								<div class='col-md-1 col-sm-1 col-xs-1'></div>
 								</div>
 					<div class='row filter'><p>Select the type of date:</p></div>
 					<div class='row filter datetype'>
-					<div class='col-md-1'></div>
-					<div class='col-md-4'>
+					<div class='col-md-1 col-sm-1 col-xs-1'></div>
+					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-radio">
 					<input id="radio1" value='lastModified' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
@@ -198,8 +198,8 @@
 					</label>
 
 					</div>
-					<div class='col-md-2'></div>
-					<div class='col-md-4'>
+					<div class='col-md-2 col-sm-2 col-xs-2'></div>
+					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-radio">
 					<input id="radio2" value='createdOn' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
 					<span class="custom-control-indicator"></span>
@@ -207,19 +207,19 @@
 					</label>
 
 					</div>
-					<div class='col-md-1'></div>
+					<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					</div>
 					<div class='row filter'><p>Search within the following date range:</p></div>
 					<div class='row filter'>
-					<div class='col-md-1'></div>
-						<div class='col-md-5 datepick'>
+					<div class='col-md-1 col-sm-1 col-xs-1'></div>
+						<div class='col-md-5 col-sm-5 col-xs-5 datepick'>
 							<span>Start</span>
 							<p ><date-picker :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
-						<div class='col-md-5 datepick'>
+						<div class='col-md-5 col-sm-5 col-xs-5 datepick'>
 						<span>End</span>	<p> <date-picker :date="dateRange.endTime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></date-picker></p>
 						</div>
-						<div class='col-md-1'></div>
+						<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					</div>
 			</div>
 		</div>
@@ -403,6 +403,8 @@ export default {
 		}else{
 			$('.ot-banner').removeClass('loggedin');
 		}
+		$(".header").wrap('<div class="theadwrapper"></div>');
+		$(".theadwrapper").height($(".header").outerHeight(false));
 		otScroll();
 		console.log('before'+this.sortKey)
 		if(sessionStorage.getItem("sortKey")!=null){

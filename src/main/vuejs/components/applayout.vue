@@ -3,12 +3,12 @@
 			<div class="whitebacking">
 				<div class="wrapper">
 					<div class="ot-banner" v-if="nothelper">
-						<slot name="banner"></slot>		
+						<slot name="banner"></slot>
 			</div></div></div>
 			<div class="header" v-if="nothelper">
 				<div class="headercontainer">
 					<div class="headercol">
-						<slot name="header"></slot> 
+						<slot name="header"></slot>
 			</div></div></div>
 			<div class="e6backing">
 				<div class="wrapper">
@@ -26,9 +26,6 @@
 import { backToTop } from '../ot.js';
 export default {
       name: 'applayout',
-      props: ['nothelper'],
-	  methods:{
-			//backToTop
-		}
+      props: ['nothelper']
   };
 </script>
