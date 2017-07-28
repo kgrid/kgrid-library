@@ -97,6 +97,7 @@ export default {
         success: function (response) {
           self.showDropdown = false;
 					self.$store.commit('setuser',{username: '', password: ''});
+					eventBus.$emit('logout');
         },
 				error:function(response){
 					console.log(response);

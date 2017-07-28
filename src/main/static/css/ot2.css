@@ -65,8 +65,8 @@ span.ot-right{
 }
 
 .ot-banner h1 small {
-	font-size:26px;
-  line-height: 1.5em;
+	font-size:28px;
+  line-height: 1.05em;
   display: block;
   font-weight: 300;
 }
@@ -102,17 +102,10 @@ span.ot-right{
 	width:100%;
 	border: 1px solid lightgrey;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
-	z-index: 180;
+	z-index: 150;
 	margin: 0 auto;
 	background-color:#fff;
 }
-
-.header.affix {
-	position: fixed;
-	top:0;
-		z-index: 500;
-}
-
 
 .whitebacking {
 	background-color:transparent;

@@ -119,15 +119,11 @@ a, a:hover, a:visited, a:focus {
 .brd-r {
   border-right: 1px solid #666666;
 }
-.lh-1 {
-  line-height: 1em;
-}
-.lh-3 {
-  line-height: 3em;
-}
-.float-r {
-  float: right;
-}
+.lh-1 { line-height: 1em; }
+.lh-3 { line-height: 3em; }
+
+.ht-40 {  height: 40px; }
+.float-r {  float: right; }
 
 .ot-banner {
     background-color: transparent;

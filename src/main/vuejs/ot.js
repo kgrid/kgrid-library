@@ -148,26 +148,19 @@ export function setenddate(){
 			 }
 
 export function otScroll() {
-//	var padLeft = 280;
     var navOffset = $(".header").offset().top;
-    // console.log("Offset top: "+navOffset)
-    $(".header").wrap('<div class="theadwrapper"></div>');
-	$(".theadwrapper").height($(".header").outerHeight(false));
-
     $(window).scroll(function () {
     	var supportPageOffset = window.pageXOffset !== undefined;
     	var isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
  	    var x = supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
     	var y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
-            var scrollPos = $(window).scrollTop();
-//        if(scrollPos>60){
-//        	$(".ot-backtotop").fadeIn('slow');
-//        	$("#backtotop").fadeIn('slow');
-//        }else{
-//        	$(".ot-backtotop").fadeOut('slow');
-//        	$("#backtotop").fadeOut('slow');
-//        }
-       if (scrollPos >= navOffset) {
+      var scrollPos = $(window).scrollTop();
+			if(scrollPos>60){
+        	$(".header").css('z-index', 350);
+      }else{
+        	$(".header").css('z-index', 150);
+    	}
+      if (scrollPos >= navOffset) {
             $(".header").addClass("fixed");
         } else {
             $(".header").removeClass("fixed");

@@ -2,46 +2,49 @@
 	<div class='content'>
 		<applayout :nothelper='true'>
 		<div slot='banner'>
-		<div class='row ot-detail-spacer'></div>
+		<div class='row ht-40'>
+		</div>
 		<div class='row ot-detail-titlerow'>
-				<div id='ko-title' class='col-md-11 col-sm-11'>
+				<div id='ko-title' class='col-md-12 col-sm-12'>
 					<div id= 'type-status' >
 						<img v-if='objModel.object.metadata.published' src='../assets/images/LittleGreenDot.png' width='10px' height='auto' />
 					</div>
 					<h1>
-						<small id='page_title_v'>{{objModel.object.metadata.title}}</small>
+						<small>{{objModel.object.metadata.title}}</small>
 					</h1>
 				</div>
-				<div class="col-md-1 col-sm-1" id="actiondiv" v-click-outside='outside'>
-					<div id='actionlist'  class="dropdown">
-						<a class="ot-btn btn-default dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" v-on:click='toggleActionList'>
-    					<span class='ot-glybtn kg-glybtn-color glyphicon glyphicon-option-vertical'></span>
+		</div>
+		<div class='row ht-40 pad-0'>
+		<div class='col-md-8 col-sm-8 col-xs-8'></div>
+		<div class="col-md-4 col-sm-4 col-xs-4 pad-0" >
+			<div class='float-r'>
+				<ul class="actioniconlist" v-if='true'>
+					<li v-show='isLoggedIn'>
+						<a  v-on:click='editObj'>
+							<div class='actionicon'>
+								<i class="fa fa-edit" aria-hidden="false"></i>
+							</div>
+							<span class='actioniconcap'>Edit</span>
 						</a>
-  					<ul class="dropdown-menu" v-if='showActionList'>
-							<li class="dropdown-header" v-show='false'>Access Management</li>
-    					<li><a href="#" v-show='false'>Change to Private</a></li>
-							<li><a href="#" v-show='false'>Add Collaborator</a></li>
-							<li role="separator" class="divider" v-show='false'></li>
-							<li class="dropdown-header" v-show='false'>Object Management</li>
-    					<li><a href="#" v-show='false'>Publish</a></li>
-    					<li><a v-show='isLoggedIn'  v-on:click='editObj' >Edit</a></li>
-							<li><a v-show='isLoggedIn'  v-on:click='deleteObject'>Delete</a></li>
-    					<li role="separator" class="divider" v-show='false'></li>
-							<li>
-								<div id='downloadButton'>
-									<a class='edit' v-bind:href='downloadLink' :download='downloadFile' >
-										<div class='ot-r1-btn ot-download'>
-											<div class='greyroundbutton'></div>
-							       	<div class='btnContent'><img src='../assets/images/Down_Arrow_Dark.png' width="8px"/></div>
-							      </div>Download
-									</a>
-								</div>
-							</li>
-  					</ul>
-					</div>
-				</div>
+					</li>
+
+					<li>
+						<a v-bind:href='downloadLink' :download='downloadFile'>
+							<div class='actionicon'><i class="fa fa-download" aria-hidden="true"></i></div>
+							<div  class='actioniconcap'><span>Download</span></div>
+						</a>
+					</li>
+					<li v-if='isLoggedIn'>
+						<a v-on:click='deleteObject'>
+							<div class='actionicon'><i class="fa fa-trash" aria-hidden="true"></i></div>
+							<div  class='actioniconcap'><span>Delete</span></div>
+						</a>
+					</li>
+				</ul>
 			</div>
-					<div class='row ot-detail-daterow'>
+		</div>
+		</div>
+		<div class='row ot-detail-daterow'>
 							<div class='col-md-3 col-sm-3 col-xs-3'>
 					<p class='date-title'>Object ID:</p>
 					<p class='date-data'>
@@ -65,7 +68,7 @@
 						<h6><span>View Type:</span></h6>
 
 							<vselect :value.sync="kgselect.value" :options="optionlist" :searchable='false' :noDrop='!isLoggedIn' :loading='settingPubPri':onChange='selectCallback'></vselect>
-	
+
 					</div>
 				</div>
 			</div>
@@ -158,6 +161,11 @@
 				}
 				}
 			});
+			eventBus.$on('logout', function(){
+				if(!self.isPublic){
+					eventBus.$emit('return');
+				}
+			});
 			$('.dropdown').on('show.bs.dropdown', function(e){
 				$(this).find('.dropdown-menu').first().stop(true, true).slideDown(300);
 				});
@@ -186,6 +194,8 @@
 	    	}, 200);
 
 	    	$('.ot-banner').addClass('detail');
+				$(".header").wrap('<div class="theadwrapper"></div>');
+				$(".theadwrapper").height($(".header").outerHeight(false));
 	    	otScroll();
 		},
 		computed : {
@@ -212,7 +222,7 @@
 
 			downloadLink : function() {
 				return 'knowledgeObject/'
-					+ this.objModel.object.uri
+					+ this.objModel.object.uri+'.json'
 			},
 			downloadFile : function() {
 				return this.objModel.object.uri + '.json'
@@ -321,7 +331,7 @@ margin:0 auto;
 .ot-detail-daterow {
 	height: 60px;
 	margin-left: -37px;
-	margin-top: 35px;
+	margin-top: 0px;
 }
 .ot-detail-daterow div {
 	padding-right: 0px;
@@ -353,11 +363,9 @@ left: 5px;
 #ko-title {
 	position:relative;
 	display: block;
-	font-size: 28pt;
+
 	margin-left:16px;
-	margin-top:16px;
-	width:860px;
-	height:60px;
+
 	background-color:#fff;
 }
 
@@ -588,5 +596,45 @@ z-index:99999;
     border: 1px solid #fff;
     border-bottom-color: transparent;
 }
-
+ul.actioniconlist {
+list-style: none;
+}
+ul.actioniconlist li {
+  display: inline-block;
+	width: 40px;
+	padding: 0px 5px;
+	text-align:center;
+	overflow-x:visible;
+}
+ul.actioniconlist li span {
+	font-size: 12px;
+	opacity: 0;
+	position: relative;
+	margin: 0 auto;
+	transition: opacity 0.5s ease;
+}
+ul.actioniconlist li:hover span {
+	opacity: 1;
+}
+ul.actioniconlist li>a{
+	position: relative;
+}
+div.actionicon {
+	width:26px;
+	height: 26px;
+	border-radius:100%;
+	margin: 0 auto;
+	border: 1px solid #666666;
+	postion: relative;
+}
+div.actioniconcap {
+	width: 60px;
+	margin:auto;
+	position: relative;
+	left:-50%;
+}
+div.actionicon i {
+	margin: 6px;
+	font-size: 14px;
+}
 </style>

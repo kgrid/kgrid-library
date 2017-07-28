@@ -181,6 +181,7 @@ export default {
 			self.currentOLView='login';
 			document.body.classList.toggle('noscroll', true);
 		});
+
   },
   components: {
     navbar,
