@@ -155,6 +155,9 @@ public class FCRepoService {
 			StatusLine statusLine = httpResponse.getStatusLine();
 			if (statusLine.getStatusCode() == HttpStatus.OK.value())
 				return true;
+			else if (statusLine.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
+				return false;
+			}
 			else {
 				String err = "Could not find object at URI " + objectURI + " got HTTP response " + statusLine;
 				logger.warn(err);
