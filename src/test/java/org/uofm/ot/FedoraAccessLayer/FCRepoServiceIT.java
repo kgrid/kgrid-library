@@ -11,6 +11,7 @@ import org.junit.rules.ExpectedException;
 import org.openrdf.model.Model;
 import org.openrdf.model.Namespace;
 import org.openrdf.model.impl.SimpleNamespace;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraGateway.FCRepoService;
 import org.uofm.ot.knowledgeObject.ArkId;
@@ -92,5 +93,10 @@ public class FCRepoServiceIT {
   public void rollbackIncorrectTransaction() throws Exception {
     expectedEx.expect(ObjectTellerException.class);
     fos.rollbackTransaction(null);
+  }
+
+  @Test
+  public void testPing() throws Exception {
+    assertEquals(true, fos.ping());
   }
 }
