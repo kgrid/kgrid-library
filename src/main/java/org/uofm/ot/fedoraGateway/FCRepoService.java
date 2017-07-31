@@ -15,6 +15,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
@@ -151,14 +152,17 @@ public class FCRepoService {
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGetRequest);
-			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.OK.value())
+			StatusLine statusLine = httpResponse.getStatusLine();
+			if (statusLine.getStatusCode() == HttpStatus.OK.value())
 				return true;
+			else
+				logger.warn("Could not find object at URI " + objectURI + " got HTTP response " + statusLine);
+				return false;
 		} catch (IOException e) {
-			String err = "Exception occurred while verifying object id "+ objectURI +"."+ e.getMessage();
+			String err = "Exception occurred while verifying object id "+ objectURI +" "+ e.getMessage();
 			logger.error(err);
 			throw new ObjectTellerException(err, e);
 		}
-		return false;
 	}
 
 	public Model getRDFData(URI objectURI) throws ObjectTellerException {
