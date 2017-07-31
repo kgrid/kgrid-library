@@ -12,14 +12,14 @@ public class EzidServiceHealthIndicator extends AbstractHealthIndicator {
     @Autowired
     private IdService idService;
 
-    @Value("${EZID_BASE_URL}")
+    @Value("${ezid.base.url}")
     String ezidBaseUrl;
 
     @Override
     protected void doHealthCheck(Health.Builder builder) throws Exception {
 
         builder
-            .withDetail("Ezid Base Url", ezidBaseUrl)
+            .withDetail("ezid.base.url", ezidBaseUrl)
             .up();
         try {
             idService.ping();

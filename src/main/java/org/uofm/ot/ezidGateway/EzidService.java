@@ -23,28 +23,28 @@ import org.uofm.ot.knowledgeObject.ArkId;
 @Service
 public class EzidService {
 	
-	@Value(value = "${NAAN}")
-	private String NAAN;
+	@Value(value = "${naan}")
+	private String naan;
 	
-	@Value(value = "${EZID_BASE_URL}")
-	private String EZID_BASE_URL;
+	@Value(value = "${ezid.base.url}")
+	private String ezidBaseUrl;
 	
-	@Value(value = "${EZID_USERNAME}")
-	private String EZID_USERNAME;
+	@Value(value = "${ezid.username}")
+	private String ezidUsername;
 	
-	@Value(value = "${EZID_PASSWORD}")
-	private String EZID_PASSWORD;
+	@Value(value = "${ezid.password}")
+	private String ezidPassword;
 	
-	@Value(value = "${EZID_SHOULDER}")
-	private String EZID_SHOULDER;
+	@Value(value = "${ezid.shoulder}")
+	private String ezidShoulder;
 
 	public boolean ping() throws ObjectTellerException {
 
     RestTemplate rt = new RestTemplate();
 
-    String url = EZID_BASE_URL + "login";
+    String url = ezidBaseUrl + "login";
 
-    rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
+    rt.getInterceptors().add(new BasicAuthorizationInterceptor(ezidUsername, ezidPassword));
     ResponseEntity<String> response = rt.getForEntity(url, String.class);
 
     if(response.getStatusCode().value() == HttpStatus.OK.value()) {
@@ -57,7 +57,7 @@ public class EzidService {
 
       RestTemplate rt = new RestTemplate();
 
-      String url = EZID_BASE_URL+"id/" + id  ;
+      String url = ezidBaseUrl +"id/" + id  ;
 
       ResponseEntity<String> response = rt.getForEntity(url, String.class);
 
@@ -69,7 +69,7 @@ public class EzidService {
 
       RestTemplate rt = new RestTemplate();
 
-      rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
+      rt.getInterceptors().add(new BasicAuthorizationInterceptor(ezidUsername, ezidPassword));
 
       HttpHeaders headers = new HttpHeaders();
       headers.setContentType(MediaType.TEXT_PLAIN);
@@ -78,7 +78,7 @@ public class EzidService {
       HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
 
       ResponseEntity<String> response = rt.postForEntity(
-              EZID_BASE_URL+"shoulder/ark:/"+NAAN+"/"+EZID_SHOULDER,
+              ezidBaseUrl +"shoulder/ark:/"+ naan +"/"+ ezidShoulder,
               requestEntity,
               String.class);
 
@@ -91,12 +91,12 @@ public class EzidService {
   public void create(String arkId) {
     RestTemplate rt = new RestTemplate();
 
-    rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
+    rt.getInterceptors().add(new BasicAuthorizationInterceptor(ezidUsername, ezidPassword));
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.TEXT_PLAIN);
 
     HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
-    String ezidURL = EZID_BASE_URL + "id/" + arkId;
+    String ezidURL = ezidBaseUrl + "id/" + arkId;
 
     ResponseEntity response = rt.exchange(ezidURL, HttpMethod.PUT, requestEntity, String.class);
   }
@@ -104,7 +104,7 @@ public class EzidService {
   private String modify(String id, List<String> metadata){
     RestTemplate rt = new RestTemplate();
 
-    rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
+    rt.getInterceptors().add(new BasicAuthorizationInterceptor(ezidUsername, ezidPassword));
 
     StringBuilder metadataRequestBody = new StringBuilder("") ;
 
@@ -117,7 +117,7 @@ public class EzidService {
 
     HttpEntity<String> requestEntity = new HttpEntity<>(metadataRequestBody.toString(), headers);
 
-    String url = EZID_BASE_URL+"id/"+id ;
+    String url = ezidBaseUrl +"id/"+id ;
 
     ResponseEntity<String> response = rt.postForEntity(url, requestEntity, String.class);
 
