@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.uofm.ot.ezidGateway.EzidService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
@@ -78,5 +79,11 @@ public class IdServiceTest {
 
 		verify(ezidService).bind(ARKID_STRING, metadata, new URI("http://dev.umich.edu/"+ ARKID_STRING));
 
-		}
+	}
+
+	@Test
+	public void testPing() throws Exception {
+		when(ezidService.ping()).thenReturn(true);
+		assertEquals(true, idService.ping());
+	}
 }

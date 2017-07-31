@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.ezidGateway.EzidService;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.knowledgeObject.KnowledgeObject;
@@ -43,6 +44,10 @@ public class IdService {
 	public String resolve (ArkId arkId){
 		// TODO: 1. fuseki 2. ezid
 		return ezidService.get(arkId.getArkId());
+	}
+
+	public boolean ping() throws ObjectTellerException {
+		return ezidService.ping();
 	}
 
 	public void bind(ArkId arkId,  List<String> metadata, URI targetUrl) {
