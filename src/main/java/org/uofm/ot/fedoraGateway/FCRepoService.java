@@ -155,9 +155,11 @@ public class FCRepoService {
 			StatusLine statusLine = httpResponse.getStatusLine();
 			if (statusLine.getStatusCode() == HttpStatus.OK.value())
 				return true;
-			else
-				logger.warn("Could not find object at URI " + objectURI + " got HTTP response " + statusLine);
-				return false;
+			else {
+				String err = "Could not find object at URI " + objectURI + " got HTTP response " + statusLine;
+				logger.warn(err);
+				throw new ObjectTellerException(err);
+			}
 		} catch (IOException e) {
 			String err = "Exception occurred while verifying object id "+ objectURI +" "+ e.getMessage();
 			logger.error(err);
