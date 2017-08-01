@@ -1,14 +1,12 @@
 <template id='ol-narrow-pane-template'>
 <transition name='modal'>
 <div class='modal-mask'>
-
 	<div class='ol_narrow_pane'>
-		<div class='sidebar_close'>
+		<div class='sidebar_close' v-on:click='closeOverlay'>
 			<h3>CLOSE</h3>
-			<div class='ot-r-btn ot-close'  v-on:click='closeOverlay'>
-			<i class="fa fa-close" aria-hidden="false"></i>
-		</div>
-
+			<div class='ot-r-btn ot-close' >
+				<i class="fa fa-close" aria-hidden="false"></i>
+			</div>
 		</div>
 		<div class='overlay-top'>
 		</div>
@@ -53,7 +51,7 @@ export default {
 </script>
 <style scoped>
 .ol_narrow_pane{
-	position: absolute;
+		position: absolute;
     right: 0px;
     width: 550px;
     margin: 0px auto;
@@ -115,8 +113,8 @@ export default {
     -ms-transform: rotate(270deg);
     -o-transform: rotate(270deg);
     transform: rotate(270deg);
-	transition: color 0.5s ease;
-color: #b3b3b3;
+		transition: color 0.5s ease;
+		color: #b3b3b3;
 }
 #close_overlay {
     position: relative;

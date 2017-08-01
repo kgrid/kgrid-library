@@ -20,16 +20,18 @@
 				</div>
 				<div class='loginField'>
 					<label class="label"></label>
-				  <div class='btnContent'><button class='login' type='submit'>LOG IN</button></div>
-
+				  <div class='btnContent'>
+					<transition name='fade' mode='out-in'>
+						<button key='0' class='login' type='submit' v-if='status.ready'>LOG IN</button>
+						<div key='1' class='spinner login pad-t-15' v-if='status.processing'>Logging in ......</div>
+						<div  key='2' class='ol-success login pad-t-15' v-if='status.success'>Login Successful<i class='fa fa-check'></i></div>
+						<div  key='3' class='ol-error login  pad-t-15' v-if='status.error'>Unable to log in. Please check credentials.</div>
+						</transition>
+					</div>
 				</div>
 				</fieldset>
 				</form>
 		</div>
-		<div slot='ol-processing'>Log in ...</div>
-		<div slot='ol-success'>Login Successful !!!</div>
-		<div slot='ol-failure'>Unable to login. Please check your username and password! </div>
-		<div slot='ol-warning'>Warning !!!</div>
 	</olnpane>
 </template>
 <script>
@@ -40,7 +42,8 @@ export default {
   data: function () {
     return {
       userModel: {user: {username: '', password: ''}},
-      test: true
+      test: true,
+			status:{'ready':true,'processing':false,'success':false,'error':false}
     };
   },
   components: {
@@ -59,27 +62,33 @@ export default {
 	            this.userlogin()
 	        }
 	      },
+		setButton: function(div, bool){
+			this.status[div]=bool;
+		},
     userlogin: function () {
       var self = this;  // eslint-disable-line
       if (this.test) {
-        $( 'div.processing' ).fadeIn( 300 );  // eslint-disable-line
+				this.status={'ready':false,'processing':true,'success':false,'error':false}
+				setTimeout(function(){
         $.ajax({  // eslint-disable-line
           type: 'POST',
           url: 'login',
           data: self.userModel.user,
           dataType: 'json',
           success: function (response) {
-            $( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
-            $('div.success').fadeIn(300).delay(500).fadeOut(400, function(){  // eslint-disable-line
+						self.status={'ready':false,'processing':false,'success':true,'error':false}
 						self.$store.commit('setuser',response);
-						eventBus.$emit('userloggedin',response);
-            });
+ 						setTimeout(function(){  // eslint-disable-line
+							eventBus.$emit('userloggedin',response);
+            }, 1500);
           },
           error: function (response) {
-				$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
-				$( 'div.failure' ).fadeIn( 300 ).delay( 500 ).fadeOut( 400 ); // eslint-disable-line
+						self.status={'ready':false,'processing':false,'success':false,'error':true};
+						setTimeout(function(){
+								self.status={'ready':true,'processing':false,'success':false,'error':false}
+						},3000)
           }
-        });
+        });}, 1500);
       } else {
       }
     }
@@ -114,6 +123,19 @@ color: #ec2526;
 
 
 }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s
+}
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active in <2.1.8 */
+
+{
+  opacity: 0
+}
+
 .fieldcontainer {
     display: block;
     position: relative;
@@ -123,22 +145,24 @@ margin: 0 auto;
 padding: 0px 0px;
 }
 
-.ot-s-btn .btnContent{
-	  position: relative;
-	  top:-86px;
-	  left:0px;
+ .btnContent{
+ position: relative;
+ top:20px;
+ width:400px;
+		height:54px;
+    border:1px solid #666666;
+		    border-radius: 0px;
 	}
 .ot-login {
 	padding: 22px 0px;
 }
-button.login {
+.login {
     width: 400px;
-    position: relative;
+    position: absolute;
     height: 50px;
-    border-radius: 0px;
-    border:1px solid #666666;
+		text-align:center;
     background-color: transparent;
-    margin-top: 38px;
+		transition: opacity 0.6s ease;
 }
 .entryform {
     height: 600px;
