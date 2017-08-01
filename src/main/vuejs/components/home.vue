@@ -48,12 +48,9 @@
 			<div class='row'>
 				<div class='col-md-10 col-sm-10 col-xs-10 ot-search'>
 					<i class='fa fa-search'></i>
-
 					<input placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
-
 				<div class='col-md-2 col-sm-2 col-xs-2'></div>
-
 			</div>
 		</div>
 		<div slot='maincontent'>
@@ -63,11 +60,14 @@
 					<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
 						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
 							<button class='destroy' @click='removeString(filterstring)'>
+	  								<i class="fa fa-close kg-fg-color"></i>
 							</button>
 							<label>{{ filterstring.title }}</label>
 						</li>
 						<li class='todo' v-show='hasDateFilter' >
-							<button class='destroy' @click='removeDateFilter'></button>
+							<button class='destroy' @click='removeDateFilter'>
+  								<i class="fa fa-close  kg-fg-color"></i>
+									</button>
 							<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label>
 						</li>
 						<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
@@ -103,14 +103,18 @@
 									<div class='col-md-4  col-sm-4 col-xs-4'>
  										<label class="custom-control custom-checkbox">
  											<input v-model='check.keywords' type="checkbox" class="custom-control-input">
- 											<span class="custom-control-indicator"></span>
+ 											<span class="custom-control-indicator">
+												<i v-show='check.keywords' class='fa fa-check kg-fg-color'></i>
+											</span>
 											<span class="custom-control-description">Keywords</span>
 										</label>
 									</div>
 						<div class='col-md-8  col-sm-8 col-xs-8'>
 							<label class="custom-control custom-checkbox">
 								<input v-model='check.objectID' type="checkbox" class="custom-control-input">
-								<span class="custom-control-indicator"></span>
+								<span class="custom-control-indicator">
+									<i v-show='check.objectID' class='fa fa-check kg-fg-color'></i>
+								</span>
 								<span class="custom-control-description">Object ID</span>
 							</label>
 						</div>
@@ -119,14 +123,18 @@
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.owners' type="checkbox" class="custom-control-input">
-					<span class="custom-control-indicator"></span>
+					<span class="custom-control-indicator">
+						<i v-show='check.owners' class='fa fa-check kg-fg-color'></i>
+					</span>
 					<span class="custom-control-description">Owners</span>
 				</label>
 					</div>
 					<div class='col-md-8 col-sm-8 col-xs-8'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.citations' disabled type="checkbox" class="custom-control-input">
-					<span class="custom-control-indicator"></span>
+					<span class="custom-control-indicator">
+						<i v-show='check.citations' class='fa fa-check kg-fg-color'></i>
+					</span>
 					<span class="custom-control-description">Citations</span>
 				</label>
 						</div>
@@ -135,7 +143,9 @@
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.title' type="checkbox" class="custom-control-input">
-					<span class="custom-control-indicator"></span>
+					<span class="custom-control-indicator">
+						<i v-show='check.title' class='fa fa-check kg-fg-color'></i>
+					</span>
 					<span class="custom-control-description">Title</span>
 				</label>
 
@@ -143,7 +153,9 @@
 					<div class='col-md-8 col-sm-8 col-xs-8'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.contributors' type="checkbox" class="custom-control-input">
-					<span class="custom-control-indicator"></span>
+					<span class="custom-control-indicator">
+						<i v-show='check.contributors' class='fa fa-check kg-fg-color'></i>
+					</span>
 					<span class="custom-control-description">Contributors</span>
 				</label>
 
@@ -154,7 +166,9 @@
 					<div class='col-md-12 col-sm-12 col-xs-12'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.showmyobj' disabled type="checkbox" class="custom-control-input">
-					<span class="custom-control-indicator"></span>
+					<span class="custom-control-indicator">
+						<i v-show='check.showmyobj' class='fa fa-check kg-fg-color'></i>
+					</span>
 					<span class="custom-control-description">View only My Objects</span>
 				</label>
 
@@ -172,7 +186,9 @@
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.pub' id='pub' type="checkbox" class="custom-control-input">
-					<span class="custom-control-indicator"></span>
+					<span class="custom-control-indicator">
+					<i v-show='check.pub' class='fa fa-check kg-fg-color'></i>
+					</span>
 					<span class="custom-control-description">Public</span>
 				</label>
 					 </div>
@@ -180,7 +196,9 @@
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label v-if='isLoggedIn' class="custom-control custom-checkbox">
 					<input v-model='check.pri' id='pri' type="checkbox" class="custom-control-input">
-					<span class="custom-control-indicator"></span>
+					<span class="custom-control-indicator">
+						<i v-show='check.pri' class='fa fa-check kg-fg-color'></i>
+					</span>
 					<span class="custom-control-description">Private</span>
 				</label>
 								</div>
@@ -192,7 +210,9 @@
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-radio">
 					<input id="radio1" value='lastModified' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
-					<span class="custom-control-indicator"></span>
+					<span class="custom-control-indicator">
+								<i v-show='dateRange.datetype=="lastModified"' class='fa fa-circle kg-fg-color'></i>
+					</span>
 					<span class="custom-control-description">Last Updated</span>
 					</label>
 
@@ -201,7 +221,9 @@
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-radio">
 					<input id="radio2" value='createdOn' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
-					<span class="custom-control-indicator"></span>
+					<span class="custom-control-indicator">
+							<i v-show='dateRange.datetype=="createdOn"' class='fa fa-circle kg-fg-color'></i>
+					</span>
 					<span class="custom-control-description">Created</span>
 					</label>
 
@@ -288,7 +310,7 @@ export default {
 		            'margin':'0px 0px 0px 5px',
 		            'line-height': '20px',
 		            'font-size': '14px',
-		            'border': '1px solid #39b45a',
+		            'border': '1px solid #0075bc',
 		            'box-shadow': 'none',
 		            'border-radius': '2px',
 		            'color': '#5F5F5F',
@@ -810,16 +832,13 @@ padding:12px;
 height: 44px;
 }
 .destroy {
-	width:20px;
-	height: 20px;
-	border:none;
-	background-image:url('../assets/images/Close_Circle_Green_Default.png');
-background-size: 100% 100%;
-background-repeat: no-repeat;
-background-position: center center;
-	margin: 0px 5px 0px 0px;
-	color:#39b45a;
-background-color: transparent;
+width:26px;
+height: 26px;
+	border:1px solid #0075bc;
+	border-radius: 100%;
+	margin: -5px 5px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	background-color: transparent;
 }
 
 .filterlist li label {
@@ -927,15 +946,15 @@ select {
 	position: absolute;
 	padding-left: 15px;
 	top: 8px;
-	width: 180px;
+	width: 140px;
 }
 .custom-control-indicator {
     position: absolute;
     top: 10px;
     left: 5px;
     display: block;
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
     pointer-events: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -949,23 +968,24 @@ select {
 }
 .custom-checkbox .custom-control-indicator {
     border-radius: 0px;
-	border: 1px solid #39b45a;
+	border: 1px solid #0075bc;
 }
-.custom-checkbox .custom-control-input:checked~.custom-control-indicator {
-    background-image: url(../assets/images/checkmark.png);
-	background-size: 50% 50%;
-}
+
 .custom-checkbox .custom-control-input:disabled~.custom-control-indicator {
     background-color: #e6e6e6;
 	border: 1px solid #b3b3b3;
 }
+.custom-checkbox .custom-control-indicator i , .custom-radio .custom-control-indicator i{
+	position:absolute;
+	left:1px;
+	top:1px;
+}
 .custom-radio .custom-control-indicator {
     border-radius: 100%;
-	border: 1px solid #39b45a;
+	border: 1px solid #0075bc;
 }
 .custom-radio .custom-control-input:checked~.custom-control-indicator {
-    background-image: url(../assets/images/LittleGreenDot.png);
-	background-size: 75% 75%;
+
 }
 
 #bannericons {
@@ -1081,7 +1101,7 @@ select >option:hover {
 }
 
 .expand-enter-active, .expand-leave-active {
-  transition: all .8s linear;
+  transition: all .3s linear;
   height: 220px;
   overflow: hidden;
 	opacity:1;

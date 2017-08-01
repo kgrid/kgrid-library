@@ -99,12 +99,18 @@ a, a:hover, a:visited, a:focus {
 .mar-top30 {
   margin-top:30px;
 }
+.mar-bot-5{
+  margin-bottom:5px;
+}
 .pad-b-5 {
   padding-bottom: 5px;
 }
 .pad-t-2 {
   padding-top: 2px;
 }
+.pad-t-15{
+    padding-top:15px;
+ }
 .pad-l-10 {
   padding-left:10px;
 }
