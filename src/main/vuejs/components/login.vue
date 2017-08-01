@@ -7,33 +7,22 @@
 			<div class='loginField'>
                <label class="label">Username</label>
                 <p class="control has-icon has-icon-right">
-                    <input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'loginform') }" type="text" placeholder="Email">
-<!--                    <i v-show="errors.has('email', 'loginform')" class="validationsign fa fa-warning"></i>  -->
+                    <input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'loginform') }" type="text" placeholder="Enter your email">
                     <span v-show="errors.has('email', 'loginform')" class="help is-danger">{{ errors.first('email', 'loginform') }}</span>
                 </p>
-					    <!--<button class='edit_btn' >Need to create an account?</button>-->
 				</div>
 				<div class='loginField'>
 				 <label class="label">Password</label>
                  <p class="control has-icon has-icon-right">
-                     <input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
-<!--                     <i v-show="errors.has('password', 'loginform')" class="fa fa-warning"></i>  -->
+                     <input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Enter your password">
                      <span v-show="errors.has('password', 'loginform')" class="help is-danger">{{ errors.first('password', 'loginform') }}</span>
                  </p>
-									    <!-- 											<button class='edit_btn' >Forgot your password?</button>
-		 -->							</div>
-								<div class='loginField'>
+				</div>
+				<div class='loginField'>
+					<label class="label"></label>
+				  <div class='btnContent'><button class='login' type='submit'>LOG IN</button></div>
 
-
-
-									<div class='ot-s-btn ot-login'>
-								       <div class='greenbutton' > </div>
-								       <div class='btnContent'><button class='login' type='submit'>LOG IN</button></div>
-								</div>
-
-
-
-									</div>
+				</div>
 				</fieldset>
 				</form>
 		</div>
@@ -100,7 +89,7 @@ export default {
 <style scoped>
 p.control {
 	position: absolute;
-	margin: 12px 0;
+	margin: 2px 0;
 }
 .loginField input[type=text], .loginField input[type=password] {
     width: 400px;
@@ -110,9 +99,9 @@ p.control {
 	position: relative;
 	color: #666666;
 	font-weight: 400;
-	font-size: 16px;
+	font-size: 12px;
 line-height: 1.6em;
-padding: 10px 14px;
+padding: 10px 0px;
 margin:0px;
 }
 p.control span.is-danger {
@@ -131,7 +120,7 @@ color: #ec2526;
     height: 95%;
     overflow: auto;
 margin: 0 auto;
-padding: 0px 20px;
+padding: 0px 0px;
 }
 
 .ot-s-btn .btnContent{
@@ -146,10 +135,9 @@ button.login {
     width: 400px;
     position: relative;
     height: 50px;
-    border-radius: 10px;
-    border:none;
+    border-radius: 0px;
+    border:1px solid #666666;
     background-color: transparent;
-    color: #fff;
     margin-top: 38px;
 }
 .entryform {
@@ -185,8 +173,8 @@ input[type=text], input[type=password], input[type=textarea], .addtext a {
     width: 350px;
     height: 53px;
     padding: 0px 16px;
-    border: 1px solid #e6e6e6;
-    border-radius: 10px;
+    border: 1px solid #666666;
+    border-radius: 0px;
     margin: 2px 0;
     font-size: 14px;
     color: #666666;

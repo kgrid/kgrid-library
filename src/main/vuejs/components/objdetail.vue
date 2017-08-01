@@ -7,7 +7,7 @@
 		<div class='row ot-detail-titlerow'>
 				<div id='ko-title' class='col-md-12 col-sm-12'>
 					<div id= 'type-status' >
-						<img v-if='objModel.object.metadata.published' src='../assets/images/LittleGreenDot.png' width='10px' height='auto' />
+						<i v-if="objModel.object.metadata.published" class='fa fa-circle kg-fg-color ft-sz-12 '></i>
 					</div>
 					<h1>
 						<small>{{objModel.object.metadata.title}}</small>
@@ -27,7 +27,6 @@
 							<span class='actioniconcap'>Edit</span>
 						</a>
 					</li>
-
 					<li>
 						<a v-bind:href='downloadLink' :download='downloadFile'>
 							<div class='actionicon'><i class="fa fa-download" aria-hidden="true"></i></div>
@@ -116,9 +115,7 @@
 				publishState: 'Unpublished',
 				userModel:{user:{username:'',password:''}},
 				activeTab: 'METADATA',
-						showActionList:false,
-						confirmrequest:{name:"deleteObject",statement:"This Object will be deleted!"},
-
+				confirmrequest:{name:"deleteObject",statement:"This Object will be deleted!"},
 			}
 		},
 			components:{
@@ -244,13 +241,12 @@
 					break;
 					}
 		},
-		toggleActionList: function(){
-			this.showActionList=!this.showActionList;
-		},
-			selectTab: function(section){
+		selectTab: function(section){
 				console.log("Clicked on "+section.label);
 				this.activeTab=section.label;
-				//this.$nextTick(this.autoresize(section.name));
+				if(section.label!='LOG DATA'){
+				this.$store.commit('setactivetab',section.label);
+				}
 		},
 			editObj:function(){
 				$.extend(true, editObjModel.object, this.objModel.object);
@@ -260,8 +256,7 @@
 				if(editObjModel.object.inputMessage==null){
 					editObjModel.object.inputMessage="";
 				}
-				this.showActionList=!this.showActionList;
-				eventBus.$emit('editObj', this.objModel.obj);
+				eventBus.$emit('editObj', {'object':this.objModel.obj,'atab':this.activeTab});
 			},
 			toggleObject:function(pub){
 				var uri=this.objModel.object.uri;
@@ -291,27 +286,12 @@
 				});
 			},
 			deleteObject : function() {
-					this.showActionList=!this.showActionList;
 					eventBus.$emit("confirmRequest",this.confirmrequest);
-			},
-			downloadObj: function() {
-				var myWindow = window.open(this.downloadLink, "myWindow");   // Opens a new window
-				myWindow.focus();
-			},
-			returntolibrary: function(){
-				eventBus.$emit("return");
-			},
-			outside: function(){
-			if(this.showActionList)
-				this.showActionList=!this.showActionList;
 			}
 		}
 };
 	</script>
 <style>
-.badge {
-	vertical-align:top;
-}
 .ot-banner.detail {
 	height: 220px;
 padding: 0px 32px 0px 48px;
@@ -355,31 +335,26 @@ margin:0 auto;
 	display: inline-block;
 	filter: grayscale(100%);
 }
-#type-status img {
+#type-status i {
 	position: absolute;
-	top: 16px;
-left: 5px;
+	top: 9px;
+left: 0px;
 }
 #ko-title {
 	position:relative;
 	display: block;
-
 	margin-left:16px;
-
-	background-color:#fff;
 }
 
 #ko-title h1{
 	position: absolute;
-    display: inline-block;
-    font-size: 22px;
-    left: 24px;
-    margin: 0;
-    text-align: left;
-    padding: 0;
+  display: inline-block;
+  font-size: 22px;
+  left: 24px;
+  margin: 0;
+  text-align: left;
+  padding: 0;
 }
-
-
 
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
     color: #666666;

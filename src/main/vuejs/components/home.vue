@@ -19,7 +19,9 @@
 								<button class="roundbutton iconBtn" id="userlink"	@click="userlink_click"></button>
 								<div class='ot-newuser' >
 					       <div class='greenroundbutton kg-btn-bg-primary' > </div>
-					       <div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="8px"/></div>
+					       <div class='btnContent'>
+
+									<img src='../assets/images/Plus_Icon.png' width="8px"/></div>
 								</div>
 							</div>
 						</li>
@@ -39,11 +41,14 @@
 		<div slot='header'>
 			<div v-show='isLoggedIn' class='ot-r-btn ot-newobj' v-on:click='addObject'>
 				<div class='greenroundbutton kg-btn-bg-primary'></div>
-				<div class='btnContent'><img src='../assets/images/Plus_Icon.png' width="14px"/></div>
+				<div class='btnContent'>
+
+					<img src='../assets/images/Plus_Icon.png' width="14px"/></div>
 			</div>
 			<div class='row'>
 				<div class='col-md-10 col-sm-10 col-xs-10 ot-search'>
-					<img src='../assets/images/Search_Icon-01.png' width="20px"/>
+					<i class='fa fa-search'></i>
+
 					<input placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
 
@@ -77,19 +82,13 @@
 							</a>
 						</div>
 					</div>
-					<div class='col-md-7  col-sm-7 col-xs-7 ot-count'>
+					<div class='col-md-6  col-sm-6 col-xs-6 ot-count'>
 						{{countString}}
 					</div>
-					<div class='col-md-3  col-sm-3 col-xs-3 lh-3 bg-white float-r'>
-					<div class=''>
-						<h6><span>Sort by:</span></h6>
-
-<span  class='brd-r lh-1'><vselect :value.sync="kgselect" :options="optionlist" :searchable='false' :onChange='selectCallback'></vselect></span>
-
-						<button id='sortordertoggle' class='bg-trans' v-on:click='toggleOrder()'>
-							<span v-if='orderAsc'	class='down'><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
-							<span v-else class='up'><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
-						</button>
+					<div class='col-md-4  col-sm-4 col-xs-4 lh-3 float-r'>
+					<div class=' bg-white float-r'>
+						<h6><span class='pad-l-10'> Sort by:</span></h6>
+						<span  class='lh-1'><vselect :value.sync="kgselect" :options="optionlist" :searchable='false' :onChange='selectCallback'></vselect></span>
 						</div>
 
 					</div>
@@ -255,8 +254,14 @@ export default {
 				koList : []
 			},
 			dlabel:"Select sort key",
-			kgselect:'Last Updated',
-			optionlist:[{'label':'Last Updated', 'value':'metadata.lastModified'},{'label':'Title','value':'metadata.title'},{'label':'Object ID','value':'uri'}],
+			kgselect:{'label':'Last Updated - Newest', 'value':'metadata.lastModified','order':'desc'},
+			optionlist:[{'label':'Last Updated - Newest', 'value':'metadata.lastModified','order':'desc'},
+									{'label':'Last Updated - Oldest', 'value':'metadata.lastModified','order':'asc'},
+									{'label':'Title - Z to A','value':'metadata.title','order':'desc'},
+									{'label':'Title - A to Z','value':'metadata.title','order':'asc'},
+									{'label':'Object ID - Descending','value':'uri','order':'desc'},
+									{'label':'Object ID - Ascending','value':'uri','order':'asc'}
+									],
 			confirmrequest:{name:"removeallfilter",statement:"All filters will be cleared!"},
 			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
 			defaultCheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
@@ -407,7 +412,7 @@ export default {
 		$(".theadwrapper").height($(".header").outerHeight(false));
 		otScroll();
 		console.log('before'+this.sortKey)
-		if(sessionStorage.getItem("sortKey")!=null){
+		if(sessionStorage.getItem("sortKey")){
 		this.sortKey=sessionStorage.getItem("sortKey");
 		console.log('after'+this.sortKey)
 		this.order=sessionStorage.getItem("order");
@@ -557,8 +562,9 @@ export default {
 			},
 		selectCallback: function(val){
 		   console.log(val);
-			 console.log("After callback" + this.sortKey+"  ==="+val);
+			 console.log("After callback" + this.sortKey+"  ==="+val.value);
 			 this.sortKey=val.value;
+			 this.order=val.order;
 			 switch(val) {
 			 case 'Last Updated':
 			 		this.sortKey='metadata.lastModified';
@@ -570,7 +576,8 @@ export default {
 			 		this.sortKey='metadata.title';
 					break;
 					}
-							sessionStorage.setItem("sortKey", this.sortKey);
+				sessionStorage.setItem("sortKey", this.sortKey);
+							sessionStorage.setItem("order", this.order);
 		},
 		onChange: function(){
 			switch(this.sortKey) {

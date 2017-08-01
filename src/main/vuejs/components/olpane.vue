@@ -1,32 +1,32 @@
 <template id="ol-pane-template">
 <transition name='modal'>
 	<div class="modal-mask">
-	<div class="ol_pane">
-	<div class='sidebar_close'>
-	<h3>CLOSE</h3>
-	<div class='ot-r-btn ot-close'  v-on:click='closeOverlay'>
-       <div class='greenroundbutton' > </div>
-       <div class='btnContent'><img src='../assets/images/Close_Icon.png' width="10px"/></div>
-</div>
-		</div>
-		<div class="overlay-top">
-		</div>
-		<div class="overlay-board">
+		<div class="ol_pane">
+			<div class='sidebar_close'>
+				<h3>CLOSE</h3>
+				<div class='ot-r-btn ot-close'  v-on:click='closeOverlay'>
+					<i class="fa fa-close" aria-hidden="false"></i>
+				</div>
+			</div>
+			<div class="overlay-top">
+			</div>
+			<div class="overlay-board">
 				<div class="overlay-title">
 					<slot name="ol-title"></slot>
 				</div>
 				<div class="entryform" id="entry_form">
 					<slot name="ol-form"></slot>
 				</div>
-		</div>
-		<div class="overlay-alert">
+			</div>
+			<div class="overlay-alert">
+					<div class='formbutton'><slot name='buttons'></slot></div>
 					<div class="alert-box processing"><slot name="ol-processing"></slot></div>
 					<div class="alert-box success"><slot name="ol-success"></slot></div>
 					<div class="alert-box failure"><slot name="ol-failure"></slot></div>
 					<div class="alert-box warning"><slot name="ol-warning"></slot></div>
+				</div>
+			</div>
 		</div>
-	</div>
-	</div>
 	</transition>
 </template>
 <script>
@@ -69,7 +69,6 @@ export default {
     background-color: #fff;
     height: 100%;
     transition: all 2s ease;
-
 }
 
 .modal-mask {
@@ -136,7 +135,7 @@ color: #b3b3b3;
 }
 .ot-close {
 	position: relative;
-	top: 11px;
+	top: 21px;
 	left: 11px;
 	cursor: pointer;
 }
@@ -200,6 +199,11 @@ left: 0px;
     width:400px;
 }
 
+.formbutton {
+	position: absolute;
+	bottom: 50px;
+	right: 180px;
+}
 .success {
     color: #3c763d;
     background-color: #dff0d8;

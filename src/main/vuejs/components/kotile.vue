@@ -2,8 +2,8 @@
 		<div class="container ot-tile" v-bind:id="object.uri" v-on:click="selected">
 				<div class="row ot-2">
 					<div class="col-md-1 col-sm-1 col-xs-1 ot-type">
-						<img v-if="object.metadata.published" src="../assets/images/LittleGreenDot.png" width="10px" height="auto" />
-					</div>
+						<i v-if="object.metadata.published" class='fa fa-circle kg-fg-color ft-sz-12 '></i>
+						</div>
 					<div class="col-md-11 col-sm-11 col-xs-11 ot-title" data-toggle="tooltip"
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
@@ -86,6 +86,7 @@
 				    vertical-align: middle;
 				    height: 25px;
 				    width: 60px;
+						    text-align: center;
 				}
 				.ot-empty {
 				    background-color: #fff;
@@ -105,7 +106,7 @@
 						transition: all 0.8s ease;
 				}
 				.ot-tile:hover {
-				   border-left: 3px solid #00274c;
+				   border-left: 3px solid #0075bc;
 				}
 		/*				.ot-tile:after {
 					content: '';
@@ -124,9 +125,9 @@
 					margin: 10px 0px;
 				}
 
-				.ot-type>img{
-					margin: 13px 10px 0px 10px;
-						filter: grayscale(100%);
+				.ot-type>i{
+					line-height:2.6em;
+
 					}
 
 .ot-title{

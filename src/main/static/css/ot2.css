@@ -87,18 +87,35 @@ span.ot-right{
 }
 
 .headercol{
+	position: relative;
+	text-align: left;
+	height: 30px;
+	border-collapse: collapse;
+	display: table;
+	max-width: 1028px;
+	z-index: 125;
 	margin: 8px auto;
 	width:1024px;
 }
+
+
+.headercol ul {
+	display: table-row;
+}
+
+
 .headercontainer {
 	width:1584px;
 	border:none;
 	box-shadow: none;
 	overflow:visible;
 	height:auto;
+	margin: 0 auto;
+		z-index: 125;
 }
 .header{
 	position: relative;
+		min-width: 1584px;
 	width:100%;
 	border: 1px solid lightgrey;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
@@ -320,6 +337,28 @@ h4 {
 		border: 1px solid #fff;
 }
 
+textarea {
+	width: 100%;
+/* 	min-height: 380px; */
+	margin: 0px;
+	padding: 5px;
+	border: 1px solid #39b54a;
+	border-radius: 10px;
+}
+.userbutton {
+	position: absolute;
+	right: 22px;
+	bottom: 35px;
+}
+
+.current-tab span{
+/* 	border-bottom: 2px solid #39b54a; */
+	padding-bottom:2px;
+	color:#666666;
+
+}
+
+
 .fixed {
   top: 0px;
   position: fixed;
@@ -395,6 +434,39 @@ input[id$="datepicker"]{
 
 	.delete_btn:hover, .edit_btn:hover{
 		color:#666666;
+	}
+
+	.edit {
+		background-color: #fff;
+		color: #b3b3b3;
+		font-size: 14px;
+		font-weight: 400;
+		padding-left: 22px;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		vertical-align: middle;
+			transition: color 0.5s ease;
+	}
+
+	.edit:hover{
+		color: #666666;
+	}
+
+	.done {
+		background-color: #fff;
+		color: #39b54a;
+		font-size: 14px;
+		font-weight: 300;
+		padding-left: 5px;
+		padding-right: 5px;
+		border: 1px solid #39b54a;
+		outline: none;
+		border-radius: 5px;
+		cursor: pointer;
+		position: absolute;
+		right: 250px;
+		top: -26px;
 	}
 
 	 #filterBtn a:hover, #filterBtn a:visited {
@@ -636,7 +708,7 @@ input[id$="datepicker"]{
 .greenbutton {
     width: 400px;
     height: 50px;
-    border-radius: 10px;
+    border-radius: 0px;
     color: white;
     background-color: #39b54a;
     border: none;
@@ -687,6 +759,13 @@ input[id$="datepicker"]{
 	padding: 0px 16px;
 	vertical-align: middle;
 	color: #b3b3b3;
+}
+
+
+.inline {
+	display: inline-block;
+	margin:0px 0px 0px 50px;
+	vertical-align: middle;
 }
 
 .line hr {
