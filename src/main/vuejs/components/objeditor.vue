@@ -4,20 +4,17 @@
 		<div slot="ol-title"><h3>{{editObjModel.object.metadata.title}}</h3>
 			<div id="barcontainer">
 				<ul class="inEdit" id="edittabs">
-					<li class="labels active">METADATA<span v-show='changed.metadata'>*</span></li>
-					<li class="labels">PAYLOAD<span v-show='changed.payload'>*</span></li>
-					<li class="labels">INPUT<span v-show='changed.input'>*</span></li>
-					<li class="labels">OUTPUT<span v-show='changed.output'>*</span></li>
+					<li id='METADATA' class="labels">METADATA<span v-show='changed.metadata'>*</span></li>
+					<li id='PAYLOAD' class="labels">PAYLOAD<span v-show='changed.payload'>*</span></li>
+					<li id='INPUT' class="labels">INPUT<span v-show='changed.input'>*</span></li>
+					<li id='OUTPUT' class="labels">OUTPUT<span v-show='changed.output'>*</span></li>
 				</ul>
-				<div id="editWrapper">
-					<button class="edit" v-on:click="undoEdit" id="cancelBtn">UNDO</button>
-					<button class="edit" id="saveObjButton" v-on:click="saveObj">SAVE & CLOSE</button>
-				</div>
+
 			</div>
 		</div>
 		<div slot="ol-form">
 			<ul class="inEdit" id="edittab">
-				<li class="active current-tab" id="metadata">
+				<li class="current-tab" id="METADATA">
 					<fieldset class="fieldcontainer" id="first">
 						<div id="metadata_fields">
 							<div class="addtext">
@@ -82,7 +79,7 @@
 						</div>
 					</fieldset>
 				</li>
-				<li id="payload">
+				<li id="PAYLOAD">
 						<div id="payload_fields">
 							<div class="addtext">
 								<h4> FUNCTION NAME (REQUIRED)
@@ -102,17 +99,23 @@
 							<fileuploader section="payload" v-on:filechange="updatedisplay" :src='editObjModel.object.payload.content'></fileuploader>
 						</div>
 					</li>
-					<li id="input">
+					<li id="INPUT">
 						<div id="input_fields">
 							<fileuploader section="inputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.inputMessage'></fileuploader>
 						</div>
 					</li>
-					<li id="output">
+					<li id="OUTPUT">
 						<div id="output_fields">
 							<fileuploader section="outputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.outputMessage'></fileuploader>
 						</div>
 					</li>
 				</ul>
+		</div>
+		<div slot='buttons'>
+			<div id="editWrapper">
+							<button class="edit" v-on:click="undoEdit" id="cancelBtn">CANCEL</button>
+							<button class="edit" id="saveObjButton" v-on:click="saveObj">SAVE & CLOSE</button>
+			</div>
 		</div>
 		<div slot="ol-processing">Processing...</div>
 		<div slot="ol-success">Update Successful !!!</div>
@@ -144,6 +147,8 @@ export default {
 			showSecOverlay:{show:false},
 			srcFieldModel:{object:{title:"",link:""},originalObject:{title:"",link:""}},
 			inEdit:"License",
+			activeTab:'METADATA',
+			undorequest:{name:"undoedit",statement:"All unsaved changes will be discarded!"},
 		}
 	},
 	components: {
@@ -166,6 +171,12 @@ export default {
 			editObjModel.object.metadata.citations.pop();
 			self.resetSrcField();
 		});
+		eventBus.$on('confirm', function (data) {
+			console.log(data);
+			if(data.name=="undoedit"){
+				self.undoEdit();
+			}
+			});
 	},
 	updated:function(){
 	},
@@ -180,9 +191,13 @@ export default {
 	}
 	},
 	mounted:function(){
-		$('ul#edittabs li:first').addClass('active');
-	    $('ul#edittab li:first').addClass('active');
-		$("ul#edittabs li.active").addClass("middleout");
+		this.activeTab=this.$store.getters.getactivetab;
+		var el='ul#edittabs li#'+this.activeTab;
+		var el1 = 'ul#edittab li#'+this.activeTab
+		$('ul#edittabs li.active').removeClass('active');
+		$("ul#edittabs li.middleout").removeClass("middleout");
+		$(el).addClass('active middleout');
+				$(el1).addClass('active');
 		editTabNav();
 		overlayHeightResize();
 	},
@@ -240,6 +255,9 @@ export default {
 
 				}
 			});
+		},
+		undo:function(){
+			eventBus.$emit("confirmRequest",this.undorequest);
 		},
 		undoEdit: function(){
 			editObjModel.object = this.$parent.getObject();
@@ -394,7 +412,7 @@ padding: 0px 20px;
     resize: none;
     padding: 8px 16px 8px 16px;
 border: 1px solid #e6e6e6;
-border-radius: 10px;
+border-radius: 0px;
     color: #666666;
     margin: 0;
     font-size: 14px;

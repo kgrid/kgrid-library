@@ -3,7 +3,7 @@
     position: relative;
     font-family: sans-serif;
     display: inline-block;
-    max-width: 150px;
+    max-width: 200px;
   }
   .v-select,
   .v-select * {
@@ -43,7 +43,7 @@
     border-radius: 4px;
     white-space: normal;
     transition: border-radius .25s;
-    width: 150px;
+    width: 200px;
   }
   .v-select .dropdown-toggle:after {
     visibility: hidden;
@@ -76,7 +76,7 @@
     min-width: 100px;
     padding: 0px;
     margin: 15px 0px 0px 0px;
-    width: 150px;
+    width: 200px;
     overflow-y: hidden;
     border: 1px solid rgba(0, 0, 0, .26);
     box-shadow: 0px 3px 6px 0px rgba(0,0,0,.15);

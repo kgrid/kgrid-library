@@ -1,11 +1,11 @@
-<template id="file_uploader"> 
+<template id="file_uploader">
 	<div v-if="!selectedfile">
 	<div class="dropfile">
 			<div class="upload-direction">
-				<input type="file" :id="selectfile" @change="onFileChange" class="inputfile" 
+				<input type="file" :id="selectfile" @change="onFileChange" class="inputfile"
 										data-multiple-caption="{count} files selected" multiple style="display: none;"/>
-				<label :for="selectfile" id="filecount"> 
-					<img src="../assets/images/Upload_Icon.png" width="60px">
+				<label :for="selectfile" id="filecount">
+					<i class='fa fa-cloud-upload fa-2x'></i>
 					<p class="green">CHOOSE_FILE_FOR_{{section}}</p>
 				</label>
 			</div>
@@ -14,7 +14,7 @@
 		<button v-on:click="removeOutputFile" class='removeBtn'>Remove</button>
 		<textarea class='contentDisp' @change="inputchange" spellcheck=false v-model="message.msg"></textarea>
 	</div>
-</template>  
+</template>
 	<script>
 	import fieldtile from './fieldtile.vue';
 	export default {
@@ -80,7 +80,7 @@
 };
 	</script>
 	<style>
-	
+
 .dropfile {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -88,7 +88,7 @@
     /* border-width: 1px; */
     width: 910px;
     height: 140px;
-    border-radius: 10px;
+    border-radius: 0px;
     text-align: center;
 	transition: opacity 0.8s ease;
     }
@@ -119,7 +119,7 @@ textArea.contentDisp {
     width: 96%;
     padding: 5px 16px;
     border: 1px solid #e6e6e6;
-    border-radius: 8px;
+    border-radius: 0px;
     resize: none;
     color: #666666;
     font-size: 14px;

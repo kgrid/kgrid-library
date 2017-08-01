@@ -6,10 +6,9 @@
 		<div class='sidebar_close'>
 			<h3>CLOSE</h3>
 			<div class='ot-r-btn ot-close'  v-on:click='closeOverlay'>
-		       <div class='greenroundbutton' > </div>
-		       <div class='btnContent'><img src='../assets/images/Close_Icon.png' width="10px"/></div>
+			<i class="fa fa-close" aria-hidden="false"></i>
 		</div>
-			
+
 		</div>
 		<div class='overlay-top'>
 		</div>
@@ -28,7 +27,7 @@
 					<div class='alert-box warning'><slot name='ol-warning'></slot></div>
 		</div>
 	</div>
-	
+
 	</div>
 	</transition>
 </template>
@@ -88,7 +87,7 @@ export default {
 	  right: -540px;
 	}
 
-	
+
 .sidebar_close {
     background-color:#fff;
 	color: #b3b3b3;
@@ -127,7 +126,7 @@ color: #b3b3b3;
 }
 .ot-close {
 	position: relative;
-	top: 11px;
+	top: 21px;
 	left: 11px;
 }
 .ot-close .greenroundbutton {
@@ -158,7 +157,7 @@ left: 0px;
 
 }
 .overlay-title {
-	padding:0px 22px;
+	padding:0px;
 }
 .overlay-board {
     position: absolute;
@@ -166,7 +165,7 @@ left: 0px;
     width: 494px;
     top: 120px;
     left: 60px;
-    padding: 0px 0px;
+    padding: 0px 40px;
 }
 
 .overlay-alert {
@@ -216,7 +215,7 @@ left: 0px;
 }
 .entryform {
 	height: 600px;
-    padding: 16px 22px;
+    padding: 16px 0px;
     margin-top:0px;
     }
 .noscroll { overflow: hidden; }

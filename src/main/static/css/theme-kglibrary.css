@@ -1,5 +1,5 @@
 .kg-fg-color {
-  color: ##39b45a;
+  color: #0075bc;
 }
 
 .kg-bg-color {
@@ -21,9 +21,11 @@
 }
 
 .kg-btn-bg-primary {
-  background-color: #00274c;
+  background-color: #0075bc;
 }
-
+.kg-btn-bg-white {
+  background-color: #fff;
+}
 .navbar {
 	border-bottom: 1px solid #d7d7d7;
   z-index: 250;
@@ -39,7 +41,7 @@
 
 .middleout li.active>a>span:after, .middleout li:hover>a>span:after {
   width:100%;
-	background-color: #00274c;
+	background-color: #0075bc;
 }
 
 .dropdown-menu > li > a, .dropdown-menu > li > a:focus {

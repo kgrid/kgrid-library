@@ -11,7 +11,8 @@ export default new Vuex.Store({
     debugEnabled:true,
     baseurl:'',
     currentUser:{username:"",password:"",admin:false},
-    libraryname:'DLHS Development Server'
+    libraryname:'DLHS Development Server',
+    activeTab:'METADATA'
   },
   mutations: {
     seturl(state, url) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     setuser(state, user){
       state.currentUser =user;
+    },
+    setactivetab(state, tab){
+      state.activeTab = tab;
     }
   },
   getters: {
@@ -33,6 +37,9 @@ export default new Vuex.Store({
     },
     getuser: state => {
        return state.currentUser
+    },
+    getactivetab: state => {
+      return state.activeTab
     }
   }
   // plugins: debug ? [createLogger()] : []
