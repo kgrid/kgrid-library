@@ -8,6 +8,7 @@ import org.apache.jena.arq.querybuilder.SelectBuilder;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.log4j.Logger;
+import org.uofm.ot.ObjectTellerApplication;
 import org.uofm.ot.exception.ObjectNotFoundException;
 import org.uofm.ot.services.FedoraConfiguration;
 import org.uofm.ot.exception.ObjectTellerException;
@@ -102,9 +103,12 @@ public class FusekiService {
 
 		while (resultSet.hasNext()) {
 			QuerySolution binding = resultSet.nextSolution();
-			KnowledgeObject knowledgeObject = mapQuerySolutionToFedoraObject(binding);
-			if(knowledgeObject != null) {
+
+			try {
+				KnowledgeObject knowledgeObject = mapQuerySolutionToFedoraObject(binding);
 				list.add(knowledgeObject);
+			} catch (ObjectTellerException e) {
+				logger.warn(e);
 			}
 		}
 
@@ -112,7 +116,6 @@ public class FusekiService {
 	}
 	
 	private boolean testIfFusekiIsRunning() throws ObjectTellerException{
-		boolean result;
 
 		String fusekiURL = fusekiServerURL;
 		fusekiURL = fusekiURL.substring(0,fusekiURL.lastIndexOf("/"));
@@ -125,7 +128,7 @@ public class FusekiService {
 		try {
 			httpResponse = httpClient.execute(httpGetRequest);
 			if ( 200 == httpResponse.getStatusLine().getStatusCode()) {
-				result = true;
+				return true;
 			} else {
 				throw new ObjectNotFoundException("Cannot connect to fuseki service, throws " +
 				httpResponse.getStatusLine() + " error. Check the application configuration fuseki url and your fuseki server");
@@ -134,7 +137,6 @@ public class FusekiService {
 			logger.error("Not able to connect to the Fuseki with url "+fusekiURL);
 			throw new ObjectTellerException("Not able to connect to the Fuseki with url "+fusekiURL, e);
 		}
-		return result;
 	}
 	
 	private Date convertRDFNodetoDate(RDFNode o) throws ObjectTellerException{
