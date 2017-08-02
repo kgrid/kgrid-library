@@ -40,7 +40,6 @@ public class FCRepoServiceIT {
         .fcrepoUsername("fedoraAdmin")
         .fcrepoPassword("secret321")
         .fusekiUrl("https://dlhs-fedora.med.umich.edu/fuseki/test/query")
-        .fusekiPrefix("https://dlhs-fedora.med.umich.edu/fcrepo/rest/")
         .build();
     fos = new FCRepoService();
     fos.setFedoraConfiguration(fconfig);
