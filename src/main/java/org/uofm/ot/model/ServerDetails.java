@@ -10,16 +10,12 @@ public class ServerDetails {
 
 	private String url;
 
-	private String prefix;
-
-
 	public ServerDetails(String name, String username,
-			String password, String prefix) {
+			String password) {
 		this.name = name;
 		this.username = username;
 		this.password = password;
 		this.url = name;
-		this.prefix = prefix;
 	}
 
 	public String getName() {
@@ -40,13 +36,5 @@ public class ServerDetails {
 
 	public String getUrl() {
 		return url;
-	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
 	}
 }

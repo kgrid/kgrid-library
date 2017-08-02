@@ -1,28 +1,11 @@
 package org.uofm.ot.fedoraGateway;
 
 import com.complexible.common.openrdf.model.ModelIO;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
+import org.apache.http.*;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
@@ -41,6 +24,17 @@ import org.uofm.ot.fusekiGateway.NamespaceConstants;
 import org.uofm.ot.knowledgeObject.ArkId;
 import org.uofm.ot.model.ServerDetails;
 import org.uofm.ot.services.FedoraConfiguration;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FCRepoService {
@@ -151,14 +145,22 @@ public class FCRepoService {
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGetRequest);
-			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.OK.value())
+			StatusLine statusLine = httpResponse.getStatusLine();
+			if (statusLine.getStatusCode() == HttpStatus.OK.value())
 				return true;
+			else if (statusLine.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
+				return false;
+			}
+			else {
+				String err = "Could not find object at URI " + objectURI + " got HTTP response " + statusLine;
+				logger.warn(err);
+				throw new ObjectTellerException(err);
+			}
 		} catch (IOException e) {
-			String err = "Exception occurred while verifying object id "+ objectURI +"."+ e.getMessage();
+			String err = "Exception occurred while verifying object id "+ objectURI +" "+ e.getMessage();
 			logger.error(err);
 			throw new ObjectTellerException(err, e);
 		}
-		return false;
 	}
 
 	public Model getRDFData(URI objectURI) throws ObjectTellerException {
@@ -243,6 +245,20 @@ public class FCRepoService {
 			}
 		}
 		return uris;
+	}
+
+	public boolean ping() throws IOException, ObjectTellerException {
+
+		HttpClient httpClient = HttpClientBuilder.create().build();
+		HttpGet httpGetRequest = new HttpGet(baseURI);
+		httpGetRequest.addHeader(authenticate(httpGetRequest));
+
+		StatusLine statusLine = httpClient.execute(httpGetRequest).getStatusLine();
+
+		if (statusLine.getStatusCode() == HttpStatus.OK.value())
+			return true;
+		else
+			throw new ObjectTellerException(statusLine.toString());
 	}
 
 	//Post:
