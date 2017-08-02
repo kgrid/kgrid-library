@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.knowledgeObject.ArkId;
 
 /**
@@ -21,103 +23,118 @@ import org.uofm.ot.knowledgeObject.ArkId;
 @Service
 public class EzidService {
 	
-	@Value(value = "${NAAN}")
-	private String NAAN;
+	@Value(value = "${naan}")
+	private String naan;
 	
-	@Value(value = "${EZID_BASE_URL}")
-	private String EZID_BASE_URL;
+	@Value(value = "${ezid.base.url}")
+	private String ezidBaseUrl;
 	
-	@Value(value = "${EZID_USERNAME}")
-	private String EZID_USERNAME;
+	@Value(value = "${ezid.username}")
+	private String ezidUsername;
 	
-	@Value(value = "${EZID_PASSWORD}")
-	private String EZID_PASSWORD;
+	@Value(value = "${ezid.password}")
+	private String ezidPassword;
 	
-	@Value(value = "${EZID_SHOULDER}")
-	private String EZID_SHOULDER;
+	@Value(value = "${ezid.shoulder}")
+	private String ezidShoulder;
 
-    public String get(String id) {
+	public boolean ping() throws ObjectTellerException {
 
-        RestTemplate rt = new RestTemplate();
-        
-        String url = EZID_BASE_URL+"id/" + id  ; 
+    RestTemplate rt = new RestTemplate();
 
-        ResponseEntity<String> response = rt.getForEntity(url, String.class);
+    String url = ezidBaseUrl + "login";
 
-        return response.getBody();
+    rt.getInterceptors().add(new BasicAuthorizationInterceptor(ezidUsername, ezidPassword));
+    ResponseEntity<String> response = rt.getForEntity(url, String.class);
 
+    if(response.getStatusCode().value() == HttpStatus.OK.value()) {
+      return true;
     }
+    throw new ObjectTellerException("Cannot connect to ezid service " + response.getStatusCode().toString());
+  }
 
-    public String mint() {
+  public String get(String id) {
 
-        RestTemplate rt = new RestTemplate();
-
-        rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-
-
-        HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
-
-        ResponseEntity<String> response = rt.postForEntity(
-                EZID_BASE_URL+"shoulder/ark:/"+NAAN+"/"+EZID_SHOULDER,
-                requestEntity,
-                String.class);
-
-        String arkId = response.getBody() ; 
-        arkId = arkId.substring("success: ".length());
-        return arkId;
-
-    }
-
-    public void create(String arkId) {
       RestTemplate rt = new RestTemplate();
 
-      rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.TEXT_PLAIN);
+      String url = ezidBaseUrl +"id/" + id  ;
 
-      HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
-      String ezidURL = EZID_BASE_URL + "id/" + arkId;
-
-      ResponseEntity response = rt.exchange(ezidURL, HttpMethod.PUT, requestEntity, String.class);
-    }
-    
-    private String modify(String id, List<String> metadata){
-      RestTemplate rt = new RestTemplate();
-
-      rt.getInterceptors().add(new BasicAuthorizationInterceptor(EZID_USERNAME, EZID_PASSWORD));
-
-      StringBuilder metadataRequestBody = new StringBuilder("") ;
-
-      for (String string : metadata) {
-        metadataRequestBody.append(string).append("\n");
-      }
-
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.TEXT_PLAIN);
-
-      HttpEntity<String> requestEntity = new HttpEntity<>(metadataRequestBody.toString(), headers);
-
-      String url = EZID_BASE_URL+"id/"+id ;
-
-      ResponseEntity<String> response = rt.postForEntity(url, requestEntity, String.class);
+      ResponseEntity<String> response = rt.getForEntity(url, String.class);
 
       return response.getBody();
 
+  }
+
+  public String mint() {
+
+      RestTemplate rt = new RestTemplate();
+
+      rt.getInterceptors().add(new BasicAuthorizationInterceptor(ezidUsername, ezidPassword));
+
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.TEXT_PLAIN);
+
+
+      HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
+
+      ResponseEntity<String> response = rt.postForEntity(
+              ezidBaseUrl +"shoulder/ark:/"+ naan +"/"+ ezidShoulder,
+              requestEntity,
+              String.class);
+
+      String arkId = response.getBody() ;
+      arkId = arkId.substring("success: ".length());
+      return arkId;
+
+  }
+
+  public void create(String arkId) {
+    RestTemplate rt = new RestTemplate();
+
+    rt.getInterceptors().add(new BasicAuthorizationInterceptor(ezidUsername, ezidPassword));
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.TEXT_PLAIN);
+
+    HttpEntity<String> requestEntity = new HttpEntity<>("_status: reserved", headers);
+    String ezidURL = ezidBaseUrl + "id/" + arkId;
+
+    ResponseEntity response = rt.exchange(ezidURL, HttpMethod.PUT, requestEntity, String.class);
+  }
+
+  private String modify(String id, List<String> metadata){
+    RestTemplate rt = new RestTemplate();
+
+    rt.getInterceptors().add(new BasicAuthorizationInterceptor(ezidUsername, ezidPassword));
+
+    StringBuilder metadataRequestBody = new StringBuilder("") ;
+
+    for (String string : metadata) {
+      metadataRequestBody.append(string).append("\n");
     }
-    
-    public String bind(String id, List<String> metadata, URI objectURL){
-    	String target = "_target: " + objectURL ;
-    	metadata.add(target);
-    	return  modify(id, metadata);
-    }
-    
-    public String status(String id, List<String> metadata, ArkId.Status status){
-    	String statusAttribute = "_status: "+status.toString() ;
-    	metadata.add(statusAttribute);
-    	return  modify(id, metadata);
-    }
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.TEXT_PLAIN);
+
+    HttpEntity<String> requestEntity = new HttpEntity<>(metadataRequestBody.toString(), headers);
+
+    String url = ezidBaseUrl +"id/"+id ;
+
+    ResponseEntity<String> response = rt.postForEntity(url, requestEntity, String.class);
+
+    return response.getBody();
+
+  }
+
+  public String bind(String id, List<String> metadata, URI objectURL){
+    String target = "_target: " + objectURL ;
+    metadata.add(target);
+    return  modify(id, metadata);
+  }
+
+  public String status(String id, List<String> metadata, ArkId.Status status){
+    String statusAttribute = "_status: "+status.toString() ;
+    metadata.add(statusAttribute);
+    return  modify(id, metadata);
+  }
   
 }

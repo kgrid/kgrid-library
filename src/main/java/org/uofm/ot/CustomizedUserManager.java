@@ -1,10 +1,6 @@
 package org.uofm.ot;
 
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.uofm.ot.model.OTUser;
 import org.uofm.ot.model.UserProfile;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 
 public class CustomizedUserManager extends JdbcUserDetailsManager  {
@@ -25,8 +25,10 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 	
 	private static final String UPDATE_USER_NAME = "update  users set username = ? where username = ? ;";
 	
-	private static final String GET_ALL_USERS = "select * from users"; 
-	
+	private static final String GET_ALL_USERS = "select * from users";
+
+	private static final String GET_COUNT_USERS = "select count(*) from users";
+
 	private static final String GET_USERNAME_BY_ID = "select users.username from users, user_profiles where users.username = user_profiles.username and user_profiles.id = ? ;" ; 
 	
 	
@@ -56,8 +58,12 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 		updateUserProfile(user);
 	}
 
+    public int ping() {
+		return getJdbcTemplate().queryForObject(GET_COUNT_USERS, null, Integer.class);
+    }
 
-	private UserProfile getUserProfile(String username) {
+
+    private UserProfile getUserProfile(String username) {
 		
 		return getJdbcTemplate().queryForObject(SELECT_USER_PROFILE_BY_USERNAME, new Object[]{username},new BeanPropertyRowMapper<>(UserProfile.class));
 	}
