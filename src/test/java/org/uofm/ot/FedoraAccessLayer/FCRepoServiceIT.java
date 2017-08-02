@@ -10,21 +10,16 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.uofm.ot.ObjectTellerApplication;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.uofm.ot.exception.ObjectTellerException;
 import org.uofm.ot.fedoraGateway.FCRepoService;
 
 /**
  * Created by nggittle on 4/19/17.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes= {ObjectTellerApplication.class})
-@WebAppConfiguration
-@TestPropertySource("classpath:application.properties")
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class FCRepoServiceIT {
 
   @Autowired
