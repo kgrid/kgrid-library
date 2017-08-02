@@ -106,7 +106,7 @@ padding: 0px;
 }
 
 .addtext a span {
-	border-bottom: 1px solid #00274c;
+	border-bottom: 1px solid #0075bc;
 	text-decoration: none;
 }
 

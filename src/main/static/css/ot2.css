@@ -66,7 +66,7 @@ span.ot-right{
 
 .ot-banner h1 small {
 	font-size:28px;
-  line-height: 1.05em;
+  line-height: 1.35em;
   display: block;
   font-weight: 300;
 }
@@ -138,16 +138,6 @@ span.ot-right{
 	width:1584px;
 }
 
-.overlay-top {
-    height: 120px;
-    width: 1030px;
-    position: absolute;
-    top: 0;
-    left: 60px;
-    background-color: #fff;
-
-}
-
 .overlay-alert {
     height: 60px;
     width: 1030px;
@@ -155,7 +145,6 @@ span.ot-right{
     bottom:0px;
     left: 60px;
     background-color: #fff;
-
 }
 
 #login_overlay .overlay-board {
@@ -166,7 +155,7 @@ span.ot-right{
     height: 55px;
     width: 910px;
     margin: 55px auto;
-    background-color: #39b45a;
+    background-color: #0075bc;
     color: #fff;
     border-radius: 10px;
     position: absolute;
@@ -205,7 +194,7 @@ ul#edittabs li span:before {
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: #39b45a;
+  background-color: #0075bc;
   visibility: hidden;
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
@@ -230,7 +219,7 @@ ul#edittabs li:after {
 }
 ul#edittabs li.middleout:after {
 	width: 100%;
-	background: #39b45a;
+	background: #0075bc;
 }
 
 ul#edittabs li:hover, ul#tabs li:hover{
@@ -258,7 +247,6 @@ ul#edittab li {
 	display: none;
 	width: 99%;
 	float: left;
-	margin-top: 22px;
 	padding: 0px;
 	min-height:300px;
 /* 	height:300px;	 */
@@ -294,20 +282,6 @@ ul#citationlist li {
 	margin: 0 auto;
 }
 
-input[type=text],
-input[type=password],
-input[type=textarea]
- {
-  width:900px;
-  height: 38px;
-  padding: 0px 16px;
-  border: 1px solid #e6e6e6;
-  border-radius: 10px;
-  margin:2px 0;
-  font-size: 14px;
-  color:#666666;
-  font-weight:400;
-}
 
 .addtext a {
 	width:100%;
@@ -317,9 +291,6 @@ input[type=textarea]
   	text-overflow: ellipsis;
 }
 
-.overlay-title {
-	padding:0px 22px;
-}
 h3 {
     font-size: 21px;
     font-weight: 400;
@@ -376,11 +347,6 @@ textarea {
 	display: inline;
 }
 
-.entryform {
-	height: 600px;
-    padding: 16px 22px;
-    margin-top:0px;
-    }
     #linkedfields{
     width:100%;}
 
@@ -502,7 +468,7 @@ input[id$="datepicker"]{
 	.ot-pub .active {
 	margin-left: 5px;
 	padding-bottom:2px;
-	border-bottom: 2px solid #39b45a;
+	border-bottom: 2px solid #0075bc;
 	}
 
 	.datetype {
@@ -641,10 +607,10 @@ input[id$="datepicker"]{
 	}
 
 .roundbutton:hover{
-    border:1px solid #39b45a;
-    color:#39b45a;
+    border:1px solid #0075bc;
+    color:#0075bc;
     font-weight:400;
-    background-color:#39b45a;
+    background-color:#0075bc;
 }
 
 .greenroundbutton:hover {

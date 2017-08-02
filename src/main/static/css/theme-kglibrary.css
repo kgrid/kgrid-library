@@ -53,3 +53,63 @@
 .dropdown-menu {
   padding: 0px;
 }
+
+/* K-grid Library Buttons */
+.kg-roundbtn {
+  border: 1px solid #0075bc;
+  border-radius: 100%;
+  cursor: pointer;
+}
+.kg-btn-primary {
+  border: 1px solid #0075bc;
+  color: #0075bc;
+  background-color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 12px;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: color 0.5s ease;
+  min-width: 100px;
+}
+.kg-btn-secondary {
+  border: none;
+  color: #666666;
+  background-color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 12px;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: color 0.5s ease;
+  min-width: 100px;
+}
+
+/* Knowledge Grid Library Input */
+
+input[type=text],
+input[type=password]
+ {
+  width:900px;
+  height: 50px;
+  padding: 0px 16px;
+  border: 1px solid #e6e6e6;
+  border-radius: 0px;
+  margin:2px 0;
+  font-size: 14px;
+  color:#666666;
+  font-weight:400;
+}
+
+input[type=textarea]
+ {
+  width:900px;
+  height: 50px;
+  padding: 0px 16px;
+  border: 1px solid #e6e6e6;
+  border-radius: 0px;
+  margin:2px 0;
+  font-size: 14px;
+  color:#666666;
+  font-weight:400;
+}

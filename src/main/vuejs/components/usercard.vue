@@ -1,10 +1,10 @@
 <template>
 		<div class="container ot-usercard" v-bind:id="user.username" v-on:click="userselected">
 		<div v-if='user.id!=-1'>
-    <div class='ot-initial'>{{userInitial}}</div>
+<!--    <div class='ot-initial'>{{userInitial}}</div> -->
         <div class='ot-name'>{{user.first_name}} {{user.last_name}}<span>{{user.role}}</span></div>
         <div class='ot-username'>{{user.username}}</div>
-        <button v-show='!isCurrentUser' class='cardBtn' @click='deleteuser'>Delete</button>
+        <button v-show='!isCurrentUser' class='cardBtn' @click='deleteuser'><i class='fa fa-trash kg-fg-color fa-2x'></i></button>
         </div>
         <div v-else><img src='../assets/images/'</div>
         <div class='ot-bk'></div>
@@ -17,13 +17,16 @@
 		props : [ 'user', 'you'],
 		data: function() {
 		return {
-			isCurrentUser: false
+
 		}
 	},
 		mounted: function(){
-			this.isCurrentUser = (this.user.id==this.you.id);
+
 		},
 		computed : {
+			isCurrentUser: function(){
+				return (this.user.id==this.you.id)
+			},
 			userInitial: function(){
 				return this.user.first_name.substring(0,1) + this.user.last_name.substring(0,1)
             }
@@ -45,14 +48,14 @@
 										},
 
 										error : function(response) {
-										
+
 											var test = JSON.stringify(response);
 											var obj = JSON.parse(test);
 											alert(obj.responseText);
 										}
 
 									});
-								    
+
                 }
 							}
 						},
@@ -69,7 +72,7 @@
 				.ot-usercard {
 					position: relative;
 				    text-align: left;
-				    width: 385px;
+				    width: 400px;
 					height: 75px;
 				    background-color: #fff;
 				    margin: 10px 0px 10px 0px;
@@ -77,16 +80,15 @@
 				    font-weight: 400;
 				    border: 1px solid #e6e6e6;
 				    padding: 0px ;
+						transition: all 0.8s ease;
 				}
-				
+
 				.ot-usercard.active {
-					border: 1px solid #39b45a;
+					border: 1px solid #0075bc;
 				}
-				.ot-usercard#emptyuser{
-					border: 1px dashed #39b45a;
-				}
+
         .ot-bk {
-        width: 385px;
+        width: 400px;
         height: 73px;
         }
 				.ot-usercard:after {
@@ -98,9 +100,8 @@
 					background: transparent;
 					transition: width 0.8s ease, background-color .5s ease;
 				}
-				.ot-usercard:hover:after{
-					width:100%;
-				    background: #39b45a;
+				.ot-usercard:hover{
+					border-left: 1px solid #0075bc
 				}
         .ot-initial {
           position: absolute;
@@ -117,8 +118,8 @@
         }
 .ot-name {
 position: absolute;
-top: 13px;
-left:75px;
+top: 15px;
+left:15px;
 padding-right: 0px;
 font-size:14px;
 font-weight: 400;
@@ -126,8 +127,8 @@ font-weight: 400;
 
 .ot-username {
   position: absolute;
-  top: 35px;
-  left:75px;
+  top: 40px;
+  left:15px;
 font-size: 14px;
 font-weight: 400;
 }
@@ -142,8 +143,8 @@ font-weight: 400;
 
 .cardBtn{
 position: absolute;
-top: 5px;
-right: 10px;
+top: 25px;
+right: 25px;
 font-size: 11px;
 border: none;
 cursor: pointer;

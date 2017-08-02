@@ -1,7 +1,7 @@
 <template>
 <div>
 	<olpane layerid=0>
-		<div slot="ol-title"><h3>{{editObjModel.object.metadata.title}}</h3>
+		<div slot="ol-title"><h2>{{editObjModel.object.metadata.title}}</h2>
 			<div id="barcontainer">
 				<ul class="inEdit" id="edittabs">
 					<li id='METADATA' class="labels">METADATA<span v-show='changed.metadata'>*</span></li>
@@ -18,34 +18,38 @@
 					<fieldset class="fieldcontainer" id="first">
 						<div id="metadata_fields">
 							<div class="addtext">
-								<h4>TITLE</h4>
+								<label>TITLE</label>
 								<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.title" maxlength="140" />
 								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.title.length>=130 }" >{{editObjModel.object.metadata.title.length}}/140</span>
 							</div>
 							<div class="addtext">
-								<h4>DESCRIPTION</h4>
+								<label>DESCRIPTION</label>
 								<textarea class="metaEdit" v-model="editObjModel.object.metadata.description"></textarea>
 								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.description.length>=480 }" >{{editObjModel.object.metadata.description.length}}/500</span>
 							</div>
 							<div class="addtext">
-								<h4>KEYWORDS</h4>
+								<label>KEYWORDS</label>
 								<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.keywords" maxlength="140"/>
 								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.keywords.length>=130 }" >{{editObjModel.object.metadata.keywords.length}}/140</span>
 							</div>
 							<div class="addtext">
-								<h4>OWNERS</h4>
+								<label>OWNERS</label>
 								<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.owner" maxlength="140" />
 								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.owner.length>=130 }" >{{editObjModel.object.metadata.owner.length}}/140</span>
 							</div>
 							<div class="addtext">
-								<h4>CONTRIBUTORS</h4>
+								<label>CONTRIBUTORS</label>
 								<input type="text" class="metaEdit" v-model="editObjModel.object.metadata.contributors" maxlength="140" />
 								<span  v-bind:class="{ nearmax:editObjModel.object.metadata.contributors.length>=130 }" >{{editObjModel.object.metadata.contributors.length}}/140</span>
 							</div>
 							<div class="addtext">
-								<h4>LICENSE  </h4>
+								<label>LICENSE  </label>
 								<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName">
-									<button class="mediumgreenroundbutton" v-on:click="addLicense"><img src="../assets/images/Plus_Icon.png" width="12px"></button>
+								<div class='kg-roundbtn kg-newlf' v-on:click='addLicense'>
+									<div class='btnContent'>
+										<i class='fa fa-plus kg-fg-color'></i>
+										</div>
+										</div>
 								</div>
 								<div class="row" v-else>
 									<div class="col-md-9">
@@ -58,8 +62,12 @@
 								</div>
 							</div>
 							<div class="addtext">
-								<h4>CITATIONS</h4>
-								<button class="mediumgreenroundbutton" v-on:click="addCitation"><img src="../assets/images/Plus_Icon.png" width="12px"></button>
+								<label>CITATIONS</label>
+								<div class='kg-roundbtn kg-newlf' v-on:click='addCitation'>
+									<div class='btnContent'>
+										<i class='fa fa-plus kg-fg-color'></i>
+										</div>
+										</div>
 								<div class='entryArea'>
 									<ul id="citationlist" class="list">
 										<li v-for="(citation,index) in editObjModel.object.metadata.citations" >
@@ -112,10 +120,8 @@
 				</ul>
 		</div>
 		<div slot='buttons'>
-			<div id="editWrapper">
-							<button class="edit" v-on:click="undoEdit" id="cancelBtn">CANCEL</button>
-							<button class="edit" id="saveObjButton" v-on:click="saveObj">SAVE & CLOSE</button>
-			</div>
+							<button class="kg-btn-secondary" v-on:click="undoEdit" id="cancelBtn">CANCEL</button>
+							<button class="kg-btn-primary" id="saveObjButton" v-on:click="saveObj">SAVE & CLOSE</button>
 		</div>
 		<div slot="ol-processing">Processing...</div>
 		<div slot="ol-success">Update Successful !!!</div>
@@ -369,29 +375,31 @@ h3 {
 #barcontainer {
     height: 36px;
     border-bottom: 1px solid #e3e3e3;
-    width: 91%;
-	margin-top: 60px;
-margin-left:24px;
+		margin-top: 60px;
+
 }
 #barcontainer ul li:first-child {
-	margin-left: 10px;
+	margin-left: 30px;
 }
 .addtext {
     position: relative;
     width: 100%;
     padding: 0;
-    margin: 5px 0px 15px 0px;
+    margin: 0px 0px 15px 0px;
     color: #666666;
 font-size: 11px;
 }
+.addtext label {
+
+}
 .addtext span{
 	position: absolute;
-	color: #39b45a;
-top: 68px;
-right: 55px;
+	color: #0075bc;
+top: 92px;
+right: 20px;
 }
 .addtext textarea+span{
-	top: 108px;
+	top: 120px;
 }
 .addtext span.nearmax {
 	color: #ec2526;
@@ -402,12 +410,12 @@ right: 55px;
     position: relative;
     height:100%;
     overflow: auto;
-margin: 0 auto;
-padding: 0px 20px;
+		margin: 0 auto;
+		overflow-x:hidden;
 }
 
 .addtext textarea {
-    width: 96%;
+    width: 970px;
     height: 80px;
     resize: none;
     padding: 8px 16px 8px 16px;
@@ -439,18 +447,31 @@ width:100%;
     color: #666666;
     font-weight: 400;
 }
-#editWrapper{
-	width: 300px;
-	display: inline-block;
-	position: relative;
-	right: -305px;
-	top: 9px;
-}
+
 select {
     width: 96%;
 background-position: 98%;
 }
 input[type=text] {
-	width: 96%;
+	width:970px;
+}
+.kg-newlf{
+	width: 24px;
+	height: 24px;
+	position:absolute;
+	top: 6px;
+  left:80px;
+  margin:0 auto;
+  z-index:500;
+}
+.kg-newlf span {
+position: absolute;
+top:4px;
+left:-90px;
+}
+.kg-newlf i {
+position: absolute;
+top: 6px;
+left:7px;
 }
 </style>
