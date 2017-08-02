@@ -28,8 +28,6 @@ public class FusekiService {
 	
 	private String fusekiServerURL;
 	
-	private String fusekiPrefix;
-	
 	private static final Logger logger = Logger.getLogger(FusekiService.class);
 	
 		
@@ -42,7 +40,6 @@ public class FusekiService {
 		ServerDetails fusekiServer = fedoraConfiguration.getFusekiServerConfiguration();
 		if(fusekiServer != null){
 			fusekiServerURL = fusekiServer.getUrl();
-			fusekiPrefix = fusekiServer.getPrefix();
 		}
 	}
 
@@ -155,20 +152,14 @@ public class FusekiService {
 	
 	private KnowledgeObject mapQuerySolutionToFedoraObject(QuerySolution querySolution ) throws ObjectTellerException {
 
-		KnowledgeObject knowledgeObject = new KnowledgeObject();
-		String uri = querySolution.get("x").toString();
-		if(uri.length() > fusekiPrefix.length()){  // check for some bad triples from misconfiguration
-			if(uri.contains(fusekiPrefix)) {
-				uri = uri.substring(fusekiPrefix.length());
-				// setup for ark ids
-				RDFNode ark_node = querySolution.get("arkId");
-				if (ark_node != null ) {
-					knowledgeObject.setArkId(new ArkId(ark_node.toString()));
-				} else {
-					knowledgeObject.setArkId(new ArkId(uri));
-				}
-			}
+		// create knowledge object and set ark id
+
+		RDFNode ark_node = querySolution.get("arkId");
+		if (ark_node == null) {
+			throw new ObjectTellerException("The object with iri " + querySolution.get("x") + " does not have an ark id.");
 		}
+
+		KnowledgeObject knowledgeObject = new KnowledgeObject(new ArkId(ark_node.toString()));
 
 		Metadata metadata = new Metadata();
 
@@ -207,7 +198,7 @@ public class FusekiService {
 			license.setLicenseLink(querySolution.get("licenseLink").toString());
 
 		if(querySolution.get("arkId") != null)
-			metadata.setArkId(querySolution.get("arkId").toString());
+			metadata.setArkId(ark_node.toString());
 
 		metadata.setLicense(license);
 

@@ -33,11 +33,6 @@ public class FedoraConfigurationBuilder {
     return this;
   }
 
-  public FedoraConfigurationBuilder fusekiPrefix(String fusekiPrefix) {
-    fconfig.setFusekiPrefix(fusekiPrefix);
-    return this;
-  }
-
   public FedoraConfiguration build() {
     return fconfig;
   }

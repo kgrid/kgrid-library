@@ -15,7 +15,6 @@ public class FedoraConfiguration {
   private String fcrepoPassword;
   private String fusekiUsername;
   private String fusekiPassword;
-  private String fusekiPrefix;
 
 
   public void setFcrepoUrl(String fcrepoUrl) {
@@ -42,20 +41,17 @@ public class FedoraConfiguration {
     this.fusekiPassword = fusekiPassword;
   }
 
-  public void setFusekiPrefix(String fusekiPrefix) {
-    this.fusekiPrefix = fusekiPrefix;
-  }
 
   public ServerDetails getFedoraServerConfiguration() {
     ServerDetails fedoraConf = new ServerDetails(fcrepoUrl,
-        fcrepoUsername, fcrepoPassword, null);
+        fcrepoUsername, fcrepoPassword);
 
     return fedoraConf;
   }
 
   public ServerDetails getFusekiServerConfiguration() {
     ServerDetails fusekiConf = new ServerDetails(fusekiUrl,
-        fusekiUsername, fusekiPassword, fusekiPrefix);
+        fusekiUsername, fusekiPassword);
 
     return fusekiConf;
   }
