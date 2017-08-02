@@ -39,11 +39,12 @@
 			</div>
 		</div>
 		<div slot='header'>
-			<div v-show='isLoggedIn' class='ot-r-btn ot-newobj' v-on:click='addObject'>
-				<div class='greenroundbutton kg-btn-bg-primary'></div>
-				<div class='btnContent'>
 
-					<img src='../assets/images/Plus_Icon.png' width="14px"/></div>
+				<div v-show='isLoggedIn' class='kg-roundbtn ot-newobj' v-on:click='addObject'>
+				<span class='kg-fg-color'>Add Object</span>
+				<div class='btnContent'>
+					<i class='fa fa-plus kg-fg-color'></i>
+				</div>
 			</div>
 			<div class='row'>
 				<div class='col-md-10 col-sm-10 col-xs-10 ot-search'>
@@ -757,17 +758,6 @@ padding-right: 0px;
     width:85%;
 }
 
-input[type=text], input[type=password], input[type=textarea] {
-    width: 900px;
-    height: 38px;
-    padding: 0px 16px;
-    border: 1px solid #e6e6e6;
-    border-radius: 10px;
-    margin: 2px 0;
-    font-size: 14px;
-    color: #666666;
-    font-weight: 400;
-}
 input[id$="datepicker"] {
     width: 150px;
 }
@@ -893,13 +883,23 @@ select {
 }
 
 .ot-newobj{
-	width: 40px;
-	height: 40px;
+	width: 32px;
+	height: 32px;
 	position:absolute;
-    bottom:0px;
-    right:1px;
-    margin:0 auto;
-    z-index:500;
+	top: 6px;
+  right:0px;
+  margin:0 auto;
+  z-index:500;
+}
+.ot-newobj span {
+position: absolute;
+top:4px;
+left:-90px;
+}
+.ot-newobj i {
+position: absolute;
+top: 8px;
+left:10px;
 }
 .ot-banner.loggedin h1 {
     padding-top: 30px;

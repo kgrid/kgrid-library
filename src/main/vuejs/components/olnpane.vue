@@ -3,9 +3,9 @@
 <div class='modal-mask'>
 	<div class='ol_narrow_pane'>
 		<div class='sidebar_close' v-on:click='closeOverlay'>
-			<h3>CLOSE</h3>
+			<h3><span class='kg-fg-color'>CLOSE</span></h3>
 			<div class='ot-r-btn ot-close' >
-				<i class="fa fa-close" aria-hidden="false"></i>
+				<i class="fa fa-close kg-fg-color" aria-hidden="false"></i>
 			</div>
 		</div>
 		<div class='overlay-top'>

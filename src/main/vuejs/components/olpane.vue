@@ -1,11 +1,11 @@
 <template id="ol-pane-template">
 <transition name='modal'>
 	<div class="modal-mask">
-		<div class="ol_pane">
-			<div class='sidebar_close'>
-				<h3>CLOSE</h3>
-				<div class='ot-r-btn ot-close'  v-on:click='closeOverlay'>
-					<i class="fa fa-close" aria-hidden="false"></i>
+		<div class="ol_pane" >
+			<div class='sidebar_close'   v-on:click='closeOverlay'>
+				<h3><span class='kg-fg-color'>Close</span></h3>
+				<div class='ot-r-btn ot-close'>
+					<i class="fa fa-close kg-fg-color" aria-hidden="false"></i>
 				</div>
 			</div>
 			<div class="overlay-top">
@@ -99,13 +99,14 @@ export default {
 
 .sidebar_close {
     background-color:#fff;
-	color: #b3b3b3;
+		color: #b3b3b3;
     position:absolute;
     height: 100%;
     width:60px;
     text-align:center;
     border-right: 1px solid #e6e6e6;
-	transition: color 0.5s ease;
+		transition: color 0.5s ease;
+		cursor:pointer;
 }
 
 .sidebar_close:hover {
@@ -117,7 +118,7 @@ export default {
     line-height:60px;
     vertical-align:middle;
     top:40px;
-    left:10px;
+    left:12px;
     font-size:14px;
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
@@ -160,33 +161,35 @@ left: 0px;
 
 .overlay-top {
     height: 100px;
-    width: 960px;
+    width: 1030px;
     position: absolute;
     top: 0;
     left: 60px;
-    background-color: #fff;
+    background-color: transparent;
 
 }
 .overlay-title {
-	padding:0px 22px;
+	margin:0px 30px;
+	height: 150px;
 }
 .overlay-board {
     position: absolute;
-    background: white;
-    width: 1020px;
+    background-color: transparent;
+    width: 1030px;
     top: 100px;
     left: 60px;
     padding: 0px 0px;
 }
 
 .overlay-alert {
-    height: 60px;
-    width: 960px;
+    height: 100px;
+    width: 970px;
     position: absolute;
     bottom:0px;
     left: 60px;
-    background-color: #fff;
-
+		margin: 0px 30px;
+    background-color: transparent;
+		border-top:1px solid #e3e3e3;
 }
 .alert-box {
 	position:absolute;
@@ -201,8 +204,8 @@ left: 0px;
 
 .formbutton {
 	position: absolute;
-	bottom: 50px;
-	right: 180px;
+	bottom: 30px;
+	right: 0px;
 }
 .success {
     color: #3c763d;
@@ -230,9 +233,8 @@ left: 0px;
     display: none;
 }
 .entryform {
-	height: 600px;
-    padding: 16px 22px;
-    margin-top:0px;
+	height: 700px;
+  margin:0px 0px 0px 30px;
     }
 
 </style>

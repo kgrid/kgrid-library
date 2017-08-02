@@ -43,9 +43,9 @@ export function loadFieldsConfig(fillFieldsConfig){
 
 export function overlayHeightResize() {
 	var ol_pane_height = $(window).height();
-	var boardHeight = (ol_pane_height - 180);
-	var formHeight = (boardHeight - 80);
-	var liHeight = (formHeight - 60);
+	var boardHeight = (ol_pane_height - 200);
+	var formHeight = (boardHeight - 150);
+	var liHeight = (formHeight - 4);
 	$('.ol_pane').css("height", ol_pane_height + "px");
 	$('.overlay-board').css("height", boardHeight + "px");
 	$('.entryform').css("height", formHeight + "px");

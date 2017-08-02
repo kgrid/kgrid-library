@@ -363,9 +363,9 @@ left: 0px;
     border: 1px solid #fff;
     border-bottom-color: transparent;
 }
-ul#tabs li.active:after {
+ul#tabs li.active:after, ul#tabs li:hover:after {
     width: 100%;
-    background: #00274c;
+    background: #0075bc;
 }
 ul#tabs li:after {
     content: '';

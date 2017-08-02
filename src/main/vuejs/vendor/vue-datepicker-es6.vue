@@ -71,7 +71,7 @@
   width: 348px;
   z-index: 999;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
-      border: 1px solid #39b45a;
+      border: 1px solid #0075bc;
 }
 
 .leftalign .cov-date-body {
@@ -150,7 +150,7 @@ table {
   background: #e6e6e6;
   color: #666666 !important;
   border-radius: 0px;
-	border: 1px solid #39b45a;
+	border: 1px solid #0075bc;
 }
 .unavailable {
   color: #e6e6e6;
@@ -208,7 +208,7 @@ table {
   height: 2px;
   text-align: center;
   position: absolute;
-  background: #39b45a;
+  background: #0075bc;
   top: 50%;
   margin-top: -3px;
   margin-left: -10px;
@@ -225,7 +225,7 @@ table {
   height: 2px;
   text-align: center;
   position: absolute;
-  background: #39b45a;
+  background: #0075bc;
   margin-top: 4px;
   margin-left: -10px;
   top: 50%;

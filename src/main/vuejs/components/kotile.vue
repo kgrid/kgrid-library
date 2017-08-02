@@ -108,19 +108,7 @@
 				.ot-tile:hover {
 				   border-left: 3px solid #0075bc;
 				}
-		/*				.ot-tile:after {
-					content: '';
-					display: block;
-					margin: auto;
-					height: 2px;
-					width: 0px;
-					background: transparent;
-					transition: width 0.8s ease, background-color .5s ease;
-				}
-		.ot-tile:hover:after{
-					width:100%;
-				background: #00274c;
-				}    */
+
 				.ot-tile>.row {
 					margin: 10px 0px;
 				}

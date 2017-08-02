@@ -13,7 +13,9 @@
 		        </ul>
 
 		      </div>
-		      <div id='emptyuser' @click='adduser'></div>
+		      <div id='emptyuser' @click='adduser'>
+            <span class='kg-fg-color'>Add User to this Library</span> <i class='fa fa-plus kg-fg-color'></i>
+          </div>
 		      </div>
 		    </div>
 	        <div class='col-md-6 maxheight userentry'>
@@ -23,12 +25,12 @@
 					<div class='loginField'>
 						<label class="label">ROLE</label>
 						<p class="control has-icon has-icon-right">
-							<select class="userEdit" name="role" v-validate data-vv-rules="required" v-model='userModel.user.role'>
+							<select class="userEdit" name="role" v-validate data-vv-delay="1000" data-vv-rules="required" v-model='userModel.user.role'>
 								<option value="ADMIN">ADMIN</option>
 								<option value="INFORMATICIAN">INFORMATICIAN</option>
 								<option value="USER">USER</option>
 								</select>
-							<i v-show="errors.has('role', 'userform')" class="fa fa-warning"></i>
+
 							<span v-show="errors.has('role', 'userform')" class="help is-danger">{{ errors.first('role', 'userform') }}</span>
 						</p>
 					</div>
@@ -36,7 +38,6 @@
 						<label class="label">FIRST NAME</label>
 						<p class="control has-icon has-icon-right">
 							<input spellcheck=false v-model='userModel.user.first_name' name="first name" v-validate data-vv-delay="1000" data-vv-rules="required" :class="{'input': true, 'is-danger': errors.has('first name', 'userform') }" type="text" placeholder="Your firstname">
-						<i v-show="errors.has('first name', 'userform')" class="fa fa-warning"></i>
 						<span v-show="errors.has('first name', 'userform')" class="help is-danger">{{ errors.first('first name', 'userform') }}</span>
 					</p>
 				</div>
@@ -44,7 +45,6 @@
 				<label class="label">LAST NAME</label>
 				<p class="control has-icon has-icon-right">
 					<input spellcheck=false v-model='userModel.user.last_name' name="last name" v-validate data-vv-delay="1000" data-vv-rules="required" :class="{'input': true, 'is-danger': errors.has('last name', 'userform') }" type="text" placeholder="Your lastname">
-					<i v-show="errors.has('last name', 'userform')" class="fa fa-warning"></i>
 					<span v-show="errors.has('last name', 'userform')" class="help is-danger">{{ errors.first('last name', 'userform') }}</span>
 				</p>
 			</div>
@@ -52,7 +52,6 @@
 							<label class="label">EMAIL</label>
 							<p class="control has-icon has-icon-right">
 								<input spellcheck=false v-model='userModel.user.username' autocomplete='off' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'userform') }" type="text" placeholder="Email">
-								<i v-show="errors.has('email', 'userform')" class="fa fa-warning"></i>
 								<span v-show="errors.has('email', 'userform')" class="help is-danger">{{ errors.first('email', 'userform') }}</span>
 							</p>
 						</div>
@@ -60,11 +59,11 @@
 							<label class="label">Password</label>
 							<p class="control has-icon has-icon-right">
 								<input spellcheck=false  v-model='userModel.user.password' autocomplete='off' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
-								<i v-show="errors.has('password', 'userform')" class="fa fa-warning"></i>
 								<span v-show="errors.has('password', 'userform')" class="help is-danger">{{ errors.first('password', 'userform') }}</span>
 							</p>
 						</div>
 						<div class='loginField'>
+              <labeL class='label'></label>
 							<button class='user' v-if='isNewUser' :disabled='!inEdit' id="addUserButton" type='submit'>ADD USER</button>
 							<button class='user' v-if='!isNewUser' :disabled='!inEdit' id="updateUserButton" type='submit'>UPDATE</button>
 							<button class="edit" type='button' :disabled='!inEdit' v-on:click="undoEdit">UNDO</button>
@@ -95,7 +94,7 @@
 			              {username: 'gqmeng@umich.edu', passwd: '', id: 2, first_name: 'George', last_name: 'Meng', role: 'Informatician'},
 			              {username: 'jrampton@umich.edu', passwd: '', id: 3, first_name: 'James', last_name: 'Rampton', role: 'Designer'}
 			           ]},
-				userModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
+				userModel:{user:{username: '', passwd: '',password:'', id: -1, first_name: '', last_name: '', role: ''}},
 				selectedUserModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: ''}},
 				newuserModel:{user:{username: '', passwd: '', id: -1, first_name: '', last_name: '', role: 'USER'}},
 				newtitle:"",
@@ -132,7 +131,7 @@
 				$.extend(true, obj, user);
 				self.umodel.userList.push(obj);
 				$.extend(true, self.selectedUserModel.user, user);
-        $('.userentry').css("opacity",0.1);
+        $('.userentry').css("opacity",1);
 
 				self.isNewUser=false;
 				self.inEdit=true;
@@ -143,7 +142,7 @@
 				console.log(dIndex);
 				$.extend(true, self.umodel.userList[dIndex], user);
 				self.inEdit=false;
-        $('.userentry').css("opacity",0.1);
+        $('.userentry').css("opacity",1);
 
 			});
 			eventBus.$on('userdeleted',function(userid){
@@ -151,7 +150,7 @@
 			      var dIndex = self.umodel.userList.map(function(e) {return e.id}).indexOf(userid);
 			      self.umodel.userList.splice(dIndex,1);
 				  $.extend(true, self.userModel.user, self.newuserModel.user);
-          $('.userentry').css("opacity",0.1);
+          $('.userentry').css("opacity",1);
 
 			    })
 	},
@@ -216,7 +215,6 @@
 		    					url : "user",
 		    					data : text,
 		    					dataType : "json",
-
 		    					success : function(response) {
 		    						if (response != 'empty') {
 		    							$( 'div.processing' ).fadeOut( 200 );  // eslint-disable-line
@@ -275,7 +273,7 @@
 	}
 	.uListContainer {
 		height:100%;
-		padding: 0px 10px;
+		padding: 0px;
 	border-right: 1px solid #e3e3e3;
 	}
 	#uList {
@@ -288,7 +286,13 @@
 	}
 	#uList li {
 		margin-top : 20px;
+    border-left:2px solid #fff;
+    transition: all 0.8s ease;
 	}
+  #uList li:hover {
+      border-left:2px solid #0075bc;
+  }
+
 	.addtext {
 	    position: relative;
 	    width: 100%;
@@ -299,7 +303,7 @@
 	}
 	.addtext span{
 		position: relative;
-		color: #39b45a;
+		color: #0075bc;
 	top: 5px;
 	left: 850px;
 	}
@@ -311,16 +315,16 @@
     width: 910px;
     /* right: 100px; */
     margin: 55px auto;
-    background-color: #39b45a;
+    background-color: #0075bc;
     color: #fff;
     border-radius: 10px;
     position: absolute;
 }
 	.ot-sub {
 		border-bottom: 1px solid #b3b3b3;
-		width: 385px;
+		width: 400px;
 	    padding: 5px 0px;
-		margin: 0px 18px;
+		margin: 0px 10px;
 	font-size:14px;
 	}
 	.ot-sub+form{
@@ -331,33 +335,33 @@
 	.loginField {
 		position: relative;
 		padding: 0px 0px;
-	    margin: 15px 0px 5px 0px;
+	    margin: 10px 0px 35px 0px;
 	    height: 70px;
 	}
 	.loginField select {
-		width: 385px;
-	height: 30px;
-	border-radius: 8px;
+		 width: 400px;
+	   height: 50px;
+     border: 1px solid #666666;
 	}
 	.fieldcontainer {
 		padding:0px 10px;
 	}
-	.loginField input[type=text], .loginField input[type=password] {
-	    width: 385px;
-	    height: 30px;
-		border-radius: 8px;
-	}
+  .loginField input[type=text], .loginField input[type=password] {
+      width: 400px;
+      height: 50px;
+      border-radius: 0px;
+  }
 	.loginField label {
-	    position: relative;
-	    color: #666666;
-	    font-weight: 400;
-	    font-size: 16px;
-	    line-height: 1.6em;
-	    padding: 0px 4px 0px 16px;
-	    margin: 0px;
+  position: relative;
+	color: #666666;
+	font-weight: 400;
+	font-size: 12px;
+line-height: 1.6em;
+padding: 10px 0px;
+margin:0px;
 	}
   .userentry {
-    opacity: 0.1;
+    opacity: 1;
     transition: opacity 1s ease;
   }
 	p.control {
@@ -367,7 +371,7 @@
 	p.control span.is-danger {
 		position: absolute;
 		left: 16px;
-		top: 38px;
+		top: 58px;
 	font-style: italic;
 	font-size: 12px;
 	color: #ec2526;
@@ -378,9 +382,9 @@
 	    width: 120px;
 	    position: relative;
 	    height: 38px;
-	    border-radius: 10px;
-	    border: 1px solid #39b45a;
-	    background-color: #39b45a;
+	    border-radius: 0px;
+	    border: 1px solid #0075bc;
+	    background-color: #0075bc;
 	    color: #fff;
 	    margin: 18px 0px 0px 180px;
 	}
@@ -394,15 +398,25 @@
 	#emptyuser {
 		position: relative;
 	    text-align: left;
-	    width: 385px;
-		height: 75px;
+	    width: 400px;
+		  height: 75px;
 	    background-color: #fff;
 	    margin: 10px 0px 10px 10px;
 	    color: #696969;
 	    font-weight: 400;
-	    border:1px dashed #39b45a;
+      font-size: 14px;
+	    border:1px dashed #0075bc;
 	    padding: 0px ;
+      text-align: center;
+      line-height: 75px;
+      cursor: pointer;
 	}
+  #emptyuser span{
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-right: 10px;
+  }
 	.maxheight {
 		height: 100%;
 	}
