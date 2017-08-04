@@ -473,12 +473,7 @@ z-index:99999;
 		background-color:transparent;
 
 		}
-.nav>li>a {
-    position: relative;
-    display: block;
-    padding: 0px 0px;
-    margin: 5px 0px;
-}
+
 .nav-tabs>li>a, .nav-tabs>li>a:focus, .nav-tabs>li>a:hover {
     cursor: pointer;
     background-color: #fff;

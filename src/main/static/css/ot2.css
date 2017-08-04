@@ -467,10 +467,6 @@ input[id$="datepicker"]{
 		color: #333333;
 	}
 
-.login-link1 .dropdown{
-	height:55px;
-}
-
 /* Override Less Style */
 .nav .open>a {
 	background-color: transparent;

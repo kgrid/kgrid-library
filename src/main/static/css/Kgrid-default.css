@@ -22,8 +22,10 @@ small { font-size:  70%; }
 	outline:none;
 }
 .nav>li>a {
-  padding:0;
-
+    position: relative;
+    display: block;
+    padding: 0px 0px;
+    margin: 0px 0px;
 }
 .nav>li>a:hover {
   background-color:transparent;
