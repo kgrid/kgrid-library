@@ -56,7 +56,7 @@
 							</p>
 						</div>
 						<div class='loginField'>
-							<label class="label">Password</label>
+							<label class="label">PASSWORD</label>
 							<p class="control has-icon has-icon-right">
 								<input spellcheck=false  v-model='userModel.user.password' autocomplete='off' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Password">
 								<span v-show="errors.has('password', 'userform')" class="help is-danger">{{ errors.first('password', 'userform') }}</span>
@@ -64,9 +64,9 @@
 						</div>
 						<div class='loginField'>
               <labeL class='label'></label>
+              <button class="edit" type='button' :disabled='!inEdit' v-on:click="undoEdit">UNDO</button>
 							<button class='user' v-if='isNewUser' :disabled='!inEdit' id="addUserButton" type='submit'>ADD USER</button>
 							<button class='user' v-if='!isNewUser' :disabled='!inEdit' id="updateUserButton" type='submit'>UPDATE</button>
-							<button class="edit" type='button' :disabled='!inEdit' v-on:click="undoEdit">UNDO</button>
 						</div>
 					</fieldset>
 					</form>
@@ -380,18 +380,29 @@ margin:0px;
 	}
 	button.user {
 	    width: 120px;
-	    position: relative;
+	    position: absolute;
+      right: 50px;
 	    height: 38px;
 	    border-radius: 0px;
 	    border: 1px solid #0075bc;
-	    background-color: #0075bc;
-	    color: #fff;
-	    margin: 18px 0px 0px 180px;
+      background-color: #fff;
+      color: #0075bc;
+      transition: all 0.6s ease;
+
 	}
+  button.user:hover {
+  background-color: #0075bc;
+  color: #fff;
+  }
 	button.user:disabled {
 		background-color: #b3b3b3;
-	border: 1px solid #b3b3b3;
+	   border: 1px solid #b3b3b3;
 	}
+  button.edit {
+    position: absolute;
+    right: 220px;
+    height: 38px;
+  }
 	button.edit:disabled {
 		opacity: 0;
 	}

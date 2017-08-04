@@ -8,16 +8,16 @@
 				</div>
 				<div class='loginField'>
 					<div class='ot-s-btn ot-login'  @click="ok_clicked">
-					  <div class='greenbutton' > </div>
+
 					  <div class='btnContent'>
-						 		<button class='login'>OK</button></div>
+						 		<button class='login'  @click="ok_clicked">OK</button></div>
 						</div>
 				</div>
 				<div class='loginField'>
 						<div class='ot-s-btn ot-login'>
-							<div class='greenbutton' id='cancelBtn'> </div>
+
 							<div class='btnContent'>
-								<button class='login' @click="cancel_clicked">Cancel</button></div>
+								<button class='login cancel' @click="cancel_clicked">Cancel</button></div>
 							</div>
 						</div>
 				</div>
@@ -66,12 +66,42 @@ line-height: 1.6em;
 padding: 10px 14px;
 margin:0px;
 }
-
-div.greenbutton#cancelBtn {
-	background-color: #e5e5e5;
+.btnContent{
+position: relative;
+top:20px;
+width:400px;
+	 height:54px;
+		 border-radius: 0px;
+ }
+.ot-login {
+ padding: 22px 0px;
 }
-div.greeButton#cancelBtn:hover {
-	background-color: #7e7e7e;
+div.login {
+	 width: 100%;
+	 position: absolute;
+	 height: 100%;
+	 text-align:center;
+	 transition: opacity 0.2s ease;
+}
+button.login {
+ border:1px solid #0057bc;
+ width: 100%;
+ position: absolute;
+ height: 100%;
+ text-align:center;
+ background-color:#fff;
+ color:#0057bc;
+ transition: all 0.8s ease;
+}
+button.login:hover {
+ background-color:#0057bc;
+ color:#fff;
+
+}
+button.login.cancel {
+	border:none;
+	background-color:#e5e5e5;
+	color:#555555;
 }
 .fieldcontainer {
     display: block;
@@ -90,17 +120,6 @@ padding: 0px 20px;
 .ot-login {
 	padding: 22px 0px;
 }
-button.login {
-    width: 400px;
-    position: relative;
-    height: 50px;
-    border-radius: 10px;
-    border:none;
-    background-color: transparent;
-    color: #fff;
-    margin-top: 38px;
-}
-
 .loginField {
     margin: 25px 0px 25px 0px;
     height: 120px;

@@ -1,18 +1,20 @@
 <template id="file_uploader">
+<div class="uploadcontainer">
 	<div v-if="!selectedfile">
 	<div class="dropfile">
 			<div class="upload-direction">
 				<input type="file" :id="selectfile" @change="onFileChange" class="inputfile"
 										data-multiple-caption="{count} files selected" multiple style="display: none;"/>
 				<label :for="selectfile" id="filecount">
-					<i class='fa fa-cloud-upload fa-2x'></i>
+					<i class='fa fa-cloud-upload fa-2x kg-fg-color'></i>
 					<p class="green">CHOOSE_FILE_FOR_{{section}}</p>
 				</label>
 			</div>
 	</div></div>
 	<div v-else>
 		<button v-on:click="removeOutputFile" class='removeBtn'>Remove</button>
-		<textarea class='contentDisp' @change="inputchange" spellcheck=false v-model="message.msg"></textarea>
+		<textarea :id='loader' class='contentDisp' @change="inputchange" spellcheck=false v-model="message.msg"></textarea>
+	</div>
 	</div>
 </template>
 	<script>
@@ -27,7 +29,10 @@
 	  computed:{
 		  selectfile:function(){
 			  return this.section+"file";
-		  }
+		  },
+			loader:function(){
+				return this.section+'_loader';
+			}
 	  },
 	  created:function(){
 		  if(this.src!=null){
@@ -37,6 +42,9 @@
 		  }
 		  this.message.msg=this.src;
 	  },
+		mounted:function(){
+
+		},
 	  watch:{
 		  src:function(){
 			  if(this.src!=null){
@@ -80,13 +88,15 @@
 };
 	</script>
 	<style>
-
+.uploadcontainer{
+	margin-top:-40px;
+}
 .dropfile {
-    margin-top: 10px;
+    margin-top: 40px;
     margin-bottom: 10px;
     border: 2px dashed #e6e6e6;
     /* border-width: 1px; */
-    width: 910px;
+    width: 970px;
     height: 140px;
     border-radius: 0px;
     text-align: center;
@@ -102,10 +112,10 @@ label {
 }
 .removeBtn {
     background-color: #fff;
-    color: #39b54a;
-    font-size: 16px;
+    color: #0075bc;
+    font-size: 14px;
     font-weight: 300;
-    padding: 10px 55px;
+    padding: 10px 30px;
     border: none;
     outline: none;
     cursor: pointer;
@@ -115,8 +125,8 @@ label {
 }
 textArea.contentDisp {
     display: block;
-    min-height: 380px;
-    width: 96%;
+    height: 400px;
+    width: 970px;
     padding: 5px 16px;
     border: 1px solid #e6e6e6;
     border-radius: 0px;
@@ -126,5 +136,8 @@ textArea.contentDisp {
     font-weight: 400;
     margin-top: 40px;
 	overflow-y: auto;
+}
+textArea.contentDisp#payload_loader{
+	height:200px;
 }
 	</style>
