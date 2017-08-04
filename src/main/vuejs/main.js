@@ -2,8 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VeeValidate from 'vee-validate';
 import Vuex from 'vuex';
-
-//import VueResource from 'vue-resource';
 import App from './App';
 import store from './store';
 import eventBus from './components/eventBus.js';
@@ -11,7 +9,6 @@ import { objModel} from './components/models.js'
 
 require('es6-promise').polyfill();
 // Bootstrap 4
-
 require('jquery');
 require('tether');
 require('bootstrap');
@@ -52,8 +49,7 @@ const router = new VueRouter({
 Vue.directive(
   'click-outside', {
     bind: function(el, binding, vNode) {
-      // Provided expression must evaluate to a function.
-      if (typeof binding.value !== 'function') {
+    if (typeof binding.value !== 'function') {
         const compName = vNode.context.name
         let warn = `[Vue-click-outside:] provided expression '${binding.expression}' is not a function, but has to be`
         if (compName) { warn += `Found in component '${compName}'` }
@@ -94,16 +90,8 @@ var vm = new Vue({
 	},
 	created: function(){
 		var self=this;
-    // getCurrentUser("http://localhost:3000/", function(response) {
-    //   if(response!=""){
-    //       console.log(response);
-    //       store.commit('setuser',response);
-    //   }
-    //   },function(response) {
-    //       console.log("Error in getting current user:");
-    //       console.log(response);
-    //   }
-    // );
+    console.log('Knowledge Grid Library Web Application');
+    console.log('Build 20170804B');
 		eventBus.$on('404', function(){
 			router.push({path:'*'});
 		});

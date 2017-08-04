@@ -4,7 +4,7 @@
 					<div class="col-md-1 col-sm-1 col-xs-1 ot-type">
 						<i v-if="object.metadata.published" class='fa fa-circle kg-fg-color ft-sz-12 '></i>
 						</div>
-					<div class="col-md-11 col-sm-11 col-xs-11 ot-title" data-toggle="tooltip"
+					<div class="col-md-11 col-sm-11 col-xs-11 ot-title kg-fg-color" data-toggle="tooltip"
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
 
@@ -107,6 +107,7 @@
 				}
 				.ot-tile:hover {
 				   border-left: 3px solid #0075bc;
+					 cursor:pointer;
 				}
 
 				.ot-tile>.row {
@@ -133,6 +134,7 @@
 	font-style: italic;
 	white-space: nowrap;
 	overflow: hidden;
+	min-height:20px;
   	text-overflow: ellipsis;
     padding: 0px 15px 0px 0px;
 }

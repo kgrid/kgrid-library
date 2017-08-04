@@ -19,32 +19,38 @@
 		<div class="col-md-4 col-sm-4 col-xs-4 pad-0" >
 			<div class='float-r'>
 				<ul class="actioniconlist" v-if='true'>
-					<li v-show='isLoggedIn'>
-						<a  v-on:click='editObj'>
-							<div class='actionicon'>
+					<li v-show='isLoggedIn'  v-on:click='editObj'>
+					<div>
+						<a>
+						<div class='actionicon'  v-on:click='editObj'>
 								<i class="fa fa-edit" aria-hidden="false"></i>
-							</div>
-							<span class='actioniconcap'>Edit</span>
+						</div>
 						</a>
+						<span class='actioniconcap'>Edit</span>
+						</div>
 					</li>
 					<li>
+					<div>
 						<a v-bind:href='downloadLink' :download='downloadFile'>
 							<div class='actionicon'><i class="fa fa-download" aria-hidden="true"></i></div>
-							<div  class='actioniconcap'><span>Download</span></div>
 						</a>
+							<span class='actioniconcap'>Download</span>
+							</div>
 					</li>
 					<li v-if='isLoggedIn'>
-						<a v-on:click='deleteObject'>
-							<div class='actionicon'><i class="fa fa-trash" aria-hidden="true"></i></div>
-							<div  class='actioniconcap'><span>Delete</span></div>
+					<div>
+						<a>
+						<div class='actionicon'  v-on:click='deleteObject'><i class="fa fa-trash" aria-hidden="true"></i></div>
 						</a>
+								<span class='actioniconcap'>Delete</span>
+												</div>
 					</li>
 				</ul>
 			</div>
 		</div>
 		</div>
 		<div class='row ot-detail-daterow'>
-							<div class='col-md-3 col-sm-3 col-xs-3'>
+				<div class='col-md-3 col-sm-3 col-xs-3'>
 					<p class='date-title'>Object ID:</p>
 					<p class='date-data'>
 						<span>{{objModel.object.uri}}</span>
@@ -63,11 +69,9 @@
 					</p>
 				</div>
 				<div class='col-md-5 col-sm-5 col-xs-5'>
-					<div class='float-r mar-r-30'>
-						<h6><span>View Type:</span></h6>
-
-							<vselect :value.sync="kgselect.value" :options="optionlist" :searchable='false' :noDrop='!isLoggedIn' :loading='settingPubPri':onChange='selectCallback'></vselect>
-
+					<div class='float-r'>
+						<p class='date-title'>View Type:</p>
+						<vselect :value.sync="kgselect.value" :options="optionlist" :searchable='false' :noDrop='!isLoggedIn' :loading='settingPubPri':onChange='selectCallback'></vselect>
 					</div>
 				</div>
 			</div>
@@ -75,9 +79,8 @@
 		<div slot='header'>
 		<ul class='nav nav-tabs view' role='tablist' id='tabs'>
 		<li v-for='section in sections' v-bind:id='section.name' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section)"><a >{{section.label}}</a></li>
-		<li role='presentation' class='labels accessLevelOne'><a>
-				<div class='labels iconBtn accessLevelOne' id ='more'>
-				</div>
+		<li role='presentation' class='labels'><a>
+				<i class='fa fa-ellipsis-h'></i>
 		</a></li>
 	</ul>
 
@@ -281,7 +284,11 @@
 					},
 					error : function(response, tStatus, xhr) {
 						console.log(response);
-							self.settingPubPri=false;
+						if(response.status=='500'){
+							self.isPublic=pub;
+							objModel.object.metadata.published=pub;
+						}
+						self.settingPubPri=false;
 					}
 				});
 			},
@@ -325,15 +332,13 @@ margin:0 auto;
 }
 .ot-detail-daterow .col-md-5 {
 	width: 550px;
-	line-hegiht:3em;
 	padding-left:10px;
-	margin-top:10px;
 }
 #type-status {
 	width: 10px;
 	height: 42px;
 	display: inline-block;
-	filter: grayscale(100%);
+
 }
 #type-status i {
 	position: absolute;
@@ -357,7 +362,7 @@ left: 0px;
 }
 
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
-    color: #666666;
+color:#0075bc;
     cursor: pointer;
     background-color: #fff;
     border: 1px solid #fff;
@@ -385,54 +390,6 @@ ul#tab>li.active {
 	padding: 36px 36px;
 }
 
-#actiondiv {
-margin-top: 16px;
-text-align: right;
-padding-right: 0px;
-}
-
-#actionlist {
-	position: absolute;
-	top:199px;
- float:right;
- display:inline-block;
- text-align: left;
- right:-15px;
- height:80px;
- overflow-y: visible;
-}
-#goback {
-	display: inline-block;
-	font-size: 12px;
-	color: #666666;
-}
-
-#backButton a{
-	padding-left:30px;
-	vertical-align:middle;
-	color: #b3b3b3;
-	line-height: 1.8em;
-}
-
-#backButton a:hover{
-	color:#666666;
-}
-
-#backButton {
-	display:inline-block;
-	background-color: #fff;
-	border: none;
-	color: #b3b3b3;
-	font-size: 12px;
-	vertical-align:top;
-	height:24px;
-	background-size: 20px;
-}
-#backButton:hover{
-	color:#666666;
-	background-size: 24px;
-	transition:  0.5s ease;
-}
 .date-title {
 	font-size: 11px;
 margin-bottom: 0px;
@@ -440,41 +397,14 @@ margin-bottom: 0px;
 .date-data {
 	font-size: 14px;
 }
-#more {
-	opacity: 0.5;
-	width: 25px;
-	height: 20px;
-	margin: auto;
-	background-image : url('../assets/images/More_Icon_Dark-01.png');
-	background-size: 20px;
-    background-repeat: no-repeat;
-	background-position-y: center;
-	transition: opacity 0.5s ease;
 
-}
 #objBtns{
 	top: 10px;
     right: 68px;
     position: absolute;
 }
 
-#more:hover {
-	opacity: 1;
-}
 
-#downloadButton {
-width:100%;
-	display: inline-block;
-}
-
-#downloadButton:hover .greyroundbutton{
-	  transform: scale(1.2);
-    border: 1px solid #666666;
-	  margin: auto;
-	}
-#downloadButton:hover .btnContent{
-		 opacity: 1;
-		}
 .ot-download{
 	width: 40px;
 	height: 40px;
@@ -506,15 +436,6 @@ width:100%;
     left:18px;
 }
 
-#backButton:hover .greyroundbutton{
-	  transform: scale(1.2);
-	  border: 1px solid #666666;
-	  margin: auto;
-	}
-#backButton:hover .btnContent{
-		 opacity: 1;
-		}
-
 .dropdown-menu {
 position: absolute;
 top: auto;
@@ -543,21 +464,15 @@ z-index:99999;
 	background-color: #fff;
 	color: #333;
 }
-.dropdown-menu > li > a, #downloadButton a {
+.dropdown-menu > li > a {
     padding: 0px 35px;
     line-height: 2.5em;
 		text-decoration: none;
-    color: #b3b3b3;
     cursor: pointer;
     transition: color 0.5s ease;
 		background-color:transparent;
 
 		}
-
-.dropdown-menu > li>a :hover, #downloadButton:hover, #downloadButton:hover a{
-
-	color:#666666;
-}
 .nav>li>a {
     position: relative;
     display: block;
@@ -565,30 +480,38 @@ z-index:99999;
     margin: 5px 0px;
 }
 .nav-tabs>li>a, .nav-tabs>li>a:focus, .nav-tabs>li>a:hover {
-    color: #666;
     cursor: pointer;
     background-color: #fff;
     border: 1px solid #fff;
     border-bottom-color: transparent;
 }
 ul.actioniconlist {
-list-style: none;
+	list-style: none;
 }
 ul.actioniconlist li {
   display: inline-block;
-	width: 40px;
-	padding: 0px 5px;
+	width: 50px;
 	text-align:center;
 	overflow-x:visible;
 }
+ul.actioniconlist li>div {
+width: 80px;
+left: -20px;
+position: relative;
+}
 ul.actioniconlist li span {
+	background-color:#e5e5e5;
 	font-size: 12px;
 	opacity: 0;
 	position: relative;
-	margin: 0 auto;
+
 	transition: opacity 0.5s ease;
+	border-radius:8px;
+	color:#0075bc;
+	padding:1px 10px;
+	text-align:center;
 }
-ul.actioniconlist li:hover span {
+ul.actioniconlist li a:hover +span {
 	opacity: 1;
 }
 ul.actioniconlist li>a{
@@ -599,8 +522,9 @@ div.actionicon {
 	height: 26px;
 	border-radius:100%;
 	margin: 0 auto;
-	border: 1px solid #666666;
-	postion: relative;
+	border: 1px solid #0075bc;
+	background-color:#0075bc;
+	position: relative;
 }
 div.actioniconcap {
 	width: 60px;
@@ -611,5 +535,6 @@ div.actioniconcap {
 div.actionicon i {
 	margin: 6px;
 	font-size: 14px;
+	color: #fff;
 }
 </style>

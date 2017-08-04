@@ -23,7 +23,7 @@
 				  <div class='btnContent'>
 					<transition name='fade' mode='out-in'>
 						<button key='0' class='login' type='submit' v-if='status.ready'>LOG IN</button>
-						<div key='1' class='spinner login pad-t-15' v-if='status.processing'>Logging in ......</div>
+						<div key='1' class='spinner ol-processing  login pad-t-15' v-if='status.processing'>Logging in ......</div>
 						<div  key='2' class='ol-success login pad-t-15' v-if='status.success'>Login Successful<i class='fa fa-check'></i></div>
 						<div  key='3' class='ol-error login  pad-t-15' v-if='status.error'>Unable to log in. Please check credentials.</div>
 						</transition>
@@ -96,6 +96,27 @@ export default {
 };
 </script>
 <style scoped>
+.ol-success {
+    color: #fff;
+    background-color: #00b5af;
+    border-color: #00b5af;
+
+}
+
+.ol-processing{
+	  border-color: #0075bc;
+		    background-color:#0075bc;
+				color:#fff;
+
+
+}
+.ol-error {
+    color: #fff;
+    background-color: #a02816;
+    border-color: #a02816;
+
+}
+
 p.control {
 	position: absolute;
 	margin: 2px 0;
@@ -150,19 +171,32 @@ padding: 0px 0px;
  top:20px;
  width:400px;
 		height:54px;
-    border:1px solid #666666;
-		    border-radius: 0px;
+	    border-radius: 0px;
 	}
 .ot-login {
 	padding: 22px 0px;
 }
-.login {
-    width: 400px;
+div.login {
+    width: 100%;
     position: absolute;
-    height: 50px;
+    height: 100%;
 		text-align:center;
-    background-color: transparent;
-		transition: opacity 0.6s ease;
+		transition: opacity 0.2s ease;
+}
+button.login {
+	border:1px solid #0057bc;
+	width: 100%;
+	position: absolute;
+	height: 100%;
+	text-align:center;
+	background-color:#fff;
+	color:#0057bc;
+	transition: all 0.8s ease;
+}
+button.login:hover {
+	background-color:#0057bc;
+	color:#fff;
+
 }
 .entryform {
     height: 600px;
