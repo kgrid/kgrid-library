@@ -1,7 +1,9 @@
 <template>
 <div>
 	<olpane layerid=0>
-		<div slot="ol-title"><h2>{{editObjModel.object.metadata.title}}</h2>
+		<div slot="ol-title">
+			<div  id='arkid'><span>Object ID: {{editObjModel.object.uri}}</span><span class='float-r'>Last Updated: {{formattedUpdateDate}}</span></div>
+			<h2>{{editObjModel.object.metadata.title}}</h2>
 			<div id="barcontainer">
 				<ul class="inEdit" id="edittabs">
 					<li id='METADATA' class="labels">METADATA<span v-show='changed.metadata'>*</span></li>
@@ -205,7 +207,15 @@ export default {
 			changeCheck.input= !(_.isEqual(this.editObjModel.object.input,this.objModel.object.input));
 			changeCheck.output= !(_.isEqual(this.editObjModel.object.output,this.objModel.object.output));
 			return changeCheck;
-	}
+	},
+	formattedUpdateDate : function() {
+		if(!this.editObjModel.object.metadata.lastModified || this.editObjModel.object.metadata.lastModified=="" ){
+			return ""
+		}
+		else
+			{return new Date(this.editObjModel.object.metadata.lastModified)
+				.format("mediumDate")}
+		}
 	},
 	mounted:function(){
 		this.activeTab=this.$store.getters.getactivetab;
@@ -380,9 +390,11 @@ export default {
 };
 </script>
 <style scoped>
-h3 {
-	padding-left: 24px;
+div#arkid {
+	margin:-35px 0px 10px 0px;
+	font-size: 12px;
 }
+
 #barcontainer {
     height: 36px;
     border-bottom: 1px solid #e3e3e3;
@@ -407,7 +419,7 @@ font-size: 11px;
 	position: absolute;
 	color: #0075bc;
 top: 92px;
-right: 12px;
+right: 25px;
 }
 .addtext textarea+span{
 	top: 140px;
