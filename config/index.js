@@ -2,7 +2,7 @@
 var path = require('path')
 
 // allow command line override of connected library path, e.g.
-// $ LIBRARY=http://localhost:8080/ObjectTeller npm run dev
+// $ LIBRARY=http://localhost:8080/library npm run dev
 var library = process.env.LIBRARY || 'http://localhost:8080'
 var splitRegExp = new RegExp(
         '^' +
