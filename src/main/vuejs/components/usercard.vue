@@ -62,7 +62,7 @@
 						userselected: function(){
 							console.log("User #"+this.user.id+" selected");
 							eventBus.$emit("userselected", this.user);
-							sessionStorage.setItem("otUser", JSON.stringify(this.user));
+							sessionStorage.setItem("libraryUser", JSON.stringify(this.user));
 							return false;
 						}
 					}

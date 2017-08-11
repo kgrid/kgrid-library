@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>edu.umich.lhs</groupId>
-    <artifactId>object-teller</artifactId>
+    <artifactId>kgrid-library</artifactId>
     <packaging>war</packaging>
     <version>0.2.2-SNAPSHOT</version>
 
@@ -140,16 +140,11 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-devtools</artifactId>-->
-            <!--<optional>true</optional>-->
-        <!--</dependency>-->
     </dependencies>
 
     <properties>
         <spring.version>4.3.1.RELEASE</spring.version>
-        <context.path>/ObjectTeller</context.path>
+        <context.path>/KGrid-Library</context.path>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
         <frontend-maven-plugin.version>0.0.27</frontend-maven-plugin.version>
