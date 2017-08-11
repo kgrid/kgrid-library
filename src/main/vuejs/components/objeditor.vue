@@ -1,7 +1,9 @@
 <template>
 <div>
 	<olpane layerid=0>
-		<div slot="ol-title"><h2>{{editObjModel.object.metadata.title}}</h2>
+		<div slot="ol-title">
+			<div  id='arkid'><span>Object ID: {{editObjModel.object.uri}}</span><span class='float-r'>Last Updated: {{formattedUpdateDate}}</span></div>
+			<h2>{{editObjModel.object.metadata.title}}</h2>
 			<div id="barcontainer">
 				<ul class="inEdit" id="edittabs">
 					<li id='METADATA' class="labels">METADATA<span v-show='changed.metadata'>*</span></li>
@@ -89,32 +91,43 @@
 				</li>
 				<li id="PAYLOAD">
 						<div id="payload_fields">
+
 							<div class="addtext">
-								<h4> FUNCTION NAME (REQUIRED)
-								</h4>
+								<label>ENGINE TYPE</label>
+								<select required class="options" v-model="editObjModel.object.payload.engineType">
+										<option value="Python">PYTHON</option>
+								</select> <br>
+							</div>
+							<div class="addtext">
+								<label> FUNCTION NAME (REQUIRED)
+								</label>
 								<div class="addtext">
 									<input class="textbox inEdit" type="text" v-model="editObjModel.object.payload.functionName"
 										placeholder="one instance only" maxlength="140">
 								</div>
 							</div>
 							<div class="addtext">
-								<h4>ENGINE TYPE
-									</h4>
-								<select required class="options" v-model="editObjModel.object.payload.engineType">
-										<option value="Python">PYTHON</option>
-								</select> <br>
-							</div>
+								<label>PAYLOAD CONTENT</label>
+								<div class="addtext">
 							<fileuploader section="payload" v-on:filechange="updatedisplay" :src='editObjModel.object.payload.content'></fileuploader>
+							</div>
+							</div>
 						</div>
 					</li>
 					<li id="INPUT">
-						<div id="input_fields">
-							<fileuploader section="inputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.inputMessage'></fileuploader>
-						</div>
+							<div class="addtext" id="input_fields">
+								<label>INPUT CONTENT</label>
+								<div class="addtext">
+									<fileuploader section="inputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.inputMessage'></fileuploader>
+								</div>
+							</div>
 					</li>
 					<li id="OUTPUT">
-						<div id="output_fields">
+						<div class="addtext" id="output_fields">
+							<label>INPUT CONTENT</label>
+							<div class="addtext">
 							<fileuploader section="outputMessage" v-on:filechange="updatedisplay" :src='editObjModel.object.outputMessage'></fileuploader>
+						</div>
 						</div>
 					</li>
 				</ul>
@@ -194,7 +207,15 @@ export default {
 			changeCheck.input= !(_.isEqual(this.editObjModel.object.input,this.objModel.object.input));
 			changeCheck.output= !(_.isEqual(this.editObjModel.object.output,this.objModel.object.output));
 			return changeCheck;
-	}
+	},
+	formattedUpdateDate : function() {
+		if(!this.editObjModel.object.metadata.lastModified || this.editObjModel.object.metadata.lastModified=="" ){
+			return ""
+		}
+		else
+			{return new Date(this.editObjModel.object.metadata.lastModified)
+				.format("mediumDate")}
+		}
 	},
 	mounted:function(){
 		this.activeTab=this.$store.getters.getactivetab;
@@ -369,13 +390,15 @@ export default {
 };
 </script>
 <style scoped>
-h3 {
-	padding-left: 24px;
+div#arkid {
+	margin:-35px 0px 10px 0px;
+	font-size: 12px;
 }
+
 #barcontainer {
     height: 36px;
     border-bottom: 1px solid #e3e3e3;
-		margin-top: 60px;
+		margin-top: 30px;
 
 }
 #barcontainer ul li:first-child {
@@ -396,10 +419,10 @@ font-size: 11px;
 	position: absolute;
 	color: #0075bc;
 top: 92px;
-right: 20px;
+right: 25px;
 }
 .addtext textarea+span{
-	top: 120px;
+	top: 140px;
 }
 .addtext span.nearmax {
 	color: #ec2526;
@@ -416,7 +439,7 @@ right: 20px;
 
 .addtext textarea {
     width: 970px;
-    height: 80px;
+    height: 100px;
     resize: none;
     padding: 8px 16px 8px 16px;
 border: 1px solid #e6e6e6;
@@ -437,7 +460,7 @@ border-radius: 0px;
     border: none;
     white-space: nowrap;
     overflow: hidden;
-width:100%;
+		width:100%;
     text-overflow: ellipsis;
     height: 38px;
     padding: 10px 0px 0px 16px;
@@ -449,8 +472,11 @@ width:100%;
 }
 
 select {
-    width: 96%;
-background-position: 98%;
+    width: 970px;
+		height:48px;
+		background-position: 98%;
+		border:1px solid #e5e5e5;
+		padding:0px 16px;
 }
 input[type=text] {
 	width:970px;

@@ -8,35 +8,10 @@
 			</div>
 			<div v-else>
 				<h1>Knowledge Grid Library is a digital repository for storing, curating, and managing computer-processable knowledge. <br></h1>
-				<h1>Get Started, <router-link to='/soon'>Sign-Up</router-link> or <a v-on:click='login_click'> Log In </a>.</h1>
+				<h1>Get Started, <a href='mailto:dlhs.knowledge.grid@umich.edu?Subject=Knowledge%20Grid%20Sign%20Up'>Sign Up</a> or <a v-on:click='login_click'> Log In </a>.</h1>
 			</div>
-			<div id='libname' v-show='false'>
-				<h5><span>{{libraryname}}</span></h5>
-				<div id="bannericons" v-show='isLoggedIn'>
-					<ul id="bannericonrow">
-						<li>
-							<div style="position: relative">
-								<button class="roundbutton iconBtn" id="userlink"	@click="userlink_click"></button>
-								<div class='ot-newuser' >
-					       <div class='greenroundbutton kg-btn-bg-primary' > </div>
-					       <div class='btnContent'>
 
-									<img src='../assets/images/Plus_Icon.png' width="8px"/></div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<button class="roundbutton open-overlay iconBtn" type="button" id="settinglink" disabled @click="settinglink_click"></button>
-						</li>
-					</ul>
-					<div class="floatingInfo" id="homeIcons">
-						<span></span>
-					</div>
-				</div>
-			</div>
-			<div id='libConBtn' v-show='false' @click='setlibrary'>
-				<span>{{libraryname}}</span>
-			</div>
+
 		</div>
 		<div slot='header'>
 
@@ -48,8 +23,8 @@
 			</div>
 			<div class='row'>
 				<div class='col-md-10 col-sm-10 col-xs-10 ot-search'>
-					<i class='fa fa-search'></i>
-					<input placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
+					<i class='fa fa-search kg-fg-color'></i>
+					<input id='searchinput' placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
 				<div class='col-md-2 col-sm-2 col-xs-2'></div>
 			</div>
@@ -78,8 +53,8 @@
 				<div class='row  mar-top30'>
 					<div class='col-md-2  col-sm-2 col-xs-2 filterBtnCol'>
 						<div id='filterBtn'>
-							<a v-on:click='toggleFilter'> Filters
-								<span><img id='filterdowniconimg' class='down' src='../assets/images/Chevron.png' width='12px' /></span>
+							<a v-on:click='toggleFilter'><span class='kg-fg-color' >Filters</span>
+								<i id='filterdowniconimg' class='fa fa-caret-down kg-fg-color down'></i>
 							</a>
 						</div>
 					</div>
@@ -88,7 +63,7 @@
 					</div>
 					<div class='col-md-4  col-sm-4 col-xs-4 lh-3 float-r'>
 					<div class=' bg-white float-r'>
-						<h6><span class='pad-l-10'> Sort by:</span></h6>
+						<h6><span class='pad-l-20 kg-fg-color'> Sort by:</span></h6>
 						<span  class='lh-1'><vselect :value.sync="kgselect" :options="optionlist" :searchable='false' :onChange='selectCallback'></vselect></span>
 						</div>
 
@@ -584,7 +559,6 @@ export default {
 			sessionStorage.setItem("dateRange", JSON.stringify(this.dateRange));
 			},
 		selectCallback: function(val){
-		   console.log(val);
 			 console.log("After callback" + this.sortKey+"  ==="+val.value);
 			 this.sortKey=val.value;
 			 this.order=val.order;
@@ -637,14 +611,14 @@ export default {
 		toggleFilter: function(){
 			this.showFilterControl=!this.showFilterControl;
 	    	if(this.showFilterControl){
-	    	      $('img#filterdowniconimg').removeClass('down');  // eslint-disable-line
-	    	      $('img#filterdowniconimg').addClass('up');  // eslint-disable-line
+	    	      $('i#filterdowniconimg').removeClass('down');  // eslint-disable-line
+	    	      $('i#filterdowniconimg').addClass('up');  // eslint-disable-line
 	    	      $('#filterBtn').addClass('tall');
 							$('#fillerdiv').addClass('tall');
 	    	}else
 	    	{
-	    	      $('img#filterdowniconimg').removeClass('up');  // eslint-disable-line
-	    	      $('img#filterdowniconimg').addClass('down');  // eslint-disable-line
+	    	      $('i#filterdowniconimg').removeClass('up');  // eslint-disable-line
+	    	      $('i#filterdowniconimg').addClass('down');  // eslint-disable-line
 	    	      $('#filterBtn').removeClass('tall');
 							$('#fillerdiv').removeClass('tall');
 	    	}
@@ -727,13 +701,7 @@ export default {
 	top:85px;
 	text-align: center;
 }
-.ot-glybtn {
-    top: 0px;
-    line-height: 2.2em;
-    font-size: large;
-    background-color: #fff;
-    padding: 0 0 0 12px;
-}
+
 kgdropdown {
 	border-right: 1px solid #666666;
 }
@@ -793,17 +761,18 @@ height: 55px;
 #filterBtn a span {
 	margin: 0px -15px 0px 12px;
 }
-img#filterdowniconimg
+i#filterdowniconimg
 {
+margin-left:25px;
 transition: transform 0.8s ease;
 }
-img#filterdowniconimg.down {
+i#filterdowniconimg.down {
     -moz-transform: scaleY(1);
     -o-transform: scaleY(1);
     -webkit-transform: scaleY(1);
     transform: scaleY(1);
 }
-img#filterdowniconimg.up {
+i#filterdowniconimg.up {
     -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
     -webkit-transform: scaleY(-1);
@@ -842,27 +811,6 @@ background-color: #e6e6e6;
 font-size: 12px;
 vertical-align: top;
 }
-select {
-    background: transparent;
-	background-size: 12px;
-    background-image: url(../assets/images/Chevron.png);
-    background-repeat: no-repeat;
-    background-position: 90%;
-    line-height: 1;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 100%;
-    padding: 6px;
-    height: 40px;
-    border: none;
-    border-radius: 0px;
-		border-right: 1px solid #666666;
-    margin: 2px 12px 2px 0px;
-    font-size: 14px;
-    color: #666666;
-    font-weight: 400;
-    font-family: 'Open Sans', sans-serif;
-}
 
 .ot-select {
 	width:auto;
@@ -895,36 +843,21 @@ select {
 position: absolute;
 top:4px;
 left:-90px;
+opacity:0;
+transition:opacity 0.6s ease;
+}
+.ot-newobj:hover span {
+opacity:1;
 }
 .ot-newobj i {
 position: absolute;
 top: 8px;
-left:10px;
+left:9.5px;
 }
 .ot-banner.loggedin h1 {
     padding-top: 30px;
 }
-.ot-banner h1 a {
-	color: #e3e3e3;
-	cursor: pointer;
-    transition: color .5s ease;
-}
-.ot-banner h1 a:hover {
-	color: #666666;
-}
-#libname, #libConBtn {
-    text-align: right;
-    font-size: 20px;
-    /* margin-top: 30px; */
-    color: #666666;
-    font-weight: 300;
-    bottom: 20px;
-    position: absolute;
-    right: 22px;
-}
-#libConBtn:hover {
-	cursor:pointer;
-}
+
 .row.filter {
 	height: 30px;
 
@@ -988,86 +921,6 @@ left:10px;
 
 }
 
-#bannericons {
-	display: inline-block;
-    position: relative;
-    width: 60px;;
-    height: 40px;
-    bottom: -10px;
-    right: -20px;
-    overflow: visible;
-}
-#bannericonrow {
-    list-style: none;
-    position: relative;
-    display: table-row;
-    float: right;
-}
-#bannericonrow li {
-    display: table-cell;
-}
-#bannericonrow li button#userlink, #bannericonrow li button#settinglink {
-	width: 30px;
-height: 30px;
-background-size: 65% 65%;
-background-repeat: no-repeat;
-background-position: center center;
-background-color: #fff;
-border: 1px solid #b3b3b3;
-}
-
-#bannericonrow li button#userlink:hover, #bannericonrow li button#settinglink:hover {
-	background-color: #fff;
-	border: 1px solid #666666;
-}
-button#userlink {
-	   background-image: url(../assets/images/Person_Icon_Dark-01.png);
-		opacity: 0.5;
-transition: opacity 0.5s ease;
-}
-button#userlink:hover {
-	  opacity: 1;
-
-}
-button#settinglink {
-	   background-image: url(../assets/images/Gear_Icon-01.png);
-		opacity: 0;
-}
-
-.ot-newuser {
-	position:relative;
-bottom:8px;
-right:-10px;
-}
-.ot-newuser .greenroundbutton {
-	width:12px;
-	height:12px;
-        position:relative;
-    bottom:0px;
-    right:0px;
-    padding:0;
-    z-index:12;
-    transition: none;
-box-shadow:none;
-}
-
-.ot-newuser .btnContent {
-	position: relative;
-	height: 16px;
-width: 16px;
-	bottom: 10px;
-	right: 2px;
-	z-index: 16;
-}
-
-.ot-newuser .btnContent img {
-    bottom: 12px;
-    position: relative;
-}
-#newuser:hover {
-	transform: none;
-}
-
 .datepick>span {
 	position: absolute;
 top: 4px;
@@ -1116,4 +969,5 @@ select >option:hover {
 	overflow:hidden;
   opacity: 0;
 }
+
 </style>

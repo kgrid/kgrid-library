@@ -7,7 +7,6 @@
 </template>
 <script>
 import navbar from './components/navbar.vue';
-import libcon from './components/libraryconnect.vue';
 import login from './components/login';
 import confirmdialog from './components/confirmdialog'; // eslint-disable-line
 import olnpane from './components/olnpane'; // eslint-disable-line
@@ -15,7 +14,6 @@ import objeditor from './components/objeditor';
 import objcreator from './components/objcreator';
 import eventBus from './components/eventBus.js';
 import libraryusers from './components/libraryusers.vue';
-import librarysetting from './components/librarysetting.vue';
 import { editTabNav, getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
 import { objModel, editObjModel, sections, userModel } from './components/models.js'
 
@@ -77,15 +75,6 @@ export default {
       	  $('#ol').removeClass('animated slideInRight');
         });
       });
-      eventBus.$on('openLibCon', function () {
-          self.showOverlay.show = true;
-          self.currentOLView = 'libcon';
-          document.body.classList.toggle('noscroll', true);
-          $('#ol').addClass('animated slideInRight');
-          $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-            $('#ol').removeClass('animated slideInRight');
-          });
-        });
       eventBus.$on('confirm', function (data) {
         console.log(data);
         self.showOverlay.show = false;
@@ -189,9 +178,7 @@ export default {
     objeditor,
     objcreator,
     libraryusers,
-    librarysetting,
-    confirmdialog,
-    libcon
+    confirmdialog
   },
 	computed:{
 		isLoggedIn:function(){

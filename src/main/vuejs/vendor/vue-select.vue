@@ -91,7 +91,7 @@
   }
   /* Selected Tags */
   .v-select .selected-tag {
-    color: #333;
+    color: #0075bc;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -174,14 +174,14 @@
     display: block;
     padding: 3px 20px;
     clear: both;
-    color: #333; /* Overrides most CSS frameworks */
+    color: #0075bc; /* Overrides most CSS frameworks */
     white-space: nowrap;
   }
   .v-select li:hover {
     cursor: pointer;
   }
   .v-select .dropdown-menu .active > a {
-    color: #333;
+    color: #0075bc;
     background: rgba(50, 50, 50, .1);
   }
   .v-select .dropdown-menu > .highlight > a {
@@ -280,7 +280,9 @@
               aria-label="Search for option"
       >
 
-      <i v-if="!noDrop"  role="presentation" class="open-indicator"><img ref="openIndicator" class='down' src='../assets/images/Chevron.png' width='12px' /></i>
+      <i v-if="!noDrop"  role="presentation" class="open-indicator">
+					<i id='filterdowniconimg'  ref="openIndicator" class='fa fa-caret-down kg-fg-color down'></i>
+      </i>
       <slot name="spinner">
         <div class="spinner" v-show="mutableLoading">Loading...</div>
       </slot>
