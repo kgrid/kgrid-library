@@ -13,27 +13,26 @@
 					</div>
 				</div>
 				<div class='login-wrapper' >
-					<ul class='nav navbar-nav navbar-right ot-1 middleout' v-if='!isLoggedIn'>
+					<ul class='nav navbar-right ot-1 ' v-if='!isLoggedIn'>
 						<li class='login-link' v-on:click='login_click'><a><span>Log In</span></a></li>
-						<li class='signup-link' v-show='false'><router-link id="signupBtn" to='/soon'>Sign Up</router-link></li>
+						<li class='signup-link' v-show='false'><<a href="mailto:dlhs.knowledge.grid@umich.edu?Subject=Sign%20Up">Sign Up</a></li>
 					</ul>
 					<ul class='nav navbar-nav navbar-right ot-1'  v-else  v-click-outside='outside'>
 						<li class='login-link1'>
 							<div class='dropdown' id="userDropdown" style='height:55px;'>
 								<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>
-								<div class='row'>
-								<div class='col-md-11'>
+
 									<div class='row pad-t-2 pad-b-5 lh-1'>
-										<span class='float-r'>Welcome, {{firstname}}</span></div>
-									<div class='row pad-b-5 lh-1'>
-									<span class='float-r ft-sz-12'>{{libraryname}}</span></div>
+										<span class='float-r'>Welcome, {{firstname}}</span>
 									</div>
-									<div class='col-md-1 pad-0'>
-									<span><img id='dropdowniconimg' class='down' src='../assets/images/Chevron.png' width='12px' /></span>
+									<div class='row pad-b-5 float-r lh-1'>
+										<span class=' ft-sz-12 kg-fg-color'>{{libraryname}}</span>
+										<i id='dropdowniconimg' class='fa fa-caret-down kg-fg-color down'></i>
 									</div>
-									</div>
+
 								</a>
 								<ul class='dropdown-menu' v-if='showDropdown'>
+									<li><a id='adduserBtn' v-on:click='userlink_click'><span>Add User to Library</span></a></li>
 									<li><a id='logoutBtn' v-on:click='userlogout'><span>Logout</span></a></li>
 								</ul>
 							</div>
@@ -80,14 +79,17 @@ export default {
     toggleDropdown: function () {
     	this.showDropdown=!this.showDropdown;
     	if(this.showDropdown){
-    	      $('img#dropdowniconimg').removeClass('down');  // eslint-disable-line
-    	      $('img#dropdowniconimg').addClass('up');  // eslint-disable-line
+    	      $('#dropdowniconimg').removeClass('down');  // eslint-disable-line
+    	      $('#dropdowniconimg').addClass('up');  // eslint-disable-line
     	}else
     	{
-    	      $('img#dropdowniconimg').removeClass('up');  // eslint-disable-line
-    	      $('img#dropdowniconimg').addClass('down');  // eslint-disable-line
+    	      $('#dropdowniconimg').removeClass('up');  // eslint-disable-line
+    	      $('#dropdowniconimg').addClass('down');  // eslint-disable-line
     	}
     	},
+			userlink_click: function () {
+					eventBus.$emit('openUserManagement'); // eslint-disable-line
+				},
     userlogout: function () {
       var self = this;
       this.showDropdown=false;
@@ -151,54 +153,51 @@ export default {
 }
 
 
-#dLabel span {
-	padding: 0px 5px;
-}
 .login-link1 .dropdown{
 	height:55px;
 }
 
-img#dropdowniconimg {
+i#dropdowniconimg {
 	transition: transform 0.5s linear;
 }
-img#dropdowniconimg.up {
+i#dropdowniconimg.up {
 -moz-transform: scaleY(-1);
 -o-transform: scaleY(-1);
 -webkit-transform: scaleY(-1);
 transform: scaleY(-1);
 }
 
-img#dropdowniconimg.down {
+i#dropdowniconimg.down {
 -moz-transform: scaleY(1);
 -o-transform: scaleY(1);
 -webkit-transform: scaleY(1);
 transform: scaleY(1);
 }
 
-.dropdown ul{
-border-bottom-left-radius: 10px;
-border-bottom-right-radius: 10px;
-transition: all .5s ease;
-padding: 0px;
-left: initial;
-right: -18px;
-margin-top: -12px;
-box-shadow: none;
-border-radius: 0px;
-display:block;
-min-width:200px;
+#userDropdown.dropdown ul{
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	transition: all .5s ease;
+	padding: 0px;
+	left: initial;
+	right: -18px;
+	margin-top: 10px;
+	box-shadow: none;
+	border-radius: 0px;
+	display:block;
+	min-width:200px;
 }
 
-.dropdown ul li {
-    height: 2.4em;
-    line-height: 2.4em;
+#userDropdown.dropdown ul li {
+    height: 2.5em;
+    line-height: 2.5em;
     text-align: left;
-		display: table-cell;
+		display: list-item;
 }
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
     background-color: #e8e8e8;
 }
-#logoutBtn {
+#adduserBtn, #logoutBtn {
     line-height: 2.4em;
     text-decoration: none;
     border: none;
@@ -207,5 +206,26 @@ min-width:200px;
     font-style: normal;
     font-weight: 400;
 min-width: 200px;
+}
+
+
+.login-link {
+		cursor:pointer;
+		padding:5px 25px;
+		border:1px solid #0075bc;
+		background-color:#fff;
+		color: #0075bc;
+		transition:all 0.8s ease;
+		list-style:none;
+		margin: 15px 0px;
+	}
+.login-link span{
+	background-color:#fff;
+	color: #0075bc;
+	transition:all 0.8s ease;
+}
+.login-link:hover,  .login-link:hover span{
+		background-color:#0075bc;
+		color: #fff;
 }
 </style>

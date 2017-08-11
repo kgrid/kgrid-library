@@ -120,9 +120,9 @@
 	}
 	.addtext span{
 		position: relative;
-		color: #39b45a;
-	top: 5px;
-	left: 850px;
+		color: #0075bc;
+	top: -10px;
+	left: 940px;
 	}
 	.addtext span.nearmax {
 		color: #ec2526;
@@ -130,19 +130,26 @@
 	.done_btn {
     height: 55px;
     width: 310px;
-     right: 90px; */
+     right: 30px;
     margin: 55px auto;
-    background-color: #39b45a;
-    color: #fff;
-    border-radius: 10px;
+    background-color: #fff;
+    color: #0075bc;
+    border-radius: 0px;
+		border: 1px solid #0075bc;
+
     position: absolute;
+		transition: all 0.6s ease;
+}
+.done_btn:hover {
+background-color: #0075bc;
+color: #fff;
 }
 	input[type=text] {
-	    width: 910px;
-	    height: 38px;
+	    width: 970px;
+	    height: 55px;
 	    padding: 0px 16px;
 	    border: 1px solid #e6e6e6;
-	    border-radius: 10px;
+	    border-radius: 0px;
 	    margin: 2px 0;
 	    font-size: 14px;
 	    color: #666666;

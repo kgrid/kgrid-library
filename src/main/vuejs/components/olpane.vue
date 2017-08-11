@@ -170,7 +170,7 @@ left: 0px;
 }
 .overlay-title {
 	margin:0px 30px;
-	height: 150px;
+	height: 100px;
 }
 .overlay-board {
     position: absolute;
@@ -198,7 +198,7 @@ left: 0px;
 	padding: 15px;
     margin-bottom: 20px;
     border: 1px solid transparent;
-    border-radius: 10px;
+    border-radius: 0px;
     width:400px;
 }
 
@@ -208,21 +208,22 @@ left: 0px;
 	right: 0px;
 }
 .success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
+    color: #fff;
+    background-color: #00b5af;
+    border-color: #00b5af;
     display: none;
 }
 
 .processing{
-	   border-color: #d6e9c6;
+	  border-color: #0075bc;
+		    background-color:#0075bc;
     display: none;
 
 }
 .failure {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
+    color: #fff;
+    background-color: #a02816;
+    border-color: #a02816;
     display: none;
 }
 

@@ -21,7 +21,15 @@ small { font-size:  70%; }
 * {
 	outline:none;
 }
-
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 0px 0px;
+    margin: 0px 0px;
+}
+.nav>li>a:hover {
+  background-color:transparent;
+}
 a, a:hover, a:visited, a:focus {
 	text-decoration:none;
 	cursor: pointer;
@@ -113,6 +121,9 @@ a, a:hover, a:visited, a:focus {
  }
 .pad-l-10 {
   padding-left:10px;
+}
+.pad-l-20 {
+  padding-left:20px;
 }
 .pad-0 {
   padding:0px;
