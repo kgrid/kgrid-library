@@ -114,10 +114,10 @@ spring.datasource.password=lib123
 
 
 
-The ObjectTeller application uses a local MySQL database for managing user info and library connection info.
+The KGrid Library application uses a local MySQL database for managing user info and library connection info.
 
 One way to get MySQL up and running is to download and install a recent version. You can download manually, or use homebrew on a Mac. (In the end this is what I chose.)
 
 Object IDs:
 
-If you are running a local instance of the ObjectTeller and pointing to a remote instance of a (Fedora) library, you need to make sure you don't have object id collisions. There is an initial object id set at the end of the db create script that needs to be in a range outside of the library's current range. Since the library started low, I set mine to 10,000, which worked fine.
+If you are running a local instance of the KGrid Library and pointing to a remote instance of a (Fedora) library, you need to make sure you don't have object id collisions. There is an initial object id set at the end of the db create script that needs to be in a range outside of the library's current range. Since the library started low, I set mine to 10,000, which worked fine.
