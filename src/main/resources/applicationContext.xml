@@ -18,18 +18,18 @@
 
     <context:component-scan base-package="org.uofm.ot.controller,org.uofm.ot.services"/>
 
-    <bean id="fedoraConfiguration" class="org.uofm.ot.services.FedoraConfiguration">
+    <bean id="fedoraConfiguration" class="edu.umich.lhs.library.services.FedoraConfiguration">
     </bean>
 
-    <bean id="fedoraObjectService" class="org.uofm.ot.fedoraGateway.FCRepoService">
+    <bean id="fedoraObjectService" class="edu.umich.lhs.library.fedoraGateway.FCRepoService">
         <property name="fedoraConfiguration" ref="fedoraConfiguration"/>
     </bean>
 
-    <bean id="fusekiService" class="org.uofm.ot.fusekiGateway.FusekiService">
+    <bean id="fusekiService" class="edu.umich.lhs.library.fusekiGateway.FusekiService">
         <property name="fedoraConfiguration" ref="fedoraConfiguration"/>
     </bean>
 
-    <bean id="accountController" class="org.uofm.ot.controller.AccountController">
+    <bean id="accountController" class="edu.umich.lhs.library.controller.AccountController">
     </bean>
 
     <!--<context:property-placeholder location="classpath:*.properties"/>-->
@@ -56,7 +56,7 @@
 
         <bean id="messageSource"
               class="org.springframework.context.support.ResourceBundleMessageSource">
-            <property name="basename" value="objectTeller"/>
+            <property name="basename" value="library"/>
         </bean>
 
         <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
