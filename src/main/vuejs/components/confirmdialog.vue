@@ -7,14 +7,14 @@
 						<span>{{question}}</span>
 				</div>
 				<div class='loginField'>
-					<div class='ot-s-btn ot-login'  @click="ok_clicked">
+					<div class='kgl-s-btn kgl-login'  @click="ok_clicked">
 
 					  <div class='btnContent'>
 						 		<button class='login'  @click="ok_clicked">OK</button></div>
 						</div>
 				</div>
 				<div class='loginField'>
-						<div class='ot-s-btn ot-login'>
+						<div class='kgl'-s-btn kgl-login'>
 
 							<div class='btnContent'>
 								<button class='login cancel' @click="cancel_clicked">Cancel</button></div>
@@ -73,7 +73,7 @@ width:400px;
 	 height:54px;
 		 border-radius: 0px;
  }
-.ot-login {
+.kgl-login {
  padding: 22px 0px;
 }
 div.login {
@@ -112,12 +112,12 @@ margin: 0 auto;
 padding: 0px 20px;
 }
 
-.ot-s-btn .btnContent{
+.kgl-s-btn .btnContent{
 	  position: relative;
 	  top:-86px;
 	  left:0px;
 	}
-.ot-login {
+.kgl-login {
 	padding: 22px 0px;
 }
 .loginField {

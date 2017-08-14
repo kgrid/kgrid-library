@@ -23,13 +23,16 @@
 	border-bottom: 1px solid #d7d7d7;
   z-index: 250;
 }
-.navbar-nav>li>a, a, a:hover, a:visited, a:focus {
+a, a:hover, a:visited, a:focus {
 	color: #0075bc;
 }
-.navbar-nav>li>a:hover {
+.navbar-nav>li>a {
+	color: #555555;
+}
+.navbar-nav>li>a:hover, .navbar-nav>li.active>a {
 	color: #0075bc;
 }
-.middleout li.active>a>span:after, .middleout li:hover>a>span:after {
+.middleout li.active>a>span:after, .middleout li:hover>a>span:after, div.middleout:hover a>span:after  {
   width:100%;
 	background-color: #0075bc;
 }
@@ -48,13 +51,6 @@
   color: #0075bc;
   background-color: #fff;
     transition: all 0.5s ease;
-}
-.kg-roundbtn:hover{
-  color: #fff;
-  background-color: #0075bc;
-}
-.kg-roundbtn:hover i {
-  color:#fff;
 }
 
 .kg-btn-primary {
@@ -81,6 +77,19 @@
   vertical-align: middle;
   transition: color 0.5s ease;
   min-width: 100px;
+}
+
+ul.actioniconlist li div.actioniconcap {
+	background-color:#fff;
+	border: 1px solid #0075bc;
+	color:#0075bc;
+}
+div.actionicon {
+	border: 1px solid #0075bc;
+	background-color:#0075bc;
+}
+div.actionicon i {
+	color: #fff;
 }
 
 /* Knowledge Grid Library Input */

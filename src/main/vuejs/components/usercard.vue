@@ -1,13 +1,13 @@
 <template>
-		<div class="container ot-usercard" v-bind:id="user.username" v-on:click="userselected">
+		<div class="container kgl-usercard" v-bind:id="user.username" v-on:click="userselected">
 		<div v-if='user.id!=-1'>
-<!--    <div class='ot-initial'>{{userInitial}}</div> -->
-        <div class='ot-name'>{{user.first_name}} {{user.last_name}}<span>{{user.role}}</span></div>
-        <div class='ot-username'>{{user.username}}</div>
+<!--    <div class='kgl-initial'>{{userInitial}}</div> -->
+        <div class='kgl-name'>{{user.first_name}} {{user.last_name}}<span>{{user.role}}</span></div>
+        <div class='kgl-username'>{{user.username}}</div>
         <button v-show='!isCurrentUser' class='cardBtn' @click='deleteuser'><i class='fa fa-trash kg-fg-color fa-2x'></i></button>
         </div>
         <div v-else><img src='../assets/images/'</div>
-        <div class='ot-bk'></div>
+        <div class='kgl-bk'></div>
         			</div>
 	</template>
 	<script>
@@ -69,7 +69,7 @@
 				};
 				</script>
 				<style>
-				.ot-usercard {
+				.kgl-usercard {
 					position: relative;
 				    text-align: left;
 				    width: 400px;
@@ -83,15 +83,15 @@
 						transition: all 0.8s ease;
 				}
 
-				.ot-usercard.active {
+				.kgl-usercard.active {
 					border: 1px solid #0075bc;
 				}
 
-        .ot-bk {
+        .kgl-bk {
         width: 400px;
         height: 73px;
         }
-				.ot-usercard:after {
+				.kgl-usercard:after {
 					content: '';
 					display: block;
 					margin: auto;
@@ -100,10 +100,10 @@
 					background: transparent;
 					transition: width 0.8s ease, background-color .5s ease;
 				}
-				.ot-usercard:hover{
+				.kgl-usercard:hover{
 					border-left: 1px solid #0075bc
 				}
-        .ot-initial {
+        .kgl-initial {
           position: absolute;
           top: 17px;
           left: 17px;
@@ -116,7 +116,7 @@
           border-radius: 100%;
           border: 1px solid #666666;
         }
-.ot-name {
+.kgl-name {
 position: absolute;
 top: 15px;
 left:15px;
@@ -125,7 +125,7 @@ font-size:14px;
 font-weight: 400;
 }
 
-.ot-username {
+.kgl-username {
   position: absolute;
   top: 40px;
   left:15px;
@@ -133,7 +133,7 @@ font-size: 14px;
 font-weight: 400;
 }
 
-.ot-name span {
+.kgl-name span {
  border-left: 1px solid #666666;
  padding-left: 10px;
  margin-left: 10px;

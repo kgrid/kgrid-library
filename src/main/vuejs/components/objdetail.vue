@@ -2,15 +2,15 @@
 	<div class='content'>
 		<applayout :nothelper='true'>
 		<div slot='banner'>
-		<div class='row ht-40'>
+		<div class='row ht-30'>
 		</div>
-		<div class='row ot-detail-titlerow'>
+		<div class='row kgl-detail-titlerow'>
 				<div id='ko-title' class='col-md-12 col-sm-12'>
 					<div id= 'type-status' >
 						<i v-if="objModel.object.metadata.published" class='fa fa-circle kg-fg-color ft-sz-12 '></i>
 					</div>
 					<h1>
-						<small>{{objModel.object.metadata.title}}</small>
+						{{objModel.object.metadata.title}}
 					</h1>
 				</div>
 		</div>
@@ -26,7 +26,9 @@
 								<i class="fa fa-edit" aria-hidden="false"></i>
 						</div>
 						</a>
-						<span class='actioniconcap'>Edit</span>
+						<div class='actioniconcap'>
+						<span >EDIT</span>
+						</div>
 						</div>
 					</li>
 					<li>
@@ -34,7 +36,8 @@
 						<a v-bind:href='downloadLink' :download='downloadFile'>
 							<div class='actionicon'><i class="fa fa-download" aria-hidden="true"></i></div>
 						</a>
-							<span class='actioniconcap'>Download</span>
+						<div class='actioniconcap'>
+							<span>DOWNLOAD</span></div>
 							</div>
 					</li>
 					<li v-if='isLoggedIn'>
@@ -42,35 +45,36 @@
 						<a>
 						<div class='actionicon'  v-on:click='deleteObject'><i class="fa fa-trash" aria-hidden="true"></i></div>
 						</a>
-								<span class='actioniconcap'>Delete</span>
+						<div class='actioniconcap'>
+								<span>DELETE</span></div>
 												</div>
 					</li>
 				</ul>
 			</div>
 		</div>
 		</div>
-		<div class='row ot-detail-daterow'>
+		<div class='row kgl-detail-daterow'>
 				<div class='col-md-3 col-sm-3 col-xs-3'>
-					<p class='date-title'>Object ID:</p>
+					<p class='kg-label'>Object ID</p>
 					<p class='date-data'>
 						<span>{{objModel.object.uri}}</span>
 					</p>
 				</div>
 				<div class='col-md-2 col-sm-2 col-xs-2'>
-					<p class='date-title'>Last Updated:</p>
+					<p class='kg-label'>Last Updated</p>
 					<p class='date-data'>
 						<span v-text='formattedUpdateDate'></span>
 					</p>
 				</div>
 				<div class='col-md-2 col-sm-2 col-xs-2'>
-					<p class='date-title'>Created On:</p>
+					<p class='kg-label'>Created On</p>
 					<p class='date-data'>
 						<span v-text='formattedCreateDate'></span>
 					</p>
 				</div>
 				<div class='col-md-5 col-sm-5 col-xs-5'>
 					<div class='float-r'>
-						<p class='date-title'>View Type:</p>
+						<p class='kg-label'>View Type:</p>
 						<vselect :value.sync="kgselect.value" :options="optionlist" :searchable='false' :noDrop='!isLoggedIn' :loading='settingPubPri':onChange='selectCallback'></vselect>
 					</div>
 				</div>
@@ -193,7 +197,7 @@
 	        	scrollTop: 0
 	    	}, 200);
 
-	    	$('.ot-banner').addClass('detail');
+	    	$('.kgl-banner').addClass('detail');
 				$(".header").wrap('<div class="theadwrapper"></div>');
 				$(".theadwrapper").height($(".header").outerHeight(false));
 	    	otScroll();
@@ -299,41 +303,30 @@
 };
 	</script>
 <style>
-.ot-banner.detail {
+.kgl-banner.detail {
 	height: 220px;
 padding: 0px 32px 0px 48px;
 margin:0 auto;
 }
-.ot-detail-smallrow {
+.kgl-detail-smallrow {
 	height: 20px;
 	margin-left: -40px;
 }
-.ot-detail-spacer {
+.kgl-detail-spacer {
 	height: 25px;
 }
-.ot-detail-titlerow {
+.kgl-detail-titlerow {
 	height: 80px;
 	margin-left: -40px;
 }
-.ot-detail-daterow {
+.kgl-detail-daterow {
 	height: 60px;
-	margin-left: -37px;
 	margin-top: 0px;
 }
-.ot-detail-daterow div {
+.kgl-detail-daterow div {
 	padding-right: 0px;
 }
-.ot-detail-daterow .col-md-3 {
-	width: 200px;
-}
-.ot-detail-daterow .col-md-2 {
-	width: 120px;
-	padding-left:0px;
-}
-.ot-detail-daterow .col-md-5 {
-	width: 550px;
-	padding-left:10px;
-}
+
 #type-status {
 	width: 10px;
 	height: 42px;
@@ -354,7 +347,6 @@ left: 0px;
 #ko-title h1{
 	position: absolute;
   display: inline-block;
-  font-size: 22px;
   left: 24px;
   margin: 0;
   text-align: left;
@@ -405,7 +397,7 @@ margin-bottom: 0px;
 }
 
 
-.ot-download{
+.kgl-download{
 	width: 40px;
 	height: 40px;
 	position:absolute;
@@ -413,14 +405,14 @@ margin-bottom: 0px;
   margin:0 auto;
   z-index:500;
 }
-.ot-download .btnContent {
+.kgl-download .btnContent {
     position: relative;
     top: -29px;
     left: 16px;
     opacity: 0.5;
     transition: opacity 0.5s ease;
 }
-.ot-back{
+.kgl-back{
 	width: 40px;
 	height: 40px;
 	position:absolute;
@@ -430,7 +422,7 @@ margin-bottom: 0px;
     z-index:500;
 }
 
-.ot-back .btnContent {
+.kgl-back .btnContent {
 	position: relative;
     top: -22px;
     left:18px;
@@ -471,8 +463,7 @@ z-index:99999;
     cursor: pointer;
     transition: color 0.5s ease;
 		background-color:transparent;
-
-		}
+	}
 
 .nav-tabs>li>a, .nav-tabs>li>a:focus, .nav-tabs>li>a:hover {
     cursor: pointer;
@@ -480,56 +471,5 @@ z-index:99999;
     border: 1px solid #fff;
     border-bottom-color: transparent;
 }
-ul.actioniconlist {
-	list-style: none;
-}
-ul.actioniconlist li {
-  display: inline-block;
-	width: 50px;
-	text-align:center;
-	overflow-x:visible;
-}
-ul.actioniconlist li>div {
-width: 80px;
-left: -20px;
-position: relative;
-}
-ul.actioniconlist li span {
-	background-color:#e5e5e5;
-	font-size: 12px;
-	opacity: 0;
-	position: relative;
 
-	transition: opacity 0.5s ease;
-	border-radius:8px;
-	color:#0075bc;
-	padding:1px 10px;
-	text-align:center;
-}
-ul.actioniconlist li a:hover +span {
-	opacity: 1;
-}
-ul.actioniconlist li>a{
-	position: relative;
-}
-div.actionicon {
-	width:26px;
-	height: 26px;
-	border-radius:100%;
-	margin: 0 auto;
-	border: 1px solid #0075bc;
-	background-color:#0075bc;
-	position: relative;
-}
-div.actioniconcap {
-	width: 60px;
-	margin:auto;
-	position: relative;
-	left:-50%;
-}
-div.actionicon i {
-	margin: 6px;
-	font-size: 14px;
-	color: #fff;
-}
 </style>

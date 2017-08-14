@@ -4,7 +4,7 @@
 		<div class="ol_pane" >
 			<div class='sidebar_close'   v-on:click='closeOverlay'>
 				<h3><span class='kg-fg-color'>Close</span></h3>
-				<div class='ot-r-btn ot-close'>
+				<div class='kgl-r-btn kgl-close'>
 					<i class="fa fa-close kg-fg-color" aria-hidden="false"></i>
 				</div>
 			</div>
@@ -134,18 +134,18 @@ color: #b3b3b3;
     width:28px;
     height:28px;
 }
-.ot-close {
+.kgl-close {
 	position: relative;
 	top: 21px;
 	left: 11px;
 	cursor: pointer;
 }
-.ot-close .greenroundbutton {
+.kgl-close .greenroundbutton {
 	width: 28px;
     height: 28px;
 box-shadow: none;
 }
-.ot-close .btnContent {
+.kgl-close .btnContent {
 	position: relative;
 	top: -24px;
 left: 0px;

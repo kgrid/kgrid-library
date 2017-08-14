@@ -1,39 +1,39 @@
-.ot-1 {
+.kgl-1 {
 	z-index: 50;
 }
 
-.ot-nav {
+.kgl-nav {
 	z-index:50;
 }
 
-.ot-1 .navbar-nav>li{
+.kgl-1 .navbar-nav>li{
     margin: 0px 15px;
 }
 
-.ot-select {
+.kgl-select {
 	width:100%;
 	padding: 6px;
 	height:40px;
 }
 
-.ot-content {
+.kgl-content {
 	position: absolute;
 	margin-top: 60px;
 	width:100%;
 	min-width: 1584px;
 }
 
-.ot-type{
+.kgl-type{
 	vertical-align: middle;
 	height: 40px;
 }
 
-.ot-viewlist {
+.kgl-viewlist {
 	list-style:none;
 	padding: 10px 16px 16px 16px;
 }
 
-.ot-viewlist input, .ot-viewlist div, .ot-viewlist h4{
+.kgl-viewlist input, .kgl-viewlist div, .kgl-viewlist h4{
 	background-color: #fff;
 	padding: 0px;
 	color: #666666;
@@ -45,12 +45,12 @@
 
 
 
-span.ot-right{
+span.kgl-right{
 	border-left: 1px solid #666666;
 	padding: 0px 0px 0px 10px;
 }
 
-.ot-banner h1 small {
+.kgl-banner h1 small {
 	font-size:28px;
   line-height: 1.35em;
   display: block;
@@ -63,7 +63,7 @@ span.ot-right{
 	padding:30px;
 }
 
-.ot-backtotop {
+.kgl-backtotop {
 	position:fixed;
     bottom:60px;
     right:150px;
@@ -434,24 +434,19 @@ input[id$="datepicker"]{
 	input[type=radio] {
 		display: inline-block;
 	}
-	p {
-		margin-left:20px;
-		margin-bottom:6px;
-	}
-
 
 	.date2 {
 		padding: 0px;
 	}
 
-	.ot-pub input[type=radio]{
+	.kgl-pub input[type=radio]{
 	  display: none;
 	}
-	.ot-pub {
+	.kgl-pub {
 	width:80px;
 	padding-left: 0px;
 	}
-	.ot-pub .active {
+	.kgl-pub .active {
 	margin-left: 5px;
 	padding-bottom:2px;
 	border-bottom: 2px solid #0075bc;
@@ -588,13 +583,13 @@ input[id$="datepicker"]{
 }
 
 
-.ot-r-btn .btnContent{
+.kgl-r-btn .btnContent{
   position: relative;
   top:-30px;
   left:13px;
 }
 
-.ot-r1-btn .btnContent{
+.kgl-r1-btn .btnContent{
   position: relative;
   top:-21px;
   left:14px;
@@ -602,7 +597,7 @@ input[id$="datepicker"]{
   transition: opacity 0.5s ease;
 }
 
-.ot-r-btn {
+.kgl-r-btn {
   position: relative;
   border: none;
   width:40px;
@@ -610,7 +605,7 @@ input[id$="datepicker"]{
   padding: 0px 0px 0px 0px;
   background-color: transparent;
 }
-.ot-s-btn {
+.kgl-s-btn {
   position: relative;
   border: none;
   width:400px;
@@ -618,7 +613,7 @@ input[id$="datepicker"]{
   padding: 0px 0px 0px 0px;
   background-color: transparent;
 }
-.ot-r1-btn {
+.kgl-r1-btn {
   position: relative;
   border: none;
   width:20px;
@@ -653,13 +648,13 @@ input[id$="datepicker"]{
 	transition: all 0.5s ease;
 }
 
-.ot-s-btn:hover .greenbutton {
+.kgl-s-btn:hover .greenbutton {
 	transform: scaleX(1.02) scaleY(1.1);
     opacity: 0.75;
 
 }
 
-.ot-r-btn:hover .greenroundbutton, .ot-r1-btn:hover .greyroundbutton{
+.kgl-r-btn:hover .greenroundbutton, .kgl-r1-btn:hover .greyroundbutton{
   transform: scale(1.2);
   margin: auto;
 }
