@@ -6,7 +6,7 @@
 				<h4>Please enter a title for the new knowledge object, then	click on "Create Object".</h4>
 					<input type="text" maxlength="140" class="metaEdit inEdit"
 						v-model="newobjModel.object.metadata.title" /> <span  v-bind:class="{ nearmax:newobjModel.object.metadata.title.length>=130 }" >{{newobjModel.object.metadata.title.length}}/140</span>
-					<h4 class='ot-subtitle'> - Or - </h4>
+					<h4 class='kgl-subtitle'> - Or - </h4>
 				</div>
 				<div>
 					<fileuploader section="NEW_OBJECT" v-on:filechange="updatedisplay" :src='jsonobj'></fileuploader>
@@ -155,7 +155,7 @@ color: #fff;
 	    color: #666666;
 	    font-weight: 400;
 	}
-	.ot-subtitle {
+	.kgl-subtitle {
 		margin: 0 auto;
 	text-align: center;
 	}

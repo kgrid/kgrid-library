@@ -173,9 +173,7 @@ padding: 0px 0px;
 		height:54px;
 	    border-radius: 0px;
 	}
-.ot-login {
-	padding: 22px 0px;
-}
+
 div.login {
     width: 100%;
     position: absolute;

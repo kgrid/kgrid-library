@@ -4,7 +4,7 @@
 	  <div slot="ol-form">
 		<div class="row addtext maxheight" >
 		  <div class='col-md-6 maxheight'>
-			<div class='ot-sub'>USERS IN THIS LIBRARY</div>
+			<div class='kgl-sub'>USERS IN THIS LIBRARY</div>
 			<div class='uListContainer'>
 			  <div id='uList'>
 		        <ul>
@@ -19,7 +19,7 @@
 		      </div>
 		    </div>
 	        <div class='col-md-6 maxheight userentry'>
-			    <div class='ot-sub'>BASIC INFORMATION</div>
+			    <div class='kgl-sub'>BASIC INFORMATION</div>
 			    <form @submit.prevent="validateuserform" data-vv-scope="userform" autocomplete='off'>
 					<fieldset class='fieldcontainer maxheight' id='first'>
 					<div class='loginField'>
@@ -320,14 +320,14 @@
     border-radius: 10px;
     position: absolute;
 }
-	.ot-sub {
+	.kgl-sub {
 		border-bottom: 1px solid #b3b3b3;
 		width: 400px;
 	    padding: 5px 0px;
 		margin: 0px 10px;
 	font-size:14px;
 	}
-	.ot-sub+form{
+	.kgl-sub+form{
 		height: 100%;
 		overflow-y: auto;
 		margin: 10px 0px;

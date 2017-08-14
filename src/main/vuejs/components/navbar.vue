@@ -1,11 +1,12 @@
 <template id='navbar'>
-		<div class='ot-nav'>
-			<router-link class='navbar-brand ot-1' to='/'>
+		<div class='kgl-nav'>
+			<router-link class='navbar-brand kgl-1' to='/'>
+						<img src='../assets/images/kg-library-logo.png' height='30px' />
 			</router-link>
-			<nav class='navbar navbar-fixed-top ot-1 kg-bg-color kg-color'>
+			<nav class='navbar navbar-fixed-top kgl-1 kg-bg-color kg-color'>
 				<div class='wrapper'>
 					<div class='datagrid'>
-						<ul class='nav navbar-nav middleout'>
+						<ul class='nav navbar-nav'>
 							<router-link tag='li' :class="{'active': $route.fullPath === '/about'}" to='/about'><a><span>About</span></a></router-link>
 							<router-link tag='li' :class="{'active': $route.fullPath === '/faq'}" to='/faq'><a><span>FAQ</span></a></router-link>
 							<router-link tag='li' :class="{'active': $route.fullPath === '/contactus'}" to='/contactus'><a><span>Contact Us</span></a></router-link>
@@ -13,11 +14,11 @@
 					</div>
 				</div>
 				<div class='login-wrapper' >
-					<ul class='nav navbar-right ot-1 ' v-if='!isLoggedIn'>
+					<ul class='nav navbar-right kgl-1 ' v-if='!isLoggedIn'>
 						<li class='login-link' v-on:click='login_click'><a><span>Log In</span></a></li>
 						<li class='signup-link' v-show='false'><<a href="mailto:dlhs.knowledge.grid@umich.edu?Subject=Sign%20Up">Sign Up</a></li>
 					</ul>
-					<ul class='nav navbar-nav navbar-right ot-1'  v-else  v-click-outside='outside'>
+					<ul class='nav navbar-nav navbar-right kgl-1'  v-else  v-click-outside='outside'>
 						<li class='login-link1'>
 							<div class='dropdown' id="userDropdown" style='height:55px;'>
 								<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>
@@ -112,7 +113,7 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-.ot-1 .navbar-nav>li>a, #dLabel{
+.kgl-1 .navbar-nav>li>a, #dLabel{
 	font-size:14px;
 	font-weight: 400;
 	line-height: 2.6em;
@@ -124,23 +125,26 @@ export default {
   padding: 4px 0px 4px 0px;
   margin: 7px 0px;
 }
-.ot-nav {
+.kgl-nav {
 	z-index:50;
 }
 
 .navbar-brand{
 	background-color:#fff;
 	position:fixed;
-	padding: 0px 30px;
+	margin: 1px 0px;
+	padding: 14px 0px;
 	z-index:400;
 	top:0;
 	width:200px;
-	left:60px;
-	height:75px;
-	border:1px solid #e5e5e5;
+	left:40px;
+	height:56px;
+	border:none;
 }
 
-.ot-1 .navbar-right {
+
+
+.kgl-1 .navbar-right {
 	margin-right: 0px;
 }
 

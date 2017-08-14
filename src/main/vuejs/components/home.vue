@@ -2,27 +2,25 @@
 <div class='content'>
 	<applayout :nothelper='true'>
 		<div slot='banner'>
-			<div v-if="isLoggedIn">
-				<h1>Hello, {{firstname}}!</h1>
-				<div v-if='isAdmin'><h1>Need to invite others? <a v-on:click='userlink_click'>Add Users.</a></h1> </div>
+			<div class='bannercontent' v-if="isLoggedIn">
+				<h1>A Repository of Computable Health Knowledge where you can Store, Curate and Manage Resources and Services</h1>
 			</div>
-			<div v-else>
-				<h1>Knowledge Grid Library is a digital repository for storing, curating, and managing computer-processable knowledge. <br></h1>
-				<h1>Get Started, <a href='mailto:dlhs.knowledge.grid@umich.edu?Subject=Knowledge%20Grid%20Sign%20Up'>Sign Up</a> or <a v-on:click='login_click'> Log In </a>.</h1>
+			<div class='bannercontent' v-else>
+				<h1>A Repository of Computable Health Knowledge where you can Store, Curate and Manage Resources and Services</h1>
 			</div>
 
 
 		</div>
 		<div slot='header'>
 
-				<div v-show='isLoggedIn' class='kg-roundbtn ot-newobj' v-on:click='addObject'>
-				<span class='kg-fg-color'>Add Object</span>
+				<div v-show='isLoggedIn' class='kg-roundbtn kgl-newobj middleout' v-on:click='addObject'>
+					<a><span class='kg-fg-color middleout'>Add Object</span></a>
 				<div class='btnContent'>
 					<i class='fa fa-plus kg-fg-color'></i>
 				</div>
 			</div>
 			<div class='row'>
-				<div class='col-md-10 col-sm-10 col-xs-10 ot-search'>
+				<div class='col-md-10 col-sm-10 col-xs-10 kgl-search'>
 					<i class='fa fa-search kg-fg-color'></i>
 					<input id='searchinput' placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
@@ -36,7 +34,7 @@
 					<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
 						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
 							<button class='destroy' @click='removeString(filterstring)'>
-	  								<i class="fa fa-close kg-fg-color"></i>
+	  								<i class="fa fa-close"></i>
 							</button>
 							<label>{{ filterstring.title }}</label>
 						</li>
@@ -46,7 +44,7 @@
 									</button>
 							<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label>
 						</li>
-						<button id='clearAll' v-show=true @click='removeAllFilters'>Reset Filters</button>
+						<button id='clearAll' v-show=true @click='removeAllFilters'>Clear All Filters</button>
 					</ul>
 				</div>
 			</div>
@@ -54,11 +52,11 @@
 					<div class='col-md-2  col-sm-2 col-xs-2 filterBtnCol'>
 						<div id='filterBtn'>
 							<a v-on:click='toggleFilter'><span class='kg-fg-color' >Filters</span>
-								<i id='filterdowniconimg' class='fa fa-caret-down kg-fg-color down'></i>
+								<i id='filterdowniconimg' class='fa fa-sliders kg-fg-color down'></i>
 							</a>
 						</div>
 					</div>
-					<div class='col-md-6  col-sm-6 col-xs-6 ot-count'>
+					<div class='col-md-6  col-sm-6 col-xs-6 kgl-count'>
 						{{countString}}
 					</div>
 					<div class='col-md-4  col-sm-4 col-xs-4 lh-3 float-r'>
@@ -368,13 +366,13 @@ export default {
 			$.extend(true, self.userModel.user,obj);
 			self.isAdmin = (self.userModel.user.role=='ADMIN');
 			self.check.pri=true;
-			$('.ot-banner').addClass('loggedin');
+			$('.kgl-banner').addClass('loggedin');
 			otScroll();
 		});
 		eventBus.$on('logout', function(){
 			$.extend(true, self.userModel.user, {username:'',password:''});
 			self.isAdmin=false;
-			$('.ot-banner').removeClass('loggedin');
+			$('.kgl-banner').removeClass('loggedin');
 			otScroll();
 		});
 		eventBus.$on('objcreated', function(obj){
@@ -402,9 +400,9 @@ export default {
 	},
 	mounted:function(){
 		if(this.isLoggedIn){
-			$('.ot-banner').addClass('loggedin');
+			$('.kgl-banner').addClass('loggedin');
 		}else{
-			$('.ot-banner').removeClass('loggedin');
+			$('.kgl-banner').removeClass('loggedin');
 		}
 		$(".header").wrap('<div class="theadwrapper"></div>');
 		$(".theadwrapper").height($(".header").outerHeight(false));
@@ -611,14 +609,10 @@ export default {
 		toggleFilter: function(){
 			this.showFilterControl=!this.showFilterControl;
 	    	if(this.showFilterControl){
-	    	      $('i#filterdowniconimg').removeClass('down');  // eslint-disable-line
-	    	      $('i#filterdowniconimg').addClass('up');  // eslint-disable-line
 	    	      $('#filterBtn').addClass('tall');
 							$('#fillerdiv').addClass('tall');
 	    	}else
 	    	{
-	    	      $('i#filterdowniconimg').removeClass('up');  // eslint-disable-line
-	    	      $('i#filterdowniconimg').addClass('down');  // eslint-disable-line
 	    	      $('#filterBtn').removeClass('tall');
 							$('#fillerdiv').removeClass('tall');
 	    	}
@@ -705,7 +699,7 @@ export default {
 kgdropdown {
 	border-right: 1px solid #666666;
 }
-.ot-search {
+.kgl-search {
     display: inline-block;
     border: 1px solid #fff;
 	border-radius: 10px;
@@ -714,12 +708,12 @@ kgdropdown {
 }
 
 
-.ot-count, .ot-sort {
+.kgl-count, .kgl-sort {
 	line-height: 3em;
 padding-right: 0px;
 }
 
-.ot-search input {
+.kgl-search input {
     line-height: 2.8em;
     font-size: 14px;
     padding: 0px 0px 0px 16px;
@@ -761,22 +755,10 @@ height: 55px;
 #filterBtn a span {
 	margin: 0px -15px 0px 12px;
 }
+
 i#filterdowniconimg
 {
-margin-left:25px;
-transition: transform 0.8s ease;
-}
-i#filterdowniconimg.down {
-    -moz-transform: scaleY(1);
-    -o-transform: scaleY(1);
-    -webkit-transform: scaleY(1);
-    transform: scaleY(1);
-}
-i#filterdowniconimg.up {
-    -moz-transform: scaleY(-1);
-    -o-transform: scaleY(-1);
-    -webkit-transform: scaleY(-1);
-    transform: scaleY(-1);
+	margin-left:25px;
 }
 #filterpanel {
 	background-color:#fff;
@@ -787,13 +769,17 @@ i#filterdowniconimg.up {
 display:inline-block;
 background-color:#fff;
 margin:10px 20px 15px 0px;
-padding:12px;
+padding:12px 15px 12px 8px;
 height: 44px;
 }
+
+.filterlist li:hover *{
+	color: #0075bc;
+}
 .destroy {
-width:26px;
-height: 26px;
-	border:1px solid #0075bc;
+	width:26px;
+	height: 26px;
+	border:1px solid #fff;
 	border-radius: 100%;
 	margin: -5px 5px 0px 0px;
 	padding: 0px 0px 0px 0px;
@@ -810,27 +796,29 @@ height: 26px;
 background-color: #e6e6e6;
 font-size: 12px;
 vertical-align: top;
+color: #0075bc;
 }
 
-.ot-select {
+.kgl-select {
 	width:auto;
 	padding: 0px 36px 0px 6px;
 	height:auto;
 	display: inline-block;
 }
-.ot-banner h1 {
-    font-size: 24px;
-    font-weight: 300;
+.bannercontent {
     margin-top: 75px;
     text-align: left;
     margin-bottom: 20px;
     margin: 0 auto;
-    line-height: 1.3em;
-    padding-top: 30px;
+    line-height: 2em;
+		letter-spacing: 0.1em;
+    padding-top: 65px;
     background: transparent;
 }
-
-.ot-newobj{
+.bannercontent h1 {
+	line-height:1.3em;
+}
+.kgl-newobj{
 	width: 32px;
 	height: 32px;
 	position:absolute;
@@ -839,24 +827,19 @@ vertical-align: top;
   margin:0 auto;
   z-index:500;
 }
-.ot-newobj span {
+.kgl-newobj span {
 position: absolute;
 top:4px;
 left:-90px;
-opacity:0;
-transition:opacity 0.6s ease;
-}
-.ot-newobj:hover span {
 opacity:1;
+
 }
-.ot-newobj i {
+.kgl-newobj i {
 position: absolute;
 top: 8px;
 left:9.5px;
 }
-.ot-banner.loggedin h1 {
-    padding-top: 30px;
-}
+
 
 .row.filter {
 	height: 30px;

@@ -1,7 +1,7 @@
 	<template id= "tab-panel-template">
 		<div class="tab-content view-obj">
 			<ul>
-				<li class="ot-viewlist" v-for="field in filteredFields">
+				<li class="kgl-viewlist" v-for="field in filteredFields">
 					<fieldtile :field="field" :object="object" :isDisabled=isDisabled></fieldtile>
 				</li>
 			</ul>

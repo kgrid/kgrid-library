@@ -1,28 +1,28 @@
 <template>
-		<div class="container ot-tile" v-bind:id="object.uri" v-on:click="selected">
-				<div class="row ot-2">
-					<div class="col-md-1 col-sm-1 col-xs-1 ot-type">
+		<div class="container kgl-tile" v-bind:id="object.uri" v-on:click="selected">
+				<div class="row kgl-2">
+					<div class="col-md-1 col-sm-1 col-xs-1 kgl-type">
 						<i v-if="object.metadata.published" class='fa fa-circle kg-fg-color ft-sz-12 '></i>
 						</div>
-					<div class="col-md-11 col-sm-11 col-xs-11 ot-title kg-fg-color" data-toggle="tooltip"
+					<div class="col-md-11 col-sm-11 col-xs-11 kgl-title kg-fg-color" data-toggle="tooltip"
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
 					</div>
 
 				</div>
-				<div class="row ot-2">
-					<div class="col-md-1 col-sm-1 col-xs-1 ot-empty"></div>
-					<div class="col-md-11 col-sm-11 col-xs-11 ot-owner">{{object.metadata.owner}}</div>
+				<div class="row kgl-2">
+					<div class="col-md-1 col-sm-1 col-xs-1 kgl-empty"></div>
+					<div class="col-md-11 col-sm-11 col-xs-11 kgl-owner">{{object.metadata.owner}}</div>
 				</div>
-				<div class="row ot-2">
-					<div class="col-md-1 col-sm-1 col-xs-1 ot-empty"></div>
-					<div class="col-md-5 col-sm-5 col-xs-5 ot-keywords">Keyword: {{object.metadata.keywords}}</div>
-					<div class='col-md-6 col-sm-6 col-xs-6 ot-iddate'>
+				<div class="row kgl-2">
+					<div class="col-md-1 col-sm-1 col-xs-1 kgl-empty"></div>
+					<div class="col-md-5 col-sm-5 col-xs-5 kgl-keywords">Keyword: {{object.metadata.keywords}}</div>
+					<div class='col-md-6 col-sm-6 col-xs-6 kgl-iddate'>
 					<div class='row'>
-					<div class="col-md-7 col-sm-7 col-xs-7 ot-id">
-						<span class="ot-left">Object ID: {{object.uri}}</span>
+					<div class="col-md-7 col-sm-7 col-xs-7 kgl-id">
+						<span class="kgl-left">Object ID: {{object.uri}}</span>
 					</div>
-					<div class="col-md-5 col-sm-5 col-xs-5 ot-udate">
-						<span class="ot-right">Last Updated: <span v-text="formattedlastModified"></span></span>
+					<div class="col-md-5 col-sm-5 col-xs-5 kgl-udate">
+						<span class="kgl-right">Last Updated: <span v-text="formattedlastModified"></span></span>
 					</div></div>
 					</div>
 				</div>
@@ -82,19 +82,19 @@
 				};
 				</script>
 				<style>
-				.ot-type {
+				.kgl-type {
 				    vertical-align: middle;
 				    height: 25px;
 				    width: 60px;
 						    text-align: center;
 				}
-				.ot-empty {
+				.kgl-empty {
 				    background-color: #fff;
 			    height: 0px;
 			    width: 60px;
 				}
 
-				.ot-tile {
+				.kgl-tile {
 				    text-align: left;
 				    width: 1024px;
 				    background-color: #fff;
@@ -105,21 +105,21 @@
 				    padding: 0px ;
 						transition: all 0.8s ease;
 				}
-				.ot-tile:hover {
+				.kgl-tile:hover {
 				   border-left: 3px solid #0075bc;
 					 cursor:pointer;
 				}
 
-				.ot-tile>.row {
+				.kgl-tile>.row {
 					margin: 10px 0px;
 				}
 
-				.ot-type>i{
+				.kgl-type>i{
 					line-height:2.6em;
 
 					}
 
-.ot-title{
+.kgl-title{
 	font-size: 18px;
 	font-weight: 400;
 	white-space: nowrap;
@@ -129,7 +129,7 @@
 	width:950px;
 }
 
-.ot-owner{
+.kgl-owner{
 	font-size: 14px;
 	font-style: italic;
 	white-space: nowrap;
@@ -139,28 +139,28 @@
     padding: 0px 15px 0px 0px;
 }
 
-.ot-keywords, .ot-id, .ot-udate {
+.kgl-keywords, .kgl-id, .kgl-udate {
 	font-size: 12px;
 	white-space: nowrap;
 	overflow: hidden;
   	text-overflow: ellipsis;
     padding: 0px 15px 5px 0px;
 }
-.ot-keywords {
+.kgl-keywords {
 	width: 450px;
 }
-.ot-iddate {
+.kgl-iddate {
 	padding-right: 0px;
 }
-.ot-id {
+.kgl-id {
 	text-align: right;
 	padding-right: 0px;
 	right:-10px;
 }
-.ot-id span {
+.kgl-id span {
 
 }
-.ot-udate {
+.kgl-udate {
 	text-align: right;
 	padding: 0px;
 	width: 185px;
