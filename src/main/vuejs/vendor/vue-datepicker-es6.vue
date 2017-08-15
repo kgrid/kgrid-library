@@ -107,7 +107,7 @@
   cursor: pointer;
 }
 .cov-picker-box td:hover {
-  background: #E6E6E6;
+  background: #e5e5e5;
 }
 table {
   border-collapse: collapse;
@@ -124,7 +124,7 @@ table {
 	margin:2px;
   line-height: 24px;
   color: #666666;
-  background: #e6e6e6;
+  background: #e5e5e5;
   vertical-align: middle;
 	border: 1px solid #fff;
 	transition: all 0.3s ease;
@@ -147,13 +147,13 @@ table {
 	background-color: #fff;
 }
 .checked {
-  background: #e6e6e6;
+  background: #e5e5e5;
   color: #666666 !important;
   border-radius: 0px;
 	border: 1px solid #0075bc;
 }
 .unavailable {
-  color: #e6e6e6;
+  color: #e5e5e5;
   cursor: not-allowed;
 }
 .cov-date-monthly {
@@ -200,7 +200,7 @@ table {
   background: none;
 }
 .checked:hover {
-  background: #e6e6e6;
+  background: #e5e5e5;
 }
 .cov-date-next::before,
 .cov-date-previous::before {
@@ -394,7 +394,7 @@ export default {
           month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           format: 'YYYY-MM-DD',
           color: {
-            checkedDay: '#e6e6e6',
+            checkedDay: '#e5e5e5',
             header: '#fff',
             headerText: '#666666'
           },

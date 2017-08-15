@@ -442,7 +442,7 @@ right: 25px;
     height: 100px;
     resize: none;
     padding: 8px 16px 8px 16px;
-border: 1px solid #e6e6e6;
+border: 1px solid #e5e5e5;
 border-radius: 0px;
     color: #666666;
     margin: 0;

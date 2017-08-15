@@ -73,9 +73,31 @@
 					</p>
 				</div>
 				<div class='col-md-5 col-sm-5 col-xs-5'>
-					<div class='float-r'>
-						<p class='kg-label'>View Type:</p>
-						<vselect :value.sync="kgselect.value" :options="optionlist" :searchable='false' :noDrop='!isLoggedIn' :loading='settingPubPri':onChange='selectCallback'></vselect>
+					<div class='float-r wd-70'>
+						<p class='kg-label'>View Type</p>
+							<div v-if='isAdmin'>
+								<div class="spinner" v-if="settingPubPri">
+									<i class="fa fa-circle-o-notch fa-spin fa-fw kg-fg-color"></i>
+									<span class="sr-only">Loading...</span>
+								</div>
+								<div class='dropdown' id="pubDropdown" v-else style='height:15px;' v-click-outside='outside'>
+									<a data-target='#' v-on:click='togglePubDropdown'>
+										<div class='row float-r mar-r-12 pad-t-2 lh-1'>
+											<span class=' ft-sz-14 kg-fg-color'>{{pubState}}</span>
+											<i id='pubdropdowniconimg' class='fa fa-caret-down kg-fg-color down'></i>
+										</div>
+									</a>
+									<ul class='dropdown-menu mar-top20' id='pubdropdown' v-if='showPubDropdown'>
+										<li><a v-on:click='setPublic'><span>Public</span></a></li>
+										<li><a v-on:click='setPrivate'><span>Private</span></a></li>
+									</ul>
+								</div>
+							</div>
+							<div v-else>
+								<div class='row float-r mar-r-12 pad-t-2 lh-1'>
+									<span class=' ft-sz-14 kg-fg-color'>{{pubState}}</span>
+								</div>
+							</div>
 					</div>
 				</div>
 			</div>
@@ -106,7 +128,6 @@
 	import tabpane from './tabbedpanel.vue';
 	import {tabNav, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
 	import eventBus from '../components/eventBus.js';
-	import vselect from '../vendor/vue-select.vue';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
 		name:'ko-detail',
@@ -115,9 +136,10 @@
 				objModel : objModel,
 				sections : sections,
 				isDisabled: 1,
+				showPubDropdown:false,
+				pubpriwidth: '50px',
 				isPublic:false,
 				settingPubPri:false,
-				kgselect:{'value':''},
 				optionlist:[{'label':'Public', 'value':'public'},{'label':'Private','value':'private'}],
 				publishState: 'Unpublished',
 				userModel:{user:{username:'',password:''}},
@@ -127,9 +149,8 @@
 		},
 			components:{
 		'applayout':applayout,
-		'tabpane':tabpane,
-		vselect
-		},
+		'tabpane':tabpane
+				},
 		created : function() {
 			var self = this;
 			eventBus.$on("objSaved",function(obj){
@@ -182,11 +203,7 @@
 			retrieveObject(this.$store.state.baseurl, this.$route.params.uri, "complete", function(response) {
 				self.objModel.object = response;
 				self.isPublic = self.objModel.object.metadata.published;
-				if(self.isPublic){
-					self.kgselect.value='Public';
-				}else {
-								self.kgselect.value='Private';
-				}
+
 			}, function(response){
 				console.log("Error:");
 				console.log(response);
@@ -203,9 +220,15 @@
 	    	otScroll();
 		},
 		computed : {
+		isAdmin: function() {
+			return this.$store.getters.isAdmin;
+		},
 			isLoggedIn:function(){
 				return this.$store.getters.isLoggedIn;
 		},
+			pubState: function(){
+				return this.isPublic ? 'Public' : 'Private'
+			},
 			formattedUpdateDate : function() {
 				if(!this.objModel.object.metadata.lastModified || this.objModel.object.metadata.lastModified=="" ){
 					return ""
@@ -236,17 +259,27 @@
 			otScroll();
 		},
 		methods:{
-		selectCallback: function(val){
-			var value=val.value;
-			 console.log(value);
-			 switch(value) {
-			 case 'public':
-					this.toggleObject(true);
-					break;
-			 case 'private':
- 					this.toggleObject(false);
-					break;
-					}
+		outside: function(){
+			if(this.showPubDropdown){
+				this.togglePubDropdown();
+			}
+		},
+		togglePubDropdown: function () {
+			this.showPubDropdown=!this.showPubDropdown;
+			if(this.showPubDropdown){
+						$('#pubdropdowniconimg').removeClass('down');  // eslint-disable-line
+						$('#pubdropdowniconimg').addClass('up');  // eslint-disable-line
+			}else
+			{
+						$('#pubdropdowniconimg').removeClass('up');  // eslint-disable-line
+						$('#pubdropdowniconimg').addClass('down');  // eslint-disable-line
+			}
+			},
+		setPublic: function(){
+			this.toggleObject(true);
+		},
+		setPrivate: function(){
+			this.toggleObject(false);
 		},
 		selectTab: function(section){
 				console.log("Clicked on "+section.label);
@@ -275,6 +308,7 @@
 					published='unpublished';
 				}
 				self.settingPubPri=true;
+				self.showPubDropdown=false;
 				$.ajax({
 					beforeSend : function(xhrObj) {
 						xhrObj.setRequestHeader("Content-Type", "application/json");
@@ -396,6 +430,23 @@ margin-bottom: 0px;
     position: absolute;
 }
 
+i#pubdropdowniconimg {
+	transition: transform 0.5s linear;
+}
+i#pubdropdowniconimg.up {
+-moz-transform: scaleY(-1);
+-o-transform: scaleY(-1);
+-webkit-transform: scaleY(-1);
+transform: scaleY(-1);
+}
+
+i#pubdropdowniconimg.down {
+-moz-transform: scaleY(1);
+-o-transform: scaleY(1);
+-webkit-transform: scaleY(1);
+transform: scaleY(1);
+}
+
 
 .kgl-download{
 	width: 40px;
@@ -430,15 +481,14 @@ margin-bottom: 0px;
 
 .dropdown-menu {
 position: absolute;
-top: auto;
+top:auto;
 right: 0;
 left: auto;
 z-index: 10000;
 float: left;
-min-width: 160px;
+min-width: 80px;
 display: block;
 padding: 0;
-margin: 2px 0 0;
 font-size: 14px;
 text-align: left;
 list-style: none;
@@ -457,7 +507,7 @@ z-index:99999;
 	color: #333;
 }
 .dropdown-menu > li > a {
-    padding: 0px 35px;
+    padding: 0px 10px;
     line-height: 2.5em;
 		text-decoration: none;
     cursor: pointer;
@@ -471,5 +521,10 @@ z-index:99999;
     border: 1px solid #fff;
     border-bottom-color: transparent;
 }
-
+ul.dropdown-menu#pubdropdown {
+	width: 50px;
+}
+div.spinner {
+text-align:center;
+}
 </style>

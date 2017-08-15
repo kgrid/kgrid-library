@@ -93,7 +93,7 @@ export default {
     height: 100%;
     width:60px;
     text-align:center;
-    border-right: 1px solid #e6e6e6;
+    border-right: 1px solid #e5e5e5;
 	transition: color 0.5s ease;
 }
 

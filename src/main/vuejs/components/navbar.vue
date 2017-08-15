@@ -1,7 +1,7 @@
 <template id='navbar'>
 		<div class='kgl-nav'>
 			<router-link class='navbar-brand kgl-1' to='/'>
-						<img src='../assets/images/kg-library-logo.png' height='30px' />
+						<img src='../assets/images/kg-library-logo.png' height='30px' alt='KGrid Library'/>
 			</router-link>
 			<nav class='navbar navbar-fixed-top kgl-1 kg-bg-color kg-color'>
 				<div class='wrapper'>

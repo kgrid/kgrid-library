@@ -22,7 +22,7 @@
 			<div class='row'>
 				<div class='col-md-10 col-sm-10 col-xs-10 kgl-search'>
 					<i class='fa fa-search kg-fg-color'></i>
-					<input id='searchinput' placeholder='Search by Keywords, Title, Owners or Object ID' v-model='newstring'  @keyup.enter='addFilterString'/>
+							<input id='searchinput' aria-label='search' :placeholder='searchPlaceHolder' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
 				<div class='col-md-2 col-sm-2 col-xs-2'></div>
 			</div>
@@ -72,7 +72,7 @@
 				<div id='filterpanel' v-if='showFilterControl' >
 					<div class='row'>
 						<div class='col-md-6  col-sm-6 col-xs-6'>
-							<div class='row filter'><p>Search only within the following:</p></div>
+							<div class='row filter pad-l-20'><p>Search only within the following:</p></div>
 								<div class='row filter'>
 									<div class='col-md-4  col-sm-4 col-xs-4'>
  										<label class="custom-control custom-checkbox">
@@ -152,7 +152,7 @@
 					</div>
 				</div>
 				<div class='col-md-6 col-sm-6 col-xs-6'>
-					<div class='row'>
+					<div class='row  pad-l-20'>
 							<p>Show Knowledge Object:</p></div>
 						<div class='row filter datetype'>
 
@@ -178,7 +178,7 @@
 								</div>
 								<div class='col-md-1 col-sm-1 col-xs-1'></div>
 								</div>
-					<div class='row filter'><p>Select the type of date:</p></div>
+					<div class='row filter  pad-l-20'><p>Select the type of date:</p></div>
 					<div class='row filter datetype'>
 					<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					<div class='col-md-4 col-sm-4 col-xs-4'>
@@ -204,15 +204,15 @@
 					</div>
 					<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					</div>
-					<div class='row filter'><p>Search within the following date range:</p></div>
+					<div class='row filter  pad-l-20'><p>Search within the following date range:</p></div>
 					<div class='row filter'>
 					<div class='col-md-1 col-sm-1 col-xs-1'></div>
 						<div class='col-md-5 col-sm-5 col-xs-5 datepick'>
 							<span>Start</span>
-							<p ><date-picker :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
+							<p class=' pad-l-20' ><date-picker :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
 						<div class='col-md-5 col-sm-5 col-xs-5 datepick'>
-						<span>End</span>	<p> <date-picker :date="dateRange.endTime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></date-picker></p>
+						<span>End</span>	<p  class=' pad-l-20' > <date-picker :date="dateRange.endTime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></date-picker></p>
 						</div>
 						<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					</div>
@@ -255,8 +255,8 @@ export default {
 									{'label':'Last Updated - Oldest', 'value':'metadata.lastModified','order':'asc'},
 									{'label':'Title - Z to A','value':'metadata.title','order':'desc'},
 									{'label':'Title - A to Z','value':'metadata.title','order':'asc'},
-									{'label':'Object ID - Descending','value':'uri','order':'desc'},
-									{'label':'Object ID - Ascending','value':'uri','order':'asc'}
+									{'label':'Object ID - Z to A','value':'uri','order':'desc'},
+									{'label':'Object ID - A to Z','value':'uri','order':'asc'}
 									],
 			confirmrequest:{name:"removeallfilter",statement:"All filters will be cleared!"},
 			check:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
@@ -291,7 +291,7 @@ export default {
 		            'width': '134px'
 		          },
 		          color: {
-		            checkedDay: '#e6e6e6',
+		            checkedDay: '#e5e5e5',
 		            header: '#fff',
 		            headerText: '#666666'
 		          },
@@ -423,6 +423,25 @@ export default {
 		this.setSessionStorage();
 	  },
 	computed : {
+		searchPlaceHolder:function(){
+			var s = 'Serach by ';
+			var queryfields =[];
+			if(this.check.keywords){ queryfields.push('Keywords') }
+			if(this.check.owners){ queryfields.push('Owners') }
+			if(this.check.title){ queryfields.push('Title') }
+			if(this.check.objectID){ queryfields.push('Object ID')}
+			if(this.check.contributors){queryfields.push('Contributors')}
+			for(var i=0; i<queryfields.length;i++){
+				if(i==0){
+				 	s= s+queryfields[i];
+				} else if(i==queryfields.length-1) {
+					s=  s+' or '+queryfields[i];
+				} else {
+					s=  s+', '+queryfields[i];
+				}
+			}
+			return s
+		},
 		dateTypeText: function(){
 		  console.log("Date type " + this.dateRange.datetype);
 		  var txt=''
@@ -717,7 +736,7 @@ padding-right: 0px;
     line-height: 2.8em;
     font-size: 14px;
     padding: 0px 0px 0px 16px;
-    width:85%;
+    width:95%;
 }
 
 input[id$="datepicker"] {
@@ -793,7 +812,7 @@ height: 44px;
 	vertical-align: top;
 }
 .filterlist button#clearAll {
-background-color: #e6e6e6;
+background-color: #e5e5e5;
 font-size: 12px;
 vertical-align: top;
 color: #0075bc;
@@ -888,8 +907,8 @@ left:9.5px;
 }
 
 .custom-checkbox .custom-control-input:disabled~.custom-control-indicator {
-    background-color: #e6e6e6;
-	border: 1px solid #b3b3b3;
+    background-color: #e5e5e5;
+	border: 1px solid #555555;
 }
 .custom-checkbox .custom-control-indicator i , .custom-radio .custom-control-indicator i{
 	position:absolute;
