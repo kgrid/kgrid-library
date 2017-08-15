@@ -110,16 +110,6 @@ span.kgl-right{
 	background-color:#fff;
 }
 
-.whitebacking {
-	background-color:transparent;
-	position: relative;
-	z-index:200;
-}
-
-
-.e6backing {
-	background-color:#e6e6e6;
-}
 #bannerbk{
 	width:1584px;
 }

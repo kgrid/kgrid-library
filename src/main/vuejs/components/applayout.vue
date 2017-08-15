@@ -10,7 +10,7 @@
 					<div class="headercol">
 						<slot name="header"></slot>
 			</div></div></div>
-			<div class="e6backing">
+			<div class="e5backing">
 				<div class="wrapper">
 					<div class="datagrid">
 						<slot name="maincontent"></slot>

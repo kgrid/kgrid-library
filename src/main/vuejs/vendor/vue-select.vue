@@ -281,7 +281,7 @@
       >
 
       <i v-if="!noDrop"  role="presentation" class="open-indicator">
-					<i id='filterdowniconimg'  ref="openIndicator" class='fa fa-caret-down kg-fg-color down'></i>
+					<i ref="openIndicator" class='fa fa-caret-down kg-fg-color down'></i>
       </i>
       <slot name="spinner">
         <div class="spinner" v-show="mutableLoading">Loading...</div>
@@ -318,6 +318,7 @@
        * using 'change' event using v-on
        * @type {Object||String||null}
        */
+
       value: {
         default: null
       },
@@ -345,7 +346,7 @@
         type: String,
         default: '500px'
       },
-
+      
       /**
        * Enable/disable filtering the options.
        * @type {Boolean}

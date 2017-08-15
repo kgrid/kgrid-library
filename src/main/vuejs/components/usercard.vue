@@ -78,7 +78,7 @@
 				    margin: 10px 0px 10px 0px;
 				    color: #696969;
 				    font-weight: 400;
-				    border: 1px solid #e6e6e6;
+				    border: 1px solid #e5e5e5;
 				    padding: 0px ;
 						transition: all 0.8s ease;
 				}

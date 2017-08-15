@@ -94,8 +94,8 @@
 .dropfile {
     margin-top: 40px;
     margin-bottom: 10px;
-    border: 2px dashed #e6e6e6;
-    /* border-width: 1px; */
+    border: 2px dashed #e5e5e5;
+
     width: 970px;
     height: 140px;
     border-radius: 0px;
@@ -128,10 +128,10 @@ textArea.contentDisp {
     height: 400px;
     width: 970px;
     padding: 5px 16px;
-    border: 1px solid #e6e6e6;
+    border: 1px solid #e5e5e5;
     border-radius: 0px;
     resize: none;
-    color: #666666;
+    color: #555555;
     font-size: 14px;
     font-weight: 400;
     margin-top: 40px;

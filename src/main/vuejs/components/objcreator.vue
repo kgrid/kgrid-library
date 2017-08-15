@@ -148,7 +148,7 @@ color: #fff;
 	    width: 970px;
 	    height: 55px;
 	    padding: 0px 16px;
-	    border: 1px solid #e6e6e6;
+	    border: 1px solid #e5e5e5;
 	    border-radius: 0px;
 	    margin: 2px 0;
 	    font-size: 14px;
