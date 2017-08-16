@@ -7,15 +7,14 @@
 						<span>{{question}}</span>
 				</div>
 				<div class='loginField'>
-					<div class='kgl-s-btn kgl-login'  @click="ok_clicked">
+					<div class='kgl-login'  @click="ok_clicked">
 
 					  <div class='btnContent'>
 						 		<button class='login'  @click="ok_clicked">OK</button></div>
 						</div>
 				</div>
 				<div class='loginField'>
-						<div class='kgl'-s-btn kgl-login'>
-
+						<div class='kgl-login'>
 							<div class='btnContent'>
 								<button class='login cancel' @click="cancel_clicked">Cancel</button></div>
 							</div>
@@ -100,8 +99,6 @@ button.login:hover {
 }
 button.login.cancel {
 	border:none;
-	background-color:#e5e5e5;
-	color:#555555;
 }
 .fieldcontainer {
     display: block;
@@ -112,11 +109,6 @@ margin: 0 auto;
 padding: 0px 20px;
 }
 
-.kgl-s-btn .btnContent{
-	  position: relative;
-	  top:-86px;
-	  left:0px;
-	}
 .kgl-login {
 	padding: 22px 0px;
 }

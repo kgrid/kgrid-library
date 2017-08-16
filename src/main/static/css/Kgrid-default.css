@@ -229,3 +229,15 @@ div.actionicon i {
 	margin: 6px;
 	font-size: 15px;
 }
+/* Buttons*/
+.kgl-close {
+	position: relative;
+	top: 0px;
+	left: 0px;
+  border: none;
+  width: 55px;
+  height: 55px;
+  line-height: 55px;
+  padding: 0px 0px 0px 0px;
+  background-color: transparent;
+}
