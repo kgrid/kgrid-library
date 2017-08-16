@@ -11,9 +11,11 @@
 				<div>
 					<fileuploader section="NEW_OBJECT" v-on:filechange="updatedisplay" :src='jsonobj'></fileuploader>
 				</div>
-				<div>
-					<button class="done_btn" v-on:click="createObj">Create Object</button>
-				</div>
+				
+			</div>
+			<div slot='buttons'>
+								<button class="kg-btn-secondary" style='display:none;' v-on:click="closeOverlay">Cancel</button>
+								<button class="kg-btn-primary"  v-on:click="createObj">Create Object</button>
 			</div>
 		<div slot="ol-processing">Processing...</div>
 		<div slot="ol-success">New object succesfully created!!! Object ID:{{newobjModel.object.uri}}</div>
@@ -52,6 +54,9 @@
 		}
 	},
 	methods:{
+	closeOverlay: function(){
+		eventBus.$emit('exit');
+	},
 		createObj:function(){
 			var self=this;
 			var text = JSON.stringify(self.newobjModel.object);

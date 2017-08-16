@@ -36,7 +36,7 @@
 .kgl-viewlist input, .kgl-viewlist div, .kgl-viewlist h4{
 	background-color: #fff;
 	padding: 0px;
-	color: #666666;
+	color: #555555;
 	font-weight: 400;
 	font-size: 14px;
 	border-radius: 5px;
@@ -46,7 +46,7 @@
 
 
 span.kgl-right{
-	border-left: 1px solid #666666;
+	border-left: 1px solid #555555;
 	padding: 0px 0px 0px 10px;
 }
 
@@ -200,11 +200,11 @@ ul#edittabs li.middleout:after {
 
 ul#edittabs li:hover, ul#tabs li:hover{
 	background-color: transparent;
-	color: #666666;
+	color: #555555;
 }
 
 ul#edittabs li.active {
-	color: #666666;
+	color: #555555;
 
 }
 
@@ -273,7 +273,7 @@ h3 {
 }
 
 h4 {
-    color: #666666;
+    color: #555555;
     font-weight: 400;
     font-size: 14px;
     padding: 16px 16px;
@@ -301,7 +301,7 @@ textarea {
 .current-tab span{
 /* 	border-bottom: 2px solid #39b54a; */
 	padding-bottom:2px;
-	color:#666666;
+	color:#555555;
 
 }
 
@@ -358,7 +358,7 @@ input[id$="datepicker"]{
 	  top:-18px;
 	  right:-18px;
 	  z-index: 1000;
-	  box-shadow: 1px 1px #666666;
+	  box-shadow: 1px 1px #555555;
 	}
 	.delete_btn, .edit_btn{
 		display:inline-block;
@@ -375,7 +375,7 @@ input[id$="datepicker"]{
 
 
 	.delete_btn:hover, .edit_btn:hover{
-		color:#666666;
+		color:#555555;
 	}
 
 	.edit {
@@ -392,7 +392,7 @@ input[id$="datepicker"]{
 	}
 
 	.edit:hover{
-		color: #666666;
+		color: #555555;
 	}
 
 	.done {
@@ -412,7 +412,7 @@ input[id$="datepicker"]{
 	}
 
 	 #filterBtn a:hover, #filterBtn a:visited {
-	 	color: #666666;
+	 	color: #555555;
 	 }
 
 
@@ -474,20 +474,6 @@ input[id$="datepicker"]{
 
 .noscroll { overflow: hidden; }
 
-.greenroundbutton {
-    border: none;
-		width: 40px;
-		height: 40px;
-		border-radius: 100%;
-		color: white;
-		background-color: #39b54a;
-		border: none;
-		font-size: 20px;
-		margin: auto;
-		box-shadow: 0 2px 2px rgba(0, 0, 0, 0.35);
-		transition: transform 0.5s ease;
-}
-
 .roundbutton {
   font-family: 'Open Sans', sans-serif;
     width:35px;
@@ -495,7 +481,7 @@ input[id$="datepicker"]{
     border-radius: 100%;
     color:dimgrey;
     background-color:white;
-    border:1px solid #666666;
+    border:1px solid #555555;
     font-size:12pt;
     font-weight: 300;
     margin:0 -5px;
@@ -508,18 +494,6 @@ input[id$="datepicker"]{
 .roundbutton p{
   padding:6px 0;
 }
-.mediumgreenroundbutton {
-    width:22px;
-    height:22px;
-    border-radius: 100%;
-    color:white;
-    background-color:#39b54a;
-    border:none;
-}
-
-.mediumgreenroundbutton img {
-		margin-bottom: 3px;
-	}
 
 
 	.saveChange{
@@ -568,95 +542,13 @@ input[id$="datepicker"]{
     background-color:#0075bc;
 }
 
-.greenroundbutton:hover {
-    transform: scale(1.2);
-}
-
-
-.kgl-r-btn .btnContent{
-  position: relative;
-  top:-30px;
-  left:13px;
-}
-
-.kgl-r1-btn .btnContent{
-  position: relative;
-  top:-21px;
-  left:14px;
-  opacity: 0.5;
-  transition: opacity 0.5s ease;
-}
-
-.kgl-r-btn {
-  position: relative;
-  border: none;
-  width:40px;
-  height:40px;
-  padding: 0px 0px 0px 0px;
-  background-color: transparent;
-}
-.kgl-s-btn {
-  position: relative;
-  border: none;
-  width:400px;
-  height:50px;
-  padding: 0px 0px 0px 0px;
-  background-color: transparent;
-}
-.kgl-r1-btn {
-  position: relative;
-  border: none;
-  width:20px;
-  height:20px;
-  padding: 0px 0px 0px 0px;
-  background-color: transparent;
-}
-
-
-.greyroundbutton {
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
-    color: white;
-    background-color: transparent;
-    border: 1px solid #b3b3b3;
-    font-size: 20px;
-    margin: auto;
-	transition: all 0.5s ease ;
-}
-
-
-.greenbutton {
-    width: 400px;
-    height: 50px;
-    border-radius: 0px;
-    color: white;
-    background-color: #39b54a;
-    border: none;
-    font-size: 20px;
-    margin: auto;
-	transition: all 0.5s ease;
-}
-
-.kgl-s-btn:hover .greenbutton {
-	transform: scaleX(1.02) scaleY(1.1);
-    opacity: 0.75;
-
-}
-
-.kgl-r-btn:hover .greenroundbutton, .kgl-r1-btn:hover .greyroundbutton{
-  transform: scale(1.2);
-  margin: auto;
-}
-
-
 /* CSS for InfoGrid */
 .infogrid {
 	background-color: #fff;
 	position: relative;
 	width: 1028px;
 	font-family: 'Open Sans', sans-serif;
-	color: #666666;
+	color: #555555;
 	overflow: hidden;
 	max-width: 1024px;
 	text-align: center;
@@ -669,7 +561,7 @@ input[id$="datepicker"]{
 	width: 100%;
 	font-size: 21px;
 	font-weight: 300;
-	color: #666666;
+	color: #555555;
 	padding-top: 25px;
 	padding-bottom: 20px;
 }
@@ -691,7 +583,7 @@ input[id$="datepicker"]{
 
 .line hr {
 	border: 1px solid #fff;
-	border-bottom-color: #b3b3b3;
+	border-bottom-color: #555555;
 	color: #fff;
 }
 
@@ -704,14 +596,7 @@ input[id$="datepicker"]{
 	width: 100%;
 	font-size: 14px;
 	font-weight: 400;
-	color: #666666;
+	color: #555555;
 	padding-top: 0px;
 	line-height: 1.8em;
-}
-
-
-.m_logo_footer {
-	text-align: center;
-	padding-top: 30px;
-	padding-bottom: 30px;
 }

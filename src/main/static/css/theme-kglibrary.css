@@ -6,11 +6,18 @@
   background-color: #fff;
 }
 .kg-font-color-1 {
-  color: #666666;
+  color: #555555;
 }
 
 .kg-font-color-r {
   color: #ffffff;
+}
+.kg-btn-close {
+  color: #555555;
+  transition: color 0.6s ease;
+}
+.kg-btn-close:hover * {
+  color: #0075bc;
 }
 
 .kg-btn-bg-primary {
@@ -68,7 +75,7 @@ a, a:hover, a:visited, a:focus {
 
 .kg-btn-secondary {
   border: none;
-  color: #666666;
+  color: #0057bc;
   background-color: #fff;
   font-size: 14px;
   font-weight: 400;

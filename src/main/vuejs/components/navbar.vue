@@ -116,7 +116,7 @@ export default {
 .kgl-1 .navbar-nav>li>a, #dLabel{
 	font-size:14px;
 	font-weight: 400;
-	line-height: 2.6em;
+	line-height: 2.8em;
   letter-spacing: 0.05em;
 	background-color: transparent;
   background-image: none;
@@ -185,7 +185,7 @@ transform: scaleY(1);
 	padding: 0px;
 	left: initial;
 	right: -18px;
-	margin-top: 10px;
+	margin-top: -10px;
 	box-shadow: none;
 	border-radius: 0px;
 	display:block;
@@ -194,7 +194,7 @@ transform: scaleY(1);
 
 #userDropdown.dropdown ul li {
     height: 2.5em;
-    line-height: 2.5em;
+    line-height: 2.8em;
     text-align: left;
 		display: list-item;
 }
@@ -202,7 +202,7 @@ transform: scaleY(1);
     background-color: #e8e8e8;
 }
 #adduserBtn, #logoutBtn {
-    line-height: 2.4em;
+    line-height: 2.5em;
     text-decoration: none;
     border: none;
     cursor: pointer;

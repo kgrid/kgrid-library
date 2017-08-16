@@ -2,10 +2,10 @@
 <transition name='modal'>
 <div class='modal-mask'>
 	<div class='ol_narrow_pane'>
-		<div class='sidebar_close' v-on:click='closeOverlay'>
-			<h3><span class='kg-fg-color'>CLOSE</span></h3>
-			<div class='kgl-r-btn kgl-close' >
-				<i class="fa fa-close kg-fg-color" aria-hidden="false"></i>
+		<div class='sidebar_close kg-btn-close' v-on:click='closeOverlay'>
+			<h3><span>Close</span></h3>
+			<div class='kgl-close' >
+				<i class="fa fa-close" aria-hidden="false"></i>
 			</div>
 		</div>
 		<div class='overlay-top'>
@@ -88,17 +88,12 @@ export default {
 
 .sidebar_close {
     background-color:#fff;
-	color: #b3b3b3;
     position:absolute;
     height: 100%;
-    width:60px;
+    width:55px;
     text-align:center;
     border-right: 1px solid #e5e5e5;
-	transition: color 0.5s ease;
-}
-
-.sidebar_close:hover {
-	color: #666666;
+		cursor:pointer;
 }
 
 .sidebar_close h3{
@@ -113,8 +108,6 @@ export default {
     -ms-transform: rotate(270deg);
     -o-transform: rotate(270deg);
     transform: rotate(270deg);
-		transition: color 0.5s ease;
-		color: #b3b3b3;
 }
 #close_overlay {
     position: relative;
@@ -122,29 +115,7 @@ export default {
     width:28px;
     height:28px;
 }
-.kgl-close {
-	position: relative;
-	top: 21px;
-	left: 11px;
-}
-.kgl-close .greenroundbutton {
-	width: 28px;
-    height: 28px;
-box-shadow: none;
-}
-.kgl-close .btnContent {
-	postion: relative;
-	top: -24px;
-left: 0px;
-}
 
-.sidebar_close:hover h3{
-	color: #666666;
-}
-.sidebar_close:hover .greenroundbutton{
-	  transform: scale(1.2);
-	  margin: auto;
-}
 .overlay-top {
     height: 120px;
     width: 494px;
@@ -187,21 +158,23 @@ left: 0px;
 }
 
 .success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
+    color: #0075bc;
+    background-color: trnasparent;
+    border:none;
     display: none;
 }
 
 .processing{
-	   border-color: #d6e9c6;
+		color: #0075bc;
+		 background-color: #fff;
+		 border:none;
     display: none;
 
 }
 .failure {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
+    color: #a02816;
+    background-color: #fff;
+    border:none;
     display: none;
 }
 

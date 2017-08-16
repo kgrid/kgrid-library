@@ -7,7 +7,7 @@
 										data-multiple-caption="{count} files selected" multiple style="display: none;"/>
 				<label :for="selectfile" id="filecount">
 					<i class='fa fa-cloud-upload fa-2x kg-fg-color'></i>
-					<p class="green">CHOOSE_FILE_FOR_{{section}}</p>
+					<p class="kg-fg-color"><a><span class='middleout'>CHOOSE_FILE_FOR_{{section}}</span></a></p>
 				</label>
 			</div>
 	</div></div>

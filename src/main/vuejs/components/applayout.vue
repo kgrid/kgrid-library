@@ -29,3 +29,11 @@ export default {
       props: ['nothelper']
   };
 </script>
+<style>
+
+.m_logo_footer {
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+</style>

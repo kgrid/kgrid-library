@@ -743,10 +743,10 @@ input[id$="datepicker"] {
     width: 150px;
 }
 #filterBtn, #fillerdiv {
-    background-color: #fff;
-    margin: 0px 0px 0px 0px;
-    padding: 12px 0px 12px 0px;
-    text-align: center;
+  background-color: #fff;
+  margin: 0px 0px 0px 0px;
+  padding: 12px 0px 12px 0px;
+  text-align: center;
 	cursor: pointer;
 	width: 100px;
 	height: 45px;

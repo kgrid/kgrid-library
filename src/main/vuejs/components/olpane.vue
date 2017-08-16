@@ -2,10 +2,10 @@
 <transition name='modal'>
 	<div class="modal-mask">
 		<div class="ol_pane" >
-			<div class='sidebar_close'   v-on:click='closeOverlay'>
-				<h3><span class='kg-fg-color'>Close</span></h3>
-				<div class='kgl-r-btn kgl-close'>
-					<i class="fa fa-close kg-fg-color" aria-hidden="false"></i>
+			<div class='sidebar_close kg-btn-close'   v-on:click='closeOverlay'>
+				<h3><span>Close</span></h3>
+				<div class='kgl-close'>
+					<i class="fa fa-close " aria-hidden="false"></i>
 				</div>
 			</div>
 			<div class="overlay-top">
@@ -99,18 +99,12 @@ export default {
 
 .sidebar_close {
     background-color:#fff;
-		color: #b3b3b3;
     position:absolute;
     height: 100%;
-    width:60px;
+    width:55px;
     text-align:center;
     border-right: 1px solid #e5e5e5;
-		transition: color 0.5s ease;
 		cursor:pointer;
-}
-
-.sidebar_close:hover {
-	color: #666666;
 }
 
 .sidebar_close h3{
@@ -118,45 +112,19 @@ export default {
     line-height:60px;
     vertical-align:middle;
     top:40px;
-    left:12px;
+    left:10px;
     font-size:14px;
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
     -ms-transform: rotate(270deg);
     -o-transform: rotate(270deg);
     transform: rotate(270deg);
-	transition: color 0.5s ease;
-color: #b3b3b3;
-}
+	}
 #close_overlay {
     position: relative;
     top:10px;
     width:28px;
     height:28px;
-}
-.kgl-close {
-	position: relative;
-	top: 21px;
-	left: 11px;
-	cursor: pointer;
-}
-.kgl-close .greenroundbutton {
-	width: 28px;
-    height: 28px;
-box-shadow: none;
-}
-.kgl-close .btnContent {
-	position: relative;
-	top: -24px;
-left: 0px;
-}
-
-.sidebar_close:hover h3{
-	color: #666666;
-}
-.sidebar_close:hover .greenroundbutton{
-	  transform: scale(1.2);
-	  margin: auto;
 }
 
 .overlay-top {
