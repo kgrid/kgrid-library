@@ -37,20 +37,24 @@ import edu.umich.lhs.library.knowledgeObject.Version;
 @Service
 public class KnowledgeObjectService {
 
-	@Autowired
-	private IdService idService;
+	private final IdService idService;
 
-	@Autowired
-	private FusekiService fusekiService;
+	private final FusekiService fusekiService;
 
-	@Autowired
-	private FCRepoService fcRepoService;
+	private final FCRepoService fcRepoService;
 
-	@Autowired
-	private VersioningService versioningService;
+	private final VersioningService versioningService;
 
 	private static final Logger logger = Logger.getLogger(KnowledgeObjectService.class);
 
+	@Autowired
+	public KnowledgeObjectService(IdService idService, FusekiService fusekiService,
+			FCRepoService fcRepoService, VersioningService versioningService) {
+		this.idService = idService;
+		this.fusekiService = fusekiService;
+		this.fcRepoService = fcRepoService;
+		this.versioningService = versioningService;
+	}
 
 	// We can use namespace objects (like below) or a list of namespaces instead of passing namespace
 	// strings to the serializer when this pinto bug is fixed: https://github.com/stardog-union/pinto/issues/21
