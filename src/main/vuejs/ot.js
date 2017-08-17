@@ -46,10 +46,12 @@ export function overlayHeightResize() {
 	var boardHeight = (ol_pane_height - 200);
 	var formHeight = (boardHeight - 150);
 	var liHeight = (formHeight - 4);
+	var listHeight =(formHeight-100);
 	$('.ol_pane').css("height", ol_pane_height + "px");
 	$('.overlay-board').css("height", boardHeight + "px");
 	$('.entryform').css("height", formHeight + "px");
 	$('ul#edittab>li').css("height", liHeight + "px");
+	$('#uList').css("max-height", listHeight + "px");
 	// console.log("Heights:Pane="+ol_pane_height+" Board="+boardHeight+" Form="+formHeight+"Li="+liHeight);
 	return ol_pane_height;
 }

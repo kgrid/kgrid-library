@@ -380,10 +380,11 @@ input[id$="datepicker"]{
 
 	.edit {
 		background-color: #fff;
-		color: #b3b3b3;
+		color: #0075bc;
 		font-size: 14px;
 		font-weight: 400;
 		padding-left: 22px;
+		line-height: 2.5em;
 		border: none;
 		outline: none;
 		cursor: pointer;
@@ -472,7 +473,6 @@ input[id$="datepicker"]{
     border-radius: 4px 4px 0 0;
 }
 
-.noscroll { overflow: hidden; }
 
 .roundbutton {
   font-family: 'Open Sans', sans-serif;

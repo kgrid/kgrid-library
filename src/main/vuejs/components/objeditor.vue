@@ -136,10 +136,10 @@
 							<button class="kg-btn-secondary" v-on:click="undoEdit" id="cancelBtn">CANCEL</button>
 							<button class="kg-btn-primary" id="saveObjButton" v-on:click="saveObj">SAVE & CLOSE</button>
 		</div>
-		<div slot="ol-processing">Processing...</div>
-		<div slot="ol-success">Update Successful !!!</div>
-		<div slot="ol-failure">Update Failure! </div>
-		<div slot="ol-warning">Warning !!!</div>
+		<div slot="ol-processing"><span>Processing...</span></div>
+		<div slot="ol-success"><span>Update Successful !!!</span></div>
+		<div slot="ol-failure"><span>Update Failure! </span></div>
+		<div slot="ol-warning"><span>Warning !!!</span></div>
 	</olpane>
 	<div v-if="showSecOverlay.show">
 			<linkedfieldeditor v-bind:inedit="inEdit" v-bind:srcfield="srcFieldModel.object" v-on:slideout="update"></linkedfieldeditor>
@@ -266,14 +266,14 @@ export default {
 				data : text,
 				dataType : "json",
 				success : function(response) {
-				console.log(response);
-					if ((response != 'empty') && (response != null)) {
-						eventBus.$emit("objSaved",response);
-					}
+					console.log(response);
+
 
 				$("div.processing").fadeOut(200);
 					$("div.success").fadeIn(300).delay(2000).fadeOut(400, function(){
-
+						if ((response != 'empty') && (response != null)) {
+							eventBus.$emit("objSaved",response);
+							}
 						});
 
 				},

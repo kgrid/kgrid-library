@@ -91,7 +91,7 @@ var vm = new Vue({
 	created: function(){
 		var self=this;
     console.log('Knowledge Grid Library Web Application');
-    console.log('Build 20170804B');
+    console.log('Build 20170817A');
 		eventBus.$on('404', function(){
 			router.push({path:'*'});
 		});

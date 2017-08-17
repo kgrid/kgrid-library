@@ -14,8 +14,10 @@
 
 		      </div>
 		      <div id='emptyuser' @click='adduser'>
-            <span class='kg-fg-color'>Add User to this Library</span> <i class='fa fa-plus kg-fg-color'></i>
-          </div>
+          <div class='kg-roundbtn kgl-newuser middleout'>
+            <a><span class='kg-fg-color'>Add New User</span></a>
+            <div class='btnContent'><i class='fa fa-plus kg-fg-color'></i></div>
+          </div></div>
 		      </div>
 		    </div>
 	        <div class='col-md-6 maxheight userentry'>
@@ -154,6 +156,9 @@
 
 			    })
 	},
+  mounted:function(){
+    		overlayHeightResize();
+  },
 	components: {
 		olpane:olpane,
 		usercard
@@ -273,13 +278,13 @@
 	}
 	.uListContainer {
 		height:100%;
-		padding: 0px;
-	border-right: 1px solid #e3e3e3;
+		padding: 0px 22px 0px 0px;
+	  border-right: 1px solid #e5e5e5;
 	}
 	#uList {
 		margin: 10px 0px;
 		padding: 0px 10px;
-	height: 88%;
+
 	max-height: 650px;
 	overflow: auto;
 
@@ -342,6 +347,7 @@
 		 width: 400px;
 	   height: 50px;
      border: 1px solid #666666;
+     padding: 0 0 0 16px;
 	}
 	.fieldcontainer {
 		padding:0px 10px;
@@ -395,8 +401,9 @@ margin:0px;
   color: #fff;
   }
 	button.user:disabled {
-		background-color: #b3b3b3;
-	   border: 1px solid #b3b3b3;
+		background-color: #e5e5e5;
+	   border: 1px solid #e5e5e5;
+     color: #fff;
 	}
   button.edit {
     position: absolute;
@@ -413,20 +420,34 @@ margin:0px;
 		  height: 75px;
 	    background-color: #fff;
 	    margin: 10px 0px 10px 10px;
-	    color: #696969;
 	    font-weight: 400;
       font-size: 14px;
-	    border:1px dashed #0075bc;
+	    border:none;
 	    padding: 0px ;
       text-align: center;
-      line-height: 75px;
       cursor: pointer;
 	}
-  #emptyuser span{
-    position: relative;
-    top: auto;
-    left: auto;
-    margin-right: 10px;
+
+  .kgl-newuser{
+  	width: 32px;
+  	height: 32px;
+  	position:absolute;
+  	top: 25px;
+    right:150px;
+    margin:0 auto;
+    z-index:500;
+  }
+  .kgl-newuser span {
+  position: absolute;
+  top:5px;
+  left:-110px;
+  opacity:1;
+  border: none;
+  }
+  .kgl-newuser i {
+  position: absolute;
+  top: 8px;
+  left:9.5px;
   }
 	.maxheight {
 		height: 100%;

@@ -75,7 +75,7 @@ a, a:hover, a:visited, a:focus {
 
 .kg-btn-secondary {
   border: none;
-  color: #0057bc;
+  color: #0075bc;
   background-color: #fff;
   font-size: 14px;
   font-weight: 400;
@@ -131,3 +131,7 @@ input[type=textarea]
 	color: #0075bc;
 	filter:grayscale(30%);
 }*/
+
+.alert-box  div>span {
+	color: #fff;
+}

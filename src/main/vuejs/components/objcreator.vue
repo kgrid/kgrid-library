@@ -11,13 +11,13 @@
 				<div>
 					<fileuploader section="NEW_OBJECT" v-on:filechange="updatedisplay" :src='jsonobj'></fileuploader>
 				</div>
-				
+
 			</div>
 			<div slot='buttons'>
 								<button class="kg-btn-secondary" style='display:none;' v-on:click="closeOverlay">Cancel</button>
 								<button class="kg-btn-primary"  v-on:click="createObj">Create Object</button>
 			</div>
-		<div slot="ol-processing">Processing...</div>
+		<div slot="ol-processing"><span>Processing...</span></div>
 		<div slot="ol-success">New object succesfully created!!! Object ID:{{newobjModel.object.uri}}</div>
 		<div slot="ol-failure">Creation of new object Failed! </div>
 		<div slot="ol-warning">Warning !!!</div>

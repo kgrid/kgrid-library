@@ -161,13 +161,13 @@ export default {
 }
 .alert-box {
 	position:absolute;
-	left:100px;
-	bottom:0px;
-	padding: 15px;
-    margin-bottom: 20px;
+	left:0px;
+	bottom:30px;
+	padding: 12px;
+    margin-bottom: 0px;
     border: 1px solid transparent;
     border-radius: 0px;
-    width:400px;
+    width:600px;
 }
 
 .formbutton {
@@ -176,20 +176,19 @@ export default {
 	right: 0px;
 }
 .success {
-    color: #fff;
-    background-color: #00b5af;
-    border-color: #00b5af;
+
+    background-color: #0075bc;
+    border-color: #0075bc;
     display: none;
 }
 
 .processing{
-	  border-color: #0075bc;
-		    background-color:#0075bc;
+	  border-color: #e5e5e5;
+		background-color:#e5e5e5;
     display: none;
-
 }
 .failure {
-    color: #fff;
+
     background-color: #a02816;
     border-color: #a02816;
     display: none;
