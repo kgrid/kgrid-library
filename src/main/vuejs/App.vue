@@ -46,10 +46,6 @@ export default {
       self.showOverlay.show = true;
       self.currentOLView = 'login';
       document.body.classList.toggle('noscroll', true);
-      $('#ol').addClass('animated slideInRight');
-      $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-    	  $('#ol').removeClass('animated slideInRight');
-      });
     });
     eventBus.$on('confirmRequest', function (data) {
       $.extend(true,self.request, data);
@@ -61,37 +57,16 @@ export default {
         self.showOverlay.show = true;
         self.currentOLView = 'libraryusers';
         document.body.classList.toggle('noscroll', true);
-        $('#ol').addClass('animated slideInRight');
-        $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-      	  $('#ol').removeClass('animated slideInRight');
-        });
-      });
-    eventBus.$on('openLibSetting', function () {
-        self.showOverlay.show = true;
-        self.currentOLView = 'librarysetting';
-        document.body.classList.toggle('noscroll', true);
-        $('#ol').addClass('animated slideInRight');
-        $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-      	  $('#ol').removeClass('animated slideInRight');
-        });
       });
       eventBus.$on('confirm', function (data) {
         console.log(data);
         self.showOverlay.show = false;
-        $('#ol').addClass('animated slideOutRight');
-        $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-          $('#ol').removeClass('animated slideOutRight');
-        });
         document.body.classList.toggle('noscroll', false);
         });
     eventBus.$on('hideOverlay', function (layerid) {
       switch (layerid) {
         case '0':
           self.showOverlay.show = false;
-          $('#ol').addClass('animated slideOutRight');
-          $('#ol').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-        	  $('#ol').removeClass('animated slideOutRight');
-          });
           document.body.classList.toggle('noscroll', false);
           break;
         case '1':

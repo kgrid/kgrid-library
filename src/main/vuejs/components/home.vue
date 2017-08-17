@@ -606,18 +606,7 @@ export default {
 				break
 			}
 	},
-	login_click: function () {
-		eventBus.$emit('openLogin'); // eslint-disable-line
-	},
-		userlink_click: function () {
-	      eventBus.$emit('openUserManagement'); // eslint-disable-line
-	    },
-		settinglink_click: function () {
-		      eventBus.$emit('openLibSetting'); // eslint-disable-line
-		    },
-				setlibrary: function () {
-							eventBus.$emit('openLibCon'); // eslint-disable-line
-						},
+
 		toggleOrder : function() {
 			if (this.order == 'asc') {
 				this.order = 'desc';

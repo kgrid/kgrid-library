@@ -1,5 +1,5 @@
 <template id='confirm_overlay'>
-	<olnpane layerid=0>
+	<olnpane layerid=9>
 		<div slot='ol-title'><h3>Confirmation Dialog</h3></div>
 		<div slot='ol-form'>
 				<div class='loginField'>
@@ -83,17 +83,17 @@ div.login {
 	 transition: opacity 0.2s ease;
 }
 button.login {
- border:1px solid #0057bc;
+ border:1px solid #0075bc;
  width: 100%;
  position: absolute;
  height: 100%;
  text-align:center;
  background-color:#fff;
- color:#0057bc;
+ color:#0075bc;
  transition: all 0.8s ease;
 }
 button.login:hover {
- background-color:#0057bc;
+ background-color:#0075bc;
  color:#fff;
 
 }
