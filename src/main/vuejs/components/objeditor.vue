@@ -186,9 +186,12 @@ export default {
 			self.resetSrcField();
 		});
 		eventBus.$on('hideOverlay',function(id){
-			if(id==1) self.showSecOverlay.show=false;
-			editObjModel.object.metadata.citations.pop();
-			self.resetSrcField();
+			if(id==1) {
+			 	self.showSecOverlay.show=false;
+				if((self.inEdit=='Citation')&&(self.srcFieldModel.object.title==''))
+		  		editObjModel.object.metadata.citations.pop();
+				self.resetSrcField();
+			}
 		});
 		eventBus.$on('confirm', function (data) {
 			console.log(data);
