@@ -30,7 +30,7 @@ public class FcrepoHealthIndicator extends AbstractHealthIndicator {
     @Autowired
     FCRepoService fcrepoService;
 
-    @Value("${library.name:ObjectTeller3000}")
+    @Value("${library.name:Library}")
     String libraryName;
 
     @Override
@@ -44,30 +44,27 @@ public class FcrepoHealthIndicator extends AbstractHealthIndicator {
 
         try {
             fcrepoService.ping();
-
-            try {
-                Document page = getHomePage();
-
-                Properties versionInfo = getVersionInfo(page);
-
-                builder.withDetail("fedoraCommonsReleaseInfo", versionInfo);
-
-            } catch (IOException e) {
-                builder.withDetail("fedoraCommonsReleaseInfo", e.getMessage());
-            }
-
         } catch (Exception e){
             builder.down(e);
         }
 
+        try {
+            Document page = getHomePage();
+            builder.withDetail("fcrepo.info", getVersionInfo(page));
+        } catch (IOException e) {
+            builder.withDetail("fcrepo.info", e.getMessage());
+        }
         log.info(builder.build());
     }
 
     private Properties getVersionInfo(Document page) {
         Properties versionInfo = new Properties();
+
+        versionInfo.setProperty("release", page.select(".navbar .navbar-text").text()); // old format
         versionInfo.setProperty("version", page.select("#version").text());
         versionInfo.setProperty("build", page.select("#build").text());
         versionInfo.setProperty("timestamp", page.select("#timestamp").text());
+
         return versionInfo;
     }
 
