@@ -1,12 +1,23 @@
 package edu.umich.lhs.library.services;
 
+import edu.umich.lhs.library.exception.LibraryException;
+import edu.umich.lhs.library.fedoraGateway.FCRepoService;
+import org.apache.http.Header;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
-import edu.umich.lhs.library.fedoraGateway.FCRepoService;
+
+import java.io.IOException;
+import java.util.Properties;
 
 @Component
 public class FcrepoHealthIndicator extends AbstractHealthIndicator {
@@ -33,8 +44,44 @@ public class FcrepoHealthIndicator extends AbstractHealthIndicator {
 
         try {
             fcrepoService.ping();
+
+            try {
+                Document page = getHomePage();
+
+                Properties versionInfo = getVersionInfo(page);
+
+                builder.withDetail("fedoraCommonsReleaseInfo", versionInfo);
+
+            } catch (IOException e) {
+                builder.withDetail("fedoraCommonsReleaseInfo", e.getMessage());
+            }
+
         } catch (Exception e){
             builder.down(e);
         }
+
+        log.info(builder.build().getDetails());
+    }
+
+    private Properties getVersionInfo(Document page) {
+        Properties versionInfo = new Properties();
+        versionInfo.setProperty("version", page.select("#version").text());
+        versionInfo.setProperty("build", page.select("#build").text());
+        versionInfo.setProperty("timestamp", page.select("#timestamp").text());
+        return versionInfo;
+    }
+
+    private Document getHomePage() throws LibraryException, IOException {
+
+        // fetch the base page and extract the release info, use fcrepo service
+        // to configure the request and authorization
+        HttpGet request = new HttpGet(fcrepoService.getBaseURI().resolve(".."));
+        Header authHeader = fcrepoService.authenticate(request);
+        request.addHeader(authHeader);
+        HttpClient httpClient = HttpClientBuilder.create().build();
+
+        String content = httpClient.execute(request, new <String>BasicResponseHandler());
+
+        return Jsoup.parse(content);
     }
 }
