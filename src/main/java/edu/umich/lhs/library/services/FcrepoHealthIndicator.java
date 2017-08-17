@@ -60,7 +60,7 @@ public class FcrepoHealthIndicator extends AbstractHealthIndicator {
             builder.down(e);
         }
 
-        log.info(builder.build().getDetails());
+        log.info(builder.build());
     }
 
     private Properties getVersionInfo(Document page) {
