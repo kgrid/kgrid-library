@@ -49,6 +49,13 @@ public class FCRepoService {
 
 	private static final Logger logger = Logger.getLogger(FCRepoService.class);
 
+	public FCRepoService() {
+	}
+
+	public FCRepoService(FedoraConfiguration fedoraConfiguration) {
+		setFedoraConfiguration(fedoraConfiguration);
+	}
+
 	public void setFedoraConfiguration(FedoraConfiguration fedoraConfiguration) {
 		this.fedoraConfiguration = fedoraConfiguration;
 		configureBaseURI();

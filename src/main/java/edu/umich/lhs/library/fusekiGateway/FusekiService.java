@@ -24,7 +24,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FusekiService {
 	
 	private FedoraConfiguration fedoraConfiguration;
@@ -32,7 +34,12 @@ public class FusekiService {
 	private String fusekiServerURL;
 	
 	private static final Logger logger = Logger.getLogger(FusekiService.class);
-	
+
+	public FusekiService() {}
+
+	public FusekiService(FedoraConfiguration fedoraConfiguration) {
+		setFedoraConfiguration(fedoraConfiguration);
+	}
 		
 	public void setFedoraConfiguration(FedoraConfiguration fedoraConfiguration) {
 		this.fedoraConfiguration = fedoraConfiguration;
