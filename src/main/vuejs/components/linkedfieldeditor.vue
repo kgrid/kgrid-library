@@ -4,10 +4,6 @@
 			<h3>Add/Edit {{inedit}}</h3>
 			<div classs="row">
 				<div class="col-md-9"></div>
-				<div class="col-md-3">
-					<button class="edit" v-on:click="undoEdit">UNDO</button>
-					<button class="edit" v-on:click="doneEdit">DONE</button>
-				</div>
 			</div>
 		</div>
 		<div slot="ol-form">
@@ -27,13 +23,12 @@
 					</div>
 					<label class="errorLabel" for="license_link"> </label>
 				</div>
-				<div>
-					<h4>DETAIL</h4>
-					<div class="addtext">
-						The content will be displayed in a new window.
-					</div>
-				</div>
+
 			</fieldset>
+		</div>
+		<div slot='buttons'>
+							<button class="kg-btn-secondary" v-on:click="undoEdit">CANCEL</button>
+							<button class="kg-btn-primary" v-on:click="doneEdit">DONE</button>
 		</div>
 	</olpane>
 </template>

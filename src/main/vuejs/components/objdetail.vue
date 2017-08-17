@@ -140,17 +140,16 @@
 				pubpriwidth: '50px',
 				isPublic:false,
 				settingPubPri:false,
-				optionlist:[{'label':'Public', 'value':'public'},{'label':'Private','value':'private'}],
 				publishState: 'Unpublished',
 				userModel:{user:{username:'',password:''}},
 				activeTab: 'METADATA',
 				confirmrequest:{name:"deleteObject",statement:"This Object will be deleted!"},
 			}
 		},
-			components:{
-		'applayout':applayout,
-		'tabpane':tabpane
-				},
+		components:{
+			'applayout':applayout,
+			'tabpane':tabpane
+		},
 		created : function() {
 			var self = this;
 			eventBus.$on("objSaved",function(obj){
@@ -191,12 +190,6 @@
 					eventBus.$emit('return');
 				}
 			});
-			$('.dropdown').on('show.bs.dropdown', function(e){
-				$(this).find('.dropdown-menu').first().stop(true, true).slideDown(300);
-				});
-			$('.dropdown').on('hide.bs.dropdown', function(e){
-				$(this).find('.dropdown-menu').first().stop(true, true).slideUp(200);
-				});
 			},
 		mounted:function() {
 			var self = this;
