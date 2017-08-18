@@ -30,7 +30,9 @@ export default {
   };
 </script>
 <style>
-
+.header {
+	height:60px;
+}
 .m_logo_footer {
 	text-align: center;
 	padding-top: 30px;

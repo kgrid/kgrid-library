@@ -99,7 +99,9 @@ module.exports = {
         '/user':ops,
         '/login':ops,
         '/logout':ops,
-        '/knowledgeObject':ops
+        '/knowledgeObject':ops,
+        '/health':ops,
+        '/env':ops
     },
 	// CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

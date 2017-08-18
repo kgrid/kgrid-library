@@ -249,7 +249,6 @@ export default {
 			model : {
 				koList : []
 			},
-			dlabel:"Select sort key",
 			kgselect:{'label':'Last Updated - Newest', 'value':'metadata.lastModified','order':'desc'},
 			optionlist:[{'label':'Last Updated - Newest', 'value':'metadata.lastModified','order':'desc'},
 									{'label':'Last Updated - Oldest', 'value':'metadata.lastModified','order':'asc'},
