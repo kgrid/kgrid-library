@@ -2,14 +2,13 @@
   <div>
     <navbar></navbar>
  	  <router-view></router-view>
-    <div id='ol' v-bind:is='currentOLView'  v-bind='request' v-if='showOverlay.show'></div>
+    <div v-bind:is='currentOLView'  v-bind='request' v-if='showOverlay.show'></div>
   </div>
 </template>
 <script>
 import navbar from './components/navbar.vue';
 import login from './components/login';
 import confirmdialog from './components/confirmdialog'; // eslint-disable-line
-import olnpane from './components/olnpane'; // eslint-disable-line
 import objeditor from './components/objeditor';
 import objcreator from './components/objcreator';
 import eventBus from './components/eventBus.js';
@@ -35,7 +34,7 @@ export default {
       if(response!=""){
              $.extend(true, userModel.user, response);
              $.extend(true, self.userModel.user, response);
-            self.$store.commit('setuser',response);
+             self.$store.commit('setuser',response);
       }
       },function(response) {
           console.log("Error in getting current user:");

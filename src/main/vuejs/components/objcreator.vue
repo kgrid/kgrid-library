@@ -18,8 +18,8 @@
 								<button class="kg-btn-primary"  v-on:click="createObj">Create Object</button>
 			</div>
 		<div slot="ol-processing"><span>Processing...</span></div>
-		<div slot="ol-success">New object succesfully created!!! Object ID:{{newobjModel.object.uri}}</div>
-		<div slot="ol-failure">Creation of new object Failed! </div>
+		<div slot="ol-success"><span>New object succesfully created!!! Object ID:{{newobjModel.object.uri}}</span></div>
+		<div slot="ol-failure"><span>Creation of new object Failed! Please try again later!</span></div>
 		<div slot="ol-warning">Warning !!!</div>
 	</olpane>
 </template>

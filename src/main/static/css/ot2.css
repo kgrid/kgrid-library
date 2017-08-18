@@ -319,9 +319,7 @@ textarea {
 #objEditor_overlay .ol_pane {
 	left: 30%;
 }
-.addBtn {
-	display: inline;
-}
+
 
     #linkedfields{
     width:100%;}
@@ -330,20 +328,6 @@ textarea {
     	width: 96%;
     	margin: 0 auto;
     }
-
-    img#dropdowniconimg.up {
-   -moz-transform: scaleY(1);
-    -o-transform: scaleY(1);
-    -webkit-transform: scaleY(1);
-    transform: scaleY(1);
-}
-
-img#dropdowniconimg.down {
-   -moz-transform: scaleY(-1);
-    -o-transform: scaleY(-1);
-    -webkit-transform: scaleY(-1);
-    transform: scaleY(-1);
-}
 
 #pub, #pri {
 	margin-left: 14px;
