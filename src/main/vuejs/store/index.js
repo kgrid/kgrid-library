@@ -12,8 +12,9 @@ export default new Vuex.Store({
     baseurl:'',
     currentUser: {username:"",password:"",admin:false},
     currentObject: { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} ,
-    libraryname:'DLHS Development Server',
-    activeTab:'METADATA'
+    activeTab:'METADATA',
+    libraryEnv: {},
+    libraryname: ''
   },
   mutations: {
     seturl(state, url) {
@@ -27,6 +28,11 @@ export default new Vuex.Store({
     },
     setobject(state, obj) {
       state.currentObject = obj;
+    },
+    setenv(state, env){
+      console.log(env);
+      state.libraryEnv = env;
+      state.libraryname= env.fcrepo["library.name"];
     }
   },
   getters: {
@@ -47,6 +53,9 @@ export default new Vuex.Store({
     },
     getobject: state =>{
       return state.currentObject
+    },
+    getLibraryName: state =>{
+        return (state.libraryname || '')
     }
   }
   // plugins: debug ? [createLogger()] : []

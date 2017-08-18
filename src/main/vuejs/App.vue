@@ -13,7 +13,7 @@ import objeditor from './components/objeditor';
 import objcreator from './components/objcreator';
 import eventBus from './components/eventBus.js';
 import libraryusers from './components/libraryusers.vue';
-import { editTabNav, getCurrentUser, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
+import { editTabNav, getCurrentUser, overlayHeightResize, checkEnv, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
 import { objModel, editObjModel, sections, userModel } from './components/models.js'
 
 export default {
@@ -41,6 +41,15 @@ export default {
           console.log(response);
       }
     );
+    checkEnv("", function(response){
+      if(response!=""){
+        console.log("Library Env Health Report:");
+        console.log(response.fcrepo["library.name"]);
+        self.$store.commit('setenv',response);
+      }
+    },function(response){
+      console.log(response);
+    });
     eventBus.$on('openLogin', function () {
       self.showOverlay.show = true;
       self.currentOLView = 'login';

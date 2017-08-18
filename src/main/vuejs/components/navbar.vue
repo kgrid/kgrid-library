@@ -20,9 +20,8 @@
 					</ul>
 					<ul class='nav navbar-nav navbar-right kgl-1'  v-else  v-click-outside='outside'>
 						<li class='login-link1'>
-							<div class='dropdown' id="userDropdown" style='height:55px;'>
-								<a id='dLabel' data-target='#' v-on:click='toggleDropdown'>
-
+							<div class='dropdown' id="userDropdown" >
+								<a data-target='#' v-on:click='toggleDropdown'>
 									<div class='row pad-t-2 pad-b-5 lh-1'>
 										<span class='float-r'>Welcome, {{firstname}}</span>
 									</div>
@@ -65,7 +64,7 @@ export default {
       return this.$store.getters.isLoggedIn;
     },
 		libraryname : function(){
-			return this.$store.state.libraryname;
+			return this.$store.getters.getLibraryName;
 		},
 		isAdmin: function(){
 			return this.$store.getters.isAdmin;
@@ -116,10 +115,10 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-.kgl-1 .navbar-nav>li>a, #dLabel{
+.kgl-1 .navbar-nav>li a {
 	font-size:14px;
 	font-weight: 400;
-	line-height: 2.8em;
+	line-height: 2.7em;
   letter-spacing: 0.05em;
 	background-color: transparent;
   background-image: none;
@@ -159,11 +158,6 @@ export default {
 	text-align: center;
 }
 
-
-.login-link1 .dropdown{
-	height:55px;
-}
-
 i#dropdowniconimg {
 	transition: transform 0.5s linear;
 }
@@ -196,11 +190,27 @@ transform: scaleY(1);
 }
 
 #userDropdown.dropdown ul li {
-    height: 2.5em;
+    height: 2.7em;
     line-height: 2.8em;
     text-align: left;
 		display: list-item;
+		margin:0;
+		transition: all 0.5s ease;
+		background-color:#fff;
 }
+#userDropdown.dropdown ul li > a {
+    padding: 0px 20px;
+		height: 2.5em;
+		text-decoration: none;
+    cursor: pointer;
+		background-color:transparent;
+		margin:0;
+	}
+
+#userDropdown.dropdown ul li:hover {
+	background-color:#e5e5e5;
+}
+
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
     background-color: #e8e8e8;
 }

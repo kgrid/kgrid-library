@@ -135,6 +135,29 @@ export function getCurrentUser(baseurl, getUser, errorhandler) {
 	});
 }
 
+export function checkEnv(baseurl, getEnv, errorhandler) {
+	console.log("Baseurl:"+baseurl);
+	$.ajax({
+		type : "GET",
+		headers: {
+    	Accept: "application/json",
+  	},
+		url : baseurl+"health",
+		xhrFields: {
+	 		withCredentials: true
+		},
+		success : function(response, tStatus, xhr) {
+			// console.log(xhr);
+			// if(response instanceof Array){
+				getEnv(response);
+			// }
+		},
+		error : function(response, tStatus, xhr) {
+			errorhandler(response);
+		}
+	});
+}
+
 export function setstartdate(){
 	 var startdate=$("#startdatepicker").val();
 	 var sstamp=new Date(startdate).getTime();
