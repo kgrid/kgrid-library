@@ -283,6 +283,9 @@
 		},
 			editObj:function(){
 				$.extend(true, editObjModel.object, this.objModel.object);
+				if(editObjModel.object.metadata.citations.length==1 && editObjModel.object.metadata.citations[0].title=="" ){
+					editObjModel.object.metadata.citations=[];
+				}
 				if(editObjModel.object.outputMessage==null){
 					editObjModel.object.outputMessage="";
 				}

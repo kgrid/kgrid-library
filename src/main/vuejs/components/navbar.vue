@@ -33,7 +33,7 @@
 
 								</a>
 								<ul class='dropdown-menu' v-if='showDropdown'>
-									<li><a id='adduserBtn' v-on:click='userlink_click'><span>Add User to Library</span></a></li>
+									<li v-if='isAdmin'><a id='adduserBtn'  v-on:click='userlink_click'><span>Add User to Library</span></a></li>
 									<li><a id='logoutBtn' v-on:click='userlogout'><span>Logout</span></a></li>
 								</ul>
 							</div>
@@ -66,6 +66,9 @@ export default {
     },
 		libraryname : function(){
 			return this.$store.state.libraryname;
+		},
+		isAdmin: function(){
+			return this.$store.getters.isAdmin;
 		}
   },
   methods: {
@@ -185,7 +188,7 @@ transform: scaleY(1);
 	padding: 0px;
 	left: initial;
 	right: -18px;
-	margin-top: -10px;
+	margin-top: 10px;
 	box-shadow: none;
 	border-radius: 0px;
 	display:block;

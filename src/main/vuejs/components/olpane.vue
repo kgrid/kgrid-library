@@ -68,7 +68,7 @@ export default {
     margin: 0px auto;
     background-color: #fff;
     height: 100%;
-    transition: all 2s ease;
+    transition: all 0.2s ease;
 }
 
 .modal-mask {
@@ -132,20 +132,21 @@ export default {
     width: 1030px;
     position: absolute;
     top: 0;
-    left: 60px;
+    left: 55px;
     background-color: transparent;
-
 }
+
 .overlay-title {
 	margin:0px 30px;
 	height: 100px;
 }
+
 .overlay-board {
     position: absolute;
     background-color: transparent;
     width: 1030px;
     top: 100px;
-    left: 60px;
+    left: 55px;
     padding: 0px 0px;
 }
 

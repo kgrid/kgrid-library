@@ -46,7 +46,7 @@
 							</div>
 							<div class="addtext">
 								<label>LICENSE  </label>
-								<div class="addBtn" v-if="!editObjModel.object.metadata.license.licenseName">
+								<div v-if="!editObjModel.object.metadata.license.licenseName">
 								<div class='kg-roundbtn kg-newlf' v-on:click='addLicense'>
 									<div class='btnContent'>
 										<i class='fa fa-plus kg-fg-color'></i>
@@ -222,23 +222,18 @@ export default {
 	},
 	mounted:function(){
 		this.activeTab=this.$store.getters.getactivetab;
-		var el='ul#edittabs li#'+this.activeTab;
+		var el = 'ul#edittabs li#'+this.activeTab;
 		var el1 = 'ul#edittab li#'+this.activeTab
 		$('ul#edittabs li.active').removeClass('active');
 		$("ul#edittabs li.middleout").removeClass("middleout");
 		$(el).addClass('active middleout');
-				$(el1).addClass('active');
+		$(el1).addClass('active');
 		editTabNav();
 		overlayHeightResize();
 	},
-	updated : function() {
-
-
-	},
 	methods: {
 		 updatedisplay : function(sec, msg){
-//			    	console.log("Section:"+sec+" Msg:"+msg);
-			    	switch(sec) {
+	    	switch(sec) {
 			    		case "payload":
 			    			this.editObjModel.object.payload.content=msg;
 			    			break;

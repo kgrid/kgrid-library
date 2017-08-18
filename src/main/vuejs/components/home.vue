@@ -74,7 +74,7 @@
 						<div class='col-md-6  col-sm-6 col-xs-6'>
 							<div class='row filter pad-l-20'><p>Search only within the following:</p></div>
 								<div class='row filter'>
-									<div class='col-md-4  col-sm-4 col-xs-4'>
+									<div class='col-md-6  col-sm-6 col-xs-6'>
  										<label class="custom-control custom-checkbox">
  											<input v-model='check.keywords' type="checkbox" class="custom-control-input">
  											<span class="custom-control-indicator">
@@ -83,7 +83,7 @@
 											<span class="custom-control-description">Keywords</span>
 										</label>
 									</div>
-						<div class='col-md-8  col-sm-8 col-xs-8'>
+						<div class='col-md-6  col-sm-6 col-xs-6'>
 							<label class="custom-control custom-checkbox">
 								<input v-model='check.objectID' type="checkbox" class="custom-control-input">
 								<span class="custom-control-indicator">
@@ -94,7 +94,7 @@
 						</div>
 					</div>
 					<div class='row filter'>
-					<div class='col-md-4 col-sm-4 col-xs-4'>
+					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.owners' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator">
@@ -103,7 +103,7 @@
 					<span class="custom-control-description">Owners</span>
 				</label>
 					</div>
-					<div class='col-md-8 col-sm-8 col-xs-8'>
+					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.citations' disabled type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator">
@@ -114,7 +114,7 @@
 						</div>
 					</div>
 					<div class='row filter'>
-					<div class='col-md-4 col-sm-4 col-xs-4'>
+					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.title' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator">
@@ -124,7 +124,7 @@
 				</label>
 
 					</div>
-					<div class='col-md-8 col-sm-8 col-xs-8'>
+					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.contributors' type="checkbox" class="custom-control-input">
 					<span class="custom-control-indicator">
@@ -379,6 +379,19 @@ export default {
 			var object = {};
 			$.extend(true, object, obj);
 			self.model.koList.push(object);
+			retrieveObjectList(self.$store.state.baseurl, function(response) {
+				console.log("Object List Retrieval:");
+				if(response instanceof Array){
+					self.libraryname='Department of Learning Health Sciences Development Server';
+					self.libConnected=true;
+					self.model.koList = response;
+				}else {
+					self.libraryname='No Library is found. Click here to connect.';
+					self.libConnected=false;
+				}
+			}, function(response){
+				console.log("Error in retrieving the list from the connected library.")
+			});
 		});
 		eventBus.$on('objDeleted',function(obj){
 		      console.log(obj)
@@ -870,7 +883,7 @@ left:9.5px;
 	position: absolute;
 	padding-left: 15px;
 	top: 8px;
-	width: 140px;
+	width: 200px;
 }
 .custom-control-indicator {
     position: absolute;

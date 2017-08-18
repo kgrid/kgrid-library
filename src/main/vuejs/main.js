@@ -5,7 +5,7 @@ import Vuex from 'vuex';
 import App from './App';
 import store from './store';
 import eventBus from './components/eventBus.js';
-import { objModel} from './components/models.js'
+
 
 require('es6-promise').polyfill();
 // Bootstrap 4
@@ -83,7 +83,6 @@ var vm = new Vue({
 	el: '#app',
   store,
 	data : {
-
 	},
 	components:{
 		App: App,
@@ -91,32 +90,21 @@ var vm = new Vue({
 	created: function(){
 		var self=this;
     console.log('Knowledge Grid Library Web Application');
-    console.log('Build 20170817A');
+    console.log('Build 20170818A');
 		eventBus.$on('404', function(){
 			router.push({path:'*'});
 		});
 		eventBus.$on('soon', function(){
 			router.push({path:'/soon'});
 		});
-
-		 eventBus.$on("return", function(){
+  	eventBus.$on("return", function(){
 			router.push({ path: '/' });
-		 });
-		 eventBus.$on("objectSelected", function(obj){
-			router.push({ name:'object' ,params: { uri: obj.uri }});
-		 });
-		 eventBus.$on('objSaved', function(obj){
-				self.updateObject(obj);
 		});
-		 eventBus.$on("objDeleted", function(obj){
-				router.push({ path: '/' });
-			 });
-
-	},
-	methods: {
-		updateObject:function(obj){
-			$.extend(true, objModel.object, obj);
-		},
-	},
-
+		eventBus.$on("objectSelected", function(obj){
+			router.push({ name:'object' ,params: { uri: obj.uri }});
+		});
+	  eventBus.$on("objDeleted", function(obj){
+			router.push({ path: '/' });
+	  });
+	}
 	}).$mount('#app');

@@ -10,7 +10,8 @@ export default new Vuex.Store({
   state:{
     debugEnabled:true,
     baseurl:'',
-    currentUser:{username:"",password:"",admin:false},
+    currentUser: {username:"",password:"",admin:false},
+    currentObject: { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} ,
     libraryname:'DLHS Development Server',
     activeTab:'METADATA'
   },
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     setactivetab(state, tab){
       state.activeTab = tab;
+    },
+    setobject(state, obj) {
+      state.currentObject = obj;
     }
   },
   getters: {
@@ -40,6 +44,9 @@ export default new Vuex.Store({
     },
     getactivetab: state => {
       return state.activeTab
+    },
+    getobject: state =>{
+      return state.currentObject
     }
   }
   // plugins: debug ? [createLogger()] : []

@@ -76,10 +76,10 @@
 		 </div>
 			</div>
 		</div>
-		<div slot="ol-processing">Processing...</div>
-		<div slot="ol-success">User succesfully <span v-if='!isNewUser'>updated</span><span v-else>added</span>!!! </div>
-		<div slot="ol-failure">Error during <span v-if='!isNewUser'>updating</span><span v-else>adding</span> the user ! </div>
-		<div slot="ol-warning">Warning !!!</div>
+		<div slot="ol-processing"><span>Processing...</span></div>
+		<div slot="ol-success"><span>User succesfully <span v-if='!isNewUser'>updated</span><span v-else>added</span>!!! </span></div>
+		<div slot="ol-failure"><span>Error during <span v-if='!isNewUser'>updating</span><span v-else>adding</span> the user !</span></div>
+		<div slot="ol-warning"><span>Warning !!!</span></div>
 	</olpane>
 </template>
 	<script>
@@ -346,7 +346,7 @@
 	.loginField select {
 		 width: 400px;
 	   height: 50px;
-     border: 1px solid #666666;
+     border: 1px solid #e5e5e5;
      padding: 0 0 0 16px;
 	}
 	.fieldcontainer {
@@ -368,7 +368,7 @@ margin:0px;
 	}
   .userentry {
     opacity: 1;
-    transition: opacity 1s ease;
+
   }
 	p.control {
 	    position: absolute;
