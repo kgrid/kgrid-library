@@ -10,11 +10,11 @@ import org.springframework.security.core.userdetails.User;
  * @author nbahulek
  *
  */
-public class libraryUser extends User {
+public class LibraryUser extends User {
 	
 	private UserProfile profile ; 
 	
-	public libraryUser(String username, String password, Collection<? extends GrantedAuthority> authorities,
+	public LibraryUser(String username, String password, Collection<? extends GrantedAuthority> authorities,
 			UserProfile profile) {
 		super(username, password, authorities);
 		this.profile = profile;
@@ -29,18 +29,18 @@ public class libraryUser extends User {
 		this.profile = profile;
 	}
 
-	public libraryUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+	public LibraryUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
 	}
 
-	public libraryUser(String username, String password, boolean enabled, boolean accountNonExpired,
+	public LibraryUser(String username, String password, boolean enabled, boolean accountNonExpired,
 			boolean credentialsNonExpired, boolean accountNonLocked,
 			Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 	}
 
 	
-	public libraryUser(String username, String password, boolean enabled, boolean accountNonExpired,
+	public LibraryUser(String username, String password, boolean enabled, boolean accountNonExpired,
 			boolean credentialsNonExpired, boolean accountNonLocked,
 			Collection<? extends GrantedAuthority> authorities, UserProfile profile) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);

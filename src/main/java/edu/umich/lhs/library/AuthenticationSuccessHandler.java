@@ -1,6 +1,6 @@
 package edu.umich.lhs.library;
 
-import edu.umich.lhs.library.model.libraryUser;
+import edu.umich.lhs.library.model.LibraryUser;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -33,7 +33,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        libraryUser principal = (libraryUser) authentication.getPrincipal();
+    LibraryUser principal = (LibraryUser) authentication.getPrincipal();
         
         writeUserToResponse(response,principal);
         // as done in the base class
@@ -41,7 +41,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
     }
 	
-	private void writeUserToResponse(HttpServletResponse response, libraryUser principal) throws IOException {
+	private void writeUserToResponse(HttpServletResponse response, LibraryUser principal) throws IOException {
 	     ObjectMapper mapper = converter.getObjectMapper();
 
 	     ServletOutputStream os = response.getOutputStream();

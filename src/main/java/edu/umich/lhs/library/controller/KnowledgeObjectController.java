@@ -44,7 +44,7 @@ import edu.umich.lhs.library.knowledgeObject.Metadata;
 import edu.umich.lhs.library.knowledgeObject.Payload;
 import edu.umich.lhs.library.knowledgeObject.Version;
 import edu.umich.lhs.library.model.ErrorInfo;
-import edu.umich.lhs.library.model.libraryUser;
+import edu.umich.lhs.library.model.LibraryUser;
 
 @RestController
 public class KnowledgeObjectController {
@@ -69,7 +69,7 @@ public class KnowledgeObjectController {
 	@PostMapping(value="/knowledgeObject",
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> createKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") libraryUser loggedInUser, HttpServletRequest request ) throws LibraryException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> createKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") LibraryUser loggedInUser, HttpServletRequest request ) throws LibraryException, URISyntaxException {
 
 		ResponseEntity<KnowledgeObject> entity;
 		
@@ -99,7 +99,7 @@ public class KnowledgeObjectController {
 	@PostMapping(value="/knowledgeObject",
 		consumes = MediaType.TEXT_PLAIN_VALUE,
 		produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KnowledgeObject> cloneKnowledgeObject(@RequestBody String localArkId, @ModelAttribute("loggedInUser") libraryUser loggedInUser, HttpServletRequest request) throws LibraryException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> cloneKnowledgeObject(@RequestBody String localArkId, @ModelAttribute("loggedInUser") LibraryUser loggedInUser, HttpServletRequest request) throws LibraryException, URISyntaxException {
 		ArkId objectRef = new ArkId(localArkId);
 		KnowledgeObject ko = knowledgeObjectService.getCompleteKnowledgeObject(objectRef);
 		return createKnowledgeObject(ko, loggedInUser, request);
@@ -208,7 +208,7 @@ public class KnowledgeObjectController {
 	 */
 	@PostMapping(value={"/knowledgeObject/ark:/{naan}/{name}", "/knowledgeObject/{naan}-{name}"},
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KnowledgeObject> versionKnowledgeObjectByRef(ArkId arkId, @ModelAttribute("loggedInUser") libraryUser loggedInUser, @RequestHeader(value = "Slug", required = false) String version) throws LibraryException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> versionKnowledgeObjectByRef(ArkId arkId, @ModelAttribute("loggedInUser") LibraryUser loggedInUser, @RequestHeader(value = "Slug", required = false) String version) throws LibraryException, URISyntaxException {
 
 		KnowledgeObject ko;
 		try {
@@ -228,7 +228,7 @@ public class KnowledgeObjectController {
 	@PutMapping(value={"/knowledgeObject/ark:/{naan}/{name}","/knowledgeObject/{naan}-{name}"},
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> createOrUpdateKnowledgeObjectByArkId(@RequestBody KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") libraryUser loggedInUser, ArkId arkId, HttpServletRequest request) throws LibraryException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> createOrUpdateKnowledgeObjectByArkId(@RequestBody KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") LibraryUser loggedInUser, ArkId arkId, HttpServletRequest request) throws LibraryException, URISyntaxException {
 
 		if (loggedInUser != null ) {
 			if (knowledgeObjectService.exists(arkId)) {
@@ -246,7 +246,7 @@ public class KnowledgeObjectController {
 	@PutMapping(value={"/knowledgeObject/ark:/{naan}/{name}","/knowledgeObject/{naan}-{name}"},
 			consumes = {MediaType.TEXT_PLAIN_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> createOrUpdateKnowledgeObjectFromURL(@RequestBody String koURL, @ModelAttribute("loggedInUser") libraryUser loggedInUser, ArkId arkId) throws LibraryException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> createOrUpdateKnowledgeObjectFromURL(@RequestBody String koURL, @ModelAttribute("loggedInUser") LibraryUser loggedInUser, ArkId arkId) throws LibraryException, URISyntaxException {
 		if (loggedInUser != null ) {
 			KnowledgeObject ko = getRemoteKO(koURL);
 			if(knowledgeObjectService.exists(new ArkId(ko.getMetadata().getArkId()))) {
@@ -378,8 +378,8 @@ public class KnowledgeObjectController {
 
 	@PutMapping(value={"/knowledgeObject/ark:/{naan}/{name}/{published:published|unpublished}","/knowledgeObject/{naan}-{name}/{published:published|unpublished}"})
 	@ResponseStatus(HttpStatus.OK)
-	public String publish(ModelMap map, @ModelAttribute("loggedInUser") libraryUser loggedInUser, ArkId arkId, @PathVariable String published) throws LibraryException, URISyntaxException {
-		loggedInUser = (libraryUser) map.get("loggedInUser");
+	public String publish(ModelMap map, @ModelAttribute("loggedInUser") LibraryUser loggedInUser, ArkId arkId, @PathVariable String published) throws LibraryException, URISyntaxException {
+		loggedInUser = (LibraryUser) map.get("loggedInUser");
 		
 		knowledgeObjectService.publishKnowledgeObject(arkId, "published".equals(published), loggedInUser);
 
@@ -432,7 +432,7 @@ public class KnowledgeObjectController {
 			method=RequestMethod.PUT ,
 			consumes = {MediaType.APPLICATION_JSON_VALUE},
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> updateKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") libraryUser loggedInUser, @PathVariable String objectURI,HttpServletRequest request ) throws LibraryException, URISyntaxException {
+	public ResponseEntity<KnowledgeObject> updateKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") LibraryUser loggedInUser, @PathVariable String objectURI,HttpServletRequest request ) throws LibraryException, URISyntaxException {
 		ArkId arkId = new ArkId(objectURI);
 		return createOrUpdateKnowledgeObjectByArkId(knowledgeObject, loggedInUser, arkId, request);
 	}

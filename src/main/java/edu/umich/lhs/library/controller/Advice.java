@@ -1,6 +1,6 @@
 package edu.umich.lhs.library.controller;
 
-import edu.umich.lhs.library.model.libraryUser;
+import edu.umich.lhs.library.model.LibraryUser;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +17,11 @@ public class Advice {
 	private CustomizedUserManager userDetailService;
 	
 	@ModelAttribute("loggedInUser")
-	public libraryUser populateUser(HttpSession session) {
+	public LibraryUser populateUser(HttpSession session) {
 		Authentication currentUser = SecurityContextHolder.getContext()
-				.getAuthentication(); 
-		
-		libraryUser loggedInUser = null;
+				.getAuthentication();
+
+		LibraryUser loggedInUser = null;
 		if(currentUser != null) {
 			if( ! "anonymousUser".equals(currentUser.getName())) {
  
