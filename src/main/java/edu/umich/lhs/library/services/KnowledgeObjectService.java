@@ -7,7 +7,7 @@ import edu.umich.lhs.library.fusekiGateway.FusekiService;
 import edu.umich.lhs.library.knowledgeObject.ArkId;
 import edu.umich.lhs.library.knowledgeObject.Citation;
 import edu.umich.lhs.library.knowledgeObject.KnowledgeObject;
-import edu.umich.lhs.library.model.libraryUser;
+import edu.umich.lhs.library.model.LibraryUser;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -215,7 +215,7 @@ public class KnowledgeObjectService {
 		return fcRepoService.checkIfObjectExists(constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath(), version.getFedoraVersion()));
 	}
 
-	public void publishKnowledgeObject(ArkId arkId, boolean isToBePublished, libraryUser loggedInUser)
+	public void publishKnowledgeObject(ArkId arkId, boolean isToBePublished, LibraryUser loggedInUser)
 			throws LibraryException, URISyntaxException {
 
 		KnowledgeObject ko = getKnowledgeObject(arkId);
@@ -403,7 +403,7 @@ public class KnowledgeObjectService {
 		return getCompleteKnowledgeObject(arkId);
 	}
 
-	public KnowledgeObject createNewKnowledgeObject(KnowledgeObject knowledgeObject, libraryUser loggedInUser)
+	public KnowledgeObject createNewKnowledgeObject(KnowledgeObject knowledgeObject, LibraryUser loggedInUser)
 			throws LibraryException, URISyntaxException {
 
 		ArkId arkId = idService.mint();
@@ -415,7 +415,7 @@ public class KnowledgeObjectService {
 		return createKnowledgeObject(arkId, loggedInUser, knowledgeObject);
 	}
 
-	public KnowledgeObject copyKnowledgeObject(KnowledgeObject knowledgeObject, libraryUser loggedInUser)
+	public KnowledgeObject copyKnowledgeObject(KnowledgeObject knowledgeObject, LibraryUser loggedInUser)
 			throws LibraryException, URISyntaxException {
 		ArkId arkId = knowledgeObject.getArkId();
 		try {
@@ -433,7 +433,7 @@ public class KnowledgeObjectService {
 		return createKnowledgeObject(arkId, loggedInUser, knowledgeObject);
 	}
 
-	private KnowledgeObject createKnowledgeObject(ArkId arkId, libraryUser loggedInUser, KnowledgeObject knowledgeObject)
+	private KnowledgeObject createKnowledgeObject(ArkId arkId, LibraryUser loggedInUser, KnowledgeObject knowledgeObject)
 			throws LibraryException, URISyntaxException {
 		URI transactionURI = fcRepoService.createTransaction();
 		try {
@@ -473,7 +473,7 @@ public class KnowledgeObjectService {
 		return knowledgeObject;
 	}
 
-	private void addProvMetadataStart(URI uri, libraryUser loggedInUser) throws LibraryException {
+	private void addProvMetadataStart(URI uri, LibraryUser loggedInUser) throws LibraryException {
 		String username = loggedInUser == null ? null : loggedInUser.getFullName();
 		ProvenanceLogData provLogData = new ProvenanceLogData(username,
 				uri.toString(), username, uri.toString(), new Date(), null);

@@ -1,7 +1,7 @@
 package edu.umich.lhs.library;
 
 
-import edu.umich.lhs.library.model.libraryUser;
+import edu.umich.lhs.library.model.LibraryUser;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,26 +33,26 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 	
 	
 	@Override
-	public libraryUser loadUserByUsername(String username) throws UsernameNotFoundException {
+	public LibraryUser loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDetails uDetails= super.loadUserByUsername(username);
 		
 		UserProfile profile = getUserProfile(username);
-		
-		libraryUser libraryUser = new libraryUser(uDetails.getUsername(), uDetails.getPassword(), uDetails.getAuthorities(), profile);
+
+		LibraryUser libraryUser = new LibraryUser(uDetails.getUsername(), uDetails.getPassword(), uDetails.getAuthorities(), profile);
 		
 		return libraryUser;
 	}
 
 	
 	
-	public void createUser(libraryUser user) throws Exception {
+	public void createUser(LibraryUser user) throws Exception {
 		
 		super.createUser(user);
 		
 		createUserProfile(user);
 	}
 
-	public void updateUser(libraryUser user) throws Exception {
+	public void updateUser(LibraryUser user) throws Exception {
 		super.updateUser(user);
 
 		updateUserProfile(user);
@@ -68,7 +68,7 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 		return getJdbcTemplate().queryForObject(SELECT_USER_PROFILE_BY_USERNAME, new Object[]{username},new BeanPropertyRowMapper<>(UserProfile.class));
 	}
 	
-	private void createUserProfile(libraryUser libraryUser) throws Exception  {
+	private void createUserProfile(LibraryUser libraryUser) throws Exception  {
 		
 		if(libraryUser.getProfile() != null ) {
 			int success = getJdbcTemplate().update(CREATE_USER_PROFILE, new Object[] {libraryUser.getUsername(),
@@ -79,7 +79,7 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 	}
 	
 	
-	private void updateUserProfile(libraryUser libraryUser) throws Exception  {
+	private void updateUserProfile(LibraryUser libraryUser) throws Exception  {
 		
 		if(libraryUser.getProfile() != null) {
 			int success = getJdbcTemplate().update(UPDATE_USER_PROFILE, new Object[] { libraryUser.getProfile().getFirst_name(),
@@ -89,16 +89,16 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 		}
 	}
 
-	public List<libraryUser> getUsers() {
-		return getJdbcTemplate().query(GET_ALL_USERS, new RowMapper<libraryUser>() {
-			public libraryUser mapRow(ResultSet rs, int rowNum)
+	public List<LibraryUser> getUsers() {
+		return getJdbcTemplate().query(GET_ALL_USERS, new RowMapper<LibraryUser>() {
+			public LibraryUser mapRow(ResultSet rs, int rowNum)
 					throws SQLException {
 				String username = rs.getString(1);
 				String password = rs.getString(2);
 				boolean enabled = rs.getBoolean(3);
 				List<GrantedAuthority> authorities = loadUserAuthorities(username);
 				UserProfile profile = getUserProfile(username);
-				return new libraryUser(username, password, enabled, true, true, true,
+				return new LibraryUser(username, password, enabled, true, true, true,
 						authorities,profile);
 			}
 

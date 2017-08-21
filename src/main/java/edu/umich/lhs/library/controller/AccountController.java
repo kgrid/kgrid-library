@@ -1,6 +1,6 @@
 package edu.umich.lhs.library.controller;
 
-import edu.umich.lhs.library.model.libraryUser;
+import edu.umich.lhs.library.model.LibraryUser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -35,7 +35,7 @@ public class AccountController {
 	
 	
 	@DeleteMapping(value = "/user/{userID}")
-	public  ResponseEntity<String>  deleteUser( @PathVariable int userID,  @ModelAttribute("loggedInUser") libraryUser loggedInUser) {
+	public  ResponseEntity<String>  deleteUser( @PathVariable int userID,  @ModelAttribute("loggedInUser") LibraryUser loggedInUser) {
 		ResponseEntity<String> resultEntity = checkAccessRights(loggedInUser); 
 
 		if(resultEntity == null) { 
@@ -56,7 +56,7 @@ public class AccountController {
 	 * @param loggedInUser
 	 * @return returns null if user has required access rights 
 	 */
-	private ResponseEntity<String> checkAccessRights(libraryUser loggedInUser){
+	private ResponseEntity<String> checkAccessRights(LibraryUser loggedInUser){
 		ResponseEntity<String> resultEntity = null; 
 		if(loggedInUser != null) {
 			if(loggedInUser.isInformatician() ) {
@@ -76,11 +76,11 @@ public class AccountController {
 	@PreAuthorize("hasAuthority('INFORMATICIAN') OR hasAuthority('ADMIN')")
 	@GetMapping(value = {"/user"}
 		,produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<libraryUser>> getAllUsers( ) {
-		ResponseEntity<List<libraryUser>> resultEntity = null;
+	public ResponseEntity<List<LibraryUser>> getAllUsers( ) {
+		ResponseEntity<List<LibraryUser>> resultEntity = null;
 
-		List<libraryUser> users = userDetailService.getUsers();
-		resultEntity =  new ResponseEntity<List<libraryUser>>( users, HttpStatus.OK) ;
+		List<LibraryUser> users = userDetailService.getUsers();
+		resultEntity =  new ResponseEntity<List<LibraryUser>>( users, HttpStatus.OK) ;
 
 		return resultEntity ; 
 	}
@@ -92,33 +92,33 @@ public class AccountController {
 			consumes ={MediaType.APPLICATION_JSON_VALUE},
 			produces= {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('INFORMATICIAN') OR hasAuthority('ADMIN')")
-	public  ResponseEntity<libraryUser>  createNewUser(@RequestBody LibraryUserDTO dto ) {
-		ResponseEntity<libraryUser> resultEntity = null;
+	public  ResponseEntity<LibraryUser>  createNewUser(@RequestBody LibraryUserDTO dto ) {
+		ResponseEntity<LibraryUser> resultEntity = null;
 		
 		try {
-			libraryUser libraryUser = convertLibraryUserDTOToLibraryUser(dto);
+			LibraryUser libraryUser = convertLibraryUserDTOToLibraryUser(dto);
 			userDetailService.createUser(libraryUser);
-			libraryUser result = userDetailService.loadUserByUsername(libraryUser.getUsername());
-			resultEntity = new ResponseEntity<libraryUser>( result , HttpStatus.OK) ;
+			LibraryUser result = userDetailService.loadUserByUsername(libraryUser.getUsername());
+			resultEntity = new ResponseEntity<LibraryUser>( result , HttpStatus.OK) ;
 		} catch(LibraryException ex){
 			logger.error(ex.getMessage());
-			resultEntity = new ResponseEntity<libraryUser>(  HttpStatus.INTERNAL_SERVER_ERROR) ;
+			resultEntity = new ResponseEntity<LibraryUser>(  HttpStatus.INTERNAL_SERVER_ERROR) ;
 		} catch ( DataAccessException ex) {
 			logger.error(ex.getMessage());
-			resultEntity = new ResponseEntity<libraryUser>( HttpStatus.INTERNAL_SERVER_ERROR) ;
+			resultEntity = new ResponseEntity<LibraryUser>( HttpStatus.INTERNAL_SERVER_ERROR) ;
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
-			resultEntity = new ResponseEntity<libraryUser>(  HttpStatus.INTERNAL_SERVER_ERROR) ;
+			resultEntity = new ResponseEntity<LibraryUser>(  HttpStatus.INTERNAL_SERVER_ERROR) ;
 		}
 
 		return resultEntity;
 	}
 	
-	private libraryUser convertLibraryUserDTOToLibraryUser(LibraryUserDTO dto) {
+	private LibraryUser convertLibraryUserDTOToLibraryUser(LibraryUserDTO dto) {
 		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(dto.getRole());
 		ArrayList<GrantedAuthority> list =  new ArrayList<GrantedAuthority>();
 		list.add(authority);
-		libraryUser libraryUser = new libraryUser(dto.getUsername(), dto.getPassword(), list , dto.getProfile());
+		LibraryUser libraryUser = new LibraryUser(dto.getUsername(), dto.getPassword(), list , dto.getProfile());
 		return libraryUser;
 	}
 		
@@ -127,14 +127,14 @@ public class AccountController {
 				consumes ={MediaType.APPLICATION_JSON_VALUE}, 
 				produces= {MediaType.APPLICATION_JSON_VALUE})
 	@PreAuthorize("hasAuthority('INFORMATICIAN') OR hasAuthority('ADMIN')")
-	public ResponseEntity<libraryUser> updateUser(@RequestBody LibraryUserDTO dto , @PathVariable int id, @ModelAttribute("loggedInUser") libraryUser loggedInUser, HttpSession httpSession) {
+	public ResponseEntity<LibraryUser> updateUser(@RequestBody LibraryUserDTO dto , @PathVariable int id, @ModelAttribute("loggedInUser") LibraryUser loggedInUser, HttpSession httpSession) {
 
-		ResponseEntity<libraryUser> resultEntity = null;
+		ResponseEntity<LibraryUser> resultEntity = null;
 		
 
-		try { 
+		try {
 
-			libraryUser libraryUser = convertLibraryUserDTOToLibraryUser(dto);
+			LibraryUser libraryUser = convertLibraryUserDTOToLibraryUser(dto);
 
 			String username = userDetailService.getUsernameById(id);
 			if(username != null ) { 
@@ -142,20 +142,20 @@ public class AccountController {
 					userDetailService.updateUserName(username, dto.getUsername());
 				}
 				userDetailService.updateUser(libraryUser);
-				libraryUser result = userDetailService.loadUserByUsername(libraryUser.getUsername());
+				LibraryUser result = userDetailService.loadUserByUsername(libraryUser.getUsername());
 				if(loggedInUser.getProfile().getId() == libraryUser.getId()) {
 					httpSession.removeAttribute("DBUser");
 					httpSession.setAttribute("DBUser", result);
 				}
-				resultEntity = new ResponseEntity<libraryUser>( result , HttpStatus.OK) ;
+				resultEntity = new ResponseEntity<LibraryUser>( result , HttpStatus.OK) ;
 			}  else {
 				logger.error("User with id "+id+" does not exist. ");
-				resultEntity = new ResponseEntity<libraryUser>(  HttpStatus.NOT_FOUND) ;
+				resultEntity = new ResponseEntity<LibraryUser>(  HttpStatus.NOT_FOUND) ;
 			}
 
 		} catch(Exception ex) {
 			logger.error(ex.getMessage());
-			resultEntity = new ResponseEntity<libraryUser>(  HttpStatus.INTERNAL_SERVER_ERROR) ;
+			resultEntity = new ResponseEntity<LibraryUser>(  HttpStatus.INTERNAL_SERVER_ERROR) ;
 		}
 
 		return resultEntity ; 
@@ -163,14 +163,14 @@ public class AccountController {
 	
 	@GetMapping(value="user/me")
 	@PreAuthorize("isAuthenticated()")
-	public ResponseEntity<libraryUser> getLoggedInUser(){
-		
-		libraryUser loggedInUser = null ;
+	public ResponseEntity<LibraryUser> getLoggedInUser(){
+
+		LibraryUser loggedInUser = null ;
 		
 		Authentication currentUser = SecurityContextHolder.getContext()
 				.getAuthentication(); 
 		
-		loggedInUser =  (libraryUser) currentUser.getPrincipal();
+		loggedInUser =  (LibraryUser) currentUser.getPrincipal();
 		
 		/*if(currentUser != null) {
 			if( ! "anonymousUser".equals(currentUser.getName())) {
@@ -179,7 +179,7 @@ public class AccountController {
 			}
 		}*/
 		
-		ResponseEntity<libraryUser> entity = new ResponseEntity<libraryUser> (loggedInUser , HttpStatus.OK);
+		ResponseEntity<LibraryUser> entity = new ResponseEntity<LibraryUser> (loggedInUser , HttpStatus.OK);
 		
 		return entity ; 
 				
