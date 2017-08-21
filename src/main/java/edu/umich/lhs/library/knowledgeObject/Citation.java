@@ -11,11 +11,11 @@ public class Citation implements Identifiable {
 
 	private Identifiable mIdendifiable = new IdentifableImpl();
 
-	private String citation_id = "";
+	private String citation_id;
 	
-	private String citation_title = "";
+	private String citation_title;
 	
-	private String citation_at = "";
+	private String citation_at;
 
 	@RdfProperty(value="ot:citationTitle")
 	public String getCitation_title() {
