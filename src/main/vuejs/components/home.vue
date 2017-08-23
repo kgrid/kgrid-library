@@ -40,7 +40,7 @@
 						</li>
 						<li class='todo' v-show='hasDateFilter' >
 							<button class='destroy' @click='removeDateFilter'>
-  								<i class="fa fa-close  kg-fg-color"></i>
+  								<i class="fa fa-close"></i>
 									</button>
 							<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label>
 						</li>
@@ -328,9 +328,14 @@ export default {
 	created : function() {
 			var self = this;
 			console.log('Init Sort Key'+this.sortKey);
-	  	if(sessionStorage.getItem("sortKey")==null){
-	  		this.setSessionStorage();
-	  	}
+	  	if(sessionStorage.getItem("sortKey")){
+				console.log("SortKey existing:")
+	  		this.getSessionStorage();
+				console.log('Retrieve Sort Key'+this.sortKey);
+	  	}else {
+			console.log("No sortKey yet");
+				this.setSessionStorage();
+			}
 		$("#startdatepicker").val("03/01/16");
 		$("#enddatepicker").val(new Date().format("shortDate"));
 		this.startdate = new Date('March 1, 2016').getTime();
@@ -432,7 +437,7 @@ export default {
 		}
 	},
 	updated: function() {
-		this.setSessionStorage();
+
 	  },
 	computed : {
 		searchPlaceHolder:function(){
@@ -582,13 +587,26 @@ export default {
 		setSessionStorage: function(){
 			console.log("setting sort key" + this.sortKey);
 			sessionStorage.setItem("sortKey", this.sortKey);
+			sessionStorage.setItem("kgselect", JSON.stringify(this.kgselect));
 			sessionStorage.setItem("order", this.order);
 			sessionStorage.setItem("filters", JSON.stringify(this.filterStrings));
 			sessionStorage.setItem("check", JSON.stringify(this.check));
 			sessionStorage.setItem("dateRange", JSON.stringify(this.dateRange));
 			},
+			getSessionStorage: function(){
+				this.sortKey=sessionStorage.getItem("sortKey");
+				console.log('after'+this.sortKey)
+				this.order=sessionStorage.getItem("order");
+				this.kgselect=JSON.parse(sessionStorage.getItem("kgselect"));
+				this.filterStrings=JSON.parse(sessionStorage.getItem("filters"));
+				this.check=JSON.parse(sessionStorage.getItem("check"));
+				this.dateRange=JSON.parse(sessionStorage.getItem("dateRange"));
+				this.setstartdate();
+				this.setenddate();
+		},
 		selectCallback: function(val){
 			 console.log("After callback" + this.sortKey+"  ==="+val.value);
+			 this.kgselect=val;
 			 this.sortKey=val.value;
 			 this.order=val.order;
 			 switch(val) {
@@ -602,8 +620,7 @@ export default {
 			 		this.sortKey='metadata.title';
 					break;
 					}
-				sessionStorage.setItem("sortKey", this.sortKey);
-							sessionStorage.setItem("order", this.order);
+			this.setSessionStorage();
 		},
 		onChange: function(){
 			switch(this.sortKey) {

@@ -249,7 +249,7 @@ export default {
 		saveObj:function(){
 			var text = JSON.stringify(this.editObjModel.object);
 			var self =this;
-//			console.log(text);
+			console.log(text);
 			$("div.processing").fadeIn(300);
 			$.ajax({
 				beforeSend : function(xhrObj) {
