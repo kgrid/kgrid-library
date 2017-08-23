@@ -75,16 +75,19 @@ public class KnowledgeObjectService {
 		}
 
 		URI licenseURI = constructURI(uri, License.class.getSimpleName());
-		metadata.setLicense(fetchAndDeserializeRDFData(License.class, licenseURI, licenseURI.toString()));
-
+		License license = fetchAndDeserializeRDFData(License.class, licenseURI, licenseURI.toString());
+		if(license != null) {
+			metadata.setLicense(license);
+		}
 		URI citationContainerURI = constructURI(uri, ChildType.CITATIONS.getChildType());
 		List<URI> citationURIs = fcRepoService.getChildrenURIs(citationContainerURI);
 		ArrayList<Citation> citations = new ArrayList<>();
 		for (URI citationURI : citationURIs) {
 			citations.add(fetchAndDeserializeRDFData(Citation.class, citationURI, citationURI.toString()));
 		}
-
-		metadata.setCitations(citations);
+		if(citations != null && !citations.isEmpty()) {
+			metadata.setCitations(citations);
+		}
 		KnowledgeObject object = new KnowledgeObject();
 		object.setMetadata(metadata);
 		object.setURI(metadata.getArkId());
@@ -500,6 +503,9 @@ public class KnowledgeObjectService {
 
 	private <T> T fetchAndDeserializeRDFData(Class<T> clazz, URI objectURI, String iri) throws LibraryException {
 		Model model = fcRepoService.getRDFData(objectURI);
+		if(model == null) {
+			return null;
+		}
 		return RDFMapper.builder()
 				.namespace(NamespaceConstants.OT_NAMESPACE_PREFIX, NamespaceConstants.OT_NAMESPACE_URL)
 				.namespace(NamespaceConstants.FEDORA_NAMESPACE_PREFIX, NamespaceConstants.FEDORA_NAMESPACE_URL)
