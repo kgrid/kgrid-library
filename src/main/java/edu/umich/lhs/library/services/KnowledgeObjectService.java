@@ -293,7 +293,7 @@ public class KnowledgeObjectService {
 
 	private void addCitations(List<Citation> citations, URI objectURI)
 			throws URISyntaxException, LibraryException {
-		if (citations != null && !citations.isEmpty()) {
+		if (citations != null) {
 			URI citationParentURI = constructURI(objectURI, ChildType.CITATIONS.getChildType());
 
 			// Rather than comparing the existing list of citations vs the ones being added and edited
