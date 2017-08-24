@@ -1,8 +1,11 @@
 package edu.umich.lhs.library.fedoraGateway;
 
 import com.complexible.common.openrdf.model.ModelIO;
+import edu.umich.lhs.library.exception.LibraryException;
+import edu.umich.lhs.library.fusekiGateway.NamespaceConstants;
 import edu.umich.lhs.library.knowledgeObject.ArkId;
 import edu.umich.lhs.library.model.ServerDetails;
+import edu.umich.lhs.library.services.FedoraConfiguration;
 import org.apache.http.*;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -21,9 +24,7 @@ import org.openrdf.model.impl.ContextStatement;
 import org.openrdf.model.impl.SimpleValueFactory;
 import org.openrdf.rio.RDFFormat;
 import org.springframework.http.HttpStatus;
-import edu.umich.lhs.library.exception.LibraryException;
-import edu.umich.lhs.library.fusekiGateway.NamespaceConstants;
-import edu.umich.lhs.library.services.FedoraConfiguration;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -36,7 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Component
 public class FCRepoService {
 
 	private FedoraConfiguration fedoraConfiguration;
@@ -49,14 +50,7 @@ public class FCRepoService {
 
 	private static final Logger logger = Logger.getLogger(FCRepoService.class);
 
-	public FCRepoService() {
-	}
-
 	public FCRepoService(FedoraConfiguration fedoraConfiguration) {
-		setFedoraConfiguration(fedoraConfiguration);
-	}
-
-	public void setFedoraConfiguration(FedoraConfiguration fedoraConfiguration) {
 		this.fedoraConfiguration = fedoraConfiguration;
 		configureBaseURI();
 	}

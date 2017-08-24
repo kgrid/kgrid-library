@@ -2,10 +2,12 @@ package edu.umich.lhs.library.services;
 
 import edu.umich.lhs.library.model.ServerDetails;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by nggittle on 4/11/17.
  */
+@Configuration
 @ConfigurationProperties(prefix = "fedora")
 public class FedoraConfiguration {
 
