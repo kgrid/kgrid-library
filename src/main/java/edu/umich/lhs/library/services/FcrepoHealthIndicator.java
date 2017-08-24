@@ -10,8 +10,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
@@ -22,22 +20,21 @@ import java.util.Properties;
 @Component
 public class FcrepoHealthIndicator extends AbstractHealthIndicator {
 
-    Logger log = Logger.getLogger(this.getClass());
+    private static final Logger log = Logger.getLogger(FcrepoHealthIndicator.class);
 
-    @Autowired
     FedoraConfiguration fedoraConfiguration;
 
-    @Autowired
     FCRepoService fcrepoService;
 
-    @Value("${library.name:Library}")
-    String libraryName;
+    public FcrepoHealthIndicator(FCRepoService fcRepoService, FedoraConfiguration fedoraConfiguration) {
+        this.fcrepoService = fcRepoService;
+        this.fedoraConfiguration = fedoraConfiguration;
+    }
 
     @Override
     protected void doHealthCheck(Health.Builder builder) throws Exception {
 
         builder
-                .withDetail("library.name", libraryName)
                 .withDetail("library.fusekiUrl", fedoraConfiguration.getFusekiServerConfiguration().getUrl())
                 .withDetail("library.fedoraUrl", fedoraConfiguration.getFedoraServerConfiguration().getUrl())
                 .up();
