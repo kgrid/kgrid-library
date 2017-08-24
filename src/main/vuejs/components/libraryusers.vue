@@ -87,7 +87,7 @@
 	import eventBus from '../components/eventBus.js';
 	import {getCurrentUser, retrieveUserList, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, setstartdate, otScroll, setBannerbkSize} from '../ot.js';
 	import usercard from '../components/usercard';
-	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
+	import { userModel } from '../components/models.js'
 	export default {
 		name:"libraryusers",
 		data:function(){

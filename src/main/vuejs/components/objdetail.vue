@@ -153,6 +153,7 @@
 		created : function() {
 			var self = this;
 			eventBus.$on("objSaved",function(obj){
+				self.objModel.object.metadata.citations.splice(0,self.objModel.object.metadata.citations.length);
 				$.extend(true, self.objModel.object, obj);
 			});
 			eventBus.$on('objectSelected',function(obj){
