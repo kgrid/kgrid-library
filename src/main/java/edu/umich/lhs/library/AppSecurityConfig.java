@@ -1,8 +1,7 @@
 package edu.umich.lhs.library;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.Http401AuthenticationEntryPoint;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -15,11 +14,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
+import javax.sql.DataSource;
+
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Qualifier("dataSource")
 	@Autowired
 	private DataSource dataSource;
 	
