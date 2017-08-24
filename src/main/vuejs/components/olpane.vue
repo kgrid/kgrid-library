@@ -68,7 +68,7 @@ export default {
     margin: 0px auto;
     background-color: #fff;
     height: 100%;
-    transition: all 0.2s ease;
+    transition: all 2s ease;
 }
 
 .modal-mask {
