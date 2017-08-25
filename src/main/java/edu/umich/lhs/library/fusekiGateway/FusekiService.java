@@ -24,11 +24,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FusekiService {
-	
+
 	private FedoraConfiguration fedoraConfiguration;
 	
 	private String fusekiServerURL;
@@ -37,6 +38,7 @@ public class FusekiService {
 
 	public FusekiService() {}
 
+	@Autowired
 	public FusekiService(FedoraConfiguration fedoraConfiguration) {
 		setFedoraConfiguration(fedoraConfiguration);
 	}
