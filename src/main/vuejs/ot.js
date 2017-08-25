@@ -142,7 +142,7 @@ export function checkEnv(baseurl, getEnv, errorhandler) {
 		headers: {
     	Accept: "application/json",
   	},
-		url : baseurl+"health",
+		url : baseurl+"info",
 		xhrFields: {
 	 		withCredentials: true
 		},

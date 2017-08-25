@@ -1,17 +1,10 @@
 .kg-fg-color {
   color: #0075bc;
 }
-
 .kg-bg-color {
   background-color: #fff;
 }
-.kg-font-color-1 {
-  color: #555555;
-}
 
-.kg-font-color-r {
-  color: #ffffff;
-}
 .kg-btn-close {
   color: #555555;
   transition: color 0.6s ease;

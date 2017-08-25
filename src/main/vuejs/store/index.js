@@ -13,7 +13,7 @@ export default new Vuex.Store({
     currentUser: {username:"",password:"",admin:false},
     currentObject: { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} ,
     activeTab:'METADATA',
-    libraryEnv: {},
+    libraryEnv: {git:{commit:{time:0,id:''}},build:{version:'',artifact:'',name:'',group:'',time:0},'library.name':''},
     libraryname: ''
   },
   mutations: {
@@ -30,9 +30,9 @@ export default new Vuex.Store({
       state.currentObject = obj;
     },
     setenv(state, env){
-      console.log(env);
+
       state.libraryEnv = env;
-      state.libraryname= env.fcrepo["library.name"];
+      state.libraryname= env["library.name"];
     }
   },
   getters: {
@@ -56,6 +56,16 @@ export default new Vuex.Store({
     },
     getLibraryName: state =>{
         return (state.libraryname || '')
+    },
+    getGitID: state=>{
+        return (state.libraryEnv.git.commit.id ||'')
+    },
+    getBuildTime: state=>{
+
+        return (state.libraryEnv.build.time || 0)
+    },
+    getVersion: state=>{
+        return (state.libraryEnv.build.version ||'')
     }
   }
   // plugins: debug ? [createLogger()] : []

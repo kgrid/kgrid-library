@@ -43,8 +43,6 @@ export default {
     );
     checkEnv("", function(response){
       if(response!=""){
-        console.log("Library Env Health Report:");
-        console.log(response.fcrepo["library.name"]);
         self.$store.commit('setenv',response);
       }
     },function(response){
