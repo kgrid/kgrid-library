@@ -60,10 +60,14 @@ public class KnowledgeObjectService {
 	// strings to the serializer when this pinto bug is fixed: https://github.com/stardog-union/pinto/issues/21
 	//private static final Namespace OT_NAMESPACE = new SimpleNamespace("ot", "http://uofm.org/objectteller/");
 
-	public KnowledgeObject getKnowledgeObject(ArkId arkId) throws LibraryException, URISyntaxException{
+	public KnowledgeObject getKnowledgeObject(ArkId arkId) throws LibraryException, URISyntaxException {
 		URI metadataURI = constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath());
 
-		return getKnowledgeObject(metadataURI);
+		try {
+			return getKnowledgeObject(metadataURI);
+		} catch (ObjectNotFoundException e) {
+			throw new ObjectNotFoundException("Cannot find object with id " + arkId);
+		}
 	}
 
 	public KnowledgeObject getKnowledgeObject(URI uri) throws LibraryException, URISyntaxException {
@@ -85,7 +89,7 @@ public class KnowledgeObjectService {
 		for (URI citationURI : citationURIs) {
 			citations.add(fetchAndDeserializeRDFData(Citation.class, citationURI, citationURI.toString()));
 		}
-		if(citations != null && !citations.isEmpty()) {
+		if(!citations.isEmpty()) {
 			metadata.setCitations(citations);
 		}
 		KnowledgeObject object = new KnowledgeObject();
@@ -413,8 +417,6 @@ public class KnowledgeObjectService {
 		ArkId arkId = idService.mint();
 
 		knowledgeObject.setArkId(arkId);
-		Version version = new Version();
-		knowledgeObject.getMetadata().setVersion(new Version());
 
 		return createKnowledgeObject(arkId, loggedInUser, knowledgeObject);
 	}
@@ -453,7 +455,10 @@ public class KnowledgeObjectService {
 
 			addProvMetadataStart(provLogURI, loggedInUser);
 			knowledgeObject.setArkId(arkId);
-			knowledgeObject.getMetadata().setVersion(new Version());
+
+			if("".equals(knowledgeObject.getMetadata().getVersion()))
+				knowledgeObject.getMetadata().setVersion(new Version());
+
 			knowledgeObject.getMetadata().setPublished(false);
 			addOrEditMetadataToURI(koURI, knowledgeObject.getMetadata());
 
