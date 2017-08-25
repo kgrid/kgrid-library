@@ -119,5 +119,19 @@ ul.list li {
     padding: 0px;
 }
 
+.kgl-viewlist {
+	list-style:none;
+	padding: 10px 16px 16px 16px;
+}
+
+.kgl-viewlist input, .kgl-viewlist div, .kgl-viewlist h4{
+	background-color: #fff;
+	padding: 0px;
+	color: #555555;
+	font-weight: 400;
+	font-size: 14px;
+	border-radius: 5px;
+	margin: 0px;
+}
 
 </style>

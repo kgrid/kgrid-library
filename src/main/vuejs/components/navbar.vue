@@ -130,7 +130,13 @@ export default {
 .kgl-nav {
 	z-index:50;
 }
+.kgl-1 {
+	z-index: 250;
+}
 
+.kgl-1 .navbar-nav>li{
+    margin: 0px 15px;
+}
 .navbar-brand{
 	background-color:#fff;
 	position:fixed;
