@@ -76,7 +76,7 @@
 								<div class='row filter'>
 									<div class='col-md-6  col-sm-6 col-xs-6'>
  										<label class="custom-control custom-checkbox">
- 											<input v-model='check.keywords' type="checkbox" class="custom-control-input">
+ 											<input v-model='check.keywords' type="checkbox" @change='setSessionStorage' class="custom-control-input">
  											<span class="custom-control-indicator">
 												<i v-show='check.keywords' class='fa fa-check kg-fg-color'></i>
 											</span>
@@ -85,7 +85,7 @@
 									</div>
 						<div class='col-md-6  col-sm-6 col-xs-6'>
 							<label class="custom-control custom-checkbox">
-								<input v-model='check.objectID' type="checkbox" class="custom-control-input">
+								<input v-model='check.objectID' type="checkbox" @change='setSessionStorage' class="custom-control-input">
 								<span class="custom-control-indicator">
 									<i v-show='check.objectID' class='fa fa-check kg-fg-color'></i>
 								</span>
@@ -96,7 +96,7 @@
 					<div class='row filter'>
 					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
-					<input v-model='check.owners' type="checkbox" class="custom-control-input">
+					<input v-model='check.owners' type="checkbox" @change='setSessionStorage' class="custom-control-input">
 					<span class="custom-control-indicator">
 						<i v-show='check.owners' class='fa fa-check kg-fg-color'></i>
 					</span>
@@ -105,7 +105,7 @@
 					</div>
 					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
-					<input v-model='check.citations' disabled type="checkbox" class="custom-control-input">
+					<input v-model='check.citations' disabled type="checkbox" @change='setSessionStorage' class="custom-control-input">
 					<span class="custom-control-indicator">
 						<i v-show='check.citations' class='fa fa-check kg-fg-color'></i>
 					</span>
@@ -116,7 +116,7 @@
 					<div class='row filter'>
 					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
-					<input v-model='check.title' type="checkbox" class="custom-control-input">
+					<input v-model='check.title' type="checkbox" @change='setSessionStorage' class="custom-control-input">
 					<span class="custom-control-indicator">
 						<i v-show='check.title' class='fa fa-check kg-fg-color'></i>
 					</span>
@@ -126,7 +126,7 @@
 					</div>
 					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
-					<input v-model='check.contributors' type="checkbox" class="custom-control-input">
+					<input v-model='check.contributors' type="checkbox" @change='setSessionStorage' class="custom-control-input">
 					<span class="custom-control-indicator">
 						<i v-show='check.contributors' class='fa fa-check kg-fg-color'></i>
 					</span>
@@ -159,7 +159,7 @@
 							<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-checkbox">
-					<input v-model='check.pub' id='pub' type="checkbox" class="custom-control-input">
+					<input v-model='check.pub' id='pub' type="checkbox" @change='setSessionStorage' class="custom-control-input">
 					<span class="custom-control-indicator">
 					<i v-show='check.pub' class='fa fa-check kg-fg-color'></i>
 					</span>
@@ -169,7 +169,7 @@
 							<div class='col-md-2 col-sm-2 col-xs-2'></div>
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label v-if='isLoggedIn' class="custom-control custom-checkbox">
-					<input v-model='check.pri' id='pri' type="checkbox" class="custom-control-input">
+					<input v-model='check.pri' id='pri' type="checkbox" @change='setSessionStorage' class="custom-control-input">
 					<span class="custom-control-indicator">
 						<i v-show='check.pri' class='fa fa-check kg-fg-color'></i>
 					</span>
@@ -183,7 +183,7 @@
 					<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-radio">
-					<input id="radio1" value='lastModified' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
+					<input id="radio1" value='lastModified' v-model='dateRange.datetype' @change='setSessionStorage' name="radio" type="radio" class="custom-control-input">
 					<span class="custom-control-indicator">
 								<i v-show='dateRange.datetype=="lastModified"' class='fa fa-circle kg-fg-color'></i>
 					</span>
@@ -194,7 +194,7 @@
 					<div class='col-md-2 col-sm-2 col-xs-2'></div>
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-radio">
-					<input id="radio2" value='createdOn' v-model='dateRange.datetype' name="radio" type="radio" class="custom-control-input">
+					<input id="radio2" value='createdOn' v-model='dateRange.datetype'  @change='setSessionStorage' name="radio" type="radio" class="custom-control-input">
 					<span class="custom-control-indicator">
 							<i v-show='dateRange.datetype=="createdOn"' class='fa fa-circle kg-fg-color'></i>
 					</span>
@@ -441,7 +441,7 @@ export default {
 	  },
 	computed : {
 		searchPlaceHolder:function(){
-			var s = 'Serach by ';
+			var s = 'Search by ';
 			var queryfields =[];
 			if(this.check.keywords){ queryfields.push('Keywords') }
 			if(this.check.owners){ queryfields.push('Owners') }
