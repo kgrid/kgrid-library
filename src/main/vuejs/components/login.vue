@@ -1,20 +1,20 @@
 <template id='login_overlay'>
 	<olnpane layerid=0>
-		<div slot='ol-title'><h3>Log in</h3></div>
+		<div slot='ol-title'><h3>Sign In</h3></div>
 		<div slot='ol-form'>
 		   <form @submit.prevent="validateLoginForm" data-vv-scope="loginform" autocomplete='on'>
 			<fieldset class='fieldcontainer' id='first'>
 			<div class='loginField'>
-               <label class="label">Username</label>
+               <label class="ft-sz-12 label text-cap">Username</label>
                 <p class="control has-icon has-icon-right">
                     <input spellcheck=false v-model='userModel.user.username' name="email" v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'loginform') }" type="text" placeholder="Enter your email">
                     <span v-show="errors.has('email', 'loginform')" class="help is-danger">{{ errors.first('email', 'loginform') }}</span>
                 </p>
 				</div>
 				<div class='loginField'>
-				 <label class="label">Password</label>
+				 <label class="ft-sz-12 label text-cap">Password</label>
                  <p class="control has-icon has-icon-right">
-                     <input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'form-1') }" type="password" placeholder="Enter your password">
+                     <input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'loginform') }" type="password" placeholder="Enter your password">
                      <span v-show="errors.has('password', 'loginform')" class="help is-danger">{{ errors.first('password', 'loginform') }}</span>
                  </p>
 				</div>
@@ -22,10 +22,10 @@
 					<label class="label"></label>
 				  <div class='btnContent'>
 					<transition name='fade' mode='out-in'>
-						<button key='0' class='login' type='submit' v-if='status.ready'>LOG IN</button>
-						<div key='1' class='spinner ol-processing  login pad-t-15' v-if='status.processing'>Logging in ......</div>
-						<div  key='2' class='ol-success login pad-t-15' v-if='status.success'>Login Successful<i class='fa fa-check'></i></div>
-						<div  key='3' class='ol-error login  pad-t-15' v-if='status.error'>Unable to log in. Please check credentials.</div>
+						<button key='0' class='login' type='submit' v-if='status.ready'>SIGN IN</button>
+						<div key='1' class='saving ol-processing login pad-t-15' v-if='status.processing'>Signing in <span>.</span><span>.</span><span>.</span></div>
+						<div  key='2' class='ol-success login pad-t-15' v-if='status.success'>Sign in Successful<i class='fa fa-check'></i></div>
+						<div  key='3' class='ol-error login  pad-t-15' v-if='status.error'>Unable to sign in. Please check credentials.</div>
 						</transition>
 					</div>
 				</div>
@@ -98,8 +98,8 @@ export default {
 <style scoped>
 .ol-success {
     color: #fff;
-    background-color: #00b5af;
-    border-color: #00b5af;
+    background-color: #0075bc;
+    border-color: #0075bc;
 
 }
 
@@ -136,11 +136,11 @@ margin:0px;
 }
 p.control span.is-danger {
 	position: absolute;
-	left: 16px;
+	left: 0px;
 	top: 62px;
 font-style: italic;
 font-size: 12px;
-color: #ec2526;
+color: #a02816;
 
 
 }
@@ -235,5 +235,49 @@ input[type=text], input[type=password], input[type=textarea], .addtext a {
     font-size: 14px;
     color: #666666;
     font-weight: 400;
+}
+
+.saving span {
+		/**
+		 * Use the blink animation, which is defined above
+		 */
+		animation-name: blink;
+		/**
+		 * The animation should take 1.4 seconds
+		 */
+		animation-duration: 1.4s;
+		/**
+		 * It will repeat itself forever
+		 */
+		animation-iteration-count: infinite;
+		/**
+		 * This makes sure that the starting style (opacity: .2)
+		 * of the animation is applied before the animation starts.
+		 * Otherwise we would see a short flash or would have
+		 * to set the default styling of the dots to the same
+		 * as the animation. Same applies for the ending styles.
+		 */
+		animation-fill-mode: both;
+}
+
+.saving span:nth-child(2) {
+		/**
+		 * Starts the animation of the third dot
+		 * with a delay of .2s, otherwise all dots
+		 * would animate at the same time
+		 */
+		animation-delay: .2s;
+}
+
+.saving span:nth-child(3) {
+		/**
+		 * Starts the animation of the third dot
+		 * with a delay of .4s, otherwise all dots
+		 * would animate at the same time
+		 */
+		animation-delay: .4s;
+}
+.input.is-danger {
+	border:1px solid #a02816;
 }
 </style>

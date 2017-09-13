@@ -54,26 +54,26 @@
 		</div>
 		</div>
 		<div class='row kgl-detail-daterow'>
-				<div class='col-md-3 col-sm-3 col-xs-3'>
+				<div class='inlineblock pad-l-18'>
 					<p class='kg-label'>Object ID</p>
 					<p class='date-data'>
 						<span>{{objModel.object.uri}}</span>
 					</p>
 				</div>
-				<div class='col-md-2 col-sm-2 col-xs-2'>
+				<div class='inlineblock pad-l-50'>
 					<p class='kg-label'>Last Updated</p>
 					<p class='date-data'>
 						<span v-text='formattedUpdateDate'></span>
 					</p>
 				</div>
-				<div class='col-md-2 col-sm-2 col-xs-2'>
+				<div class='inlineblock pad-l-50'>
 					<p class='kg-label'>Created On</p>
 					<p class='date-data'>
 						<span v-text='formattedCreateDate'></span>
 					</p>
 				</div>
-				<div class='col-md-5 col-sm-5 col-xs-5'>
-					<div class='float-r wd-70'>
+				<div class='inlineblock float-r'>
+					<div class='float-r wd-70 mar-r-30'>
 						<p class='kg-label'>View Type</p>
 							<div v-if='isAdmin'>
 								<div class="spinner" v-if="settingPubPri">
@@ -105,7 +105,7 @@
 		<div slot='header'>
 		<ul class='nav nav-tabs view' role='tablist' id='tabs'>
 		<li v-for='section in sections' v-bind:id='section.name' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section)"><a >{{section.label}}</a></li>
-		<li role='presentation' class='labels'><a>
+		<li role='presentation' class='labels' v-show='false'><a>
 				<i class='fa fa-ellipsis-h'></i>
 		</a></li>
 	</ul>
@@ -381,7 +381,7 @@ left: 0px;
   left: 24px;
   margin: 0;
   text-align: left;
-  padding: 0;
+  padding: 0 20px 0 0;
 }
 
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {

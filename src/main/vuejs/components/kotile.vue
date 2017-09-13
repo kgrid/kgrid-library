@@ -1,8 +1,8 @@
 <template>
 		<div class="container kgl-tile" v-bind:id="object.uri" v-on:click="selected">
 				<div class="row kgl-2">
-					<div class="col-md-1 col-sm-1 col-xs-1 kgl-type">
-						<i v-if="object.metadata.published" class='fa fa-circle kg-fg-color ft-sz-12 '></i>
+					<div class="col-md-1 col-sm-1 col-xs-1 kgl-type ft-sz-12">
+						<i v-if="object.metadata.published" class='fa fa-circle kg-fg-color  '></i>
 						</div>
 					<div class="col-md-11 col-sm-11 col-xs-11 kgl-title kg-fg-color" data-toggle="tooltip"
 							data-placement="top" v-bind:title="object.metadata.title">{{object.metadata.title}}
@@ -86,7 +86,7 @@
 				    vertical-align: middle;
 				    height: 25px;
 				    width: 60px;
-						    text-align: center;
+						text-align: center;
 				}
 				.kgl-empty {
 				    background-color: #fff;
@@ -98,8 +98,7 @@
 				    text-align: left;
 				    width: 1024px;
 				    background-color: #fff;
-				    margin: 10px 0px 0px 0px;
-				    color: #696969;
+			    	color: #696969;
 				    font-weight: 400;
 				    border-left: 3px solid #fff;
 				    padding: 0px ;
@@ -115,7 +114,7 @@
 				}
 
 				.kgl-type>i{
-					line-height:2.6em;
+					line-height:3.1em;
 
 					}
 

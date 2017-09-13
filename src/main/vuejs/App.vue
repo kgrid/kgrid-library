@@ -78,6 +78,10 @@ export default {
         case '1':
           self.showSecOverlay.show = false;
           break;
+        case '9':
+          self.showOverlay.show = false;
+          document.body.classList.toggle('noscroll', false);
+          break;
       }
     });
 	eventBus.$on('objSaved', function(obj){

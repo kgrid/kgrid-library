@@ -74,14 +74,14 @@ padding: 0px;
 }
 .addtext .textview {
 	resize:none;
-	padding:8px 0px 0px 0px;
+	padding:18px 0px 18px 0px;
 	border: none;
 	border-radius: 0px;
 	color:#666666;
   	margin: 0;
   	font-size: 14px;
   	overflow-y:auto;
-  	line-height:1.4em;
+  	line-height:1.6em;
   	   	text-overflow: clip;
    	white-space: pre-wrap;
    	word-break: break-word;

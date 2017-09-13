@@ -76,7 +76,7 @@
     min-width: 100px;
     padding: 0px;
     margin: 15px 0px 0px 0px;
-    width: 200px;
+    width: 220px;
     overflow-y: hidden;
     border: 1px solid rgba(0, 0, 0, .26);
     box-shadow: 0px 3px 6px 0px rgba(0,0,0,.15);
@@ -346,7 +346,7 @@
         type: String,
         default: '500px'
       },
-      
+
       /**
        * Enable/disable filtering the options.
        * @type {Boolean}
