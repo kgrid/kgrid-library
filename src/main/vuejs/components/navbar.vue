@@ -15,7 +15,7 @@
 				</div>
 				<div class='login-wrapper' >
 					<ul class='nav navbar-right kgl-1 ' v-if='!isLoggedIn'>
-						<li class='login-link' v-on:click='login_click'><a><span>Log In</span></a></li>
+						<li class='login-link' v-on:click='login_click'><a><span>Sign In</span></a></li>
 						<li class='signup-link' v-show='false'><<a href="mailto:dlhs.knowledge.grid@umich.edu?Subject=Sign%20Up">Sign Up</a></li>
 					</ul>
 					<ul class='nav navbar-nav navbar-right kgl-1'  v-else  v-click-outside='outside'>
@@ -33,7 +33,7 @@
 								</a>
 								<ul class='dropdown-menu' v-if='showDropdown'>
 									<li v-if='isAdmin'><a id='adduserBtn'  v-on:click='userlink_click'><span>Add User to Library</span></a></li>
-									<li><a id='logoutBtn' v-on:click='userlogout'><span>Logout</span></a></li>
+									<li><a id='logoutBtn' v-on:click='userlogout'><span>Sign Out</span></a></li>
 								</ul>
 							</div>
 						</li>
@@ -119,7 +119,6 @@ export default {
 	font-size:14px;
 	font-weight: 400;
 	line-height: 2.7em;
-  letter-spacing: 0.05em;
 	background-color: transparent;
   background-image: none;
 	position: relative;
@@ -238,17 +237,19 @@ min-width: 200px;
 		border:1px solid #0075bc;
 		background-color:#fff;
 		color: #0075bc;
-		transition:all 0.8s ease;
 		list-style:none;
 		margin: 15px 0px;
+		transition: background-color 0.5s ease, color 0.5s ease;
 	}
 .login-link span{
-	background-color:#fff;
-	color: #0075bc;
-	transition:all 0.8s ease;
+	background-color:transparent;
 }
-.login-link:hover,  .login-link:hover span{
+.login-link:hover {
 		background-color:#0075bc;
 		color: #fff;
+
+}
+.login-link:hover span{
+	color:#fff;
 }
 </style>

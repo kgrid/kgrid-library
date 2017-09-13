@@ -13,15 +13,15 @@
 		</div>
 		<div slot='header'>
 
-				<div v-show='isLoggedIn' class='kg-roundbtn kgl-newobj middleout' v-on:click='addObject'>
-					<a><span class='kg-fg-color middleout'>Add Object</span></a>
-				<div class='btnContent'>
+				<div v-show='isLoggedIn' class='kg-roundbtn kgl-newobj fade-in' v-on:click='addObject'>
+					<a><span class='kg-fg-color'>Add Object</span></a>
+				<div class='btnContent ft-sz-10'>
 					<i class='fa fa-plus kg-fg-color'></i>
 				</div>
 			</div>
 			<div class='row'>
 				<div class='col-md-10 col-sm-10 col-xs-10 kgl-search'>
-					<i class='fa fa-search kg-fg-color'></i>
+					<i class='fa fa-search fa-lg kg-fg-color'></i>
 							<input id='searchinput' aria-label='search' :placeholder='searchPlaceHolder' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
 				<div class='col-md-2 col-sm-2 col-xs-2'></div>
@@ -29,7 +29,7 @@
 		</div>
 		<div slot='maincontent'>
 			<div id='filtercontrol'>
-			<div class='row  mar-top30' v-show='filterStrings.length|hasDateFilter'>
+			<div class='row  mar-top20' v-show='filterStrings.length|hasDateFilter'>
 				<div class='col-md-12 col-sm-12 col-xs-12 filterCol'>
 					<ul class='filterlist'  v-show='filterStrings.length|hasDateFilter'>
 						<li v-for='filterstring in filterStrings' class='todo' :key='filterstring.id'>
@@ -44,11 +44,11 @@
 									</button>
 							<label>{{dateTypeText}}: {{dateRange.startTime.time}} - {{dateRange.endTime.time}}</label>
 						</li>
-						<button id='clearAll' v-show=true @click='removeAllFilters'>Clear All Filters</button>
+						<button id='clearAll' v-show=true @click='removeAllFilters'><span>Clear All Filters</span></button>
 					</ul>
 				</div>
 			</div>
-				<div class='row  mar-top30'>
+				<div class='row  mar-top20'>
 					<div class='col-md-2  col-sm-2 col-xs-2 filterBtnCol'>
 						<div id='filterBtn'>
 							<a v-on:click='toggleFilter'><span class='kg-fg-color' >Filters</span>
@@ -59,10 +59,10 @@
 					<div class='col-md-6  col-sm-6 col-xs-6 kgl-count'>
 						{{countString}}
 					</div>
-					<div class='col-md-4  col-sm-4 col-xs-4 lh-3 float-r'>
+					<div class='col-md-4  col-sm-4 col-xs-4 ht-45-lh float-r'>
 					<div class=' bg-white float-r'>
 						<h6><span class='pad-l-20 kg-fg-color'> Sort by:</span></h6>
-						<span  class='lh-1'><vselect :value.sync="kgselect" :options="optionlist" :searchable='false' :onChange='selectCallback'></vselect></span>
+						<span  class='lh-1 pad-r-10'><vselect :value.sync="kgselect" :options="optionlist" :searchable='false' :onChange='selectCallback'></vselect></span>
 						</div>
 
 					</div>
@@ -72,12 +72,12 @@
 				<div id='filterpanel' v-if='showFilterControl' >
 					<div class='row'>
 						<div class='col-md-6  col-sm-6 col-xs-6'>
-							<div class='row filter pad-l-20'><p>Search only within the following:</p></div>
+							<div class='row filter pad-l-20'><span class='ft-sz-12 text-cap'>SEARCH ONLY WITHIN THE FOLLOWING</span></div>
 								<div class='row filter'>
 									<div class='col-md-6  col-sm-6 col-xs-6'>
  										<label class="custom-control custom-checkbox">
  											<input v-model='check.keywords' type="checkbox" @change='setSessionStorage' class="custom-control-input">
- 											<span class="custom-control-indicator">
+ 											<span class="custom-control-indicator ft-sz-12 ">
 												<i v-show='check.keywords' class='fa fa-check kg-fg-color'></i>
 											</span>
 											<span class="custom-control-description">Keywords</span>
@@ -86,7 +86,7 @@
 						<div class='col-md-6  col-sm-6 col-xs-6'>
 							<label class="custom-control custom-checkbox">
 								<input v-model='check.objectID' type="checkbox" @change='setSessionStorage' class="custom-control-input">
-								<span class="custom-control-indicator">
+								<span class="custom-control-indicator ft-sz-12">
 									<i v-show='check.objectID' class='fa fa-check kg-fg-color'></i>
 								</span>
 								<span class="custom-control-description">Object ID</span>
@@ -97,7 +97,7 @@
 					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.owners' type="checkbox" @change='setSessionStorage' class="custom-control-input">
-					<span class="custom-control-indicator">
+					<span class="custom-control-indicator ft-sz-12">
 						<i v-show='check.owners' class='fa fa-check kg-fg-color'></i>
 					</span>
 					<span class="custom-control-description">Owners</span>
@@ -105,45 +105,46 @@
 					</div>
 					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
-					<input v-model='check.citations' disabled type="checkbox" @change='setSessionStorage' class="custom-control-input">
-					<span class="custom-control-indicator">
-						<i v-show='check.citations' class='fa fa-check kg-fg-color'></i>
-					</span>
-					<span class="custom-control-description">Citations</span>
-				</label>
-						</div>
-					</div>
-					<div class='row filter'>
-					<div class='col-md-6 col-sm-6 col-xs-6'>
-					<label class="custom-control custom-checkbox">
-					<input v-model='check.title' type="checkbox" @change='setSessionStorage' class="custom-control-input">
-					<span class="custom-control-indicator">
-						<i v-show='check.title' class='fa fa-check kg-fg-color'></i>
-					</span>
-					<span class="custom-control-description">Title</span>
-				</label>
-
-					</div>
-					<div class='col-md-6 col-sm-6 col-xs-6'>
-					<label class="custom-control custom-checkbox">
 					<input v-model='check.contributors' type="checkbox" @change='setSessionStorage' class="custom-control-input">
-					<span class="custom-control-indicator">
+					<span class="custom-control-indicator ft-sz-12">
 						<i v-show='check.contributors' class='fa fa-check kg-fg-color'></i>
 					</span>
 					<span class="custom-control-description">Contributors</span>
 				</label>
 
 								</div>
+					</div>
+					<div class='row filter'>
+					<div class='col-md-6 col-sm-6 col-xs-6'>
+					<label class="custom-control custom-checkbox">
+					<input v-model='check.title' type="checkbox" @change='setSessionStorage' class="custom-control-input">
+					<span class="custom-control-indicator ft-sz-12">
+						<i v-show='check.title' class='fa fa-check kg-fg-color'></i>
+					</span>
+					<span class="custom-control-description">Title</span>
+				</label>
+
+					</div>
+					<div class='col-md-6 col-sm-6 col-xs-6' v-show='false'>
+					<label class="custom-control custom-checkbox">
+					<input v-model='check.citations' disabled type="checkbox" @change='setSessionStorage' class="custom-control-input">
+					<span class="custom-control-indicator ft-sz-12">
+						<i v-show='check.citations' class='fa fa-check kg-fg-color'></i>
+					</span>
+					<span class="custom-control-description">Citations</span>
+				</label>
+						</div>
+
 						</div>
 											<div class='row filter'>
 
-					<div class='col-md-12 col-sm-12 col-xs-12'>
+					<div class='col-md-12 col-sm-12 col-xs-12' v-show='false'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.showmyobj' disabled type="checkbox" class="custom-control-input">
-					<span class="custom-control-indicator">
+					<span class="custom-control-indicator ft-sz-12">
 						<i v-show='check.showmyobj' class='fa fa-check kg-fg-color'></i>
 					</span>
-					<span class="custom-control-description">View only My Objects</span>
+					<span class="custom-control-description" >View only My Objects</span>
 				</label>
 
 								</div>
@@ -153,14 +154,14 @@
 				</div>
 				<div class='col-md-6 col-sm-6 col-xs-6'>
 					<div class='row  pad-l-20'>
-							<p>Show Knowledge Object:</p></div>
+							<span class='ft-sz-12 text-cap'>Show Knowledge Object</span></div>
 						<div class='row filter datetype'>
 
 							<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.pub' id='pub' type="checkbox" @change='setSessionStorage' class="custom-control-input">
-					<span class="custom-control-indicator">
+					<span class="custom-control-indicator ft-sz-12">
 					<i v-show='check.pub' class='fa fa-check kg-fg-color'></i>
 					</span>
 					<span class="custom-control-description">Public</span>
@@ -170,7 +171,7 @@
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label v-if='isLoggedIn' class="custom-control custom-checkbox">
 					<input v-model='check.pri' id='pri' type="checkbox" @change='setSessionStorage' class="custom-control-input">
-					<span class="custom-control-indicator">
+					<span class="custom-control-indicator ft-sz-12">
 						<i v-show='check.pri' class='fa fa-check kg-fg-color'></i>
 					</span>
 					<span class="custom-control-description">Private</span>
@@ -178,13 +179,13 @@
 								</div>
 								<div class='col-md-1 col-sm-1 col-xs-1'></div>
 								</div>
-					<div class='row filter  pad-l-20'><p>Select the type of date:</p></div>
+					<div class='row filter  pad-l-20'><span class='ft-sz-12 text-cap'>Select the type of date</span></div>
 					<div class='row filter datetype'>
 					<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-radio">
 					<input id="radio1" value='lastModified' v-model='dateRange.datetype' @change='setSessionStorage' name="radio" type="radio" class="custom-control-input">
-					<span class="custom-control-indicator">
+					<span class="custom-control-indicator ft-sz-12">
 								<i v-show='dateRange.datetype=="lastModified"' class='fa fa-circle kg-fg-color'></i>
 					</span>
 					<span class="custom-control-description">Last Updated</span>
@@ -195,7 +196,7 @@
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-radio">
 					<input id="radio2" value='createdOn' v-model='dateRange.datetype'  @change='setSessionStorage' name="radio" type="radio" class="custom-control-input">
-					<span class="custom-control-indicator">
+					<span class="custom-control-indicator ft-sz-12">
 							<i v-show='dateRange.datetype=="createdOn"' class='fa fa-circle kg-fg-color'></i>
 					</span>
 					<span class="custom-control-description">Created</span>
@@ -204,15 +205,16 @@
 					</div>
 					<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					</div>
-					<div class='row filter  pad-l-20'><p>Search within the following date range:</p></div>
+					<div class='row filter  pad-l-20'><span class='ft-sz-12 text-cap'>Search within the following date range</span></div>
 					<div class='row filter'>
 					<div class='col-md-1 col-sm-1 col-xs-1'></div>
 						<div class='col-md-5 col-sm-5 col-xs-5 datepick'>
-							<span>Start</span>
-							<p class=' pad-l-20' ><date-picker :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
+							<span class='kg-fg-color text-cap pad-r-10'>Start</span>
+							<p class=' pad-l-30' ><date-picker ref='startpicker' :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker' v-click-outside='outsidestart'></date-picker> </p>
 						</div>
-						<div class='col-md-5 col-sm-5 col-xs-5 datepick'>
-						<span>End</span>	<p  class=' pad-l-20' > <date-picker :date="dateRange.endTime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker'></date-picker></p>
+						<div class='col-md-5 col-sm-5 col-xs-5 datepick mar-l-10'>
+						<span class='kg-fg-color text-cap'>End</span>	<p  class=' pad-l-20' >
+						<date-picker ref='endpicker' :date="dateRange.endTime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker' v-click-outside='outsideend'></date-picker></p>
 						</div>
 						<div class='col-md-1 col-sm-1 col-xs-1'></div>
 					</div>
@@ -286,7 +288,7 @@ export default {
 		            'border': '1px solid #0075bc',
 		            'box-shadow': 'none',
 		            'border-radius': '2px',
-		            'color': '#5F5F5F',
+		            'color': '#0075bc',
 		            'width': '134px'
 		          },
 		          color: {
@@ -635,7 +637,12 @@ export default {
 				break
 			}
 	},
-
+	outsideend: function(e){
+		this.$refs.endpicker.dismiss(e);
+	},
+	outsidestart: function(e){
+		this.$refs.startpicker.dismiss(e);
+	},
 		toggleOrder : function() {
 			if (this.order == 'asc') {
 				this.order = 'desc';
@@ -670,7 +677,9 @@ export default {
 			   this.newstring = '';
 			 },
 	 	removeAllFilters: function(){
-			eventBus.$emit("confirmRequest",this.confirmrequest);
+		this.filterStrings.splice(0);
+		this.removeDateFilter();
+//			eventBus.$emit("confirmRequest",this.confirmrequest);
 	 },
 	 	removeDateFilter : function(){
 				 $.extend(true, this.dateRange, this.defaultDateRange);
@@ -766,14 +775,14 @@ input[id$="datepicker"] {
   padding: 12px 0px 12px 0px;
   text-align: center;
 	cursor: pointer;
-	width: 100px;
+	width: 130px;
 	height: 45px;
 }
 #fillerdiv {
 height: 55px;
 }
 #filterBtn.tall{
-	height: 57px;
+	height: 65px;
 }
 
  #fillerdiv.tall{
@@ -790,7 +799,7 @@ height: 55px;
 	color: #666666;
 }
 #filterBtn a span {
-	margin: 0px -15px 0px 12px;
+	margin: 0px -10px 0px 10px;
 }
 
 i#filterdowniconimg
@@ -799,17 +808,25 @@ i#filterdowniconimg
 }
 #filterpanel {
 	background-color:#fff;
-	margin: 0px 0px 12px 0px;
+	margin: 0px 0px 0px 0px;
 	padding: 12px;
 }
 .filterlist li, .filterlist button#clearAll{
 display:inline-block;
 background-color:#fff;
-margin:10px 20px 15px 0px;
+margin:0px 20px 0px 0px;
 padding:12px 15px 12px 8px;
 height: 44px;
+
 }
 
+button#clearAll span {
+    border-bottom: 1px solid transparent;
+transition: border 0.5s ease;
+}
+.filterlist button#clearAll:hover span{
+	border-bottom: 1px solid #0275bc;
+}
 .filterlist li:hover *{
 	color: #0075bc;
 }
@@ -853,28 +870,35 @@ color: #0075bc;
     background: transparent;
 }
 .bannercontent h1 {
-	line-height:1.3em;
+	line-height:1.5em;
 }
 .kgl-newobj{
-	width: 32px;
-	height: 32px;
+	width: 24px;
+	height: 24px;
 	position:absolute;
-	top: 6px;
+	top: 10px;
   right:0px;
   margin:0 auto;
   z-index:500;
 }
 .kgl-newobj span {
 position: absolute;
-top:4px;
+top:2px;
 left:-90px;
 opacity:1;
+border-bottom: 1px solid transparent;
+transition: border 0.5s ease;
+}
 
+
+.kgl-newobj:hover span{
+	 border-bottom: 1px solid #0075bc;
+	 cursor:pointer;
 }
 .kgl-newobj i {
 position: absolute;
-top: 8px;
-left:9.5px;
+top: 6px;
+left:7.5px;
 }
 
 
@@ -900,6 +924,7 @@ left:9.5px;
 	padding-left: 15px;
 	top: 8px;
 	width: 200px;
+	color: #0275bc;
 }
 .custom-control-indicator {
     position: absolute;
@@ -930,8 +955,8 @@ left:9.5px;
 }
 .custom-checkbox .custom-control-indicator i , .custom-radio .custom-control-indicator i{
 	position:absolute;
-	left:1px;
-	top:1px;
+	left:2.5px;
+	top:2px;
 }
 .custom-radio .custom-control-indicator {
     border-radius: 100%;
@@ -961,7 +986,7 @@ left: 12px;
 	transform: scaleY(1);
 }
 .filterBtnCol {
-	width: 120px;
+	width: 170px;
 }
 
 select >option {

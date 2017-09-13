@@ -4,7 +4,7 @@
   height: 100%;
   z-index: 998;
   overflow: hidden;
-  -webkit-animation: fadein 0.5s;
+  -webkit-animation: fadein 0.2s;
   /* Safari, Chrome and Opera > 12.1 */
   -moz-animation: fadein 0.5s;
   /* Firefox < 16 */
@@ -12,7 +12,7 @@
   /* Internet Explorer */
   -o-animation: fadein 0.5s;
   /* Opera < 12.1 */
-  animation: fadein 0.5s;
+  animation: fadein 0.2s;
 	margin: 10px 0px 0px 5px;
 }
 @keyframes fadein {
@@ -127,7 +127,7 @@ table {
   background: #e5e5e5;
   vertical-align: middle;
 	border: 1px solid #fff;
-	transition: all 0.3s ease;
+	transition: border 0.3s ease;
 }
 .week ul {
   margin: 0 0 8px;
@@ -173,14 +173,14 @@ table {
 .cov-date-previous,
 .cov-date-next {
   position: relative;
-  width: 20% !important;
+  width: 16% !important;
   text-indent: -300px;
   overflow: hidden;
   color: #fff;
 }
 
 .cov-date-caption {
-  width: 60%;
+  width: 68%;
   padding: 10px 0!important;
   box-sizing: border-box;
   font-size: 14px;
@@ -198,6 +198,10 @@ table {
 }
 .unavailable:hover {
   background: none;
+}
+.today {
+  background-color: #0075bc;
+  color: #fff;
 }
 .checked:hover {
   background: #e5e5e5;
@@ -331,7 +335,7 @@ table {
         <div class="cov-date-monthly">
           <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
           <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
-            <span @click="showMonth">{{displayInfo.month}}</span>   <span @click="showYear"><small>{{checked.year}}</small></span>
+            <span @click="showMonth">{{displayInfo.month}}</span>   <span @click="showYear">{{checked.year}}</span>
           </div>
           <div class="cov-date-next" @click="nextMonth('next')">»</div>
         </div>
@@ -342,7 +346,7 @@ table {
                 <li v-for="weekie in library.week">{{weekie}}</li>
               </ul>
             </div>
-            <div class="day" v-for="day,index in dayList" :key="index" @click="checkDay(day)" :class="{'checked':day.checked,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
+            <div class="day" v-for="day,index in dayList" :key="index" @click="checkDay(day)" :class="{'checked':day.checked,'today':day.isToday,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
           </div>
         </div>
         <div class="cov-date-box list-box" v-if="showInfo.year">
@@ -440,6 +444,9 @@ export default {
       }
       return list
     }
+    function today() {
+      return moment(new Date())
+    }
     function mins () {
       let list = []
       let min = 60
@@ -515,10 +522,12 @@ export default {
       previousMonth.subtract(1, 'months')
       let monthDays = moment(currentMoment).daysInMonth()
       let oldtime = this.checked.oldtime
+      let today = this.today
       for (let i = 1; i <= monthDays; ++i) {
         days.push({
           value: i,
           inMonth: true,
+          isToday: false,
           unavailable: false,
           checked: false,
           moment: moment(currentMoment).date(i)
@@ -526,7 +535,11 @@ export default {
         if (i === Math.ceil(moment(currentMoment).format('D')) && moment(oldtime, this.option.format).year() === moment(currentMoment).year() && moment(oldtime, this.option.format).month() === moment(currentMoment).month()) {
           days[i - 1].checked = true
         }
+        if (i === Math.ceil(moment(today).format('D')) && moment(oldtime, this.option.format).year() ===moment(today).year() && moment(oldtime, this.option.format).month() === moment(today).month()) {
+          days[i - 1].isToday = true
+        }
         this.checkBySelectDays(i, days)
+
       }
       if (firstDay === 0) firstDay = 7
       for (let i = 0; i < firstDay - (this.option.SundayFirst ? 0 : 1); i++) {
@@ -754,6 +767,9 @@ export default {
           this.showInfo.check = false
           this.$emit('cancel')
         }
+      }else {
+      this.showInfo.check = false
+        this.$emit('cancel')
       }
     },
     shiftActTime () {

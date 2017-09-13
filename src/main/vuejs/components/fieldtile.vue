@@ -1,9 +1,9 @@
 <template id="fieldtile-template">
 	<div class="addtext" :id="field.name">
-		<h4>{{field.title}}</h4>
-		<input :type="field.type" class="metaEdit" disabled v-bind:value="value"
+		<span class='ft-sz-12 text-cap'>{{field.title}}</span>
+		<input :type="field.type" class="metaEdit ft-sz-16" disabled v-bind:value="value"
 			v-if="isInput" />
-		<div class="metaEdit textview" v-if="isTextArea">{{value}}</div>
+		<div class="metaEdit textview ft-sz-16" v-if="isTextArea">{{value}}</div>
 		<linkedfieldtile v-if="isLicense" v-bind:link="value.licenseLink"
 			v-bind:value="value.licenseName"></linkedfieldtile>
 		<div class='entryDisplayArea' id='citation_entries' v-if="isCitation">
@@ -70,3 +70,8 @@
 					}
 				};
 </script>
+<style scoped>
+input.ft-sz-16, div.ft-sz-16 {
+	font-size: 16px;
+}
+</style>

@@ -1,24 +1,13 @@
 <template id='confirm_overlay'>
 	<olnpane layerid=9>
-		<div slot='ol-title'><h3>Confirmation Dialog</h3></div>
+		<div slot='ol-title'><h3>{{statement}}</h3></div>
 		<div slot='ol-form'>
 				<div class='loginField'>
-						<span>{{statement}}</span>
 						<span>{{question}}</span>
 				</div>
-				<div class='loginField'>
-					<div class='kgl-login'  @click="ok_clicked">
-
-					  <div class='btnContent'>
-						 		<button class='login'  @click="ok_clicked">OK</button></div>
-						</div>
-				</div>
-				<div class='loginField'>
-						<div class='kgl-login'>
-							<div class='btnContent'>
-								<button class='login cancel' @click="cancel_clicked">Cancel</button></div>
-							</div>
-						</div>
+				<div class='float-r'>
+						<button class="kg-btn-secondary" v-on:click="cancel_clicked" id="cancelBtn">NO</button>
+						<button class="kg-btn-primary" id="saveObjButton" v-on:click="ok_clicked">YES</button>
 				</div>
 		</div>
 	</olnpane>
