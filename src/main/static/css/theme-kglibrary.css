@@ -4,7 +4,9 @@
 .kg-bg-color {
   background-color: #fff;
 }
-
+.kg-library-bg-color {
+  background-color: #0075bc;
+}
 .kg-btn-close {
   color: #555555;
   transition: color 0.6s ease;
@@ -20,7 +22,7 @@
   background-color: #fff;
 }
 .navbar {
-	border-bottom: 1px solid #d7d7d7;
+	border-bottom: 1px solid transparent;
   z-index: 250;
 }
 a, a:hover, a:visited, a:focus {
@@ -60,6 +62,7 @@ a, a:hover, a:visited, a:focus {
   font-size: 14px;
   font-weight: 400;
   padding: 12px;
+  line-height:2em;
   cursor: pointer;
   vertical-align: middle;
   transition: color 0.5s ease;

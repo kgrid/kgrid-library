@@ -9,37 +9,20 @@
 	</template>
 	<script>
 	import fieldtile from './fieldtile.vue';
-	import { loadFieldsConfig } from '../ot.js';
 	export default {
 		name:'tabpane',
 		props:['section','object','isDisabled'],
 		data: function(){
 			return {
-				fields_json : {
-					fields : []
-				},
-				raw:9
 			}
 		},
 		components: {
 			fieldtile:fieldtile
 		},
-		beforeCreate : function() {
-			var self = this;
-			$.getJSON("./static/json/fields.json",function(data) {
-				self.fields_json.fields = data.fields;
-			});
-		},
-		updated : function() {
-
-		},
-		created : function() {
-
-		},
-		mounted : function() {
-
-		},
 		computed : {
+			fields_json : function(){
+				return this.$store.getters.getfields
+				},
 			filteredFields :function(){
 				var section = this.section;
 				var fields = this.fields_json.fields;
@@ -48,9 +31,7 @@
 				})
 			}
 		},
-		methods: {
 
-		}
 	};
 	</script>
 <style>
@@ -71,10 +52,11 @@ input[type=text]:disabled {
 	font-weight: 400;
 	font-size: 14px;
 padding: 0px;
+height:40px;
 }
 .addtext .textview {
 	resize:none;
-	padding:18px 0px 18px 0px;
+	padding:10px 0px 18px 0px;
 	border: none;
 	border-radius: 0px;
 	color:#666666;

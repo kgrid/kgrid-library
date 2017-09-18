@@ -148,6 +148,7 @@
 </template>
 <script>
 import olpane from '../components/olpane';
+import moment from 'moment';
 import eventBus from '../components/eventBus.js';
 import fileuploader from './fileuploader.vue';
 import linkedfieldeditor from './linkedfieldeditor.vue'
@@ -216,8 +217,8 @@ export default {
 			return ""
 		}
 		else
-			{return new Date(this.editObjModel.object.metadata.lastModified)
-				.format("mediumDate")}
+			{return moment(new Date(
+					this.editObjModel.object.metadata.lastModified)).format('MMM DD, YYYY')}
 		}
 	},
 	mounted:function(){

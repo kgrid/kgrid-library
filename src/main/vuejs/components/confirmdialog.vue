@@ -3,11 +3,11 @@
 		<div slot='ol-title'><h3>{{statement}}</h3></div>
 		<div slot='ol-form'>
 				<div class='loginField'>
-						<span>{{question}}</span>
+
 				</div>
 				<div class='float-r'>
-						<button class="kg-btn-secondary" v-on:click="cancel_clicked" id="cancelBtn">NO</button>
-						<button class="kg-btn-primary" id="saveObjButton" v-on:click="ok_clicked">YES</button>
+						<button class="kg-btn-secondary" v-on:click="cancel_clicked" id="cancelBtn">Cancel</button>
+						<button class="kg-btn-primary" id="saveObjButton" v-on:click="ok_clicked">{{btnText}}</button>
 				</div>
 		</div>
 	</olnpane>
@@ -17,7 +17,7 @@ import olnpane from '../components/olnpane';
 import eventBus from '../components/eventBus.js';
 export default {
   name: 'confirmdialog',
-	props: ['name','statement'],
+	props: ['name','statement','btnText'],
   data: function () {
     return {
 	    question: 'Are you sure?',
@@ -107,7 +107,8 @@ padding: 0px 20px;
 }
 
 h3 {
-    font-size: 24px;
-    font-weight: 300;
+    font-size: 32px;
+    font-weight: 500;
+		line-height: 1.4em;
 }
 </style>

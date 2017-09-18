@@ -1,10 +1,12 @@
 <template>
 	<div class='content'>
 		<applayout :nothelper='true'>
-		<div slot='banner'>
-		<div class='row ht-30'>
+		<div slot='backrow' class='row ht-30 ft-sz-12 kg-fg-color' style="position: absolute;left:90px;cursor:pointer;" @click='returntolibrary'>
+		<i class='fa fa-chevron-left pad-r-5'></i><span>Back to the Library</span>
 		</div>
-		<div class='row kgl-detail-titlerow'>
+		<div slot='banner'>
+		<div class='row ht-50 ft-sz-12 kg-fg-color'>		</div>
+		<div class='row ht-110 kgl-detail-titlerow'>
 				<div id='ko-title' class='col-md-12 col-sm-12'>
 					<div id= 'type-status' >
 						<i v-if="objModel.object.metadata.published" class='fa fa-circle kg-fg-color ft-sz-12 '></i>
@@ -81,13 +83,13 @@
 									<span class="sr-only">Loading...</span>
 								</div>
 								<div class='dropdown' id="pubDropdown" v-else style='height:15px;' v-click-outside='outside'>
-									<a data-target='#' v-on:click='togglePubDropdown'>
+									<a data-target='#' v-on:mouseenter='trigDropdown' v-on:mouseleave='checkDropdown'>
 										<div class='row float-r mar-r-12 pad-t-2 lh-1'>
 											<span class=' ft-sz-14 kg-fg-color'>{{pubState}}</span>
 											<i id='pubdropdowniconimg' class='fa fa-caret-down kg-fg-color down'></i>
 										</div>
 									</a>
-									<ul class='dropdown-menu mar-top20' id='pubdropdown' v-if='showPubDropdown'>
+									<ul class='dropdown-menu mar-top20' id='pubdropdown' v-if='showPubDropdown' v-on:mouseleave='leaveDropdown'>
 										<li><a v-on:click='setPublic'><span>Public</span></a></li>
 										<li><a v-on:click='setPrivate'><span>Private</span></a></li>
 									</ul>
@@ -124,9 +126,10 @@
 	</template>
 	<script>
 	var $ = require('jquery');
+	import moment from 'moment';
 	import applayout from './applayout.vue';
 	import tabpane from './tabbedpanel.vue';
-	import {tabNav, overlayHeightResize, retrieveObject, retrieveObjectList, otScroll, setBannerbkSize} from '../ot.js';
+	import {retrieveObject, otScroll} from '../ot.js';
 	import eventBus from '../components/eventBus.js';
 	import { objModel, editObjModel, sections, userModel } from '../components/models.js'
 	export default {
@@ -143,7 +146,7 @@
 				publishState: 'Unpublished',
 				userModel:{user:{username:'',password:''}},
 				activeTab: 'METADATA',
-				confirmrequest:{name:"deleteObject",statement:"This Object will be deleted!"},
+				confirmrequest:{name:"deleteObject",statement:"Are you sure that you want to delete this object?",btnText:"Delete"},
 			}
 		},
 		components:{
@@ -228,16 +231,18 @@
 					return ""
 				}
 				else
-					{return new Date(this.objModel.object.metadata.lastModified)
-						.format("mediumDate")}
+					{return moment(new Date(
+							this.objModel.object.metadata.lastModified)).format('MMM DD, YYYY')
+							}
 				},
 			formattedCreateDate : function() {
 					if(!this.objModel.object.metadata.createdOn || this.objModel.object.metadata.createdOn=="" ){
 						return ""
 					}
 					else
-						{return new Date(this.objModel.object.metadata.createdOn)
-							.format("mediumDate")}
+						{return moment(new Date(
+								this.objModel.object.metadata.createdOn)).format('MMM DD, YYYY')
+								}
 					},
 
 
@@ -268,6 +273,15 @@
 						$('#pubdropdowniconimg').removeClass('up');  // eslint-disable-line
 						$('#pubdropdowniconimg').addClass('down');  // eslint-disable-line
 			}
+			},
+			trigDropdown: function(){
+					this.showPubDropdown=true;
+			},
+			checkDropdown: function(){
+					this.showPubDropdown=true;
+			},
+			leaveDropdown:function(){
+					this.showPubDropdown=false;
 			},
 		setPublic: function(){
 			this.toggleObject(true);
@@ -329,13 +343,16 @@
 			},
 			deleteObject : function() {
 					eventBus.$emit("confirmRequest",this.confirmrequest);
-			}
+			},
+			returntolibrary: function(){
+				eventBus.$emit("return");
+			},
 		}
 };
 	</script>
 <style>
 .kgl-banner.detail {
-	height: 220px;
+	height: 270px;
 padding: 0px 32px 0px 48px;
 margin:0 auto;
 }
@@ -347,7 +364,6 @@ margin:0 auto;
 	height: 25px;
 }
 .kgl-detail-titlerow {
-	height: 80px;
 	margin-left: -40px;
 }
 .kgl-detail-daterow {

@@ -60,9 +60,7 @@ export default {
 			return this.$store.getters.getVersion;
 		},
 		buildtime : function(){
-			return new Date(
-					this.$store.getters.getBuildTime)
-					.format("isoDateTime");
+			return this.$store.getters.getBuildTimeString
 		},
 		gitid : function(){
 			return this.$store.getters.getGitID;
@@ -79,5 +77,4 @@ export default {
 };
 </script>
 <style>
-
 </style>

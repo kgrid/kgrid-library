@@ -1,7 +1,16 @@
 <template id='navbar'>
 		<div class='kgl-nav'>
-			<router-link class='navbar-brand kgl-1' to='/'>
-						<img src='../assets/images/kg-library-logo.png' height='30px' alt='KGrid Library'/>
+			<router-link class='navbar-brand kgl-1' to='/' v-if='layoutop==0'>
+						<img src='../assets/images/KG_Library_Blue.png' height='30px' alt='KGrid Library' />
+			</router-link>
+			<router-link class='navbar-brand kgl-1' to='/' v-if='layoutop==1'>
+						<img src='../assets/images/KG_Library_Grey.png' height='30px' alt='KGrid Library' />
+			</router-link>
+			<router-link class='navbar-brand kgl-1' style="background-color:#0075bc;" to='/' v-if='layoutop==2'>
+									<img src='../assets/images/KG_Library_White.png' height='30px' alt='KGrid Library' />
+			</router-link>
+			<router-link class='navbar-brand kgl-1' to='/' v-if='layoutop==3'>
+									<img src='../assets/images/KG_Library_Blue.png' height='30px' alt='KGrid Library' />
 			</router-link>
 			<nav class='navbar navbar-fixed-top kgl-1 kg-bg-color kg-color'>
 				<div class='wrapper'>
@@ -11,6 +20,7 @@
 							<router-link tag='li' :class="{'active': $route.fullPath === '/faq'}" to='/faq'><a><span>FAQ</span></a></router-link>
 							<router-link tag='li' :class="{'active': $route.fullPath === '/contactus'}" to='/contactus'><a><span>Contact Us</span></a></router-link>
 						</ul>
+						<button @click='oplayout' style='position:fixed;left:0;top:20px;color:white; background-color:white;'><i class='fa fa-tags'></i></button>
 					</div>
 				</div>
 				<div class='login-wrapper' >
@@ -21,17 +31,17 @@
 					<ul class='nav navbar-nav navbar-right kgl-1'  v-else  v-click-outside='outside'>
 						<li class='login-link1'>
 							<div class='dropdown' id="userDropdown" >
-								<a data-target='#' v-on:click='toggleDropdown'>
+								<a data-target='#'>
 									<div class='row pad-t-2 pad-b-5 lh-1'>
 										<span class='float-r'>Welcome, {{firstname}}</span>
 									</div>
 									<div class='row pad-b-5 float-r lh-1'>
-										<span class=' ft-sz-12 kg-fg-color'>{{libraryname}}</span>
+										<span class=' ft-sz-12 kg-fg-color' v-on:mouseenter='trigDropdown' v-on:mouseleave='checkDropdown'>{{libraryname}}</span>
 										<i id='dropdowniconimg' class='fa fa-caret-down kg-fg-color down'></i>
 									</div>
 
 								</a>
-								<ul class='dropdown-menu' v-if='showDropdown'>
+								<ul class='dropdown-menu' v-if='showDropdown' v-on:mouseleave='leaveDropdown'>
 									<li v-if='isAdmin'><a id='adduserBtn'  v-on:click='userlink_click'><span>Add User to Library</span></a></li>
 									<li><a id='logoutBtn' v-on:click='userlogout'><span>Sign Out</span></a></li>
 								</ul>
@@ -50,7 +60,8 @@ export default {
   name: 'navbar',
   data: function () {
     return {
- 			showDropdown : false
+ 			showDropdown : false,
+			layoutop:0
     };
   },
   created: function() {
@@ -71,6 +82,12 @@ export default {
 		}
   },
   methods: {
+		oplayout:function(){
+			this.layoutop++;
+			if(this.layoutop>=3){
+				this.layoutop=0;
+			}
+		},
 		outside: function(){
 			if(this.showDropdown){
 				this.toggleDropdown();
@@ -79,6 +96,15 @@ export default {
     login_click: function () {
       eventBus.$emit('openLogin'); // eslint-disable-line
     },
+		trigDropdown: function(){
+				this.showDropdown=true;
+		},
+		checkDropdown: function(){
+				this.showDropdown=true;
+		},
+		leaveDropdown:function(){
+				this.showDropdown=false;
+		},
     toggleDropdown: function () {
     	this.showDropdown=!this.showDropdown;
     	if(this.showDropdown){
@@ -195,7 +221,7 @@ transform: scaleY(1);
 }
 
 #userDropdown.dropdown ul li {
-    height: 2.7em;
+    height: 3.5em;
     line-height: 2.8em;
     text-align: left;
 		display: list-item;
@@ -204,8 +230,7 @@ transform: scaleY(1);
 		background-color:#fff;
 }
 #userDropdown.dropdown ul li > a {
-    padding: 0px 20px;
-		height: 2.5em;
+    padding: 10px 20px;
 		text-decoration: none;
     cursor: pointer;
 		background-color:transparent;
@@ -233,12 +258,12 @@ min-width: 200px;
 
 .login-link {
 		cursor:pointer;
-		padding:5px 25px;
+		padding:10px 35px;
 		border:1px solid #0075bc;
 		background-color:#fff;
 		color: #0075bc;
 		list-style:none;
-		margin: 15px 0px;
+		margin: 10px 0px;
 		transition: background-color 0.5s ease, color 0.5s ease;
 	}
 .login-link span{

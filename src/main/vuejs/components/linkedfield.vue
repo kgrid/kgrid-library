@@ -18,7 +18,7 @@
     padding: 10px 0 0 1px;
     border-radius: 0;
     margin: 0;
-    font-size: 14px;
+    font-size: 16px;
     color: #666;
     font-weight: 400;
 }

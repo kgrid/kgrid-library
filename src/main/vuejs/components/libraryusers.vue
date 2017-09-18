@@ -85,7 +85,7 @@
 	<script>
 	import olpane from '../components/olpane';
 	import eventBus from '../components/eventBus.js';
-	import {getCurrentUser, retrieveUserList, overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, setstartdate, otScroll, setBannerbkSize} from '../ot.js';
+	import {getCurrentUser, retrieveUserList, overlayHeightResize} from '../ot.js';
 	import usercard from '../components/usercard';
 	import { userModel } from '../components/models.js'
 	export default {

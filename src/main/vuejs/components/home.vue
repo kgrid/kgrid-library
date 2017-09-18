@@ -3,9 +3,11 @@
 	<applayout :nothelper='true'>
 		<div slot='banner'>
 			<div class='bannercontent' v-if="isLoggedIn">
+				<h1 style='color:#0075bc;font-weight:700;'>Knowledge Grid Library</h1>
 				<h1>A Repository of Computable Health Knowledge where you can Store, Curate and Manage Resources and Services</h1>
 			</div>
 			<div class='bannercontent' v-else>
+				<h1 style='color:#0075bc;font-weight:700;'>Knowledge Grid Library</h1>
 				<h1>A Repository of Computable Health Knowledge where you can Store, Curate and Manage Resources and Services</h1>
 			</div>
 
@@ -21,7 +23,7 @@
 			</div>
 			<div class='row'>
 				<div class='col-md-10 col-sm-10 col-xs-10 kgl-search'>
-					<i class='fa fa-search fa-lg kg-fg-color'></i>
+					<i class='fa fa-search fa-lg'></i>
 							<input id='searchinput' aria-label='search' :placeholder='searchPlaceHolder' v-model='newstring'  @keyup.enter='addFilterString'/>
 				</div>
 				<div class='col-md-2 col-sm-2 col-xs-2'></div>
@@ -72,7 +74,7 @@
 				<div id='filterpanel' v-if='showFilterControl' >
 					<div class='row'>
 						<div class='col-md-6  col-sm-6 col-xs-6'>
-							<div class='row filter pad-l-20'><span class='ft-sz-12 text-cap'>SEARCH ONLY WITHIN THE FOLLOWING</span></div>
+							<div class='row filterlabel pad-l-20'><span class='ft-sz-12 text-cap'>SEARCH ONLY WITHIN THE FOLLOWING</span></div>
 								<div class='row filter'>
 									<div class='col-md-6  col-sm-6 col-xs-6'>
  										<label class="custom-control custom-checkbox">
@@ -151,14 +153,12 @@
 								<div class='col-md-5 col-sm-5 col-xs-5'>
 					</div>
 					</div>
-				</div>
-				<div class='col-md-6 col-sm-6 col-xs-6'>
-					<div class='row  pad-l-20'>
-							<span class='ft-sz-12 text-cap'>Show Knowledge Object</span></div>
-						<div class='row filter datetype'>
+					<div class='row filterlabel pad-l-20'>
+							<span class='ft-sz-12 text-cap'>Type of Knowledge Object</span></div>
+						<div class='row filter'>
 
-							<div class='col-md-1 col-sm-1 col-xs-1'></div>
-					<div class='col-md-4 col-sm-4 col-xs-4'>
+
+					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-checkbox">
 					<input v-model='check.pub' id='pub' type="checkbox" @change='setSessionStorage' class="custom-control-input">
 					<span class="custom-control-indicator ft-sz-12">
@@ -167,8 +167,8 @@
 					<span class="custom-control-description">Public</span>
 				</label>
 					 </div>
-							<div class='col-md-2 col-sm-2 col-xs-2'></div>
-					<div class='col-md-4 col-sm-4 col-xs-4'>
+
+					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label v-if='isLoggedIn' class="custom-control custom-checkbox">
 					<input v-model='check.pri' id='pri' type="checkbox" @change='setSessionStorage' class="custom-control-input">
 					<span class="custom-control-indicator ft-sz-12">
@@ -179,41 +179,44 @@
 								</div>
 								<div class='col-md-1 col-sm-1 col-xs-1'></div>
 								</div>
-					<div class='row filter  pad-l-20'><span class='ft-sz-12 text-cap'>Select the type of date</span></div>
-					<div class='row filter datetype'>
-					<div class='col-md-1 col-sm-1 col-xs-1'></div>
-					<div class='col-md-4 col-sm-4 col-xs-4'>
+				</div>
+				<div class='col-md-6 col-sm-6 col-xs-6'>
+
+					<div class='row filterlabel  pad-l-20'><span class='ft-sz-12 text-cap'>Select the type of date</span></div>
+					<div class='row filter '>
+
+					<div class='col-md-6 col-sm-6 col-xs-6'>
 					<label class="custom-control custom-radio">
 					<input id="radio1" value='lastModified' v-model='dateRange.datetype' @change='setSessionStorage' name="radio" type="radio" class="custom-control-input">
-					<span class="custom-control-indicator ft-sz-12">
+					<span class="custom-control-indicator ft-sz-16">
 								<i v-show='dateRange.datetype=="lastModified"' class='fa fa-circle kg-fg-color'></i>
 					</span>
 					<span class="custom-control-description">Last Updated</span>
 					</label>
 
 					</div>
-					<div class='col-md-2 col-sm-2 col-xs-2'></div>
+
 					<div class='col-md-4 col-sm-4 col-xs-4'>
 					<label class="custom-control custom-radio">
 					<input id="radio2" value='createdOn' v-model='dateRange.datetype'  @change='setSessionStorage' name="radio" type="radio" class="custom-control-input">
-					<span class="custom-control-indicator ft-sz-12">
+					<span class="custom-control-indicator ft-sz-16">
 							<i v-show='dateRange.datetype=="createdOn"' class='fa fa-circle kg-fg-color'></i>
 					</span>
 					<span class="custom-control-description">Created</span>
 					</label>
 
 					</div>
-					<div class='col-md-1 col-sm-1 col-xs-1'></div>
+
 					</div>
-					<div class='row filter  pad-l-20'><span class='ft-sz-12 text-cap'>Search within the following date range</span></div>
+									<div class='row filter'></div>
+					<div class='row filterlabel  pad-l-20'><span class='ft-sz-12 text-cap'>Search within the following date range</span></div>
 					<div class='row filter'>
-					<div class='col-md-1 col-sm-1 col-xs-1'></div>
-						<div class='col-md-5 col-sm-5 col-xs-5 datepick'>
-							<span class='kg-fg-color text-cap pad-r-10'>Start</span>
-							<p class=' pad-l-30' ><date-picker ref='startpicker' :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker' v-click-outside='outsidestart'></date-picker> </p>
+					<div class='col-md-6 col-sm-6 col-xs-6 datepick'>
+							<span class='kg-fg-color pad-r-10'>Start</span>
+							<p class=' pad-l-30' ><date-picker ref='startpicker' :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
-						<div class='col-md-5 col-sm-5 col-xs-5 datepick mar-l-10'>
-						<span class='kg-fg-color text-cap'>End</span>	<p  class=' pad-l-20' >
+						<div class='col-md-5 col-sm-5 col-xs-5 datepick'>
+						<span class='kg-fg-color '>End</span>	<p  class=' pad-l-20' >
 						<date-picker ref='endpicker' :date="dateRange.endTime" :option="option" class='rightalign' :limit="limit"  v-on:change='setenddate()' id='enddatepicker' v-click-outside='outsideend'></date-picker></p>
 						</div>
 						<div class='col-md-1 col-sm-1 col-xs-1'></div>
@@ -232,13 +235,14 @@
 		</div>
 </template>
 <script>
+import moment from 'moment'
 import myDatepicker from '../vendor/vue-datepicker-es6.vue'
 import applayout from './applayout.vue';
 import vselect from '../vendor/vue-select.vue';
 import kotile from './kotile.vue';
-import { overlayHeightResize, retrieveObject, retrieveObjectList, setenddate, otScroll, setBannerbkSize} from '../ot.js';
+import {retrieveObjectList, otScroll} from '../ot.js';
 import eventBus from '../components/eventBus.js';
-import { objModel, editObjModel, sections, userModel } from '../components/models.js'
+import { objModel, editObjModel, userModel } from '../components/models.js'
 
 export default {
     name: 'home',
@@ -264,8 +268,8 @@ export default {
 			defaultCheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false},
  			filterStrings:[],
  			newstring:'',
- 			dateRange:{datetype:'lastModified',startTime: {time: '09/01/2016'}, endTime: {time: new Date().format("shortDate")}},
- 			defaultDateRange:{datetype:'lastModified', startTime:{time: '09/01/2016'}, endTime: {time:new Date().format("shortDate")}},
+ 			dateRange:{datetype:'lastModified',startTime: {time: '09/01/2016'}, endTime: {time: moment().format("MM/DD/YYYY")}},
+ 			defaultDateRange:{datetype:'lastModified', startTime:{time: '09/01/2016'}, endTime: {time: moment().format("MM/DD/YYYY")}},
  			startdate:0,
 			enddate:0,
 			userModel:{user:{username:'',password:'',admin:false}},
@@ -289,7 +293,7 @@ export default {
 		            'box-shadow': 'none',
 		            'border-radius': '2px',
 		            'color': '#0075bc',
-		            'width': '134px'
+		            'width': '120px'
 		          },
 		          color: {
 		            checkedDay: '#e5e5e5',
@@ -339,7 +343,7 @@ export default {
 				this.setSessionStorage();
 			}
 		$("#startdatepicker").val("03/01/16");
-		$("#enddatepicker").val(new Date().format("shortDate"));
+		$("#enddatepicker").val( moment().format("MM/DD/YYYY"));
 		this.startdate = new Date('March 1, 2016').getTime();
 		this.enddate=new Date().getTime();
 		$.extend(true,this.userModel,userModel);
@@ -372,13 +376,14 @@ export default {
 			$.extend(true, self.userModel.user,obj);
 			self.isAdmin = (self.userModel.user.role=='ADMIN');
 			self.check.pri=true;
-			$('.kgl-banner').addClass('loggedin');
+			self.setSessionStorage();
 			otScroll();
 		});
 		eventBus.$on('logout', function(){
 			$.extend(true, self.userModel.user, {username:'',password:''});
 			self.isAdmin=false;
-			$('.kgl-banner').removeClass('loggedin');
+			self.check.pri=false;
+			self.setSessionStorage();
 			otScroll();
 		});
 		eventBus.$on('objcreated', function(obj){
@@ -418,11 +423,6 @@ export default {
 				});
 	},
 	mounted:function(){
-		if(this.isLoggedIn){
-			$('.kgl-banner').addClass('loggedin');
-		}else{
-			$('.kgl-banner').removeClass('loggedin');
-		}
 		$(".header").wrap('<div class="theadwrapper"></div>');
 		$(".theadwrapper").height($(".header").outerHeight(false));
 		otScroll();
@@ -675,29 +675,34 @@ export default {
 			     title: value,
 			   });
 			   this.newstring = '';
+				 this.setSessionStorage();
 			 },
 	 	removeAllFilters: function(){
-		this.filterStrings.splice(0);
-		this.removeDateFilter();
-//			eventBus.$emit("confirmRequest",this.confirmrequest);
+			this.filterStrings.splice(0);
+			this.removeDateFilter();
+			this.setSessionStorage();
 	 },
 	 	removeDateFilter : function(){
 				 $.extend(true, this.dateRange, this.defaultDateRange);
 				 this.setstartdate();
 				this.setenddate();
+				this.setSessionStorage();
 			 },
 			 removeString: function (s) {
 				   this.filterStrings.splice(this.filterStrings.indexOf(s), 1);
+					 this.setSessionStorage();
 				 },
 				 setstartdate:  function(){
 					 var sstamp=new Date(this.dateRange.startTime.time).getTime();
 					 eventBus.$emit('startdate',sstamp);
 					console.log('Start date:'+ sstamp);
+					this.setSessionStorage();
 				 },
 				 setenddate:function(){
 					 var estamp=new Date(this.dateRange.endTime.time).getTime();
 						eventBus.$emit("enddate",estamp);
 						console.log("End date:"+ estamp);
+						this.setSessionStorage();
 					 },
 				 beforeEnter: function () {
 						 el.style.opacity = 0
@@ -809,7 +814,7 @@ i#filterdowniconimg
 #filterpanel {
 	background-color:#fff;
 	margin: 0px 0px 0px 0px;
-	padding: 12px;
+	padding: 25px;
 }
 .filterlist li, .filterlist button#clearAll{
 display:inline-block;
@@ -821,11 +826,12 @@ height: 44px;
 }
 
 button#clearAll span {
-    border-bottom: 1px solid transparent;
+font-size:14px;
+    border-bottom: 2px solid transparent;
 transition: border 0.5s ease;
 }
 .filterlist button#clearAll:hover span{
-	border-bottom: 1px solid #0275bc;
+	border-bottom: 2px solid #0075bc;
 }
 .filterlist li:hover *{
 	color: #0075bc;
@@ -864,13 +870,12 @@ color: #0075bc;
     text-align: left;
     margin-bottom: 20px;
     margin: 0 auto;
-    line-height: 2em;
-		letter-spacing: 0.1em;
+    line-height: 1.5em;
     padding-top: 65px;
     background: transparent;
 }
 .bannercontent h1 {
-	line-height:1.5em;
+	line-height:1.2em;
 }
 .kgl-newobj{
 	width: 24px;
@@ -886,13 +891,13 @@ position: absolute;
 top:2px;
 left:-90px;
 opacity:1;
-border-bottom: 1px solid transparent;
+border-bottom: 2px solid transparent;
 transition: border 0.5s ease;
 }
 
 
 .kgl-newobj:hover span{
-	 border-bottom: 1px solid #0075bc;
+	 border-bottom: 2px solid #0075bc;
 	 cursor:pointer;
 }
 .kgl-newobj i {
@@ -903,8 +908,12 @@ left:7.5px;
 
 
 .row.filter {
-	height: 30px;
+	height: 36px;
 
+}
+
+.row.filterlabel {
+height: 28px;
 }
 .custom-control {
 
@@ -921,8 +930,8 @@ left:7.5px;
 }
 .custom-control-description {
 	position: absolute;
-	padding-left: 15px;
-	top: 8px;
+	padding-left: 28px;
+	top: 11px;
 	width: 200px;
 	color: #0275bc;
 }
@@ -931,8 +940,8 @@ left:7.5px;
     top: 10px;
     left: 5px;
     display: block;
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     pointer-events: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -953,9 +962,14 @@ left:7.5px;
     background-color: #e5e5e5;
 	border: 1px solid #555555;
 }
-.custom-checkbox .custom-control-indicator i , .custom-radio .custom-control-indicator i{
+.custom-checkbox .custom-control-indicator i {
 	position:absolute;
-	left:2.5px;
+	left:4px;
+	top:3px;
+}
+.custom-radio .custom-control-indicator i{
+	position:absolute;
+	left:3px;
 	top:2px;
 }
 .custom-radio .custom-control-indicator {
@@ -969,7 +983,7 @@ left:7.5px;
 .datepick>span {
 	position: absolute;
 top: 4px;
-left: 12px;
+left: 20px;
 }
 .datepick p {
 	position: absolute;
@@ -1000,7 +1014,7 @@ select >option:hover {
 
 .expand-enter-active, .expand-leave-active {
   transition: all .3s linear;
-  height: 220px;
+  height: 270px;
   overflow: hidden;
 	opacity:1;
 }

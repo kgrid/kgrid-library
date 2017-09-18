@@ -27,6 +27,7 @@ p     { font-size: 14px; }
 
 .ft-sz-10    { font-size: 10px; }
 .ft-sz-12    { font-size: 12px; }
+.ft-sz-14    { font-size: 14px; }
 .ft-sz-16    { font-size: 16px; }
 .ft-sz-28    { font-size: 28px; }
 .ft-wt-3     { font-weight: 300; }
@@ -157,6 +158,7 @@ a, a:hover, a:visited, a:focus {
 .pad-l-20 {  padding-left:20px; }
 .pad-l-30 {  padding-left:30px; }
 .pad-l-50 {  padding-left:50px; }
+.pad-r-5 { padding-right: 5px;}
 .pad-r-10 {  padding-right:10px;}
 .pad-r-20 {  padding-right:20px;}
 .pad-0 {
@@ -187,6 +189,8 @@ a, a:hover, a:visited, a:focus {
 .wd-70 { width: 70px;}
 .ht-40 {  height: 40px; }
 .ht-30 {  height: 30px; }
+.ht-50 {height: 50px;}
+.ht-110 {height:110px;}
 .float-r {  float: right; }
 
 .kgl-banner {
@@ -195,7 +199,7 @@ a, a:hover, a:visited, a:focus {
     width: 1024px;
     overflow: visible;
     z-index: 10;
-    height: 250px;
+    height: 270px;
     margin: 0 auto;
     padding: 0px 12px;
 }
