@@ -35,12 +35,6 @@ export function retrieveObject(baseurl, uri, section, fillObjectContent,errorHan
 	});
 }
 
-
-
-export function loadFieldsConfig(fillFieldsConfig){
-	$.getJSON("resources/json/fields.json", fillFieldsConfig);
-}
-
 export function overlayHeightResize() {
 	var ol_pane_height = $(window).height();
 	var boardHeight = (ol_pane_height - 200);
@@ -55,28 +49,6 @@ export function overlayHeightResize() {
 	// console.log("Heights:Pane="+ol_pane_height+" Board="+boardHeight+" Form="+formHeight+"Li="+liHeight);
 	return ol_pane_height;
 }
-
-export function autoresize() {
-	var eid= $(this).text();
-	var sh = $(this)[0].scrollHeight+5;
-	$(this).css("height","0px");     //Reset height, so that it not only grows but also shrinks
-	$(this).css('height',sh+ 'px');    //Set new height
-	// console.log("New Height = "+sh);
-}
-
-export function backToTop() {
-    $("html, body").animate({
-        scrollTop: 0
-    }, 600);
-    return false;
-}
-
-export function setBannerbkSize(){
-  		var vp_width=$(window).width();
-  		if(vp_width>1584){
-  			$("#bannerbk").css("width",vp_width+"px");
-  		}
-  	}
 
 export function editTabNav(){
 	$("ul#edittabs li").click(function(e) {
@@ -124,10 +96,7 @@ export function getCurrentUser(baseurl, getUser, errorhandler) {
 	 		withCredentials: true
 		},
 		success : function(response, tStatus, xhr) {
-			// console.log(xhr);
-			// if(response instanceof Array){
 				getUser(response);
-			// }
 		},
 		error : function(response, tStatus, xhr) {
 			errorhandler(response);
@@ -147,30 +116,13 @@ export function checkEnv(baseurl, getEnv, errorhandler) {
 	 		withCredentials: true
 		},
 		success : function(response, tStatus, xhr) {
-			// console.log(xhr);
-			// if(response instanceof Array){
 				getEnv(response);
-			// }
 		},
 		error : function(response, tStatus, xhr) {
 			errorhandler(response);
 		}
 	});
 }
-
-export function setstartdate(){
-	 var startdate=$("#startdatepicker").val();
-	 var sstamp=new Date(startdate).getTime();
-	 eventBus.$emit("startdate",sstamp);
-//	console.log("Start date:"+ sstamp);
- }
-
-export function setenddate(){
-				var enddate=$("#enddatepicker").val();
-				 var estamp=new Date(enddate).getTime();
-				eventBus.$emit("enddate",estamp);
-			//	console.log("End date:"+ estamp);
-			 }
 
 export function otScroll() {
     var navOffset = $(".header").offset().top;
@@ -195,12 +147,9 @@ export function otScroll() {
 }
 
 $(document).ready(function() {
-
 	overlayHeightResize();
-
 	$(window).resize(function(){
 			overlayHeightResize();
 		}
 	);
-
 })

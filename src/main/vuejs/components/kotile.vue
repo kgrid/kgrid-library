@@ -29,6 +29,7 @@
 			</div>
 	</template>
 	<script>
+	import moment from 'moment'
 	import eventBus from '../components/eventBus.js';
 	export default {
   		name:	"kotile",
@@ -38,14 +39,13 @@
 		},
 		computed : {
 						formattedlastModified : function() {
-							return new Date(
-									this.object.metadata.lastModified)
-									.format("mediumDate")
+							return moment(new Date(
+									this.object.metadata.lastModified)).format('MMM DD, YYYY')
 						},
 						formattedCreatedOn : function() {
-							return new Date(
-									this.object.metadata.createdOn)
-									.format("mediumDate")
+							return moment(new Date(
+									this.object.metadata.createdOn)).format('MMM DD, YYYY')
+							
 						},
 						objLink : function() {
 							return 'home.html#object/'+encodeURIComponent(this.object.uri)

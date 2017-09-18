@@ -64,11 +64,11 @@
   background: #3F51B5;
   overflow: hidden;
   position: absolute;
-  font-size: 14px;
+  font-size: 12px;
   font-family: 'Open Sans';
   font-weight: 400;
   display: block;
-  width: 348px;
+  width: 360px;
   z-index: 999;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
       border: 1px solid #0075bc;
@@ -79,7 +79,7 @@
 }
 
 .rightalign .cov-date-body {
-  transform: translate(-214px,0px);
+  transform: translate(-240px,0px);
 }
 
 .cov-picker-box {
@@ -174,11 +174,14 @@ table {
 .cov-date-next {
   position: relative;
   width: 16% !important;
-  text-indent: -300px;
+  text-indent: 0px;
   overflow: hidden;
-  color: #fff;
-}
 
+}
+.cov-date-previous i,
+.cov-date-next i{
+  margin-top:16px;
+}
 .cov-date-caption {
   width: 68%;
   padding: 10px 0!important;
@@ -206,50 +209,7 @@ table {
 .checked:hover {
   background: #e5e5e5;
 }
-.cov-date-next::before,
-.cov-date-previous::before {
-  width: 10px;
-  height: 2px;
-  text-align: center;
-  position: absolute;
-  background: #0075bc;
-  top: 50%;
-  margin-top: -3px;
-  margin-left: -10px;
-  left: 50%;
-  line-height: 0;
-  content: '';
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-.cov-date-next::after,
-.cov-date-previous::after {
-  width: 10px;
-  height: 2px;
-  text-align: center;
-  position: absolute;
-  background: #0075bc;
-  margin-top: 4px;
-  margin-left: -10px;
-  top: 50%;
-  left: 50%;
-  line-height: 0;
-  content: '';
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.cov-date-previous::after {
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-.cov-date-previous::before {
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
+
 .date-item {
   text-align: center;
   font-size: 20px;
@@ -333,15 +293,15 @@ table {
     <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)" v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
       <div class="cov-date-body" :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
         <div class="cov-date-monthly">
-          <div class="cov-date-previous" @click="nextMonth('pre')">«</div>
+          <div class="cov-date-previous " @click="nextMonth('pre')"><i class='fa fa-chevron-left kg-fg-color'></i></div>
           <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
-            <span @click="showMonth">{{displayInfo.month}}</span>   <span @click="showYear">{{checked.year}}</span>
+            <span >{{displayInfo.month}}</span>   <span >{{checked.year}}</span>
           </div>
-          <div class="cov-date-next" @click="nextMonth('next')">»</div>
+          <div class="cov-date-next" @click="nextMonth('next')"><i class='fa fa-chevron-right kg-fg-color'></i></div>
         </div>
         <div class="cov-date-box" v-if="showInfo.day">
           <div class="cov-picker-box">
-            <div class="week">
+            <div class="week ft-sz-14">
               <ul>
                 <li v-for="weekie in library.week">{{weekie}}</li>
               </ul>
@@ -767,9 +727,6 @@ export default {
           this.showInfo.check = false
           this.$emit('cancel')
         }
-      }else {
-      this.showInfo.check = false
-        this.$emit('cancel')
       }
     },
     shiftActTime () {

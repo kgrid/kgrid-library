@@ -22,7 +22,7 @@
 					<label class="label"></label>
 				  <div class='btnContent'>
 					<transition name='fade' mode='out-in'>
-						<button key='0' class='login' type='submit' v-if='status.ready'>SIGN IN</button>
+						<button key='0' class='login' type='submit' v-if='status.ready'>Sign In</button>
 						<div key='1' class='saving ol-processing login pad-t-15' v-if='status.processing'>Signing in <span>.</span><span>.</span><span>.</span></div>
 						<div  key='2' class='ol-success login pad-t-15' v-if='status.success'>Sign in Successful<i class='fa fa-check'></i></div>
 						<div  key='3' class='ol-error login  pad-t-15' v-if='status.error'>Unable to sign in. Please check credentials.</div>
@@ -112,8 +112,8 @@ export default {
 }
 .ol-error {
     color: #fff;
-    background-color: #a02816;
-    border-color: #a02816;
+    background-color: #bc2526;
+    border-color: #bc2526;
 
 }
 
@@ -140,7 +140,7 @@ p.control span.is-danger {
 	top: 62px;
 font-style: italic;
 font-size: 12px;
-color: #a02816;
+color: #bc2526;
 
 
 }
@@ -222,8 +222,8 @@ fieldset h4 {
 }
 
 h3 {
-    font-size: 24px;
-    font-weight: 300;
+    font-size: 32px;
+    font-weight: 500;
 }
 input[type=text], input[type=password], input[type=textarea], .addtext a {
     width: 350px;
@@ -278,6 +278,6 @@ input[type=text], input[type=password], input[type=textarea], .addtext a {
 		animation-delay: .4s;
 }
 .input.is-danger {
-	border:1px solid #a02816;
+	border:1px solid #bc2526;
 }
 </style>

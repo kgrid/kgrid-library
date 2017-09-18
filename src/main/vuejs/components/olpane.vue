@@ -68,7 +68,7 @@ export default {
     margin: 0px auto;
     background-color: #fff;
     height: 100%;
-    transition: all 2s ease;
+    transition: all .8s ease;
 }
 
 .modal-mask {
@@ -190,8 +190,8 @@ export default {
 }
 .failure {
 
-    background-color: #a02816;
-    border-color: #a02816;
+    background-color: #bc2526;
+    border-color: #bc2526;
     display: none;
 }
 

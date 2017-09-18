@@ -1,11 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VeeValidate from 'vee-validate';
+import moment from 'moment'
+
 import Vuex from 'vuex';
 import App from './App';
 import store from './store';
 import eventBus from './components/eventBus.js';
-
 
 require('es6-promise').polyfill();
 // Bootstrap 4
@@ -13,6 +14,7 @@ require('jquery');
 require('tether');
 require('bootstrap');
 require('lodash');
+require('moment');
 
 // debug mode
 Vue.config.debug = false;
@@ -44,6 +46,13 @@ const router = new VueRouter({
 	routes : routes,
   history: true,
   hashbang : false,
+});
+
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MMMM DD, YYYY')
+  }
 });
 
 Vue.directive(

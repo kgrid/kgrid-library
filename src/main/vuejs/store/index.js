@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -14,7 +15,8 @@ export default new Vuex.Store({
     currentObject: { metadata:{title:"",keywords:"",contributors:"",published:"",citations:[],license:{licenseName:"",licenseLink:""}}, payload:{functionName:"",engineType:"",content:""},inputMessage:"", outputMessage:"", uri:"",published:false,lastModified:0,createdOn:0} ,
     activeTab:'METADATA',
     libraryEnv: {git:{commit:{time:0,id:''}},build:{version:'',artifact:'',name:'',group:'',time:0},'library.name':''},
-    libraryname: ''
+    libraryname: '',
+    fields_json:{fields:[]}
   },
   mutations: {
     seturl(state, url) {
@@ -33,6 +35,9 @@ export default new Vuex.Store({
 
       state.libraryEnv = env;
       state.libraryname= env["library.name"];
+    },
+    setfields(state,data){
+      state.fields_json=data;
     }
   },
   getters: {
@@ -61,11 +66,21 @@ export default new Vuex.Store({
         return (state.libraryEnv.git.commit.id ||'')
     },
     getBuildTime: state=>{
-
         return (state.libraryEnv.build.time || 0)
+    },
+    getBuildTimeString: state=>{
+     var t = 'Not Available'
+     if(state.libraryEnv.build.time){
+          t= moment(new Date(
+    					state.libraryEnv.build.time)).toString()
+      }
+        return t
     },
     getVersion: state=>{
         return (state.libraryEnv.build.version ||'')
+    },
+    getfields: state=>{
+        return (state.fields_json)
     }
   }
   // plugins: debug ? [createLogger()] : []

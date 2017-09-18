@@ -1,6 +1,6 @@
 <template>
 	<olpane layerid=0>
-		<div slot="ol-title"><h3>Create New Knowledge Object</h3></div>
+		<div slot="ol-title"><h3>Add a Knowledge Object to the Library </h3></div>
 		<div slot="ol-form">
 			<div class="addtext">
 				<h4>Please enter a title for the new knowledge object, then	click on "Create Object".</h4>

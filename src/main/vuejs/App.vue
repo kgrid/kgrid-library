@@ -13,8 +13,8 @@ import objeditor from './components/objeditor';
 import objcreator from './components/objcreator';
 import eventBus from './components/eventBus.js';
 import libraryusers from './components/libraryusers.vue';
-import { editTabNav, getCurrentUser, overlayHeightResize, checkEnv, retrieveObject, retrieveObjectList, otScroll} from './ot.js';
-import { objModel, editObjModel, sections, userModel } from './components/models.js'
+import { getCurrentUser, overlayHeightResize, checkEnv} from './ot.js';
+import { objModel, editObjModel, userModel } from './components/models.js'
 
 export default {
   name: 'app1',
@@ -25,7 +25,7 @@ export default {
       showSecOverlay:{show:false},
       koModel:objModel,
       currentOLView: 'login',
-      request: {name:"",statement:"q"}
+      request: {name:"",statement:"q",btnText:"OK"}
     };
   },
   created: function () {
@@ -41,6 +41,9 @@ export default {
           console.log(response);
       }
     );
+    $.getJSON("./static/json/fields.json",function(data) {
+      self.$store.commit('setfields',data);
+    });
     checkEnv("", function(response){
       if(response!=""){
         self.$store.commit('setenv',response);
@@ -125,7 +128,7 @@ export default {
 		self.currentOLView="objeditor";
 
 	});
-	eventBus.$on('editObj', function(obj){
+	eventBus.$on('editObj', function(obj,atab){
 		console.log("Edit Obj Button Clicked...");
 		self.currentOLView='objeditor';
 		self.showOverlay.show=true;
@@ -166,15 +169,15 @@ export default {
     confirmdialog
   },
 	computed:{
-		isLoggedIn:function(){
-			var loggedin =false;
-			console.log('Computing isLoggedIn for App ==> '+ userModel.user.username);
-			loggedin = (userModel.user.username!="");
-			return loggedin;
-		},
+    isLoggedIn: function () {
+      return this.$store.getters.isLoggedIn;
+      },
+    isAdmin: function() {
+      return this.$store.getters.isAdmin;
+      },
     ifDebug: function(){
       return this.store.state.debugEnabled;
-    },
+      },
 	},
 	mounted:function(){
 		overlayHeightResize();

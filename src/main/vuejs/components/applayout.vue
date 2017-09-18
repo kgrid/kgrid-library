@@ -2,6 +2,7 @@
 		<div class="kgl-content">
 			<div class="whitebacking">
 				<div class="wrapper">
+					<slot name='backrow'></slot>
 					<div class="kgl-banner" v-if="nothelper">
 						<slot name="banner"></slot>
 			</div></div></div>
@@ -23,7 +24,6 @@
 		</div>
 	</template>
 <script>
-import { backToTop } from '../ot.js';
 export default {
       name: 'applayout',
       props: ['nothelper']
