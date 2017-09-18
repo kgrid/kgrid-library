@@ -35,6 +35,7 @@ public class Citation implements Identifiable {
 		this.citation_at = citation_at;
 	}
 
+	@RdfProperty(value = "ot:citationID")
 	public String getCitation_id() {
 		return citation_id;
 	}
@@ -61,31 +62,22 @@ public class Citation implements Identifiable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((citation_id == null) ? 0 : citation_id.hashCode());
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		Citation citation = (Citation) o;
+
+		return citation_id != null ? citation_id.equals(citation.citation_id)
+				: citation.citation_id == null;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Citation other = (Citation) obj;
-		if (citation_id == null) {
-			if (other.citation_id != null)
-				return false;
-		} else if (!citation_id.equals(other.citation_id))
-			return false;
-		return true;
+	public int hashCode() {
+		return citation_id != null ? citation_id.hashCode() : 0;
 	}
-
-	
-	
-
 }

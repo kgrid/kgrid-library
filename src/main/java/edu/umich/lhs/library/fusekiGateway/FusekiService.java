@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.jena.arq.querybuilder.SelectBuilder;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.sparql.engine.http.QueryExceptionHTTP;
 import org.apache.log4j.Logger;
 import edu.umich.lhs.library.exception.ObjectNotFoundException;
 import edu.umich.lhs.library.services.FedoraConfiguration;
@@ -59,17 +60,15 @@ public class FusekiService {
 		ArrayList< KnowledgeObject> list = new ArrayList<>();
 		try {
 			if(fedoraConfiguration.getFusekiServerConfiguration().getUrl() != null ) {
-				if(testIfFusekiIsRunning()) {
-					Query query = initQuery(published);
+				Query query = initQuery(published);
 
-					list = getFedoraObjects(query);
-				}
+				list = getFedoraObjects(query);
 			} else {
 				logger.error("Fuseki Server URL is not configured");
 				throw new LibraryException("Fuseki Server URL is not configured");
 			} 
 		} catch (ConnectException ex){
-			logger.error("Check if fuseki server up and running. ");
+			logger.error("Check if fuseki server up and running. " + ex);
 			throw new LibraryException(ex);
 		}
 
@@ -110,7 +109,13 @@ public class FusekiService {
 	private ArrayList<KnowledgeObject> getFedoraObjects(Query query) throws ConnectException, LibraryException {
 		ArrayList< KnowledgeObject> list = new ArrayList<>();
 		QueryExecution execution = QueryExecutionFactory.sparqlService(fusekiServerURL, query);
-		ResultSet resultSet = execution.execSelect();
+
+		ResultSet resultSet;
+		try {
+			resultSet = execution.execSelect();
+		} catch (QueryExceptionHTTP e) {
+			throw new ConnectException("Cannot fetch object list from fuseki. " +  e);
+		}
 
 		while (resultSet.hasNext()) {
 			QuerySolution binding = resultSet.nextSolution();
@@ -124,30 +129,6 @@ public class FusekiService {
 		}
 
 		return list;
-	}
-	
-	private boolean testIfFusekiIsRunning() throws LibraryException {
-
-		String fusekiURL = fusekiServerURL;
-		fusekiURL = fusekiURL.substring(0,fusekiURL.lastIndexOf("/"));
-
-		HttpClient httpClient = HttpClientBuilder.create().build();
-
-		HttpGet httpGetRequest = new HttpGet(fusekiURL);
-		
-		HttpResponse httpResponse;
-		try {
-			httpResponse = httpClient.execute(httpGetRequest);
-			if ( 200 == httpResponse.getStatusLine().getStatusCode()) {
-				return true;
-			} else {
-				throw new ObjectNotFoundException("Cannot connect to fuseki service, throws " +
-				httpResponse.getStatusLine() + " error. Check the application configuration fuseki url and your fuseki server");
-			}
-		} catch (IOException e) {
-			logger.error("Not able to connect to the Fuseki with url "+fusekiURL);
-			throw new LibraryException("Not able to connect to the Fuseki with url "+fusekiURL, e);
-		}
 	}
 	
 	private Date convertRDFNodetoDate(RDFNode o) throws LibraryException {
