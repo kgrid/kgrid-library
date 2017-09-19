@@ -293,17 +293,17 @@ table {
     <div class="datepicker-overlay" v-if="showInfo.check" @click="dismiss($event)" v-bind:style="{'background' : option.overlayOpacity? 'rgba(0,0,0,'+option.overlayOpacity+')' : 'rgba(0,0,0,0.5)'}">
       <div class="cov-date-body" :style="{'background-color': option.color ? option.color.header : '#3f51b5'}">
         <div class="cov-date-monthly">
-          <div class="cov-date-previous " @click="nextMonth('pre')"><i class='fa fa-chevron-left kg-fg-color'></i></div>
+          <div class="cov-date-previous " @click="nextMonth('pre')"><i class='cov-date-mark fa fa-chevron-left kg-fg-color'></i></div>
           <div class="cov-date-caption" :style="{'color': option.color ? option.color.headerText : '#fff'}">
-            <span >{{displayInfo.month}}</span>   <span >{{checked.year}}</span>
+            <span class="cov-date-mark" style="cursor:initial">{{displayInfo.month}}</span>   <span class="cov-date-mark" style="cursor:initial">{{checked.year}}</span>
           </div>
-          <div class="cov-date-next" @click="nextMonth('next')"><i class='fa fa-chevron-right kg-fg-color'></i></div>
+          <div class="cov-date-next" @click="nextMonth('next')"><i class='cov-date-mark fa fa-chevron-right kg-fg-color '></i></div>
         </div>
         <div class="cov-date-box" v-if="showInfo.day">
           <div class="cov-picker-box">
-            <div class="week ft-sz-14">
-              <ul>
-                <li v-for="weekie in library.week">{{weekie}}</li>
+            <div class="week cov-date-mark ft-sz-14">
+              <ul class="cov-date-mark" >
+                <li class="cov-date-mark" v-for="weekie in library.week">{{weekie}}</li>
               </ul>
             </div>
             <div class="day" v-for="day,index in dayList" :key="index" @click="checkDay(day)" :class="{'checked':day.checked,'today':day.isToday,'unavailable':day.unavailable,'passive-day': !(day.inMonth)}" :style="day.checked ? (option.color && option.color.checkedDay ? { background: option.color.checkedDay } : { background: '#F50057' }) : {}">{{day.value}}</div>
@@ -404,7 +404,7 @@ export default {
       }
       return list
     }
-    function today() {
+    function today () {
       return moment(new Date())
     }
     function mins () {
@@ -420,6 +420,7 @@ export default {
       return list
     }
     return {
+      today: today(),
       hours: hours(),
       mins: mins(),
       showInfo: {
@@ -495,11 +496,12 @@ export default {
         if (i === Math.ceil(moment(currentMoment).format('D')) && moment(oldtime, this.option.format).year() === moment(currentMoment).year() && moment(oldtime, this.option.format).month() === moment(currentMoment).month()) {
           days[i - 1].checked = true
         }
-        if (i === Math.ceil(moment(today).format('D')) && moment(oldtime, this.option.format).year() ===moment(today).year() && moment(oldtime, this.option.format).month() === moment(today).month()) {
+        if (i === Math.ceil(moment(today).format('D')) && moment(currentMoment).year() ===moment(today).year() && moment(currentMoment).month() === moment(today).month()) {
           days[i - 1].isToday = true
+        }else{
+          days[i - 1].isToday = false
         }
         this.checkBySelectDays(i, days)
-
       }
       if (firstDay === 0) firstDay = 7
       for (let i = 0; i < firstDay - (this.option.SundayFirst ? 0 : 1); i++) {
@@ -509,6 +511,7 @@ export default {
           action: 'previous',
           unavailable: false,
           checked: false,
+          isToday:false,
           moment: moment(currentMoment).date(1).subtract(i + 1, 'days')
         }
         days.unshift(passiveDay)
@@ -521,6 +524,7 @@ export default {
           action: 'next',
           unavailable: false,
           checked: false,
+          isToday:false,
           moment: moment(currentMoment).add(1, 'months').date(i)
         }
         days.push(passiveDay)
@@ -722,7 +726,7 @@ export default {
       this.$emit('change', this.date.time)
     },
     dismiss (evt) {
-      if (evt.target.className === 'datepicker-overlay') {
+      if (!evt.target.className.startsWith( 'cov-date')) {
         if (this.option.dismissible === undefined || this.option.dismissible) {
           this.showInfo.check = false
           this.$emit('cancel')

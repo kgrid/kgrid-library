@@ -213,7 +213,7 @@
 					<div class='row filter'>
 					<div class='col-md-6 col-sm-6 col-xs-6 datepick'>
 							<span class='kg-fg-color pad-r-10'>Start</span>
-							<p class=' pad-l-30' ><date-picker ref='startpicker' :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
+							<p class=' pad-l-30' ><date-picker ref='startpicker' :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-click-outside='outsidestart' v-on:change='setstartdate()' id='startdatepicker'></date-picker> </p>
 						</div>
 						<div class='col-md-5 col-sm-5 col-xs-5 datepick'>
 						<span class='kg-fg-color '>End</span>	<p  class=' pad-l-20' >
@@ -638,10 +638,16 @@ export default {
 			}
 	},
 	outsideend: function(e){
+	if(this.$refs.endpicker.showInfo.check)
+		this.$refs.endpicker.showCheck();
+
 		this.$refs.endpicker.dismiss(e);
 	},
 	outsidestart: function(e){
+		if(this.$refs.startpicker.showInfo.check)
+			this.$refs.startpicker.showCheck();
 		this.$refs.startpicker.dismiss(e);
+
 	},
 		toggleOrder : function() {
 			if (this.order == 'asc') {
