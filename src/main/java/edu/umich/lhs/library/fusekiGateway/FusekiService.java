@@ -44,7 +44,7 @@ public class FusekiService {
 		setFedoraConfiguration(fedoraConfiguration);
 	}
 		
-	public void setFedoraConfiguration(FedoraConfiguration fedoraConfiguration) {
+	private void setFedoraConfiguration(FedoraConfiguration fedoraConfiguration) {
 		this.fedoraConfiguration = fedoraConfiguration;
 		initFusekiUrl();
 	}
@@ -57,12 +57,11 @@ public class FusekiService {
 	}
 
 	public ArrayList<KnowledgeObject> getKnowledgeObjects(boolean published) throws LibraryException {
-		ArrayList< KnowledgeObject> list = new ArrayList<>();
 		try {
 			if(fedoraConfiguration.getFusekiServerConfiguration().getUrl() != null ) {
 				Query query = initQuery(published);
 
-				list = getFedoraObjects(query);
+				return getFedoraObjects(query);
 			} else {
 				logger.error("Fuseki Server URL is not configured");
 				throw new LibraryException("Fuseki Server URL is not configured");
@@ -71,8 +70,19 @@ public class FusekiService {
 			logger.error("Check if fuseki server up and running. " + ex);
 			throw new LibraryException(ex);
 		}
+	}
 
-		return list;
+	public int countUniqueArkIds() throws LibraryException {
+		try {
+			SelectBuilder countArkIds = new SelectBuilder()
+					.addVar("count(*)", "?count")
+					.addWhere("?s", "<http://uofm.org/objectteller/arkId>", "?o");
+			QueryExecution queryExecution = QueryExecutionFactory.sparqlService(fusekiServerURL, countArkIds.build());
+			ResultSet resultSet = queryExecution.execSelect();
+			return resultSet.next().get("count").asLiteral().getInt();
+		} catch (org.apache.jena.sparql.lang.sparql_11.ParseException e) {
+			throw new LibraryException("Cannot create query for count of ark ids" + e);
+		}
 	}
 
 	private Query initQuery(boolean published) {

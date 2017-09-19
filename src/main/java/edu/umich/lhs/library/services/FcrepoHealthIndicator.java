@@ -2,6 +2,7 @@ package edu.umich.lhs.library.services;
 
 import edu.umich.lhs.library.exception.LibraryException;
 import edu.umich.lhs.library.fedoraGateway.FCRepoService;
+import edu.umich.lhs.library.fusekiGateway.FusekiService;
 import org.apache.http.Header;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -26,9 +27,12 @@ public class FcrepoHealthIndicator extends AbstractHealthIndicator {
 
     FCRepoService fcrepoService;
 
-    public FcrepoHealthIndicator(FCRepoService fcRepoService, FedoraConfiguration fedoraConfiguration) {
+    FusekiService fusekiService;
+
+    public FcrepoHealthIndicator(FCRepoService fcRepoService, FedoraConfiguration fedoraConfiguration, FusekiService fusekiService) {
         this.fcrepoService = fcRepoService;
         this.fedoraConfiguration = fedoraConfiguration;
+        this.fusekiService = fusekiService;
     }
 
     @Override
@@ -51,6 +55,8 @@ public class FcrepoHealthIndicator extends AbstractHealthIndicator {
         } catch (IOException e) {
             builder.withDetail("fcrepo.info", e.getMessage());
         }
+
+        builder.withDetail("Unique Ark Ids in Fuseki", fusekiService.countUniqueArkIds());
         log.info(builder.build());
     }
 
