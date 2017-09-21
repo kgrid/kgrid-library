@@ -50,9 +50,8 @@ input[type=text]:disabled {
 	background-color: #fff;
 	color: #666666;
 	font-weight: 400;
-	font-size: 14px;
-padding: 0px;
-height:40px;
+	padding: 0px;
+	height:40px;
 }
 .addtext .textview {
 	resize:none;
@@ -60,8 +59,8 @@ height:40px;
 	border: none;
 	border-radius: 0px;
 	color:#666666;
-  	margin: 0;
-  	font-size: 14px;
+  margin: 0;
+
   	overflow-y:auto;
   	line-height:1.6em;
   	   	text-overflow: clip;
