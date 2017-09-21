@@ -1,9 +1,6 @@
 <template>
 	<div class='content'>
 		<applayout :nothelper='true'>
-		<div slot='backrow' class='row ht-30 ft-sz-12 kg-fg-color' style="position: absolute;left:90px;cursor:pointer;" @click='returntolibrary'>
-		<i class='fa fa-chevron-left pad-r-5'></i><span>Back to the Library</span>
-		</div>
 		<div slot='banner'>
 		<div class='row ht-50 ft-sz-12 kg-fg-color'>		</div>
 		<div class='row ht-110 kgl-detail-titlerow'>

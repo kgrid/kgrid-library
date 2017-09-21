@@ -3,15 +3,6 @@
 			<router-link class='navbar-brand kgl-1' to='/' v-if='layoutop==0'>
 						<img src='../assets/images/KG_Library_Blue.png' height='30px' alt='KGrid Library' />
 			</router-link>
-			<router-link class='navbar-brand kgl-1' to='/' v-if='layoutop==1'>
-						<img src='../assets/images/KG_Library_Grey.png' height='30px' alt='KGrid Library' />
-			</router-link>
-			<router-link class='navbar-brand kgl-1' style="background-color:#0075bc;" to='/' v-if='layoutop==2'>
-									<img src='../assets/images/KG_Library_White.png' height='30px' alt='KGrid Library' />
-			</router-link>
-			<router-link class='navbar-brand kgl-1' to='/' v-if='layoutop==3'>
-									<img src='../assets/images/KG_Library_Blue.png' height='30px' alt='KGrid Library' />
-			</router-link>
 			<nav class='navbar navbar-fixed-top kgl-1 kg-bg-color kg-color'>
 				<div class='wrapper'>
 					<div class='datagrid'>
@@ -20,8 +11,7 @@
 							<router-link tag='li' :class="{'active': $route.fullPath === '/faq'}" to='/faq'><a><span>FAQ</span></a></router-link>
 							<router-link tag='li' :class="{'active': $route.fullPath === '/contactus'}" to='/contactus'><a><span>Contact Us</span></a></router-link>
 						</ul>
-						<button @click='oplayout' style='position:fixed;left:0;top:20px;color:white; background-color:white;'><i class='fa fa-tags'></i></button>
-					</div>
+				</div>
 				</div>
 				<div class='login-wrapper' >
 					<ul class='nav navbar-right kgl-1 ' v-if='!isLoggedIn'>
@@ -82,12 +72,6 @@ export default {
 		}
   },
   methods: {
-		oplayout:function(){
-			this.layoutop++;
-			if(this.layoutop>=3){
-				this.layoutop=0;
-			}
-		},
 		outside: function(){
 			if(this.showDropdown){
 				this.toggleDropdown();
