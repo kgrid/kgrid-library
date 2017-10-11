@@ -210,7 +210,7 @@ public class KnowledgeObjectService {
 	public void patchKnowledgeObject(KnowledgeObject knowledgeObject, ArkId arkId)
 			throws LibraryException, URISyntaxException {
 		if (knowledgeObject != null && knowledgeObject.getMetadata() != null) {
-			boolean param = !knowledgeObject.getMetadata().getPublished();
+			boolean param = !(Boolean)knowledgeObject.getMetadata().getPublished();
 			togglePublishedStatus(arkId, knowledgeObject.getMetadata(), param);
 		}
 	}

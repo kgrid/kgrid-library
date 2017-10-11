@@ -22,9 +22,9 @@ public class ProvenanceLogData implements Identifiable {
 
   private String used;
 
-  private Date startedAtTime;
+  private Object startedAtTime;
 
-  private Date endedAtTime;
+  private Object endedAtTime;
 
   public ProvenanceLogData() {
 
@@ -81,22 +81,22 @@ public class ProvenanceLogData implements Identifiable {
   }
 
   @RdfProperty("prov:startedAtTime")
-  public Date getStartedAtTime() {
+  public Object getStartedAtTime() {
     return startedAtTime;
   }
 
   @RdfProperty("prov:startedAtTime")
-  public void setStartedAtTime(Date startedAtTime) {
+  public void setStartedAtTime(Object startedAtTime) {
     this.startedAtTime = startedAtTime;
   }
 
   @RdfProperty("prov:endedAtTime")
-  public Date getEndedAtTime() {
+  public Object getEndedAtTime() {
     return endedAtTime;
   }
 
   @RdfProperty("prov:endedAtTime")
-  public void setEndedAtTime(Date endedAtTime) {
+  public void setEndedAtTime(Object endedAtTime) {
     this.endedAtTime = endedAtTime;
   }
 
