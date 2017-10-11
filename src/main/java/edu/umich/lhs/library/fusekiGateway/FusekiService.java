@@ -159,11 +159,15 @@ public class FusekiService {
 		// create knowledge object and set ark id
 
 		RDFNode ark_node = querySolution.get("arkId");
+		KnowledgeObject knowledgeObject;
 		if (ark_node == null) {
-			throw new LibraryException("The object with iri " + querySolution.get("x") + " does not have an ark id.");
+			ArkId ark = new ArkId(querySolution.get("x").toString().substring(fedoraConfiguration.getFedoraServerConfiguration().getUrl().length()));
+			 knowledgeObject = new KnowledgeObject(ark);
+			logger.warn("The object with iri " + querySolution.get("x") + " does not have an ark id.");
+			 //throw new LibraryException("The object with iri " + querySolution.get("x") + " does not have an ark id.");
+		} else {
+			knowledgeObject = new KnowledgeObject(new ArkId(ark_node.toString()));
 		}
-
-		KnowledgeObject knowledgeObject = new KnowledgeObject(new ArkId(ark_node.toString()));
 
 		Metadata metadata = new Metadata();
 
