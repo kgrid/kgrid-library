@@ -252,6 +252,7 @@ public class KnowledgeObjectController {
 			if(knowledgeObjectService.exists(new ArkId(ko.getMetadata().getArkId()))) {
 				throw new IllegalStateException("Object with ark id " + arkId + " already exists in this library.");
 			}
+			ko.setArkId(arkId);
 			KnowledgeObject object = knowledgeObjectService.copyKnowledgeObject(ko, loggedInUser);
 			return new ResponseEntity<>(object, HttpStatus.CREATED);
 		} else {
