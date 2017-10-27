@@ -101,7 +101,7 @@ public class EzidService {
     ResponseEntity response = rt.exchange(ezidURL, HttpMethod.PUT, requestEntity, String.class);
   }
 
-  private String modify(String id, List<String> metadata){
+  String modify(String id, List<String> metadata){
     RestTemplate rt = new RestTemplate();
 
     rt.getInterceptors().add(new BasicAuthorizationInterceptor(ezidUsername, ezidPassword));

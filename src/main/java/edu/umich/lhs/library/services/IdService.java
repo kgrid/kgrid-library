@@ -1,12 +1,15 @@
 package edu.umich.lhs.library.services;
 
 import edu.umich.lhs.library.ezidGateway.EzidService;
+import edu.umich.lhs.library.ezidGateway.DummyIdService;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import edu.umich.lhs.library.exception.LibraryException;
 import edu.umich.lhs.library.knowledgeObject.ArkId;
@@ -14,14 +17,23 @@ import edu.umich.lhs.library.knowledgeObject.ArkId;
 @Service
 public class IdService {
 
-//	@Autowired
-//	ServletContext servletContext;
+	@Value("${ezid.mock}")
+	private String mockEzid;
+
+	private EzidService ezidService;
+	private DummyIdService dummyIdService;
 
 	@Autowired
-	private EzidService ezidService;
+	public IdService(EzidService ezidService, DummyIdService dummyIdService) {
+	 this.ezidService = ezidService;
+	 this.dummyIdService = dummyIdService;
+	}
 
-	public IdService(EzidService ezidService) {
-		this.ezidService = ezidService ;
+	@PostConstruct
+	private void initService() {
+		if (("true").equals(this.mockEzid)) {
+			this.ezidService = this.dummyIdService;
+		}
 	}
 
 	public ArkId mint() {
