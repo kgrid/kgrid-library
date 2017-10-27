@@ -1,5 +1,6 @@
 package edu.umich.lhs.library.services;
 
+import edu.umich.lhs.library.ezidGateway.DummyIdService;
 import edu.umich.lhs.library.ezidGateway.EzidService;
 import edu.umich.lhs.library.knowledgeObject.ArkId;
 import edu.umich.lhs.library.knowledgeObject.KnowledgeObject;
@@ -24,6 +25,9 @@ public class IdServiceTest {
 	
 	@Mock
 	private EzidService ezidService;
+
+	@Mock
+	private DummyIdService dummyIdService;
 	
 	public IdServiceTest() {
 		MockitoAnnotations.initMocks(this);
@@ -31,7 +35,7 @@ public class IdServiceTest {
 	
 	@Before
 	public void setUp() {
-		idService = new IdService(ezidService);
+		idService = new IdService(ezidService, dummyIdService);
 	}
 
 	@After
