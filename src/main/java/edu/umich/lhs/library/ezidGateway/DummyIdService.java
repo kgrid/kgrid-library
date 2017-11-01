@@ -1,5 +1,6 @@
 package edu.umich.lhs.library.ezidGateway;
 
+import edu.umich.lhs.library.exception.LibraryException;
 import edu.umich.lhs.library.knowledgeObject.ArkId;
 import java.net.URI;
 import java.util.Date;
@@ -15,6 +16,10 @@ public class DummyIdService extends EzidService {
 
   @Value(value = "${local.shoulder}")
   private String shoulder;
+
+  public boolean ping() throws LibraryException {
+    return true;
+  }
 
   public String mint() {
     String id = new Date().getTime() + "";
