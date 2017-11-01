@@ -477,7 +477,8 @@ public class KnowledgeObjectService {
 			if("".equals(knowledgeObject.getMetadata().getVersion()))
 				knowledgeObject.getMetadata().setVersion(new Version());
 
-			knowledgeObject.getMetadata().setPublished(false);
+			if("".equals(knowledgeObject.getMetadata().getPublished()))
+				knowledgeObject.getMetadata().setPublished(false);
 			addOrEditMetadataToURI(koURI, knowledgeObject.getMetadata());
 
 			fcRepoService.putBinary(knowledgeObject.getPayload().getContent(), koURI,

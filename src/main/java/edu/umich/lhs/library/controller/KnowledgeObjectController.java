@@ -235,7 +235,8 @@ public class KnowledgeObjectController {
 				KnowledgeObject editedObject = knowledgeObjectService.editObject(knowledgeObject, arkId);
 				return new ResponseEntity<>(editedObject,HttpStatus.OK);
 			} else {
-				KnowledgeObject createdObject = knowledgeObjectService.createNewKnowledgeObject(knowledgeObject, loggedInUser);
+				knowledgeObject.setArkId(arkId);
+				KnowledgeObject createdObject = knowledgeObjectService.copyKnowledgeObject(knowledgeObject, loggedInUser);
 				return new ResponseEntity<>(createdObject,HttpStatus.CREATED);
 			}
 		} else {
