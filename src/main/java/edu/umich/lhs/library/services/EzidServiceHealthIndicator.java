@@ -15,11 +15,15 @@ public class EzidServiceHealthIndicator extends AbstractHealthIndicator {
     @Value("${ezid.base.url}")
     String ezidBaseUrl;
 
+    @Value("${ezid.mock}")
+    String ezidMock;
+
     @Override
     protected void doHealthCheck(Health.Builder builder) throws Exception {
 
         builder
             .withDetail("ezid.base.url", ezidBaseUrl)
+            .withDetail("ezid.mock", ezidMock)
             .up();
         try {
             idService.ping();
