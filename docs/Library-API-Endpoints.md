@@ -31,7 +31,7 @@
 ## Post:
 
 #### /knowledgeObject
-- creates a new knowledge object from the body of the request in json, 201 - created result on success if the object did not exist, 200 ok if it did and was edited 
+- creates a new knowledge object from the body of the request in json, 201 - created result on success
 
 
 #### /knowledgeObject
