@@ -248,7 +248,10 @@
 					+ this.objModel.object.uri+'.json'
 			},
 			downloadFile : function() {
-				return this.objModel.object.uri + '.json'
+				console.log(this.objModel.object.uri);
+				var uriarray=this.objModel.object.uri.split("/")
+				console.log(uriarray);
+				return uriarray[1]+"-"+uriarray[2] + '.json'
 			}
 		},
 		updated : function() {
