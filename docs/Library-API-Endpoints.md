@@ -35,7 +35,7 @@
 
 
 #### /knowledgeObject
-- creates a copy of a knowledge object with a new ark id by reference using a plaintext local ark id in the body of the request
+- creates a clone of a knowledge object with a new ark id by reference using a plaintext local ark id in the body of the request
 
 
 #### /knowledgeObject/ark:/{naan}/{name}
@@ -50,7 +50,7 @@
 - creates a knowledge object at the specified ark id using the json body of the request if an object with that ark id doesn't already exist
 
 #### /knowledgeObject/ark:/{naan}/{name}
-- creates a clone of an object by fetching the object specified by the url in the plaintext body of the request
+- creates a copy of an object by fetching the object specified by the url in the plaintext body of the request
 - throws a 409 conflict error if the object already exists in the local library
 
 #### /knowledgeObject/ark:/{naan}/{name}/{published:published|unpublished}
