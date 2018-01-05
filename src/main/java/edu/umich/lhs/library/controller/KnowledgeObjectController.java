@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -149,6 +150,13 @@ public class KnowledgeObjectController {
 
 		return getKnowledgeObject(arkId, null, prefer);
 	}
+
+	@GetMapping(value={"/ko/ark:/{naan}/{name}"},
+		produces = {"application/ld+json"})
+	public ResponseEntity<String> getKnowldgeObject(ArkId arkId) throws LibraryException {
+		return new ResponseEntity(knowledgeObjectService.getKnowledgeObjectJSON(arkId), HttpStatus.OK);
+	}
+
 
 	@Deprecated // use the above method
 	@GetMapping(value="/knowledgeObject/ark:/{naan}/{name}/complete",
