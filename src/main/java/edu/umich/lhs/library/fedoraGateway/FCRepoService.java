@@ -6,27 +6,6 @@ import edu.umich.lhs.library.fusekiGateway.NamespaceConstants;
 import edu.umich.lhs.library.knowledgeObject.ArkId;
 import edu.umich.lhs.library.model.ServerDetails;
 import edu.umich.lhs.library.services.FedoraConfiguration;
-import org.apache.http.*;
-import org.apache.http.auth.AuthenticationException;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.*;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
-import org.openrdf.model.IRI;
-import org.openrdf.model.Model;
-import org.openrdf.model.impl.ContextStatement;
-import org.openrdf.model.impl.SimpleValueFactory;
-import org.openrdf.rio.RDFFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +14,40 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.Header;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthenticationException;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.DefaultRedirectStrategy;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.log4j.Logger;
+import org.openrdf.model.IRI;
+import org.openrdf.model.Model;
+import org.openrdf.model.impl.ContextStatement;
+import org.openrdf.model.impl.SimpleValueFactory;
+import org.openrdf.rio.RDFFormat;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 public class FCRepoService {
@@ -64,108 +76,109 @@ public class FCRepoService {
 
 		URI transactionURI = new URI(baseURI + "fcr:tx/");
 
-		HttpPost httpPost = new HttpPost(transactionURI);
-		httpPost.addHeader(authenticate(httpPost));
+		HttpClient instance = HttpClientBuilder.create().setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
-		HttpClient httpClient = HttpClientBuilder.create().build();
+		RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory(instance));
 
-		try {
-			HttpResponse response = httpClient.execute(httpPost) ;
-			if(response.getStatusLine().getStatusCode() == HttpStatus.CREATED.value()) {
-				transactionURI = new URI(response.getFirstHeader("Location").getValue());
-			} else {
-				String err = "Unable to create transaction.";
-				logger.error(err);
-				throw new LibraryException(err);
-			}
-		} catch (IOException e) {
-			String err = "Exception occurred while creating transaction " + e.getMessage();
+		ResponseEntity<String> response = restTemplate.exchange(transactionURI, HttpMethod.POST, authenticationHeader(), String.class);
+
+		if(response.getStatusCodeValue() == HttpStatus.CREATED.value()) {
+			transactionURI = new URI(response.getHeaders().getFirst("Location"));
+		} else {
+			String err = "Unable to create transaction.";
 			logger.error(err);
-			throw new LibraryException(err, e);
+			throw new LibraryException(err);
 		}
 		return transactionURI;
 	}
 
 	public void commitTransaction(URI transactionURI) throws LibraryException, URISyntaxException {
-		URI transactionCommitURL = new URI(transactionURI + "/fcr:tx/fcr:commit");
+		URI transactionCommitURI = new URI(transactionURI + "/fcr:tx/fcr:commit");
 
-		HttpPost httpPost = new HttpPost(transactionCommitURL);
-		httpPost.addHeader(authenticate(httpPost));
+		HttpClient instance = HttpClientBuilder.create().setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
-		HttpClient httpClient = HttpClientBuilder.create().build();
-
+		RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory(instance));
 		try {
-			HttpResponse response = httpClient.execute(httpPost) ;
-			if(response.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value()) {
-				logger.info("Transaction " + transactionCommitURL + " committed");
+			ResponseEntity<String> response = restTemplate.exchange(transactionCommitURI, HttpMethod.POST,
+					authenticationHeader(), String.class);
+			if(response.getStatusCodeValue() == HttpStatus.NO_CONTENT.value()) {
+				logger.info("Transaction " + transactionCommitURI + " committed");
 			} else {
-				String err = "Unable to commit transaction with Id " + transactionURI;
+				String err = "Unable to commit transaction id " + transactionURI;
 				logger.error(err);
 				throw new LibraryException(err);
 			}
 
-		} catch (IOException e) {
-			String err = "Exception occurred while committing the transaction with id " + transactionURI + ". " + e.getMessage();
-			logger.error(err);
-			throw new LibraryException(err, e);
+		} catch (ResourceAccessException e) {
+			throw new LibraryException(e);
 		}
 	}
 
 	public void rollbackTransaction(URI transactionURI) throws LibraryException, URISyntaxException {
-		URI transactionRollBackURL = new URI(transactionURI + "/fcr:tx/fcr:rollback");
+		URI transactionRollBackURI = new URI(transactionURI + "/fcr:tx/fcr:rollback");
 
-		HttpPost httpPost = new HttpPost(transactionRollBackURL);
-		httpPost.addHeader(authenticate(httpPost));
+		HttpClient instance = HttpClientBuilder.create().setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
-		HttpClient httpClient = HttpClientBuilder.create().build();
+		RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory(instance));
+
 		try {
-			HttpResponse response = httpClient.execute(httpPost) ;
-			if(response.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value()) {
-				logger.info("Transaction " + transactionURI + " rolled back.");
+			ResponseEntity<String> response = restTemplate
+					.exchange(transactionRollBackURI, HttpMethod.POST,
+							authenticationHeader(), String.class);
+			if(response.getStatusCodeValue() == HttpStatus.NO_CONTENT.value()) {
+				logger.info("Transaction " + transactionRollBackURI + " rolled back");
 			} else {
 				String err = "Unable to roll back transaction with transaction URI " + transactionURI;
 				logger.error(err);
 				throw new LibraryException(err);
 			}
-
-		} catch (IOException e) {
-			String err = "Exception occurred while rolling back the transaction with transaction URI " + transactionURI + ". " + e.getMessage();
-			logger.error(err);
-			throw new LibraryException(err, e);
+		} catch (ResourceAccessException e) {
+			throw new LibraryException(e);
 		}
 	}
 
 	//Get:
 	public boolean checkIfObjectExists(URI objectURI) throws LibraryException {
 
-		HttpClient httpClient = HttpClientBuilder.create().build();
+		HttpClient instance = HttpClientBuilder.create().setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
-		HttpGet httpGetRequest = new HttpGet(objectURI);
-
-		httpGetRequest.addHeader(authenticate(httpGetRequest));
+		RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory(instance));
 
 		try {
-			HttpResponse httpResponse = httpClient.execute(httpGetRequest);
-			StatusLine statusLine = httpResponse.getStatusLine();
-			if (statusLine.getStatusCode() == HttpStatus.OK.value())
-				return true;
-			else if (statusLine.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
-				return false;
-			}
-			else {
-				String err = "Could not find object at URI " + objectURI + " got HTTP response " + statusLine;
-				logger.warn(err);
-				throw new LibraryException(err);
-			}
-		} catch (IOException e) {
-			String err = "Exception occurred while verifying object id "+ objectURI +" "+ e.getMessage();
-			logger.error(err);
-			throw new LibraryException(err, e);
+			ResponseEntity<String> response = restTemplate.exchange(objectURI, HttpMethod.GET,
+					authenticationHeader(), String.class);
+			return response.getStatusCodeValue() == HttpStatus.OK.value();
+
+		} catch (HttpClientErrorException e) {
+			return false;
 		}
 	}
 
+	public org.apache.jena.rdf.model.Model getRdfJson(URI objectURI) throws LibraryException {
+
+		HttpClient instance = HttpClientBuilder.create()
+				.setRedirectStrategy(new DefaultRedirectStrategy()).build();
+
+		RestTemplate restTemplate = new RestTemplate(
+				new HttpComponentsClientHttpRequestFactory(instance));
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(new MediaType("application", "ld+json")));
+		headers.putAll(authenticationHeader().getHeaders());
+
+		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+
+		ResponseEntity<String> response = restTemplate.exchange(objectURI, HttpMethod.GET,
+				entity, String.class);
+
+		InputStream ins = new ByteArrayInputStream(response.getBody().getBytes());
+
+		return ModelFactory.createDefaultModel().read(ins, this.baseURI.toString(), "JSON-LD");
+
+	}
+
 	public Model getRDFData(URI objectURI) throws LibraryException {
-		HttpClient httpClient = HttpClientBuilder.create().build();
+
+		HttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
 		HttpGet httpGetRequest = new HttpGet(objectURI);
 
@@ -175,7 +188,7 @@ public class FCRepoService {
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGetRequest);
 			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
-				HttpEntity entity = httpResponse.getEntity();
+				org.apache.http.HttpEntity entity = httpResponse.getEntity();
 				return ModelIO.read(entity.getContent(), RDFFormat.NTRIPLES);
 			}
 		} catch (IOException e) {
@@ -186,50 +199,28 @@ public class FCRepoService {
 		return null;
 	}
 
-	public String getObjectContent(String objectId, String dataStreamId) throws LibraryException {
+	public String getStringObjectContent(String objectId, String dataStreamId) throws LibraryException {
 		try {
-			return getObjectContent(new URI(baseURI + objectId + "/" + dataStreamId + "/"));
+			return getStringObjectContent(new URI(baseURI + objectId + "/" + dataStreamId + "/"));
 		} catch (URISyntaxException e) {
 			throw new LibraryException("Invalid object uri " + baseURI + objectId + "/" + dataStreamId + "/");
 		}
 	}
 
-	public String getObjectContent(URI objectURI) throws LibraryException {
-		HttpClient httpClient = HttpClientBuilder.create().build();
+	public String getStringObjectContent(URI objectURI) throws LibraryException {
+		HttpClient instance = HttpClientBuilder.create()
+				.setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
-		HttpGet httpGetRequest = new HttpGet(objectURI);
-		httpGetRequest.addHeader(authenticate(httpGetRequest));
+		RestTemplate restTemplate = new RestTemplate(
+				new HttpComponentsClientHttpRequestFactory(instance));
 
-		StringBuilder chunk = new StringBuilder();
-		HttpResponse httpResponse;
-
-		try {
-			httpResponse = httpClient.execute(httpGetRequest);
-			HttpEntity entity = httpResponse.getEntity();
-			if(httpResponse.getStatusLine().getStatusCode() == 200) {
-
-				byte[] buffer = new byte[4096];
-				if (entity != null) {
-					InputStream inputStream = entity.getContent();
-					int bytesRead;
-					BufferedInputStream bis = new BufferedInputStream(inputStream);
-
-					while ((bytesRead = bis.read(buffer)) != -1) {
-						// TODO: Get fedora to store things in a better character encoding and change this
-						chunk.append(new String(buffer, 0, bytesRead, Charset.forName("ISO-8859-1")));
-					}
-				}
-			} else {
-				logger.error("Exception occurred while retrieving object content for object " + objectURI + ". Request status code is "+httpResponse.getStatusLine().getStatusCode());
-				throw new LibraryException("\"Exception occurred while retrieving object content for object " + objectURI + ". Request status code is "+
-						httpResponse.getStatusLine().getStatusCode());
-			}
-
-		} catch (IOException e) {
-			logger.error("Exception occurred while retrieving object content for object " +objectURI  + e.getMessage());
-			throw new LibraryException("Exception occurred while retrieving object content for object "+ objectURI + e.getMessage(), e);
+		ResponseEntity<String> response = restTemplate.exchange(objectURI, HttpMethod.GET,
+				authenticationHeader(), String.class);
+		if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+			return response.getBody();
+		} else {
+			throw new LibraryException("Cannot fetch object at location " + objectURI);
 		}
-		return chunk.toString();
 	}
 
 	public List<URI> getChildrenURIs(URI containerURI) throws LibraryException, URISyntaxException {
@@ -250,43 +241,40 @@ public class FCRepoService {
 
 	public boolean ping() throws IOException, LibraryException {
 
-		HttpClient httpClient = HttpClientBuilder.create().build();
-		HttpGet httpGetRequest = new HttpGet(baseURI);
-		httpGetRequest.addHeader(authenticate(httpGetRequest));
+		HttpClient instance = HttpClientBuilder.create()
+				.setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
-		StatusLine statusLine = httpClient.execute(httpGetRequest).getStatusLine();
+		RestTemplate restTemplate = new RestTemplate(
+				new HttpComponentsClientHttpRequestFactory(instance));
 
-		if (statusLine.getStatusCode() == HttpStatus.OK.value())
-			return true;
-		else
-			throw new LibraryException(statusLine.toString());
+		ResponseEntity<String> response = restTemplate.exchange(baseURI, HttpMethod.GET,
+				authenticationHeader(), String.class);
+
+		return response.getStatusCode() == HttpStatus.OK;
 	}
 
 	//Post:
 	public URI createContainerWithAutoGeneratedName(URI parent) throws LibraryException {
 
+		HttpClient instance = HttpClientBuilder.create()
+				.setRedirectStrategy(new DefaultRedirectStrategy()).build();
+
+		RestTemplate restTemplate = new RestTemplate(
+				new HttpComponentsClientHttpRequestFactory(instance));
+
+		ResponseEntity<String> response = restTemplate.exchange(parent, HttpMethod.POST,
+				authenticationHeader(), String.class);
+
 		URI containerLocation;
 
-		HttpPost httpPost = new HttpPost(parent);
-
-		httpPost.addHeader(authenticate(httpPost));
-
-		HttpClient httpClient = HttpClientBuilder.create().build();
-
-		try {
-			HttpResponse response = httpClient.execute(httpPost);
-			if(response.getStatusLine().getStatusCode() == HttpStatus.CREATED.value()) {
-				containerLocation = new URI(response.getFirstHeader("Location").getValue());
-
-			} else {
-				String err = "Unable to create child resource for parent " + parent;
-				logger.error(err);
-				throw new LibraryException(err);
+		if(response.getStatusCode() == HttpStatus.CREATED) {
+			try {
+			containerLocation = new URI(response.getHeaders().getFirst("Location"));
+			} catch (URISyntaxException e) {
+				throw new LibraryException("Error creating new container in ko " + parent, e);
 			}
-		} catch (IOException|URISyntaxException e) {
-			String err = "Exception occurred while creating child resource for parent " + parent + " " + e.getMessage();
-			logger.error(err);
-			throw new LibraryException(err, e);
+		} else {
+			throw new LibraryException("Error creating new container in ko " + parent + " expected created status but instead got " + response.getStatusCode());
 		}
 
 		return containerLocation;
@@ -294,39 +282,28 @@ public class FCRepoService {
 
 	// Put:
 	public void putBinary(String binary, ArkId objIdentifier, String type) throws LibraryException, URISyntaxException {
-		putBinary(binary, new URI(baseURI + objIdentifier.getFedoraPath() + "/" + type));
+		putStringBinary(binary, new URI(baseURI + objIdentifier.getFedoraPath() + "/" + type));
 	}
 
 	public void putBinary(String binary, URI objectURI, String type) throws LibraryException, URISyntaxException {
-		putBinary(binary, new URI(objectURI + "/" + type));
+		putStringBinary(binary, new URI(objectURI + "/" + type));
 	}
 
-	public void putBinary(String binary, URI objectURI) throws LibraryException {
+	public void putStringBinary(String binary, URI objectURI) throws LibraryException {
+		HttpClient instance = HttpClientBuilder.create()
+				.setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
-		HttpPut httpPutRequestPayload = new HttpPut(objectURI);
+		RestTemplate restTemplate = new RestTemplate(
+				new HttpComponentsClientHttpRequestFactory(instance));
 
-		httpPutRequestPayload.addHeader(authenticate(httpPutRequestPayload));
+		RequestEntity request = RequestEntity.put(objectURI)
+				.header("Authorization", authenticationHeader().getHeaders().getFirst("Authorization"))
+				.body(binary);
 
-		HttpClient httpClient = HttpClientBuilder.create().build();
+		ResponseEntity<String> response = restTemplate.exchange(request, String.class);
 
-		try {
-			StringEntity entity = new StringEntity(binary != null ? binary : "");
-			httpPutRequestPayload.setEntity(entity);
-			HttpResponse response = httpClient.execute(httpPutRequestPayload);
-
-			if(response != null &&
-					(response.getStatusLine().getStatusCode() == HttpStatus.CREATED.value() ||
-							response.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value())) {
-				logger.info("Binary added successfully in the Object " + httpPutRequestPayload.getURI());
-			} else {
-				String err = "Exception occurred while creating binary for object " + objectURI + ". HTTPResponse is " + response;
-				logger.error(err);
-				throw new LibraryException(err);
-			}
-		} catch (IOException e) {
-			String errString = "Exception occurred while creating binary for object " + objectURI + ". " + e.getMessage();
-			logger.error(errString);
-			throw new LibraryException(errString, e);
+		if(response.getStatusCode() != HttpStatus.NO_CONTENT && response.getStatusCode() != HttpStatus.CREATED) {
+			throw new LibraryException("Error occurred while creating binary for object " + objectURI + " got status code " + response.getStatusCode());
 		}
 	}
 
@@ -334,77 +311,57 @@ public class FCRepoService {
 		return createContainer(uri, "");
 	}
 
-	public URI createContainer(URI uri, String objectID) throws LibraryException, URISyntaxException {
-		HttpClient httpClient = HttpClientBuilder.create().build();
+	public URI createContainer(URI parentURI, String containerName) throws URISyntaxException {
+		HttpClient instance = HttpClientBuilder.create()
+				.setRedirectStrategy(new DefaultRedirectStrategy()).build();
+
+		RestTemplate restTemplate = new RestTemplate(
+				new HttpComponentsClientHttpRequestFactory(instance));
+
 		URI objectURI;
-		if(uri.toString().endsWith("/")) {
-			objectURI = new URI(uri + objectID);
+		if(parentURI.toString().endsWith("/")) {
+			objectURI = new URI(parentURI + containerName);
 		} else {
-			objectURI = new URI(uri + "/" + objectID);
+			objectURI = new URI(parentURI + "/" + containerName);
 		}
-		HttpPut httpPutRequest = new HttpPut(objectURI);
 
-		httpPutRequest.addHeader(authenticate(httpPutRequest));
+		ResponseEntity<String> response = restTemplate.exchange(objectURI, HttpMethod.PUT,
+				authenticationHeader(), String.class);
 
-		try {
-			HttpResponse httpResponse = httpClient.execute(httpPutRequest);
-			if (httpResponse != null
-					&& httpResponse.getStatusLine().getStatusCode() == HttpStatus.CREATED.value()) {
-				logger.info("Successfully added new container " + objectURI);
-				return new URI(httpResponse.getFirstHeader("Location").getValue());
-			} else {
-				String err =
-						"Error occurred while creating object " + objectURI + " HttpResponse is "
-								+ httpResponse;
-				logger.error(err);
-				throw new LibraryException(err);
-
-			}
-		} catch (IOException e) {
-			String err = "Exception occurred while creating the container " + objectURI + ". " + e
-					.getMessage() + " caused by " + e.getCause();
-			logger.error(err);
-			throw new LibraryException(err, e);
-		}
+		return new URI(response.getHeaders().getFirst("Location"));
 	}
 
-	public URI putRDFData(Model data, URI uri) throws LibraryException {
-
+	public URI putRDFData(Model data, URI objectURI) throws LibraryException {
 		if(data.size() < 1) {
-			return uri;
+			logger.warn("Tried to put empty data set into location " + objectURI);
+			return objectURI;
 		}
 
-		HttpClient httpClient = HttpClientBuilder.create().build();
-		HttpPut httpPutRequest = new HttpPut(uri + "/fcr:metadata");
+		String dataStr = ModelIO.toString(data, RDFFormat.NTRIPLES);
 
-		httpPutRequest.addHeader(authenticate(httpPutRequest));
+		HttpClient instance = HttpClientBuilder.create()
+				.setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
-		//This header lets us overwrite triples without providing data for every triple in the fedora object
-		httpPutRequest.addHeader("Prefer", "handling=lenient; received=\"minimal\"");
+		RestTemplate restTemplate = new RestTemplate(
+				new HttpComponentsClientHttpRequestFactory(instance));
 
-		try {
-			ContentType textTurtle = ContentType.create("application/n-triples", Charset.forName("UTF-8"));
-			String dataStr = ModelIO.toString(data, RDFFormat.NTRIPLES);
-			StringEntity serializedData = new StringEntity(dataStr, textTurtle);
+		RequestEntity request = RequestEntity.put(objectURI)
+				.header("Authorization", authenticationHeader().getHeaders().getFirst("Authorization"))
+				//This header lets us overwrite triples without providing data for every triple in the fedora object
+				.header("Prefer","handling=lenient; received=\"minimal\"")
+				.contentType(new MediaType("application", "n-triples", StandardCharsets.UTF_8))
+				.body(dataStr);
 
-			httpPutRequest.setEntity(serializedData);
-
-			HttpResponse httpResponse = httpClient.execute(httpPutRequest);
-			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.CREATED.value() ||
-					httpResponse.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value()) {
-				logger.info("Successfully added new rdf data at " + uri +
-						" HttpResponse is " + httpResponse);
-				return uri;
-			} else {
-				String err = "HTTP Error: " + httpResponse.getStatusLine() + " " + httpResponse.getEntity() + " Error occurred while adding rdf data " + data + " at uri " + uri;
-				logger.error(err);
-				throw new LibraryException(err);
-			}
-		} catch (IOException e) {
-			String err = "Exception occurred while adding RDF data " + data + " \n" + e;
-			logger.error(err);
-			throw new LibraryException(err, e);
+		ResponseEntity<String> response = restTemplate.exchange(request, String.class);
+		if (response.getStatusCode() == HttpStatus.CREATED ||
+				response.getStatusCode() == HttpStatus.NO_CONTENT) {
+			logger.info("Successfully added new rdf data at " + objectURI +
+					" HttpResponse is " + response.getBody());
+			return objectURI;
+		} else {
+			throw new LibraryException("HTTP Error: "+ response.getStatusCode() + " Error occurred while adding rdf data " + data + " at uri " + objectURI);
 		}
+
 	}
 
 	//Patch:
@@ -446,30 +403,24 @@ public class FCRepoService {
 	}
 
 	//Delete:
-	public void deleteFedoraResource(URI deleteResourceURI) throws LibraryException {
-		try {
-			HttpDelete httpDelete = new HttpDelete(deleteResourceURI);
-			httpDelete.addHeader(authenticate(httpDelete));
+	public void deleteResource(URI objectURI) throws LibraryException {
+		HttpClient instance = HttpClientBuilder.create()
+				.setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
-			HttpClient httpClient = HttpClientBuilder.create().build();
-			HttpResponse response = httpClient.execute(httpDelete);
-			if (response.getStatusLine().getStatusCode() == HttpStatus.GONE.value()
-					|| response.getStatusLine().getStatusCode() == HttpStatus.NO_CONTENT.value()) {
-				logger.info("Fedora resource " + deleteResourceURI + " deleted.");
-			} else {
-				String err = "Unable to delete fedora resource " + deleteResourceURI + " due to " + EntityUtils.toString(response.getEntity());
-				logger.error(err);
-				throw new LibraryException(err);
-			}
+		RestTemplate restTemplate = new RestTemplate(
+				new HttpComponentsClientHttpRequestFactory(instance));
 
-		} catch (IOException e) {
-			String err =
-					"Exception occurred while deleting fedora resource with URI " + deleteResourceURI + ". "
-							+ e.getMessage();
-			logger.error(err);
-			throw new LibraryException(err, e);
+		ResponseEntity<String> response = restTemplate.exchange(objectURI, HttpMethod.DELETE,
+				authenticationHeader(), String.class);
+
+		if (response.getStatusCode() == HttpStatus.GONE || response.getStatusCode() == HttpStatus.NO_CONTENT) {
+			logger.info("Fedora resource " + objectURI + " deleted.");
+		} else {
+			throw new LibraryException("Unable to delete fedora resource " + objectURI + " due to " + response.getBody());
 		}
+
 	}
+
 
 	private void configureBaseURI(){
 
@@ -487,6 +438,16 @@ public class FCRepoService {
 			baseURI = null;
 			logger.warn("No base uri configured for the fedora server.");
 		}
+	}
+
+	private HttpEntity<HttpHeaders> authenticationHeader() {
+		final String CHARSET = "US-ASCII";
+		HttpHeaders header = new HttpHeaders();
+		String auth = userName + ":" + password;
+		byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName(CHARSET)));
+		String authHeader = "Basic " + new String(encodedAuth);
+		header.set("Authorization", authHeader);
+		return new HttpEntity<>(header);
 	}
 
 	public Header authenticate(HttpRequest request) throws LibraryException {

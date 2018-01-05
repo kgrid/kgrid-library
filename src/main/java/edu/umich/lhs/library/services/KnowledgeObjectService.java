@@ -8,6 +8,7 @@ import edu.umich.lhs.library.knowledgeObject.ArkId;
 import edu.umich.lhs.library.knowledgeObject.Citation;
 import edu.umich.lhs.library.knowledgeObject.KnowledgeObject;
 import edu.umich.lhs.library.model.LibraryUser;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -100,6 +101,14 @@ public class KnowledgeObjectService {
 		return object;
 	}
 
+	public String getKnowledgeObjectJSON(ArkId arkId) throws LibraryException {
+		URI objectURI = constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath());
+		org.apache.jena.rdf.model.Model model = fcRepoService.getRdfJson(objectURI);
+		StringWriter writer = new StringWriter();
+		model.write(writer, "RDF/JSON");
+		return writer.toString();
+	}
+
 	public List<KnowledgeObject> getKnowledgeObjects(boolean onlyPublished) throws LibraryException {
 		return fusekiService.getKnowledgeObjects(onlyPublished);
 	}
@@ -141,27 +150,27 @@ public class KnowledgeObjectService {
 	}
 
 	public void deleteObject(ArkId arkId) throws LibraryException {
-		fcRepoService.deleteFedoraResource(constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath()));
+		fcRepoService.deleteResource(constructURI(fcRepoService.getBaseURI(), arkId.getFedoraPath()));
 	}
 
 	public String getInputMessageContent(ArkId arkId) throws LibraryException {
-		return fcRepoService.getObjectContent(arkId.getFedoraPath(), ChildType.INPUT.getChildType());
+		return fcRepoService.getStringObjectContent(arkId.getFedoraPath(), ChildType.INPUT.getChildType());
 	}
 
 	public String getInputMessageContent(URI objectURI) throws LibraryException {
-		return fcRepoService.getObjectContent(objectURI);
+		return fcRepoService.getStringObjectContent(objectURI);
 	}
 
 	public String getOutputMessageContent(ArkId arkId) throws LibraryException {
-		return fcRepoService.getObjectContent(arkId.getFedoraPath(), ChildType.OUTPUT.getChildType());
+		return fcRepoService.getStringObjectContent(arkId.getFedoraPath(), ChildType.OUTPUT.getChildType());
 	}
 
 	public String getOutputMessageContent(URI objectURI) throws LibraryException {
-		return fcRepoService.getObjectContent(objectURI);
+		return fcRepoService.getStringObjectContent(objectURI);
 	}
 
 	public String getPayloadContent(String arkId) throws LibraryException {
-		return fcRepoService.getObjectContent(arkId, ChildType.PAYLOAD.getChildType());
+		return fcRepoService.getStringObjectContent(arkId, ChildType.PAYLOAD.getChildType());
 	}
 
 	public ProvenanceLogData getProvData(ArkId arkId) throws LibraryException, URISyntaxException {
@@ -195,7 +204,7 @@ public class KnowledgeObjectService {
 		URI payloadMetadataURI = constructURI(payloadURI, "fcr:metadata");
 
 		Payload payload = fetchAndDeserializeRDFData(Payload.class, payloadMetadataURI, payloadURI.toString());
-		payload.setContent(fcRepoService.getObjectContent(payloadURI));
+		payload.setContent(fcRepoService.getStringObjectContent(payloadURI));
 		return payload;
 	}
 
@@ -312,9 +321,9 @@ public class KnowledgeObjectService {
 				for (URI storedURI : storedCitationURIs) {
 					Citation storedCitation = getCitation(storedURI);
 					if (citations.isEmpty()) {
-						fcRepoService.deleteFedoraResource(storedURI);
+						fcRepoService.deleteResource(storedURI);
 					} else if (!citations.contains(storedCitation)) {
-						fcRepoService.deleteFedoraResource(storedURI);
+						fcRepoService.deleteResource(storedURI);
 					}
 				}
 			}
