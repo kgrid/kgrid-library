@@ -290,6 +290,9 @@ public class FCRepoService {
 	}
 
 	public void putStringBinary(String binary, URI objectURI) throws LibraryException {
+		if(binary == null)
+			binary = "";
+
 		HttpClient instance = HttpClientBuilder.create()
 				.setRedirectStrategy(new DefaultRedirectStrategy()).build();
 
@@ -336,7 +339,12 @@ public class FCRepoService {
 			logger.warn("Tried to put empty data set into location " + objectURI);
 			return objectURI;
 		}
-
+		URI metadataURI;
+		try {
+			metadataURI = new URI(objectURI + "/fcr:metadata");
+		} catch (URISyntaxException e) {
+			throw new LibraryException(e);
+		}
 		String dataStr = ModelIO.toString(data, RDFFormat.NTRIPLES);
 
 		HttpClient instance = HttpClientBuilder.create()
@@ -345,7 +353,7 @@ public class FCRepoService {
 		RestTemplate restTemplate = new RestTemplate(
 				new HttpComponentsClientHttpRequestFactory(instance));
 
-		RequestEntity request = RequestEntity.put(objectURI)
+		RequestEntity request = RequestEntity.put(metadataURI)
 				.header("Authorization", authenticationHeader().getHeaders().getFirst("Authorization"))
 				//This header lets us overwrite triples without providing data for every triple in the fedora object
 				.header("Prefer","handling=lenient; received=\"minimal\"")
@@ -356,7 +364,7 @@ public class FCRepoService {
 		if (response.getStatusCode() == HttpStatus.CREATED ||
 				response.getStatusCode() == HttpStatus.NO_CONTENT) {
 			logger.info("Successfully added new rdf data at " + objectURI +
-					" HttpResponse is " + response.getBody());
+					" HttpResponse is " + response.getStatusCode());
 			return objectURI;
 		} else {
 			throw new LibraryException("HTTP Error: "+ response.getStatusCode() + " Error occurred while adding rdf data " + data + " at uri " + objectURI);
