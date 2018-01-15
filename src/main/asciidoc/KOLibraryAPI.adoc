@@ -1,0 +1,10 @@
+
+KO Fields:
+
+include::{snippets}/index/response-fields.adoc[]
+
+Sample CURL request to get a list of all knowledge objects stored in the library:
+
+include::{snippets}/get-k-o-list/1/curl-request.adoc[]
+
+
