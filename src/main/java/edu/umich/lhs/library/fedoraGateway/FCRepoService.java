@@ -216,7 +216,7 @@ public class FCRepoService {
 
 		ResponseEntity<String> response = restTemplate.exchange(objectURI, HttpMethod.GET,
 				authenticationHeader(), String.class);
-		if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+		if (response.getStatusCode() == HttpStatus.OK) {
 			return response.getBody();
 		} else {
 			throw new LibraryException("Cannot fetch object at location " + objectURI);
