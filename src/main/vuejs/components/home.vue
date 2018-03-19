@@ -226,7 +226,7 @@
 </div>
 </transition>
 </div>
-<ul>
+<ul id='kolisting'>
 <li v-for='(object,index) in orderedList' v-bind:key='index'><kotile :object='object'
 								:listsize='listSize' :tileindex='index' v-on:remove='orderedList.splice(index, 1)'></kotile></li>
 					</ul>
@@ -1034,5 +1034,7 @@ select >option:hover {
 	overflow:hidden;
   opacity: 0;
 }
-
+ul#kolisting li {
+	margin-top:20px;
+}
 </style>

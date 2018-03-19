@@ -45,7 +45,7 @@
 						formattedCreatedOn : function() {
 							return moment(new Date(
 									this.object.metadata.createdOn)).format('MMM DD, YYYY')
-							
+
 						},
 						objLink : function() {
 							return 'home.html#object/'+encodeURIComponent(this.object.uri)
@@ -101,7 +101,7 @@
 			    	color: #696969;
 				    font-weight: 400;
 				    border-left: 3px solid #fff;
-				    padding: 0px ;
+				    padding: 0px;
 						transition: all 0.8s ease;
 				}
 				.kgl-tile:hover {
