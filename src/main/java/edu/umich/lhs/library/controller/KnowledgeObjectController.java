@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -114,7 +113,7 @@ public class KnowledgeObjectController {
 	 */
 	@GetMapping(value="/knowledgeObject",
 			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<KnowledgeObject>> getKnowledgeObjects(@RequestParam(value="published", required = false) boolean onlyPublished) throws LibraryException, ObjectNotFoundException {
+	public ResponseEntity<List<KnowledgeObject>> getKnowledgeObjects(@RequestParam(value="published", required = false) boolean onlyPublished) throws LibraryException {
 			return new ResponseEntity<>(knowledgeObjectService.getKnowledgeObjects(onlyPublished), HttpStatus.OK);
 	}
 
@@ -149,6 +148,13 @@ public class KnowledgeObjectController {
 
 		return getKnowledgeObject(arkId, null, prefer);
 	}
+
+	@GetMapping(value={"/ko/ark:/{naan}/{name}"},
+		produces = {"application/ld+json"})
+	public ResponseEntity<String> getKnowldgeObject(ArkId arkId) throws LibraryException {
+		return new ResponseEntity(knowledgeObjectService.getKnowledgeObjectJSON(arkId), HttpStatus.OK);
+	}
+
 
 	@Deprecated // use the above method
 	@GetMapping(value="/knowledgeObject/ark:/{naan}/{name}/complete",
@@ -283,7 +289,6 @@ public class KnowledgeObjectController {
 		}
 	}
 
-
 	@DeleteMapping(value = {"/knowledgeObject/ark:/{naan}/{name}/{version}","/knowledgeObject/{naan}-{name}/{version}"})
 	public ResponseEntity<String> deleteKnowledgeObjectVersion(ArkId arkId, Version version) throws ObjectNotFoundException {
 		try {
@@ -414,155 +419,5 @@ public class KnowledgeObjectController {
 	@ExceptionHandler(IllegalStateException.class)
 	public ResponseEntity<ErrorInfo> handleIllegalStateExceptions(IllegalStateException e, WebRequest request){
 		return new ResponseEntity<>(new ErrorInfo(e.getMessage(), request.getDescription(false), new Date().toString()), HttpStatus.CONFLICT);
-	}
-
-	//-----------------------------------Outdated Methods-------------------------------------------//
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}/complete",
-			method=RequestMethod.GET ,
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public KnowledgeObject getCompleteKnowledgeObject( @PathVariable String objectURI) throws LibraryException, URISyntaxException {
-		ArkId arkId = new ArkId(objectURI);
-		return knowledgeObjectService.getCompleteKnowledgeObject(arkId);
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}",
-			method=RequestMethod.PUT ,
-			consumes = {MediaType.APPLICATION_JSON_VALUE},
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<KnowledgeObject> updateKnowledgeObject(@RequestBody KnowledgeObject knowledgeObject, @ModelAttribute("loggedInUser") LibraryUser loggedInUser, @PathVariable String objectURI,HttpServletRequest request ) throws LibraryException, URISyntaxException {
-		ArkId arkId = new ArkId(objectURI);
-		return createOrUpdateKnowledgeObjectByArkId(knowledgeObject, loggedInUser, arkId, request);
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}",
-			method=RequestMethod.DELETE )
-	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void deleteKnowledgeObject(@PathVariable String objectURI) throws LibraryException {
-		ArkId arkId = new ArkId(objectURI);
-		knowledgeObjectService.deleteObject(arkId);
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}/payload",
-			method=RequestMethod.PUT ,
-			consumes = {MediaType.APPLICATION_JSON_VALUE},
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void addOrUpdatePayload(@RequestBody Payload payload , @PathVariable String objectURI) throws LibraryException, URISyntaxException {
-		ArkId arkId = new ArkId(objectURI);
-		knowledgeObjectService.editPayload(arkId, payload);
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}/metadata",
-			method=RequestMethod.GET ,
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public Metadata getMetadata( @PathVariable String objectURI) throws LibraryException, URISyntaxException {
-		ArkId arkId = new ArkId(objectURI);
-		return knowledgeObjectService.getKnowledgeObject(arkId).getMetadata();
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}/payload",
-			method=RequestMethod.GET ,
-			produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Payload> getPayload( @PathVariable String objectURI) {
-		ResponseEntity<Payload> payload = null;
-		try {
-			ArkId arkId = new ArkId(objectURI);
-			Payload payloadObj = knowledgeObjectService.getPayload(arkId);
-			payload = new ResponseEntity<Payload> (payloadObj,HttpStatus.OK);
-		} catch (LibraryException e) {
-			payload = new ResponseEntity<Payload> (HttpStatus.NOT_FOUND);
-		}
-		return payload;
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage",
-			method=RequestMethod.GET )
-	public ResponseEntity<String> getInputMessage( @PathVariable String objectURI)  {
-		ResponseEntity<String> inputMessage = null;
-		try {
-			ArkId arkId = new ArkId(objectURI);
-			String content = knowledgeObjectService.getInputMessageContent(arkId);
-			inputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
-		} catch (LibraryException exception){
-			inputMessage = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
-		}
-		return inputMessage ;
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}/outputMessage",
-			method=RequestMethod.GET)
-	public ResponseEntity<String> getOutputMessage( @PathVariable String objectURI) throws LibraryException {
-		ResponseEntity<String> outputMessage = null;
-		try {
-			ArkId arkId = new ArkId(objectURI);
-			String content = knowledgeObjectService.getOutputMessageContent(arkId);
-			outputMessage = new ResponseEntity<String>(content, HttpStatus.OK);
-		} catch (LibraryException exception){
-			outputMessage = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
-		}
-		return outputMessage ;
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@RequestMapping(value="/knowledgeObject/{objectURI}/logData",
-			method=RequestMethod.GET )
-	public ResponseEntity<String> getLogData( @PathVariable String objectURI) throws LibraryException, URISyntaxException {
-		ResponseEntity<String> logData = null;
-		try {
-			ArkId arkId = new ArkId(objectURI);
-			String content = knowledgeObjectService.getProvData(arkId).toString();
-			logData = new ResponseEntity<String>(content, HttpStatus.OK);
-		} catch (LibraryException exception){
-			logData = new ResponseEntity<String>(exception.getMessage(), HttpStatus.NOT_FOUND);
-		}
-		return logData ;
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}/metadata",
-			method=RequestMethod.PUT ,
-			consumes = {MediaType.APPLICATION_JSON_VALUE})
-	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void updateMetadata(@RequestBody Metadata metadata , @PathVariable String objectURI) throws LibraryException, URISyntaxException {
-		ArkId arkId = new ArkId(objectURI);
-		knowledgeObjectService.addOrEditMetadataToArkId(arkId, metadata);
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}/inputMessage",
-			method=RequestMethod.PUT)
-	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void addOrUpdateInputMessage(@RequestBody String inputMessage , @PathVariable String objectURI) throws LibraryException, URISyntaxException {
-		ArkId arkId = new ArkId(objectURI);
-		knowledgeObjectService.editInputMessageContent(arkId, inputMessage);
-	}
-
-	// TODO: Remove this method after UI switched it to other API
-	@Deprecated
-	@RequestMapping(value="/knowledgeObject/{objectURI}/outputMessage",
-			method=RequestMethod.PUT)
-	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void addOrUpdateOutputMessage(@RequestBody String outputMessage , @PathVariable String objectURI) throws LibraryException, URISyntaxException {
-		ArkId arkId = new ArkId(objectURI);
-		knowledgeObjectService.editOutputMessageContent(arkId, outputMessage);
 	}
 }
