@@ -9,7 +9,7 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-@SpringBootApplication(scanBasePackages = {"edu.umich.lhs.library","kgrid.org.shelf"})
+@SpringBootApplication(scanBasePackages = {"edu.umich.lhs.library","org.kgrid.shelf"})
 public class LibraryApplication extends WebMvcConfigurerAdapter {
 
     public LibraryApplication(@Value("${library.name}") String name) {
