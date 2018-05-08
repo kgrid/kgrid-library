@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>edu.umich.lhs</groupId>
+    <groupId>org.kgrid</groupId>
     <artifactId>kgrid-library</artifactId>
     <packaging>war</packaging>
     <version>0.2.4-SNAPSHOT</version>
@@ -173,9 +173,7 @@
         <frontend-maven-plugin.version>0.0.27</frontend-maven-plugin.version>
 		<lombok.version>1.16.6</lombok.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
-		<frontend-maven-plugin.nodeVersion>v6.11.0</frontend-maven-plugin.nodeVersion>
-		<frontend-maven-plugin.npmVersion>5.0.3</frontend-maven-plugin.npmVersion>
-   </properties>
+    </properties>
 
 
 
@@ -211,64 +209,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>${frontend-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <configuration>
-                            <nodeVersion>v6.11.0</nodeVersion>
-                            <npmVersion>5.0.3</npmVersion> <!-- version already included in Node.js-->
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-					<execution>
-						<id>npm build</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<configuration>
-							<arguments>run build</arguments>
-						</configuration>
-					</execution>
-<!-- 					<execution>
-						<id>npm test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<configuration>
-							<arguments>run test</arguments>
-						</configuration>
-					</execution> -->
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <!-- this is relative to the pom.xml directory -->
-                            <!-- by default resources in src/main/webapp are copied -->
-                            <directory>dist</directory>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
