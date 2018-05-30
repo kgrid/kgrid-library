@@ -70,3 +70,5 @@ jspm_packages
 /.settings
 /build.bat
 
+/.idea/
+/kgrid-library.iml
