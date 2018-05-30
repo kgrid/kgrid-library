@@ -8,11 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import org.kgrid.shelf.domain.ArkId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.kgrid.library.exception.LibraryException;
-import org.kgrid.library.knowledgeObject.ArkId;
 
 @Service
 public class IdService {
@@ -43,13 +43,14 @@ public class IdService {
 	public void create(ArkId arkId) {
 		ezidService.create(arkId.getArkId());
 	}
-    
+
+	// TODO: Add back in ark id statuses
 	public void publish(ArkId arkId, List<String> metadata) {
-		ezidService.status(arkId.getArkId(), metadata ,ArkId.Status.PUBLIC);
+//		ezidService.status(arkId.getArkId(), metadata, ArkId.Status.PUBLIC);
 	}
 	
 	public void retract(ArkId arkId,  List<String> metadata){
-		ezidService.status(arkId.getArkId(), metadata ,ArkId.Status.UNAVAILABLE);
+//		ezidService.status(arkId.getArkId(), metadata, ArkId.Status.UNAVAILABLE);
 	}
 	
 	public String resolve (ArkId arkId){
