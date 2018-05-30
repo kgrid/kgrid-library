@@ -1,7 +1,6 @@
 package org.kgrid.library.ezidGateway;
 
 import org.kgrid.library.exception.LibraryException;
-import org.kgrid.library.knowledgeObject.ArkId;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +38,7 @@ public class DummyIdService extends EzidService {
     return id;
   }
 
-  public String status(String id, List<String> metadata, ArkId.Status status) {
+  public String status(String id, List<String> metadata) {
     return id;
   }
 }

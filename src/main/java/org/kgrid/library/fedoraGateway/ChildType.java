@@ -1,12 +1,8 @@
 package org.kgrid.library.fedoraGateway;
 
 public enum ChildType {
-	PAYLOAD ("Payload"),
-	INPUT ("Input"),
-	OUTPUT ("Output"),
 	LOG("Log"),
-	CREATEACTIVITY("CreateActivity"),
-	CITATIONS("Citations");
+	CREATEACTIVITY("CreateActivity");
 	
 	private String childType;
 

@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.kgrid.library.knowledgeObject.ArkId;
 
 /**
  * Created by pboisver on 9/15/16.
@@ -131,10 +130,11 @@ public class EzidService {
     return  modify(id, metadata);
   }
 
-  public String status(String id, List<String> metadata, ArkId.Status status){
-    String statusAttribute = "_status: "+status.toString() ;
-    metadata.add(statusAttribute);
-    return  modify(id, metadata);
-  }
+  // TODO: Reimplement ark id statuses
+//  public String status(String id, List<String> metadata, ArkId.Status status){
+//    String statusAttribute = "_status: "+status.toString() ;
+//    metadata.add(statusAttribute);
+//    return  modify(id, metadata);
+//  }
   
 }

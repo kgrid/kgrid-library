@@ -1,9 +1,5 @@
 package org.kgrid.library.fusekiGateway;
 
-import org.kgrid.library.knowledgeObject.ArkId;
-import org.kgrid.library.knowledgeObject.KnowledgeObject;
-import org.kgrid.library.knowledgeObject.License;
-import org.kgrid.library.knowledgeObject.Metadata;
 import org.kgrid.library.model.ServerDetails;
 import org.apache.jena.arq.querybuilder.SelectBuilder;
 import org.apache.jena.query.*;
@@ -19,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import org.kgrid.shelf.domain.KnowledgeObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -124,12 +121,8 @@ public class FusekiService {
 		while (resultSet.hasNext()) {
 			QuerySolution binding = resultSet.nextSolution();
 
-			try {
-				KnowledgeObject knowledgeObject = mapQuerySolutionToFedoraObject(binding);
-				list.add(knowledgeObject);
-			} catch (LibraryException e) {
-				logger.warn(e);
-			}
+			KnowledgeObject knowledgeObject = null;
+			list.add(knowledgeObject);
 		}
 
 		return list;
@@ -146,66 +139,5 @@ public class FusekiService {
 			throw new LibraryException("Unable to parse created on date or last updated date" + e.getCause(), e);
 		}
 		return convertedDate;
-	}
-	
-	private KnowledgeObject mapQuerySolutionToFedoraObject(QuerySolution querySolution ) throws LibraryException {
-
-		// create knowledge object and set ark id
-
-		RDFNode ark_node = querySolution.get("arkId");
-		KnowledgeObject knowledgeObject;
-		if (ark_node == null) {
-			ArkId ark = new ArkId(querySolution.get("x").toString().substring(fedoraConfiguration.getFedoraServerConfiguration().getUrl().length()));
-			 knowledgeObject = new KnowledgeObject(ark);
-			logger.warn("The object with iri " + querySolution.get("x") + " does not have an ark id.");
-			 //throw new LibraryException("The object with iri " + querySolution.get("x") + " does not have an ark id.");
-		} else {
-			knowledgeObject = new KnowledgeObject(new ArkId(ark_node.toString()));
-		}
-
-		Metadata metadata = new Metadata();
-
-		if(querySolution.get("published") != null) {
-			String publishedStringUC = querySolution.get("published").toString().toUpperCase();
-			if(publishedStringUC.startsWith("YES") || publishedStringUC.startsWith("TRUE"))
-				metadata.setPublished(true);
-			else
-				metadata.setPublished(false);
-		} else {
-				metadata.setPublished(false);
-		}
-
-		metadata.setTitle(querySolution.get("title").toString());
-		Date createdOn = convertRDFNodetoDate(querySolution.get("created"));
-		Date lastModified = convertRDFNodetoDate(querySolution.get("lastModified"));
-		metadata.setLastModified(lastModified);
-		metadata.setCreatedOn(createdOn);
-		if(querySolution.get("keywords") != null)
-			metadata.setKeywords(querySolution.get("keywords").toString());
-
-		if(querySolution.get("owner") != null)
-			metadata.setOwner(querySolution.get("owner").toString());
-
-		if(querySolution.get("contributors") != null)
-			metadata.setContributors(querySolution.get("contributors").toString());
-
-		if(querySolution.get("description") != null)
-			metadata.setDescription(querySolution.get("description").toString());
-
-		License license = new License();
-		if(querySolution.get("licenseName") != null)
-			license.setLicenseName(querySolution.get("licenseName").toString());
-
-		if(querySolution.get("licenseLink") != null)
-			license.setLicenseLink(querySolution.get("licenseLink").toString());
-
-		if(querySolution.get("arkId") != null)
-			metadata.setArkId(ark_node.toString());
-
-		metadata.setLicense(license);
-
-		knowledgeObject.setMetadata(metadata);
-
-		return knowledgeObject;
 	}
 }
