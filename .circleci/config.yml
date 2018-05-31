@@ -25,7 +25,6 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-
       #must run install to ensure multi module dependencies(shelf-api) are cached
       - run: mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline -s .circleci/settings.xml
 
@@ -36,12 +35,6 @@ jobs:
 
       # run build and test
       - run: mvn package -s .circleci/settings.xml
-
-      - persist_to_workspace:
-          root: shelf-gateway
-          paths:
-            - target
-
 
       # save test results
       - run:
