@@ -82,13 +82,12 @@ jobs:
       - checkout
       - run: HEROKU_API_KEY=$HEROKU_API_KEY mvn heroku:deploy -Dmaven.test.skip=true -s .circleci/settings.xml
 
+workflows:
+  version: 2
+  build_test_release:
+    jobs:
+      - build
+      - deploy_heroku:
+          requires:
+            - build
 
-
-  workflows:
-    version: 2
-    build_test_deploy:
-      jobs:
-        - build
-        - deploy_heroku:
-            requires:
-              - build
