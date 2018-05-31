@@ -4,7 +4,7 @@
 
     <groupId>org.kgrid</groupId>
     <artifactId>kgrid-library</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>0.2.4-SNAPSHOT</version>
 
     <parent>
@@ -251,6 +251,26 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
+            </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>2.0.3</version>
+                <configuration>
+                    <appName>kgrid-library</appName>
+                    <includeTarget>false</includeTarget>
+                    <includes>
+                        <include>${project.build.directory}/${project.build.finalName}.jar</include>
+                        <include>${project.basedir}/shelf</include>
+                    </includes>
+                    <configVars>
+                        <JAVA_OPTS>-Xss512k -XX:+UseCompressedOops</JAVA_OPTS>
+                    </configVars>
+                    <jdkVersion>${java.version}</jdkVersion>
+                    <processTypes>
+                        <web>java -jar /app/target/${project.build.finalName}.jar $JAVA_OPTS</web>
+                    </processTypes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
