@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.kgrid</groupId>
-	<artifactId>kgrid-library-bundle</artifactId>
-	<version>0.3.0-SNAPSHOT</version>
+	<artifactId>kgrid-library</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>kgrid-library</name>
