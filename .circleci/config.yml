@@ -1,0 +1,86 @@
+version: 2
+jobs:
+
+  ##############
+  # Build job uses a go cli tool to create a github release
+  ##############
+  build:
+
+    working_directory: ~/kgrid
+
+    docker:
+      - image: circleci/openjdk:8-jdk
+
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "pom.xml" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      #must run install to ensure multi module dependencies(shelf-api) are cached
+      - run: mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline -s .circleci/settings.xml
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+
+      # run build and test
+      - run: mvn package -s .circleci/settings.xml
+
+      # save test results
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+
+      - store_test_results:
+          path: ~/junit
+
+      - store_artifacts:
+          path: ~/junit
+
+      - store_artifacts:
+          path: environment-adapter/target
+      - store_artifacts:
+          path: javascript-adapter/target
+      - store_artifacts:
+          path: activator/target
+
+  ##############
+  # Deploy To Heroku Job
+  ##############
+  deploy_heroku:
+
+    working_directory: ~/repo
+
+    docker:
+      - image: circleci/openjdk:8-jdk
+
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+
+    steps:
+      - checkout
+      - run: HEROKU_API_KEY=$HEROKU_API_KEY mvn heroku:deploy -Dmaven.test.skip=true -s .circleci/settings.xml
+
+workflows:
+  version: 2
+  build_test_release:
+    jobs:
+      - build
+      - deploy_heroku:
+          requires:
+            - build
+
