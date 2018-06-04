@@ -26,8 +26,8 @@
     </properties>
 
 	<modules>
-        <module>frontend</module>
-        <module>backend</module>
+        <module>application</module>
+        <module>client</module>
     </modules>
 
 	<build>
