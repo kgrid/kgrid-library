@@ -83,5 +83,5 @@ workflows:
       - build
       - deploy_heroku:
           requires:
-            - buil
+            - build
 
