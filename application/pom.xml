@@ -257,6 +257,26 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.heroku.sdk</groupId>
+        <artifactId>heroku-maven-plugin</artifactId>
+        <version>2.0.3</version>
+        <configuration>
+          <appName>kgrid-library</appName>
+          <includeTarget>false</includeTarget>
+          <includes>
+            <include>${project.build.directory}/${project.build.finalName}.jar</include>
+            <include>${project.basedir}/shelf</include>
+          </includes>
+          <configVars>
+            <JAVA_OPTS>-Xss512k -XX:+UseCompressedOops</JAVA_OPTS>
+          </configVars>
+          <jdkVersion>${java.version}</jdkVersion>
+          <processTypes>
+            <web>java -jar /app/target/${project.build.finalName}.jar $JAVA_OPTS</web>
+          </processTypes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
