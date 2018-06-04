@@ -1,0 +1,24 @@
+{
+  "label": "naan-name",
+  "nodes": [
+    {
+      "label": "version",
+      "nodes": [
+        { "label": "metadata.json"  },
+        {
+          "label": "models",
+          "nodes": [
+            { "label": "metadata.json"  },
+            {
+              "label": "resource",
+              "nodes": [ { "label": "metadata.json"},	{ "label": "content.js"} ]
+            },
+            {
+              "label": "service", "nodes": [ { "label": "metadata.json"}, { "label": "iospec.json"}]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
