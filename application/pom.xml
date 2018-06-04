@@ -246,7 +246,7 @@
               <overwrite>true</overwrite>
               <resources>
                 <resource>
-                  <directory>../frontend/dist</directory>
+                  <directory>../client/dist</directory>ß
                   <includes>
                     <include>static/</include>
                     <include>index.html</include>
