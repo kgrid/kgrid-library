@@ -105,10 +105,20 @@
 			updateBundle:function(pair){
 				if(this.section!='logData'&&this.section!='versions'){
 					console.log(pair)
-					for(var key in pair){
-						this.bundle.data[this.section][key]=JSON.parse(JSON.stringify(pair[key]))
-						this.edited[key]=(this.bundle.data[this.section][key]!=this.parentobject[this.section][key])
-					}
+					switch(this.section){
+						case 'metadata':
+							for(var key in pair){
+								this.bundle.data[key]=JSON.parse(JSON.stringify(pair[key]))
+								this.edited[key]=(this.bundle.data[key]!=this.parentobject[key])
+							}
+							break
+						default:
+							for(var key in pair){
+								this.bundle.data[this.section][key]=JSON.parse(JSON.stringify(pair[key]))
+								this.edited[key]=(this.bundle.data[this.section][key]!=this.parentobject[this.section][key])
+							}
+							break
+						}
 					this.$forceUpdate()
 				}
 			},

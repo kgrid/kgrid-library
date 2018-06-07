@@ -6,9 +6,9 @@
 				<div class='row ht-90 kgl-detail-titlerow'>
 					<div id='ko-title' class='col-md-11 col-sm-11 pad-0'>
 						<div id= 'type-status' >
-							<!-- <icon style='{height:0.5em;}' v-if="knowledgeobject.metadata.published" color="#0075bc" name="circle"></icon> -->
+							<!-- <icon style='{height:0.5em;}' v-if="knowledgeobject.published" color="#0075bc" name="circle"></icon> -->
 						</div>
-						<h1>{{knowledgeobject.metadata.title}}</h1>
+						<h1>{{knowledgeobject.title}}</h1>
 					</div>
 				</div>
 				<div class='row ht-60'>
@@ -34,7 +34,7 @@
 					<div class='inlineblock pad-l-18'>
 						<p class='kg-label'>Object ID</p>
 						<p class='date-data'>
-							<span>{{knowledgeobject.metadata.arkId.arkId}}</span>
+							<span>{{knowledgeobject.arkId.arkId}}</span>
 						</p>
 					</div>
 
@@ -256,7 +256,7 @@
 		created : function() {
 			var self = this;
 			this.$eventBus.$on("objSaved",function(obj){
-				self.knowledgeobject.metadata.citations.splice(0,self.knowledgeobject.metadata.citations.length);
+				self.knowledgeobject.citations.splice(0,self.knowledgeobject.citations.length);
 				self.knowledgeobject=JSON.parse(JSON.stringify(obj));
 			});
 			this.$eventBus.$on('objectSelected', function(t){
@@ -360,7 +360,7 @@
 		knowledgeobject: function(){
 			console.log(this.rawobj)
 			var obj={}
-			if(this.rawobj.metadata){
+			if(this.rawobj){
 				obj=JSON.parse(JSON.stringify(this.rawobj))
 			}else {					//ld
 			}
@@ -393,21 +393,21 @@
 				return this.isPublic ? 'Public' : 'Private'
 			},
 			formattedUpdateDate : function() {
-				if(!this.knowledgeobject.metadata.lastModified || this.knowledgeobject.metadata.lastModified=="" ){
+				if(!this.knowledgeobject.lastModified || this.knowledgeobject.lastModified=="" ){
 					return ""
 				}
 				else
 					{return moment(new Date(
-							this.knowledgeobject.metadata.lastModified)).format('MMM DD, YYYY')
+							this.knowledgeobject.lastModified)).format('MMM DD, YYYY')
 							}
 				},
 			formattedCreateDate : function() {
-					if(!this.knowledgeobject.metadata.createdOn || this.knowledgeobject.metadata.createdOn=="" ){
+					if(!this.knowledgeobject.createdOn || this.knowledgeobject.createdOn=="" ){
 						return ""
 					}
 					else
 						{return moment(new Date(
-								this.knowledgeobject.metadata.createdOn)).format('MMM DD, YYYY')
+								this.knowledgeobject.createdOn)).format('MMM DD, YYYY')
 								}
 					},
 				downloadLink : function() {
@@ -441,7 +441,7 @@
 			},
 			seteditmode:function(){
 				this.isEditMode = true;
-				this.$store.commit('updateMetadata',this.knowledgeobject.metadata)
+				this.$store.commit('updateMetadata',this.knowledgeobject)
 			},
 			clickcancel:function() {
 				this.$eventBus.$emit('revertEdit')
@@ -552,14 +552,14 @@
 					url : "knowledgeObject/" + uri + "/" + published,
 					success : function(response) {
 						self.isPublic=pub;
-						knowledgeobject.metadata.published=pub;
+						knowledgeobject.published=pub;
 						self.settingPubPri=false;
 					},
 					error : function(response, tStatus, xhr) {
 						console.log(response);
 						if(response.status=='500'){
 							self.isPublic=pub;
-							knowledgeobject.metadata.published=pub;
+							knowledgeobject.published=pub;
 						}
 						self.settingPubPri=false;
 					}

@@ -7,13 +7,13 @@ import 'es6-promise/auto'
 import VuexPersistence from 'vuex-persist'
 Vue.use(Vuex)
 const debug = process.env.NODE_ENV !== 'production'
-const objModel={ metadata:{ metadata:{title:"",keywords:"",contributors:"",arkId:{arkId:'',fedoraPath:''},published:false,citations:[],license:{licenseName:"",licenseLink:""},published:false,lastModified:0,createdOn:0}, models:{functionName:"",adapterType:"",resource:"",service:""}}}
+const objModel={ metadata:{ metadata:{title:"",keywords:"",contributors:"",arkId:{arkId:'',fedoraPath:''},published:false,citations:[],license:{licenseName:"",licenseLink:""},published:false,lastModified:0,createdOn:0}, model:{functionName:"",adapterType:"",resource:"",service:""}}}
 const defaultfilterCheck={ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : false, showmyobj:false};
 const defaultSort={sortkey:'metadata.lastModified', order:'desc'};
 const defaultkgselect={'label':'Last Updated - Newest', 'value':'metadata.lastModified','order':'desc'};
 const defaultdateRange={datetype:'none',startTime: {time: moment('2016-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().endOf('day').format("MM/DD/YYYY")}};
 const sections = [ {name:"metadata",id:"#metadata",label:"METADATA"}
-                 , {name:"models",id:"#models",label:"MODELS"}
+                 , {name:"model",id:"#model",label:"MODEL"}
                  // , {name:"resource",id:"#resource", label:"RESOURCE"}
                  // , {name:"service",id:"#service", label:"SERVICE"}
                  , {name:"assets",id:"#assets",label:"ASSETS"}

@@ -1,8 +1,8 @@
 <template>
-	<div class="container kgl-tile" :class="{'inview':isCurrentView}" v-bind:id="object.metadata.arkId.arkId" v-on:click="selected">
+	<div class="container kgl-tile" :class="{'inview':isCurrentView}" v-bind:id="object.arkId.arkId" v-on:click="selected">
 		<div class="row kgl-2">
 			<div class="col-md-1 col-sm-1 col-xs-1 kgl-type ft-sz-12">
-				<i v-if="object.metadata.published" class='fa fa-circle kg-fg-color'></i>
+				<i v-if="object.published" class='fa fa-circle kg-fg-color'></i>
 			</div>
 			<div class="col-md-10 col-sm-10 col-xs-10 kgl-title" data-toggle="tooltip"
 				data-placement="top" v-bind:title="ver.title">{{ver.title}}
@@ -75,7 +75,7 @@
 				return decodeURIComponent(this.$route.params.uri).split("/")
 				},
 			objectid:function(){
-				return this.object.metadata.arkId.arkId
+				return this.object.arkId.arkId
 			},
 			objectversion: function(){
 				return this.ver.version
@@ -96,8 +96,8 @@
 
 			},
 			formattedlastModified : function() {
-				return moment(new Date(this.object.metadata.lastModified)).format('MMMM DD, YYYY')
-					+ ' at '+moment(new Date(this.object.metadata.lastModified)).format('hh:mm:ssa')
+				return moment(new Date(this.object.lastModified)).format('MMMM DD, YYYY')
+					+ ' at '+moment(new Date(this.object.lastModified)).format('hh:mm:ssa')
 			},
 			objurl: function(){
 				return window.location.protocol+'//'+window.location.host+'/'+this.downloadLink
@@ -107,7 +107,7 @@
 					+ this.objectid;
 				if(this.objectversion!=''){
 					linkstring=linkstring+'/'+this.objectversion
-					linkstring=linkstring.replace(/[.]/g, '-')
+					// linkstring=linkstring.replace(/[.]/g, '-')
 				}else {
 					linkstring=linkstring+'.json'
 				}
