@@ -61,12 +61,12 @@
 							var propertyValue = "";
 							switch (this.section) {
 							case "metadata":
-								propertyValue = this.parentobject[this.section][this.fieldname];
+								propertyValue = this.parentobject[this.fieldname];
 								if(propertyValue==null){
 									propertyValue=''
 								}
 								break;
-							case "models":
+							case "model":
 								propertyValue = this.parentobject[this.section][this.fieldname];
 								break;
 							default:
@@ -76,7 +76,12 @@
 							return propertyValue;
 						},
 						edited: function(){
-							return this.fieldvalue != this.parentobject[this.section][this.fieldname]
+							switch (this.section) {
+							case "metadata":
+								return this.fieldvalue != this.parentobject[this.fieldname]
+							default:
+								return this.fieldvalue != this.parentobject[this.fieldname]
+							}
 						},
 						editable:function(){
 							return this.section=='metadata'
@@ -89,7 +94,7 @@
 					undoEdit:function(){
 						console.log('Undo Edit'+this.section+' '+this.fieldname)
 						if(this.section=='metadata'){
-							this.fieldvalue = this.parentobject.metadata[this.fieldname]
+							this.fieldvalue = this.parentobject[this.fieldname]
 							var obj={}
 							obj[this.fieldname]=this.fieldvalue
 							this.$emit('valuechange',obj)
