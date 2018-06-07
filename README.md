@@ -1,7 +1,5 @@
-# KGrid Activator
+# KGrid Library
 [![CircleCI](https://circleci.com/gh/kgrid/kgrid-library/tree/master.svg?style=shield)](https://circleci.com/gh/kgrid/kgrid-library/tree/master)
-
-
 
 ## Getting Started
 
