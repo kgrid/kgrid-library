@@ -6,7 +6,7 @@
       "nodes": [
         { "label": "metadata.json"  },
         {
-          "label": "models",
+          "label": "model",
           "nodes": [
             { "label": "metadata.json"  },
             {

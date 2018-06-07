@@ -56,14 +56,14 @@
 							switch (this.section) {
 							case "metadata":
 								if(this.index==-1){
-									if(this.parentobject[this.section][this.fieldname]){
-										propertyValue = JSON.parse(JSON.stringify(this.parentobject[this.section][this.fieldname]));
+									if(this.parentobject[this.fieldname]){
+										propertyValue = JSON.parse(JSON.stringify(this.parentobject[this.fieldname]));
 									}
 								}else {
 									propertyValue = JSON.parse(JSON.stringify(this.entry));
 								}
 								break;
-							case "models":
+							case "model":
 								propertyValue = JSON.parse(JSON.stringify(this.entry))
 								break;
 							default:
@@ -115,9 +115,16 @@
 							return this.fieldname == "citations";
 						},
 						edited: function(){
+							switch (this.section) {
+							case "metadata":
+
+							return ((this.fieldvalue[this.linkfield]!=this.parentobject[this.fieldname][this.linkfield])
+								| (this.fieldvalue[this.titlefield]!=this.parentobject[this.fieldname][this.titlefield]))
+							default:
 							return ((this.fieldvalue[this.linkfield]!=this.parentobject[this.section][this.fieldname][this.linkfield])
 								| (this.fieldvalue[this.titlefield]!=this.parentobject[this.section][this.fieldname][this.titlefield]))
-						},
+						}
+					},
 						editable:function(){
 							return this.section=='metadata'
 						}
