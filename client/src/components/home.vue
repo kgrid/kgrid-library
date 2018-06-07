@@ -327,7 +327,7 @@ export default {
 			var self=this
 			var list=[]
 			this.rawlist.forEach(function(e){
-				var obj={metadata:{arkId:{arkId:'',fedoraPath:''}, title:'', keyword:'',createdOn:0,lastModified:0,version:''},models:{}}
+				var obj={metadata:{arkId:{arkId:'',fedoraPath:''}, title:'', keyword:'',createdOn:0,lastModified:0,version:''},model:{}}
 				var key = Object.keys(e)[0]
 				var vlist=self.koversionlist[key]
 				var rawobj = e[key][vlist[0]]

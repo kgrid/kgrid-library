@@ -24,7 +24,7 @@
 				props : [ 'schemaProp', 'fieldname', 'section', "isDisabled"],
 				created:function(){
 					var self = this
-					this.fieldvalue = JSON.parse(JSON.stringify(this.value))
+
 					this.$eventBus.$on('revertEdit', function(){
 							self.undoEdit()
 						})
@@ -37,6 +37,10 @@
 							fieldvalue:[],
 							entrymax:1
 						}
+				},
+				mounted:function(){
+					console.log("Fieldtile:"+JSON.stringify(this.value))
+					this.fieldvalue = JSON.parse(JSON.stringify(this.value))
 				},
 				components:{
 					linkedfieldinput
@@ -60,13 +64,13 @@
 							var propertyValue = "";
 							switch (this.section) {
 							case "metadata":
-								propertyValue = this.parentobject[this.section][this.fieldname];
+								propertyValue = this.parentobject[this.fieldname];
 								if(propertyValue==null){
 									propertyValue=''
 								}
 								break;
-							case "models":
-								propertyValue = this.parentobject[this.section][this.fieldname];
+							case "model":
+								propertyValue = this.parentobject[this.fieldname];
 								break;
 							default:
 								propertyValue = this.parentobject[this.fieldname];
