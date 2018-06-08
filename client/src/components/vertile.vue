@@ -1,5 +1,5 @@
 <template>
-	<div class="container kgl-tile" :class="{'inview':isCurrentView}" v-bind:id="object.arkId.arkId" v-on:click="selected">
+	<div class="container kgl-tile" :class="{'inview':isCurrentView}" v-bind:id="object.arkId" v-on:click="selected">
 		<div class="row kgl-2">
 			<div class="col-md-1 col-sm-1 col-xs-1 kgl-type ft-sz-12">
 				<i v-if="object.published" class='fa fa-circle kg-fg-color'></i>
@@ -75,7 +75,7 @@
 				return decodeURIComponent(this.$route.params.uri).split("/")
 				},
 			objectid:function(){
-				return this.object.arkId.arkId
+				return this.object.arkId
 			},
 			objectversion: function(){
 				return this.ver.version

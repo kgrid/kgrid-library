@@ -34,7 +34,7 @@
 					<div class='inlineblock pad-l-18'>
 						<p class='kg-label'>Object ID</p>
 						<p class='date-data'>
-							<span>{{knowledgeobject.arkId.arkId}}</span>
+							<span>{{knowledgeobject.arkId}}</span>
 						</p>
 					</div>
 
@@ -143,7 +143,7 @@
 				<ul class='nav nav-tabs view inline' role='tablist' id='tabs'>
 					<li v-for='section in constSections' v-bind:id='section.name' v-if='section.name!="assets"' v-show='(section.name=="metadata"&&isEditMode)|(!isEditMode)' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section)">
 						<a >{{section.label}}</a>
-							<div v-if='section.name=="metadata" && activeTab === section.label && !isEditMode &&isLoggedIn' style='position:absolute;top: 0px;right:-20px;' @click='seteditmode'>
+							<div v-show='validobj' v-if='section.name=="metadata" && activeTab === section.label && !isEditMode &&isLoggedIn' style='position:absolute;top: 0px;right:-20px;' @click='seteditmode'>
 								<icon color="#0075bc" name="regular/edit" ></icon>
 							</div>
 					</li>
@@ -311,7 +311,16 @@
 			return this.$store.getters.getcurrenturl;
 		},
 		rawobj: function(){
-			return this.$store.getters.getobject.metadata
+			var obj = this.$store.getters.getobject
+			if(obj.metadata){
+				return obj.metadata
+			} else {
+				return obj
+			}
+		},
+		validobj:function(){
+			var obj = this.$store.getters.getobject
+			return !obj.metadata
 		},
 		knowledgeobject: function(){
 			console.log(this.rawobj)
@@ -531,7 +540,7 @@
 				var req={};
 				req.name='copyurl';
 				req.statement="Is this the correct url?"
-				req.content=this.objurl;
+				req.content= location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+this.objurl.substr(1);
 				req.btnText="Copy";
 				this.$eventBus.$emit("confirmRequest",req)
 			},
