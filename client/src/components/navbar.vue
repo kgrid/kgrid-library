@@ -62,11 +62,7 @@ export default {
       return this.$store.getters.isLoggedIn;
     },
 		libraryname : function(){
-			if(this.skipAuth){
-				return 'LocalLibrary(Dev)'
-			}else{
-				return this.$store.getters.getLibraryName;
-			}
+			return this.$store.getters.getLibraryName;
 		},
 		isAdmin: function(){
 			if(this.skipAuth){

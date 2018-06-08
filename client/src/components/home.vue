@@ -295,9 +295,6 @@ export default {
 	 	this.newfilterstrings.forEach(function(e){
 			 self.filterStrings.push(e)
 		 })
-		 // this.$store.dispatch('fetchkolist').then(function(){
-		 //  	self.$nextTick()
-		 // })
 	},
 	beforeRouteEnter (to, from, next) {
 		axios.get("./static/json/config.json").then(response=> {
@@ -306,7 +303,7 @@ export default {
 			store.dispatch('fetchkolist').then(function(){
 			 	next()
 			})
-			// store.dispatch('checkenv');
+		  store.dispatch('checkenv');
 			// store.dispatch('getcurrentuser')
 		}).catch(e=>{
 			console.log(e)
@@ -318,8 +315,7 @@ export default {
 			this.rawlist.forEach(function(e){
 				var key = Object.keys(e)[0]
 				var obj = e[key]
-				// console.log(Object.keys(obj))
-				objlist[key]=Object.keys(obj)
+					objlist[key]=Object.keys(obj)
 			})
 			return objlist
 		},
