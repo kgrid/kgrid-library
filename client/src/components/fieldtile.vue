@@ -59,7 +59,7 @@
 						return this.$store.getters.getcurrenturi
 					},
 					parentobject:function(){
-						return this.$store.getters.getobject.metadata
+						return this.$store.getters.getobject
 					},
 						value : function() {
 							var propertyValue = "";
@@ -71,10 +71,10 @@
 								}
 								break;
 							case "model":
-								propertyValue = this.parentobject[this.fieldname];
+								propertyValue = this.parentobject[this.section][this.fieldname];
 								break;
 							default:
-								propertyValue = this.parentobject[this.fieldname];
+								propertyValue = this.parentobject[this.section][this.fieldname];
 								break;
 							}
 							return propertyValue;

@@ -130,17 +130,12 @@
         "adapters": {
           "type": "array",
           "items":{
-            "type": "linked",
+            "type": "string",
             "title": "ADAPTER",
-            "properties": {
-              "filename": {
-                "type": "string",
-                "title":"File Name"
-              },
-              "download_url": {
-                "type": "string",
-                "title":"Download Link"
-              }
+            "attrs": {
+              "type":"text",
+              "placeholder": "Adapter Title",
+              "title": "Please enter the title for this adapter"
             }
           }
       }

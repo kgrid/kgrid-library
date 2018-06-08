@@ -102,7 +102,7 @@ export default new Vuex.Store({
       list.forEach(function(e, index){
         var ver={};
         ver.version=e.version;
-        ver.title=e.object.metadata.title
+        ver.title=e.object.title
         ver.notes=e.version+' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
         ver.isdefault=false;
         if(index==0)  ver.isdefault=true
@@ -347,9 +347,7 @@ export default new Vuex.Store({
       }
       var endpoint = context.getters.getcurrenturl+path
       console.log(endpoint)
-      var reqbody = {}
-      reqbody[bundle.section]=bundle.data[bundle.section]
-      return api.put(endpoint, reqbody)
+      return api.put(endpoint, bundle.data)
         .then((respnse)=>{
           console.log(respnse)
         })

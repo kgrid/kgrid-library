@@ -323,27 +323,26 @@ export default {
 			var self=this
 			var list=[]
 			this.rawlist.forEach(function(e){
-				var obj={metadata:{arkId:{arkId:'',fedoraPath:''}, title:'', keyword:'',createdOn:0,lastModified:0,version:''},model:{}}
+				var obj={arkId:'', title:'', keyword:'',createdOn:0,lastModified:0,version:'',owners:''}
 				var key = Object.keys(e)[0]
 				var vlist=self.koversionlist[key]
-				var rawobj = e[key][vlist[0]]
-				if(rawobj.metadata){		//plain
-					obj.metadata.arkId.arkId = rawobj.metadata.arkId.arkId
-					obj.metadata.arkId.fedoraPath = rawobj.metadata.arkId.fedoraPath
-					obj.metadata.title = rawobj.metadata.title
-					obj.metadata.keywords = rawobj.metadata.keywords
-					obj.metadata.createdOn = rawobj.metadata.createdOn
-					obj.metadata.lastModified = rawobj.metadata.lastModified
-					obj.metadata.version = rawobj.metadata.version
-				}else {					//ld
-					obj.metadata.arkId.arkId = rawobj['@graph'][0].arkId
-					obj.metadata.arkId.fedoraPath = rawobj['@graph'][0].fedoraPath
-					obj.metadata.title =rawobj['@graph'][0].title
-					obj.metadata.keywords = rawobj['@graph'][0].keywords
-					obj.metadata.createdOn = rawobj['@graph'][0].createdOn
-					obj.metadata.lastModified = rawobj['@graph'][0].lastModified
-					obj.metadata.version = rawobj['@graph'][0].version
+				var o = e[key][vlist[0]]
+				// console.log("o from rawlist"+ JSON.stringify(o))
+				var rawobj ={}
+				if(o.metadata){
+					rawobj = o.metadata
+				} else {
+					rawobj =o
 				}
+					// console.log(JSON.stringify(rawobj))
+
+					obj.arkId = rawobj.arkId
+					obj.title = rawobj.title
+					obj.keywords = rawobj.keywords
+					obj.createdOn = rawobj.createdOn
+					obj.lastModified = rawobj.lastModified
+					obj.version = rawobj.version
+					obj.owners=rawobj.owners
 				list.push(obj)
 
 			})
@@ -445,11 +444,11 @@ export default {
 			})
 			switch(this.newkey) {
 			case 'metadata.lastModified':
-				return _.orderBy(l, [i=>i.metadata.lastModified], this.neworder);
+				return _.orderBy(l, [i=>i.lastModified], this.neworder);
 			case 'uri':
-				return _.orderBy(l, [i=>i.metadata.arkId.arkId.toLowerCase()], this.neworder);
+				return _.orderBy(l, [i=>i.arkId.arkId.toLowerCase()], this.neworder);
 			case 'metadata.title':
-				return _.orderBy(l, [i=>i.metadata.title.toLowerCase()], this.neworder);
+				return _.orderBy(l, [i=>i.title.toLowerCase()], this.neworder);
 			default:
 				return l;
 			}
@@ -459,12 +458,12 @@ export default {
 			var list = this.kolist;
 			if (!this.isLoggedIn) {
 				  list = list.filter(function(ko) {
-				  	return (ko.metadata.published);
+				  	return (ko.published);
 					});
 			}
 			if (!this.isAdmin) {
 			  list = list.filter(function(ko) {
-				  return (ko.metadata.version!="");
+				  return (ko.version!="");
 				});
 			}
 			return list.filter(function(field){
@@ -477,10 +476,10 @@ export default {
 											customFilter=customFilter&&(field.metadata[self.newdaterange.datetype]>=self.startdate && field.metadata[self.newdaterange.datetype]<=self.enddate );
 										}
 										if(!self.check.pub){
-											customFilter=customFilter&&(!field.metadata.published);
+											customFilter=customFilter&&(!field.published);
 										}
 										if(!self.check.pri){
-											customFilter=customFilter&&(field.metadata.published);
+											customFilter=customFilter&&(field.published);
 										}
 										if (self.newfilterstrings.length > 0) {
 											for (var i = 0; i < self.newfilterstrings.length; i++) {
@@ -490,31 +489,31 @@ export default {
 													filterResult = true;
 												} else {
 													var fString = new RegExp(filterString.title,'i');
-													if (self.check.title&&field.metadata.title) {
-														filterResult = (filterResult || ((field.metadata.title
+													if (self.check.title&&field.title) {
+														filterResult = (filterResult || ((field.title
 																.search(fString))!=-1));
 													}
-													if (self.check.keywords&&field.metadata.keywords) {
-														filterResult = (filterResult || ((field.metadata.keywords
+													if (self.check.keywords&&field.keywords) {
+														filterResult = (filterResult || ((field.keywords
 																.search(fString))!=-1));													}
-													if (self.check.owners&&field.metadata.owners) {
-														filterResult = (filterResult || ((field.metadata.owners
+													if (self.check.owners&&field.owners) {
+														filterResult = (filterResult || ((field.owners
 																.search(fString))!=-1));
 													}
-													if (self.check.contributors&&field.metadata.contributors) {
-														filterResult = (filterResult || ((field.metadata.contributors
+													if (self.check.contributors&&field.contributors) {
+														filterResult = (filterResult || ((field.contributors
 																.search(fString))!=-1));
 													}
-													if (self.check.objectID&&field.metadata.arkId.arkId) {
-														filterResult = (filterResult || ((field.metadata.arkId.arkId
+													if (self.check.objectID&&field.arkId.arkId) {
+														filterResult = (filterResult || ((field.arkId.arkId
 																.search(fString))!=-1));
 													}
-													if(self.check.citations&&field.metadata.citations){
-													  if(field.metadata.citations!=null){
-														  if(field.metadata.citations.length>0){
-															  for(var i=0;i<field.metadata.citations.length;i++){
-																  filterResult = (filterResult || ((field.metadata.citations[i].citation_title
-																		  .search(fString))!=-1) || ((field.metadata.citations[i].citation_at.search(fString))!=-1));
+													if(self.check.citations&&field.citations){
+													  if(field.citations!=null){
+														  if(field.citations.length>0){
+															  for(var i=0;i<field.citations.length;i++){
+																  filterResult = (filterResult || ((field.citations[i].citation_title
+																		  .search(fString))!=-1) || ((field.citations[i].citation_at.search(fString))!=-1));
 																  } } }
 													   }
 												}

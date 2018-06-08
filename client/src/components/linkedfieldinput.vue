@@ -52,7 +52,7 @@
 						return this.$store.getters.getcurrenturi
 					},
 					parentobject:function(){
-						return this.$store.getters.getobject.metadata
+						return this.$store.getters.getobject
 					},
 					value : function() {
 							var propertyValue = {titlefield:'',linkfield:''};
@@ -72,6 +72,9 @@
 							default:
 								propertyValue = this.parentobject[this.fieldname];
 								break;
+							}
+							if(this.fieldname=='adapters'){
+								propertyValue.download_url=this.entry.download_url+this.entry.filename
 							}
 							return propertyValue;
 						},
