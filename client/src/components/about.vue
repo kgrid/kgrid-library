@@ -26,7 +26,7 @@
 					<div class="line"><hr></div>Build Information<div class="line"><hr></div>
 				</div>
 				<div class="block_info">
-					Version:   {{version}}<br>Build TIme:   {{buildtime}}<br>GIT ID:   {{gitid}}<br>
+					Version:   {{version}}<br>Build TIme:   {{buildtime}}<br>
 				</div>
 			</div>
 
@@ -57,11 +57,11 @@ export default {
 			return this.$store.getters.getVersion;
 		},
 		buildtime : function(){
-			return this.$store.getters.getBuildTimeString
+			return this.$store.getters.getBuildTime
 		},
-		gitid : function(){
-			return this.$store.getters.getGitID;
-		},
+		// gitid : function(){
+		// 	return this.$store.getters.getGitID;
+		// },
 		isAdmin: function(){
 			return this.$store.getters.isAdmin;
 		}
