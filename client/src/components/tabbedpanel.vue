@@ -40,9 +40,11 @@
 			}
 			if(this.section=='metadata'){
 				this.$eventBus.$on('saveMetadata', function(){
-					self.$store.dispatch('saveMetadata', JSON.stringify(self.bundle)).then(function(){
-						self.$store.dispatch('fetchko', self.$route.params)
-					})
+						if(self.section=='metadata'){
+							self.$store.dispatch('saveMetadata', JSON.stringify(self.bundle)).then(function(){
+								self.$store.dispatch('fetchko', self.$route.params)
+							})
+						}
 				})
 			}
 			// if(self.section!="logData"&&self.section!="versions"){
@@ -64,7 +66,7 @@
 		},
 		computed : {
 			parentobject:function(){
-				return this.$store.getters.getobject.metadata
+				return this.$store.getters.getobject
 			},
 			bundledebug:function(){
 				return this.bundle
@@ -98,6 +100,10 @@
 			refreshbundle:function(){
 				this.bundle.section=this.section
 				this.bundle.data=JSON.parse(JSON.stringify(this.parentobject))
+				if(this.section=='metadata'){
+					if(this.bundle.data.model)  { delete this.bundle.data.model }
+					if(this.bundle.data.children)  { delete this.bundle.data.children }
+				}
 				for(var key in this.parentobject[this.section]){
 					this.edited[key]=(this.bundle.data[this.section][key]!=this.parentobject[this.section][key])
 				}
@@ -108,8 +114,10 @@
 					switch(this.section){
 						case 'metadata':
 							for(var key in pair){
-								this.bundle.data[key]=JSON.parse(JSON.stringify(pair[key]))
-								this.edited[key]=(this.bundle.data[key]!=this.parentobject[key])
+								if(key!='index'){
+									this.bundle.data[key]=JSON.parse(JSON.stringify(pair[key]))
+									this.edited[key]=(this.bundle.data[key]!=this.parentobject[key])
+								}
 							}
 							break
 						default:

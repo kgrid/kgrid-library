@@ -55,7 +55,7 @@
 						return this.$store.getters.getcurrenturi
 					},
 					parentobject:function(){
-						return this.$store.getters.getobject.metadata
+						return this.$store.getters.getobject
 					},
 						value : function() {
 							var propertyValue = "";
