@@ -35,6 +35,9 @@
 						})
 					}
 			},
+			beforeDestroy:function(){
+				this.$eventBus.$off('revertEdit')
+			},
 				mounted: function(){
 				},
 				data:function(){
@@ -159,11 +162,11 @@
 						myWindow.focus();
 					},
 					undoEdit:function(){
-						console.log('Undo Edit'+this.section+' '+this.fieldname)
+						console.log('Undo Edit '+this.section+' '+this.fieldname + " "+JSON.stringify(this.parentobject))
 						if(this.index==-1){
-							this.fieldvalue = JSON.parse(JSON.stringify(this.object.metadata[this.fieldname]))
+							this.fieldvalue = JSON.parse(JSON.stringify(this.object[this.fieldname]))
 						}else {
-							this.fieldvalue = JSON.parse(JSON.stringify(this.parentobject.metadata[this.fieldname][this.index]))
+							this.fieldvalue = JSON.parse(JSON.stringify(this.parentobject[this.fieldname][this.index]))
 						}
 					}
 				}
