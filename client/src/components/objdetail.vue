@@ -223,12 +223,7 @@
 				self.knowledgeobject.citations.splice(0,self.knowledgeobject.citations.length);
 				self.knowledgeobject=JSON.parse(JSON.stringify(obj));
 			});
-			this.$eventBus.$on('objectSelected', function(t){
-				self.$store.dispatch('fetchko', self.$route.params).then(function(){
-					// self.nextTick()
-				})
-				self.selectTab(self.constSections[0])
-			});
+			this.$eventBus.$on('objectSelected',this.objselectedlistener);
 			this.$eventBus.$on('confirm', function (data) {
 				console.log(data);
 				if(data.val==true){
@@ -279,6 +274,9 @@
 			 		})
 
 				})
+			}
+			, beforeDestroy:function(){
+					this.$eventBus.$off('objectSelected', this.objselectedlistener)
 			}
 			, mounted:function() {
 			var self = this;
@@ -379,6 +377,12 @@
 			}
 		},
 		methods:{
+			objselectedlistener:function(t){
+			 this.$store.dispatch('fetchko', this.$route.params).then(function(){
+				 // self.nextTick()
+			 })
+			 this.selectTab(this.constSections[0])
+		 },
 			viewswagger:function(){
 				console.log("View Service Descriptor using Swagger UI")
 				if(this.fieldname=='service') this.$eventBus.$emit('viewio','');

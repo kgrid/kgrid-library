@@ -62,7 +62,7 @@ export default new Vuex.Store({
     activeTab:'METADATA',
     currentbundlename:'',
     currentbundle:{},
-    libraryEnv: {git:{commit:{time:0,id:''}},build:{version:'',artifact:'',name:'',group:'',time:0},'library.name':''},
+    libraryEnv: {},
     libraryname: '',
     fields_json:{fields:[]},
     kolist:[],
@@ -125,7 +125,8 @@ export default new Vuex.Store({
         })
     },
     setenv(state, env){
-      state.libraryEnv = env;
+      console.log(env)
+      state.libraryEnv = JSON.parse(JSON.stringify(env));
       state.libraryname= env["library.name"];
     },
     setfields(state,data){
@@ -238,22 +239,30 @@ export default new Vuex.Store({
     getLibraryName: state =>{
         return (state.libraryname || '')
     },
-    getGitID: state=>{
-        return (state.libraryEnv.git.commit.id ||'')
-    },
+    // getGitID: state=>{
+    //     return (state.libraryEnv.git.commit.id ||'')
+    // },
     getBuildTime: state=>{
+      if(state.libraryEnv.build){
         return (state.libraryEnv.build.time || 0)
+      } else {
+        return 0
+      }
     },
     getBuildTimeString: state=>{
      var t = 'Not Available'
-     if(state.libraryEnv.build.time){
+     if(state.libraryEnv.build){
           t= moment(new Date(
               state.libraryEnv.build.time)).toString()
       }
       return t
     },
     getVersion: state=>{
+      if(state.libraryEnv.build){
         return (state.libraryEnv.build.version ||'')
+      } else {
+        return ''
+      }
     },
     getfields: state=>{
         return (state.fields_json)
@@ -350,8 +359,12 @@ export default new Vuex.Store({
     },
     checkenv (context) {
       var url = context.getters.getlibraryurl+'info'
+      console.log(url)
       return api.get(url)
-        .then((response) => context.commit('setenv', response.data))
+        .then((response) => {
+          console.log(response.data)
+          context.commit('setenv', response.data)
+        })
         .catch((error) => context.commit('API_FAIL', error))
     },
     fetchko (context, param) {
