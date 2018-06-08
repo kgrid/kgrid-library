@@ -24,7 +24,6 @@
 				props : [ 'schemaProp', 'fieldname', 'section', "isDisabled"],
 				created:function(){
 					var self = this
-
 					this.$eventBus.$on('revertEdit', function(){
 							self.undoEdit()
 						})
@@ -39,8 +38,10 @@
 						}
 				},
 				mounted:function(){
-					console.log("Fieldtile:"+JSON.stringify(this.value))
-					this.fieldvalue = JSON.parse(JSON.stringify(this.value))
+					if(this.value){
+						console.log("Fieldtile:"+JSON.stringify(this.value))
+						this.fieldvalue = JSON.parse(JSON.stringify(this.value))
+					}
 				},
 				components:{
 					linkedfieldinput
@@ -84,7 +85,6 @@
 					},
 				methods:{
 					removeentry:function(index){
-						// console.log(index)
 						this.fieldvalue.splice(index,1)
 						this.updatevalue()
 					},
@@ -99,7 +99,6 @@
 					},
 					updatearray:_.debounce(function(obj){
 						if(obj.index<this.fieldvalue.length && obj.index!=-1){
-							// console.log('Update entry '+obj.index +JSON.stringify(obj))
 							this.fieldvalue[obj.index]=JSON.parse(JSON.stringify(obj[this.fieldname]))
 						}else {
 							console.log('Error')
@@ -112,8 +111,7 @@
 							this.$emit('valuechange',obj)
 					},
 					undoEdit:function(){
-						// console.log('Undo Edit'+this.section+' '+this.fieldname)
-						this.fieldvalue = JSON.parse(JSON.stringify(this.parentobject[this.section][this.fieldname]))
+						this.fieldvalue = JSON.parse(JSON.stringify(this.parentobject[this.fieldname]))
 					}
 				}
 				};

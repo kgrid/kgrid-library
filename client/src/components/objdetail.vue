@@ -81,33 +81,9 @@
 					</div>
 					<div class='pad-l-50 inlineblock float-r'>
 									<ul class="actioniconlist float-r" v-if='true'>
-									<!-- <li v-if='isAdmin && isMutable'>
-									<div>
-										<a>
-										<div class='actionicon' v-if='isAdmin && isMutable' v-on:click='snapshotrequest'>
-											<icon color="#fff" name="camera"></icon>
-										</div>
-										</a>
-										<div class='actioniconcap'>
-										<span >SNAPSHOT</span>
-										</div>
-										</div>
-									</li> -->
-										<!-- <li v-if='isAdmin && isMutable' >
-										<div>
-											<a>
-											<div class='actionicon' v-if='isAdmin && isMutable' v-on:click='editObj'>
-													<icon color="#fff" name="regular/edit"></icon>
-											</div>
-											</a>
-											<div class='actioniconcap'>
-											<span >EDIT</span>
-											</div>
-											</div>
-										</li> -->
 										<li>
 										<div>
-											<a @click='downloadZip'>
+											<a :href='htmldownloadlink' download>
 												<div class='actionicon'><icon color="#fff" name="download"></icon></div>
 											</a>
 											<div class='actioniconcap'>
@@ -147,18 +123,6 @@
 											</div>
 											</div>
 										</li>
-										<!-- <li v-if='isAdmin && !isDefault'>
-											<div>
-												<a>
-													<div class='actionicon'	v-if='isAdmin && isMutable'  v-on:click='deleteObject'>
-														<icon color="#fff" name="trash-alt"></icon>
-													</div>
-												</a>
-												<div class='actioniconcap'>
-													<span>DELETE</span>
-												</div>
-											</div>
-										</li> -->
 										<li v-show='false' v-if='isAdmin && !isMutable && !isDefault'>
 											<div>
 												<a>
@@ -306,7 +270,7 @@
 				}
 			});
 			}
-			,beforeRouteEnter (to, from, next) {
+			, beforeRouteEnter (to, from, next) {
 				axios.get("./static/json/config.json").then(response=> {
 					store.commit('setpaths',response.data);
 					// console.log("before Route Enter:"+store.getters.getshelfurl)
@@ -315,12 +279,6 @@
 			 		})
 
 				})
-			},
-			updated:function(){
-				// var self = this
-				// this.$store.dispatch('fetchko', this.$route.params).then(function(){
-				// 	// self.nextTick()
-				// })
 			}
 			, mounted:function() {
 			var self = this;
@@ -413,6 +371,9 @@
 				downloadLink : function() {
 				return this.$store.getters.getcurrentdownloadlink
 			},
+			htmldownloadlink: function(){
+				return this.downloadLink+'?format=zip'
+			},
 			downloadFile : function() {
 				return this.uriarray[0]+"-"+this.uriarray[1] +"-"+this.uriarray[2]+ '.zip'
 			}
@@ -421,23 +382,6 @@
 			viewswagger:function(){
 				console.log("View Service Descriptor using Swagger UI")
 				if(this.fieldname=='service') this.$eventBus.$emit('viewio','');
-			},
-			downloadZip:function(){
-				var self=this
-				this.$http({
-  				url: self.downloadLink,
-					headers:{'Accept':'application/zip'},
-  				method: 'GET',
-  				responseType: 'blob', // important
-				}).then((response) => {
-					console.log(response)
-  				const url = window.URL.createObjectURL(new Blob([response.data], {type:'application.zip'}));
-  				const link = document.createElement('a');
-  				link.href = url;
-  				link.setAttribute('download', self.downloadFile);
-  				document.body.appendChild(link);
-  				link.click();
-				});
 			},
 			seteditmode:function(){
 				this.isEditMode = true;
@@ -450,7 +394,6 @@
 			discardChange:function(){
 				console.log('discard changes')
 				this.$eventBus.$emit('revertEdit')
-				// this.isEditMode = false;
 			},
 			saveChange:function(){
 				this.isEditMode = false;
