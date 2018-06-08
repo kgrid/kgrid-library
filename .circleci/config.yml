@@ -73,8 +73,8 @@ jobs:
 
     steps:
       - checkout
-      - run: mvn clean package -pl client
-      - run: HEROKU_API_KEY=$HEROKU_API_KEY mvn clean heroku:deploy -Dmaven.test.skip=true -s .circleci/settings.xml -pl application
+      - run: mvn clean package -Dmaven.test.skip=true -P ci -s .circleci/settings.xml
+      - run: HEROKU_API_KEY=$HEROKU_API_KEY mvn clean heroku:deploy -s .circleci/settings.xml -pl application
 
 workflows:
   version: 2
