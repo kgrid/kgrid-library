@@ -1,5 +1,7 @@
 package org.kgrid.library;
 
+import org.kgrid.shelf.repository.CompoundDigitalObjectStore;
+import org.kgrid.shelf.repository.CompoundDigitalObjectStoreFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.info.SimpleInfoContributor;
@@ -36,6 +38,11 @@ public class LibraryApplication extends WebMvcConfigurerAdapter {
 
     public String getLibraryName() {
         return name;
+    }
+
+    @Bean
+    public static CompoundDigitalObjectStore getCDOStore( @Value("${kgrid.shelf.cdostore.url:filesystem:file://shelf}") String cdoStoreURI) {
+        return CompoundDigitalObjectStoreFactory.create(cdoStoreURI);
     }
 
 }
