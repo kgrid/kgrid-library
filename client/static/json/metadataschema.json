@@ -85,6 +85,24 @@
               }
             }
 
+        },
+        "modelpath": {
+          "type": "string",
+          "title": "MODEL PATH",
+          "attrs": {
+            "type":"text",
+            "placeholder": "Knowledge Object Model Path",
+            "title": "Please enter the path for knowledge object model"
+          }
+        },
+        "service": {
+          "type": "string",
+          "title": "SERVICE",
+          "attrs": {
+            "type":"text",
+            "placeholder": "Knowledge Object Service Description",
+            "title": "Please enter the path for service description file"
+          }
         }
       }
     },
@@ -112,15 +130,6 @@
         "resource": {
           "type": "string",
           "title": "RESOURCE",
-          "attrs": {
-            "type":"text",
-            "placeholder": "Knowledge Object Contributors",
-            "title": "Please enter the contributors of this knowledge object"
-          }
-        },
-        "service": {
-          "type": "string",
-          "title": "SERVICE",
           "attrs": {
             "type":"text",
             "placeholder": "Knowledge Object Contributors",
