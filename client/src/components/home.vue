@@ -150,7 +150,7 @@
 					<div class='row filter '>
 						<div class='col-md-4 col-sm-4 col-xs-4'>
 						<label class="custom-control custom-radio">
-						<input id="radio1" value='none' v-model='dateRange.datetype' @change='setDrange' name="radio" type="radio" class="custom-control-input">
+						<input id="radio0" value='none' v-model='dateRange.datetype' @change='setDrange' name="radio" type="radio" class="custom-control-input">
 						<span class="custom-control-indicator ft-sz-16">
 										<icon v-show='dateRange.datetype=="none"' color="#0075bc" name="circle"></icon>
 						</span>
@@ -178,8 +178,8 @@
 					</div>
 									<div class='row filter'></div>
 					<div class='row filterlabel  pad-l-20' v-show='dateRange.datetype!="none"'><span class='ft-sz-12 text-cap'>Search within the following date range</span></div>
-					<div class='row filter'  v-show='dateRange.datetype!="none"'>
-					<div class='col-md-6 col-sm-6 col-xs-6 datepick'>
+					<div class='row filter'  v-show='dateRange.datetype!="none"' >
+					<div class='col-md-6 col-sm-6 col-xs-6 datepick'  >
 							<span class='kg-fg-color pad-r-10'>Start</span>
 							<p class=' pad-l-30' ><date-picker ref='startpicker' :date="dateRange.startTime" :option="option" class='leftalign' :limit="limit" v-click-outside='outsidestart' v-on:change='setdaterange()' id='startdatepicker'></date-picker> </p>
 						</div>
@@ -446,7 +446,7 @@ export default {
 			case 'metadata.lastModified':
 				return _.orderBy(l, [i=>i.lastModified], this.neworder);
 			case 'uri':
-				return _.orderBy(l, [i=>i.arkId.arkId.toLowerCase()], this.neworder);
+				return _.orderBy(l, [i=>i.arkId.toLowerCase()], this.neworder);
 			case 'metadata.title':
 				return _.orderBy(l, [i=>i.title.toLowerCase()], this.neworder);
 			default:
@@ -473,7 +473,7 @@ export default {
 											title : ''
 										};
 										if(self.newdaterange.datetype!='none') {
-											customFilter=customFilter&&(field.metadata[self.newdaterange.datetype]>=self.startdate && field.metadata[self.newdaterange.datetype]<=self.enddate );
+											customFilter=customFilter&&(field[self.newdaterange.datetype]>=self.startdate && field[self.newdaterange.datetype]<=self.enddate );
 										}
 										if(!self.check.pub){
 											customFilter=customFilter&&(!field.published);
@@ -504,8 +504,8 @@ export default {
 														filterResult = (filterResult || ((field.contributors
 																.search(fString))!=-1));
 													}
-													if (self.check.objectID&&field.arkId.arkId) {
-														filterResult = (filterResult || ((field.arkId.arkId
+													if (self.check.objectID&&field.arkId) {
+														filterResult = (filterResult || ((field.arkId
 																.search(fString))!=-1));
 													}
 													if(self.check.citations&&field.citations){
@@ -545,9 +545,10 @@ export default {
 			this.$refs.endpicker.dismiss(e);
 		},
 		outsidestart: function(e){
-			if(this.$refs.startpicker.showInfo.check)
+			if(this.$refs.startpicker.showInfo.check){
 				this.$refs.startpicker.showCheck();
-			this.$refs.startpicker.dismiss(e);
+				this.$refs.startpicker.dismiss(e);
+			}
 		},
 		toggleFilter: function(){
 			this.showFilterControl=!this.showFilterControl;
