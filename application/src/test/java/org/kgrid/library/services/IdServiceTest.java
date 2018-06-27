@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class IdServiceTest {
 
-	private static final String ARKID_STRING = "ark://99999/fake";
+	private static final String ARKID_STRING = "ark:/99999/fake";
 
 	private IdService idService;
 	
