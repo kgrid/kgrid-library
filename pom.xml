@@ -16,5 +16,9 @@
     <module>client</module>
     <module>application</module>
   </modules>
-
+  <scm>
+    <url>https://github.com/kgrid/kgrid-library</url>
+    <connection>scm:git:https://github.com/kgrid/kgrid-library.git</connection>
+    <developerConnection>scm:git:https://github.com/kgrid/kgrid-library.git</developerConnection>
+  </scm>
 </project>
