@@ -158,7 +158,7 @@
     <dependency>
       <groupId>org.kgrid</groupId>
       <artifactId>shelf-api</artifactId>
-      <version>0.6.1-SNAPSHOT</version>
+      <version>0.6.1</version>
     </dependency>
   </dependencies>
 
@@ -273,7 +273,7 @@
           </configVars>
           <jdkVersion>${java.version}</jdkVersion>
           <processTypes>
-            <web>java -jar /app/target/${project.build.finalName}.jar --kgrid.shelf.cdostore.url=filesystem:file://etc/shelf $JAVA_OPTS</web>
+            <web>java -jar /app/target/${project.build.finalName}.jar --kgrid.shelf.cdostore.url=$CDOSTORE_URL $JAVA_OPTS</web>
           </processTypes>
         </configuration>
       </plugin>
