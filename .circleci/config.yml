@@ -39,8 +39,8 @@ jobs:
              if [ $RELEASE ]; then
                 git config --global user.email "$GIT_USER_EMAIL"
                 git config --global user.name "$GIT_USER_NAME"
-                TAG_NAME="kgrid-library-parent-$RELEASE"
-                mvn release:clean release:prepare -B  -DscmCommentPrefix="Release [skip ci] " -DreleaseVersion=$RELEASE -DdevelopmentVersion=$NEXT release:perform -P ci -s .circleci/settings.xml
+                TAG_NAME="kgrid-library-$RELEASE"
+                mvn release:clean release:prepare -B -Dtag=$TAG_NAME -DscmCommentPrefix="Release [skip ci] " -DreleaseVersion=$RELEASE -DdevelopmentVersion=$NEXT release:perform -P ci -s .circleci/settings.xml
                 curl -X POST "https://api.github.com/repos/kgrid/kgrid-library/releases?access_token=$GITHUB_TOKEN" \
                     -H 'Content-Type: application/json' -d "{\"tag_name\":\"$TAG_NAME\"}"
                 RELEASE_ID=$(curl -s https://api.github.com/repos/kgrid/kgrid-library/releases/latest | jq -r ".id")
