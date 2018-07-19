@@ -24,7 +24,10 @@
 	mounted:function(){
 		SwaggerUI({
 			dom_id:'#ui_container',
-			url:'./static/json/welcome.yaml'
+			url:this.url,
+			plugins: [
+	 			DisableTryItOutPlugin
+ 			]
 		})
 	},
 	components: {
@@ -44,7 +47,7 @@
 			 }
 		},
 		url:function(){
-			return this.$store.getters.getshelfurl
+			return this.$store.getters.getyamlurl
 		},
 
 	},
@@ -89,6 +92,17 @@
 		},
 	}
 };
+const DisableTryItOutPlugin = function() {
+  return {
+    statePlugins: {
+      spec: {
+        wrapSelectors: {
+          allowTryItOutFor: () => () => false
+        }
+      }
+    }
+  }
+}
 	</script>
 
 	<style >

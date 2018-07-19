@@ -59,8 +59,11 @@
           }
         },
         "license": {
-          "type": "linked",
+          "type": "object",
           "title": "License",
+          "attrs": {
+            "type":"linked"
+          },
           "properties": {
             "licenseName": {
               "type": "string",
@@ -85,15 +88,6 @@
               }
             }
 
-        },
-        "modelpath": {
-          "type": "string",
-          "title": "MODEL PATH",
-          "attrs": {
-            "type":"text",
-            "placeholder": "Knowledge Object Model Path",
-            "title": "Please enter the path for knowledge object model"
-          }
         },
         "service": {
           "type": "string",
@@ -135,19 +129,7 @@
             "placeholder": "Knowledge Object Contributors",
             "title": "Please enter the contributors of this knowledge object"
           }
-        },
-        "adapters": {
-          "type": "array",
-          "items":{
-            "type": "string",
-            "title": "ADAPTER",
-            "attrs": {
-              "type":"text",
-              "placeholder": "Adapter Title",
-              "title": "Please enter the title for this adapter"
-            }
-          }
-      }
+        }
     }
   },
     "logData":{

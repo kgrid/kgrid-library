@@ -1,10 +1,10 @@
 <template id="fieldtile-template">
 	<div class="addtext" :id="fieldname" style='position:relative;'>
-		<input type="text" class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='schemaProp.attrs.type=="text"' />
+		<input type="text" class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='inputtype=="text"' />
 		<a v-if='fieldname=="service"' @click='viewfile' style='position:absolute; top:12px; left:-15px;display:inline-block'>
-			<div><icon color="#0075bc" name="eye" v-if='false'></icon></div>
+			<div><icon color="#0075bc" name="external-link-alt" ></icon></div>
 		</a>
-		<textarea ref='ta' spellcheck=false class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='schemaProp.attrs.type=="textarea"' v-bind:style="{ height: taheight }"></textarea>
+		<textarea ref='ta' spellcheck=false class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='inputtype=="textarea"' v-bind:style="{ height: taheight }"></textarea>
 	</div>
 </template>
 <script>
@@ -12,7 +12,7 @@
 	import 'vue-awesome/icons/eye'
 	export default {
 				name: "texteditor",
-				props : [ 'schemaProp', 'fieldname', 'section', "isDisabled"],
+				props : [ 'schemaProp', 'fieldname', 'section', 'object','entry','index', "isDisabled"],
 				created:function(){
 					var self = this
 					this.fieldvalue = this.value
@@ -29,18 +29,27 @@
 						}
 				},
 				mounted:function(){
-					if(this.schemaProp.attrs.type=='textarea'){
-					 var h = this.$refs.ta.scrollHeight+2
+					if(this.inputtype=='textarea'){
+					 		var h = this.$refs.ta.scrollHeight+2
 					 this.taheight =h +'px'
 				  }
 					this.fieldvalue = this.value
 				},
 				watch:{
-					fieldvalue:function(){
-					  this.updatevalue()
-						if(this.schemaProp.attrs.type=='textarea'){
-							this.resize()
-						}
+					fieldvalue:{
+						handler: function(){
+							this.updatevalue()
+							if(this.inputtype=='textarea'){
+									this.resize()
+							}
+						},
+						deep:true
+					},
+					object:{
+						handler: function(){
+							 this.fieldvalue = this.value
+						},
+						deep:true
 					},
 					objuri:function(){
 						this.fieldvalue=this.value
@@ -51,6 +60,13 @@
 				},
 				components:{},
 				computed : {
+					inputtype: function(){
+						if(this.index==-1){
+							return this.schemaProp.attrs.type
+						} else {
+							return this.schemaProp.items.attrs.type
+						}
+					},
 					objuri:function(){
 						return this.$store.getters.getcurrenturi
 					},
@@ -61,10 +77,13 @@
 							var propertyValue = "";
 							switch (this.section) {
 							case "metadata":
-								propertyValue = this.parentobject[this.fieldname];
-								if(propertyValue==null){
-									propertyValue=''
+							if(this.index==-1){
+								if(this.parentobject[this.fieldname]){
+									propertyValue = this.parentobject[this.fieldname];
 								}
+							}else {
+								propertyValue = this.entry;
+							}
 								break;
 							case "model":
 								propertyValue = this.parentobject[this.section][this.fieldname];
@@ -89,7 +108,8 @@
 					},
 				methods:{
 					viewfile: function(){
-						if(this.fieldname=='service') this.$eventBus.$emit('viewio','');
+						var yamlurl = "http://localhost:3000/shelf/"+this.objuri+'/'+this.value
+						if(this.fieldname=='service') this.$eventBus.$emit('viewio',yamlurl);
 					},
 					undoEdit:function(){
 						console.log('Undo Edit'+this.section+' '+this.fieldname)
@@ -103,6 +123,7 @@
 					updatevalue:_.debounce(function(){
 							var obj={}
 							obj[this.fieldname]=this.fieldvalue
+							obj.index=this.index
 							this.$emit('valuechange',obj)
 					}, 300),
 					resize:_.debounce(function(){
