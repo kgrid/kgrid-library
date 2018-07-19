@@ -3,14 +3,15 @@
 		<div class='entryDisplayArea' >
 			<ul class="list">
 				<li v-for="(entry,index) in fieldvalue" style="position:relative;">
-							<div style="background-color:#fff; text-align:left;position:absolute;left:0%;z-index:180;padding:4px;margin:1px;"  @click='removeentry(index)'>
+							<div style="background-color:#fff; text-align:left;position:absolute;right:0%;z-index:180;padding:4px;margin:1px;"  @click='removeentry(index)'>
 								<icon color="#0075bc" name="times" v-if='!isDisabled'></icon>
 							</div>
-							<linkedfieldinput :schemaProp='schemaProp' :fieldname='fieldname' :section="section" :object='fieldvalue' :entry='entry' :index='index' :isDisabled='isDisabled' @valuechange='updatearray'></linkedfieldinput>
+							<texteditor :schemaProp='schemaProp' :fieldname='fieldname' :section="section" :isDisabled='isDisabled' :object='fieldvalue' :entry='entry' :index='index' v-if='getinputtype(schemaProp)==="text" | getinputtype(schemaProp)=="textarea"' @valuechange='updatearray'></texteditor>
+							<linkedfieldinput :schemaProp='schemaProp' :fieldname='fieldname' :section="section" :object='fieldvalue' :entry='entry' :index='index' v-if='getinputtype(schemaProp)==="linked"' :isDisabled='isDisabled' @valuechange='updatearray'></linkedfieldinput>
 				</li>
 			</ul>
 			<div style='position:relative;'>
-			<div style="background-color:#fff; text-align:left;position:absolute;left:0%;z-index:180;padding:4px;margin:1px;"  @click='addentry'>
+			<div style="background-color:#fff; text-align:left;position:absolute;right:0%;z-index:180;padding:4px;margin:1px;"  @click='addentry'>
 				<icon color="#0075bc" name="plus" v-if='!isDisabled&&moreentry'></icon>
 			</div>
 		</div>
@@ -19,6 +20,7 @@
 </template>
 <script>
 	import linkedfieldinput from './linkedfieldinput.vue'
+	import texteditor from './texteditor.vue'
 	export default {
 				name: "fieldtile",
 				props : [ 'schemaProp', 'fieldname', 'section', "isDisabled"],
@@ -44,7 +46,8 @@
 					}
 				},
 				components:{
-					linkedfieldinput
+					linkedfieldinput,
+					texteditor
 				},
 				watch:{
 					objuri:function(){
@@ -84,17 +87,31 @@
 						}
 					},
 				methods:{
+					getinputtype:function(obj){
+							var inputtype =''
+							if(obj.items.attrs){
+								if(obj.items.attrs.type){
+									inputtype = obj.items.attrs.type
+								}
+							}
+							return inputtype
+					},
 					removeentry:function(index){
 						this.fieldvalue.splice(index,1)
 						this.updatevalue()
 					},
 					addentry:function(){
-						var obj={}
-						if(this.isCitation){
-							obj.citation_at=''
-							obj.citation_title=''
-						}
-						this.fieldvalue.push(obj)
+						var inputtype = this.getinputtype(this.schemaProp)
+						switch(inputtype) {
+							case "text":
+								var textentry =''
+								this.fieldvalue.push(textentry)
+								break
+							case "linked":
+								var obj = {}
+								this.fieldvalue.push(obj)
+								break
+							}
 						this.updatevalue()
 					},
 					updatearray:_.debounce(function(obj){
@@ -116,4 +133,8 @@
 				}
 				};
 </script>
-<style scoped></style>
+<style scoped>
+.entryDisplayArea {
+	margin-bottom: 15px;
+}
+</style>
