@@ -4,8 +4,8 @@
 				<li class="kgl-viewlist" v-for="(value,key) in sectionschema.properties">
 					<div :class='{bg:!isDisabled}'><span class='ft-sz-12 text-cap' >{{key}}</span><span v-if='(!isDisabled&&editable)&&(edited[key])'>*</span></div>
 					<fieldtile :schemaProp='value' :fieldname='key' :section="section"   :object="parentobject" :isDisabled='isDisabled' v-if='value.type=="array"' @valuechange='updateBundle'></fieldtile>
-					<texteditor :schemaProp='value' :fieldname='key' :section="section" :isDisabled='isDisabled' v-if='getinputtype(value)==="text" | getinputtype(value)=="textarea"' @valuechange='updateBundle'></texteditor>
-					<linkedfieldinput :schemaProp='value' :fieldname='key' :section="section" index=-1 :object='object' :isDisabled='isDisabled' v-if='value.type=="linked"' @valuechange='updateBundle'></linkedfieldinput>
+					<texteditor :schemaProp='value' :fieldname='key' :section="section" :object='object' index=-1 :isDisabled='isDisabled' v-if='getinputtype(value)==="text" | getinputtype(value)=="textarea"' @valuechange='updateBundle'></texteditor>
+					<linkedfieldinput :schemaProp='value' :fieldname='key' :section="section" index=-1 :object='object' :isDisabled='isDisabled' v-if='getinputtype(value)==="linked"' @valuechange='updateBundle'></linkedfieldinput>
 				</li>
 			</ul>
 			<tree-menu v-if='section=="assets"' :label="tree.label" :nodes="tree.nodes" :depth="0"></tree-menu>
