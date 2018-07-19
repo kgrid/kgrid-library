@@ -9,9 +9,12 @@ import Icon from 'vue-awesome/components/Icon'
 import eventBus from './components/eventBus.js';
 import axios from 'axios';
 
+
 require('es6-promise').polyfill();
 require('lodash');
 require('moment');
+require('prismjs');
+require('prismjs/components/prism-yaml')
 // debug mode
 Vue.config.debug = false;
 Vue.use(VueRouter);

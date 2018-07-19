@@ -11,6 +11,7 @@ import login from './components/login';
 import confirmdialog from './components/confirmdialog'; // eslint-disable-line
 import objcreator from './components/objcreator';
 import ioviewer from './components/ioviewer';
+import codeviewer from './components/codeviewer';
 import libraryusers from './components/libraryusers.vue';
 export default {
   name: 'app1',
@@ -99,6 +100,11 @@ export default {
     self.showOverlay.show=true;
     document.body.classList.toggle('noscroll', true);
   });
+  this.$eventBus.$on("viewcode", function(s){
+    self.currentOLView="codeviewer";
+    self.showOverlay.show=true;
+    document.body.classList.toggle('noscroll', true);
+  });
  this.$eventBus.$on("userloggedin",function(obj){
 		 self.showOverlay.show=false;
 		 document.body.classList.toggle('noscroll', false);
@@ -109,6 +115,7 @@ export default {
     login,
     objcreator,
     ioviewer,
+    codeviewer,
     libraryusers,
     confirmdialog
   },
