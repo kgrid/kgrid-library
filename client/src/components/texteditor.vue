@@ -4,6 +4,9 @@
 		<a v-if='fieldname=="service"' @click='viewfile' style='position:absolute; top:12px; left:-15px;display:inline-block'>
 			<div><icon color="#0075bc" name="external-link-alt" ></icon></div>
 		</a>
+		<a v-if='fieldname=="resource"' @click='viewcode' style='position:absolute; top:12px; left:-15px;display:inline-block'>
+			<div><icon color="#0075bc" name="external-link-alt" ></icon></div>
+		</a>
 		<textarea ref='ta' spellcheck=false class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='inputtype=="textarea"' v-bind:style="{ height: taheight }"></textarea>
 	</div>
 </template>
@@ -110,6 +113,10 @@
 					viewfile: function(){
 						var yamlurl = "http://localhost:3000/shelf/"+this.objuri+'/'+this.value
 						if(this.fieldname=='service') this.$eventBus.$emit('viewio',yamlurl);
+					},
+					viewcode: function(){
+						var codeurl = "http://localhost:3000/shelf/"+this.objuri+'/'+this.value
+						if(this.fieldname=='resource') this.$eventBus.$emit('viewcode',codeurl);
 					},
 					undoEdit:function(){
 						console.log('Undo Edit'+this.section+' '+this.fieldname)

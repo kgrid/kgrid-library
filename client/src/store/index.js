@@ -179,6 +179,9 @@ export default new Vuex.Store({
     getyamlurl:state=>{
       return state.currentUrl +'/'+state.currentObject.service
     },
+    getcodeurl:state=>{
+      return state.currentUrl +'/'+state.currentObject.model.resource
+    },
     constSections:state=>{
       return sections
     },
