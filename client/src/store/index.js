@@ -103,7 +103,7 @@ export default new Vuex.Store({
         var ver={};
         ver.version=e.version;
         ver.title=e.object.title
-        ver.notes=e.version+' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        ver.notes=e.version
         ver.isdefault=false;
         if(index==0)  ver.isdefault=true
         state.currentVersionlist.push(ver)
@@ -176,6 +176,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    getyamlurl:state=>{
+      return state.currentUrl +'/'+state.currentObject.service
+    },
     constSections:state=>{
       return sections
     },
