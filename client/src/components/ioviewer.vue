@@ -1,13 +1,22 @@
 <template>
 	<olpane layerid=0 :stage='stage'>
 		<div slot="ol-form">
-				<div id="ui_container"></div>
-			</div>
+			<div id="ui_container" v-show='!viewraw'></div>
+			<prism language='yaml' v-show='viewraw'>{{rawfile}}</prism>
+		</div>
+		<div slot='buttons'>
+				<button class="kg-btn-primary" @click="viewraw=!viewraw">
+					<span v-if='viewraw'>View in Swagger UI</span>
+					<span v-else> View Raw YAML file </span>
+				</button>
+		</div>
 	</olpane>
 </template>
 	<script>
 	import olpane from '../components/olpane';
 	import SwaggerUI from 'swagger-ui'
+	import Prism from 'vue-prism-component'
+
 	export default {
 		name:"ioviewer",
 		data:function(){
@@ -15,11 +24,20 @@
 				dragAndDropCapable: false,
 				files: [],
 				uploadPercentage: 0,
-				stage:''
+				stage:'',
+				rawfile:'',
+				viewraw:false
 			}
 		},
 	created:function(){
-
+		var self = this
+		this.$http.get(this.url).then(response=> {
+			console.log("redaing service descriptor...")
+			console.log(response)
+      self.rawfile = response.data
+    }).catch(e=>{
+      console.log(e)
+    })
 	},
 	mounted:function(){
 		SwaggerUI({
@@ -32,8 +50,9 @@
 	},
 	components: {
 		olpane,
-		SwaggerUI
-		},
+		SwaggerUI,
+		Prism
+	},
 	computed:{
 		arkid:function(){
 			if(this.files.length>0){
@@ -48,7 +67,7 @@
 		},
 		url:function(){
 			return this.$store.getters.getyamlurl
-		},
+		}
 
 	},
 	methods:{
@@ -106,10 +125,13 @@ const DisableTryItOutPlugin = function() {
 	</script>
 
 	<style >
-	#ui_container {
+	#ui_container, #rawyaml {
 		padding: 10px;
 		border:none;
 
+	}
+	#rawyaml {
+		overflow: auto;
 	}
 .swagger-ui .info .title small pre  {
 		background-color: transparent;
@@ -119,4 +141,10 @@ const DisableTryItOutPlugin = function() {
 	.swagger-ui .info {
 		margin: 30px 0 20px 0;
 	}
+	.fade-enter-active, .fade-leave-active {
+  transition: opacity .8s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 	</style>
