@@ -1,5 +1,8 @@
 {
   "shelf_url": "./shelf/",
   "library_url": "./",
-  "user_url": "http://kgrid.med.umich.edu/library2/"
+  "user_url": "./",
+  "activator_url":[
+    "https://kgrid-activator.herokuapp.com"
+  ]
 }

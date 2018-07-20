@@ -91,7 +91,7 @@ var vm = new Vue({
 	data : {},
 	components:{ App	},
 	created: function(){
-    console.log('Knowledge Grid Library Web Application\nBuild 20180425');
+    console.log('Knowledge Grid Library Web Application\nBuild 20180720');
 		this.$eventBus.$on('404', function(){
 			router.push({path:'/*'});
 		});

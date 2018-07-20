@@ -120,7 +120,8 @@
 				setTimeout(function(){
 					console.log(resp);
 
-					self.$eventBus.$emit('objSaved',{})
+					self.$eventBus.$emit('objAdded',{})
+					
 				} , 1500)
 			})
 			.catch(function(err){
