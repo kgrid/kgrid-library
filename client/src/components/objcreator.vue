@@ -49,7 +49,7 @@
 				var index=filename.lastIndexOf('/')
 				var l= filename.length
 				var s = filename.slice(index+1,l)
-				 return 'ark:/'+s.replace('.zip','').replace('-','/')
+				 return s.replace('.zip','').replace('-','/')
 			 }else {
 				 return ''
 			 }

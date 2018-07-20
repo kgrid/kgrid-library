@@ -180,7 +180,11 @@ export default new Vuex.Store({
       return state.currentUrl +'/'+state.currentObject.service
     },
     getcodeurl:state=>{
-      return state.currentUrl +'/'+state.currentObject.model.resource
+      if(state.currentObject.model){
+        return state.currentUrl +'/'+state.currentObject.model.resource
+      } else {
+        return state.currentUrl
+      }
     },
     constSections:state=>{
       return sections
