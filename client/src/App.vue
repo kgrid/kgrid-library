@@ -10,6 +10,7 @@ import navbar from './components/navbar.vue';
 import login from './components/login';
 import confirmdialog from './components/confirmdialog'; // eslint-disable-line
 import objcreator from './components/objcreator';
+import objdeposit from './components/objdeposit';
 import ioviewer from './components/ioviewer';
 import codeviewer from './components/codeviewer';
 import libraryusers from './components/libraryusers.vue';
@@ -92,6 +93,8 @@ export default {
 	});
 	this.$eventBus.$on("addobj", function(s){
 		self.currentOLView="objcreator";
+    // self.currentOLView="objdeposit";
+
 		self.showOverlay.show=true;
 		document.body.classList.toggle('noscroll', true);
 	});
@@ -114,6 +117,7 @@ export default {
     navbar,
     login,
     objcreator,
+    objdeposit,
     ioviewer,
     codeviewer,
     libraryusers,
