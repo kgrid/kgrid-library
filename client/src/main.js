@@ -8,7 +8,7 @@ import store from './store';
 import Icon from 'vue-awesome/components/Icon'
 import eventBus from './components/eventBus.js';
 import axios from 'axios';
-
+import 'prismjs/themes/prism.css'
 
 require('es6-promise').polyfill();
 require('lodash');
@@ -41,6 +41,18 @@ const router = new VueRouter({
   history: true,
   hashbang : false
 });
+Vue.filter('formatSize', function (size) {
+  if (size > 1024 * 1024 * 1024 * 1024) {
+    return (size / 1024 / 1024 / 1024 / 1024).toFixed(2) + ' TB'
+  } else if (size > 1024 * 1024 * 1024) {
+    return (size / 1024 / 1024 / 1024).toFixed(2) + ' GB'
+  } else if (size > 1024 * 1024) {
+    return (size / 1024 / 1024).toFixed(2) + ' MB'
+  } else if (size > 1024) {
+    return (size / 1024).toFixed(2) + ' KB'
+  }
+  return size.toString() + ' B'
+})
 Vue.filter('formatDate', function(value) {
   if (value) {
     return moment(String(value)).format('MMMM DD, YYYY')

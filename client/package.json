@@ -24,6 +24,7 @@
     "vue-json-schema": "^1.1.0",
     "vue-prism-component": "^1.0.1",
     "vue-router": "2.5.3",
+    "vue-upload-component": "^2.8.10",
     "vuex": "^2.3.1",
     "vuex-persist": "^0.6.0"
   },
