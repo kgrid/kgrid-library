@@ -39,10 +39,10 @@ export default {
     return {
  			showDropdown : false,
 			layoutop:0,
-			skipAuth: true,
+			skipAuth: false,
 			optionlist:[
-				 	// {'label':'Add User to Library', 'value':'user','order':'desc'},
-					// {'label':'Logout', 'value':'logout','order':'asc'}
+				 	 {'label':'Add User to Library', 'value':'user','order':'desc'},
+					 {'label':'Logout', 'value':'logout','order':'asc'}
 					],
 			ddstyle:{	"d":"height:30px;padding:5px;background-color:#fff;",
 								"ul":"margin-left:10px;",

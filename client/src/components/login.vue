@@ -41,7 +41,7 @@ export default {
   data: function () {
     return {
       userModel: {user: {username: '', password: ''}},
-      skipAuth: true,
+      skipAuth: false,
 			status:{'ready':true,'processing':false,'success':false,'error':false}
     };
   },

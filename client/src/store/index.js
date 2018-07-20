@@ -50,7 +50,7 @@ export default new Vuex.Store({
     dateRange:{datetype:'none',startTime: {time: moment('2016-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().format("MM/DD/YYYY")}},
     debugEnabled:true,
     baseurl:'',
-    currentUser: {},
+    currentUser: {'username':''},
     isloading:false,
     currentObject: {} ,
     currentVersionlist:[],

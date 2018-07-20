@@ -456,11 +456,11 @@ export default {
 		filteredList : function() {
 			var self = this;
 			var list = this.kolist;
-			if (!this.isLoggedIn) {
-				  list = list.filter(function(ko) {
-				  	return (ko.published);
-					});
-			}
+			// if (!this.isLoggedIn) {
+			// 	  list = list.filter(function(ko) {
+			// 	  	return (ko.published);
+			// 		});
+			// }
 			if (!this.isAdmin) {
 			  list = list.filter(function(ko) {
 				  return (ko.version!="");
