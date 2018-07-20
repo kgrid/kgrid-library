@@ -27,7 +27,7 @@ export default {
   created: function () {
     var self = this  // eslint-disable-line
     //Test code to set default user to bypass LOGIN
-    this.$store.commit('setuser',{username: 'Guest', password: 'none', first_name:'Guest', admin: true})
+    // this.$store.commit('setuser',{username: 'Guest', password: 'none', first_name:'Guest', admin: true})
     this.$http.get("./static/json/metadataschema.json").then(response=> {
       self.$store.commit('setmetaschema',response.data);
     }).catch(e=>{
@@ -76,9 +76,10 @@ export default {
           break;
       }
     });
-	this.$eventBus.$on('objSaved', function(obj){
+	this.$eventBus.$on('objAdded', function(obj){
 		self.showOverlay.show=false;
 		document.body.classList.toggle('noscroll', false);
+    self.$router.go(self.$router.currentRoute)
 	});
 	this.$eventBus.$on('slideout', function(layerid){
 		switch(layerid){

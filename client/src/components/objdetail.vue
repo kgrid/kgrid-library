@@ -133,6 +133,15 @@
 												</div>
 											</div>
 										</li>
+										<li v-if='isLoggedIn'>
+					<div>
+						<a>
+						<div class='actionicon'  v-on:click='deleteObject'><icon color="#fff" name="trash-alt"></icon></div>
+						</a>
+						<div class='actioniconcap'>
+								<span>DELETE</span></div>
+												</div>
+					</li>
 									</ul>
 								</div>
 				</div>
@@ -196,6 +205,7 @@
 	import 'vue-awesome/icons/download'
 	import 'vue-awesome/icons/camera'
 	import 'vue-awesome/icons/sync'
+		import 'vue-awesome/icons/trash-alt'
 	export default {
 		name:'ko-detail',
 		data : function() {
@@ -238,7 +248,7 @@
 						self.addversion();
 					}
 					if(data.name=="deleteObject"){
-						var uri = self.downloadlink.replace(/-/g,'.');
+						var uri = self.downloadLink.replace(/-/g,'.');
 						var txt;
 						if (uri != "") {
 							$.ajax({
@@ -546,7 +556,7 @@
 			},
 			returntolibrary: function(){
 				this.$eventBus.$emit("return");
-			},
+			}
 		}
 };
 	</script>

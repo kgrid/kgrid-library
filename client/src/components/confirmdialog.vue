@@ -2,7 +2,7 @@
 	<olpane layerid=9 left='540'>
 		<div slot='oltitle'><div style='width:50%; float:left;'><h3>{{statement}}</h3></div></div>
 		<div slot='ol-form'>
-			<div style='width:50%; float:left;'>
+			<div style='width:50%; left:0; position:absolute;'>
 				<div class='loginField textwrap'>
 				{{content}}
 				</div>
