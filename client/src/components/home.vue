@@ -461,11 +461,11 @@ export default {
 			// 	  	return (ko.published);
 			// 		});
 			// }
-			if (!this.isAdmin) {
-			  list = list.filter(function(ko) {
-				  return (ko.version!="");
-				});
-			}
+			// if (!this.isAdmin) {
+			//   list = list.filter(function(ko) {
+			// 	  return (ko.version!="");
+			// 	});
+			// }
 			return list.filter(function(field){
 									var customFilter = true;
 										var filterString = {

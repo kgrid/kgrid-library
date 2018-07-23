@@ -41,7 +41,7 @@ export default {
 			layoutop:0,
 			skipAuth: false,
 			optionlist:[
-				 	 {'label':'Add User to Library', 'value':'user','order':'desc'},
+				 	 // {'label':'Add User to Library', 'value':'user','order':'desc'},
 					 {'label':'Logout', 'value':'logout','order':'asc'}
 					],
 			ddstyle:{	"d":"height:30px;padding:5px;background-color:#fff;",
@@ -97,7 +97,7 @@ export default {
       this.showDropdown=false;
 			this.$store.dispatch('logout').then(function () {
 				self.showDropdown = false;
-				self.$store.commit('showprivate',false);
+				// self.$store.commit('showprivate',false);
 				self.$eventBus.$emit('logout');
 			})
     }
