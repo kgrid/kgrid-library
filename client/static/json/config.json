@@ -4,5 +4,8 @@
   "user_url": "./",
   "activator_url":[
     "https://kgrid-activator.herokuapp.com"
+  ],
+  "demo_url":[
+    "https://kgrid-demo.github.io/swaggerui"
   ]
 }

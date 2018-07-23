@@ -754,4 +754,7 @@ li#versions>ul>li{
 		    border: 1px solid transparent;
 		    border-radius: 4px 4px 0 0;
 		}
+		.actionicon svg {
+			margin-top:4px;
+		}
 </style>
