@@ -111,6 +111,18 @@
 											</div>
 											</div>
 										</li>
+										<li>
+										<div>
+											<a>
+											<div v-show='false' class='actionicon' v-on:click='sendtoactivator'>
+													<icon color="#fff" name="play"></icon>
+											</div>
+											</a>
+											<div class='actioniconcap'>
+											<span >Try Out</span>
+											</div>
+											</div>
+										</li>
 										<li v-if='isLoggedIn && !isMutable' v-show='false'>
 										<div>
 											<a>
@@ -206,6 +218,7 @@
 	import 'vue-awesome/icons/camera'
 	import 'vue-awesome/icons/sync'
 		import 'vue-awesome/icons/trash-alt'
+			import 'vue-awesome/icons/play'
 	export default {
 		name:'ko-detail',
 		data : function() {
@@ -556,6 +569,9 @@
 			},
 			returntolibrary: function(){
 				this.$eventBus.$emit("return");
+			},
+			sendtoactivator : function(){
+				this.$eventBus.$emit('objactivation','')
 			}
 		}
 };
