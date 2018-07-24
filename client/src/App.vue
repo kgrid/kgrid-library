@@ -13,6 +13,7 @@ import objcreator from './components/objcreator';
 import objdeposit from './components/objdeposit';
 import ioviewer from './components/ioviewer';
 import codeviewer from './components/codeviewer';
+import objact from './components/objact';
 import libraryusers from './components/libraryusers.vue';
 export default {
   name: 'app1',
@@ -79,7 +80,7 @@ export default {
 	this.$eventBus.$on('objAdded', function(obj){
 		self.showOverlay.show=false;
 		document.body.classList.toggle('noscroll', false);
-    self.$router.go(self.$router.currentRoute)
+    // self.$router.go(self.$router.currentRoute)
 	});
 	this.$eventBus.$on('slideout', function(layerid){
 		switch(layerid){
@@ -104,6 +105,11 @@ export default {
     self.showOverlay.show=true;
     document.body.classList.toggle('noscroll', true);
   });
+  this.$eventBus.$on("objactivation", function(s){
+    self.currentOLView="objact";
+    self.showOverlay.show=true;
+    document.body.classList.toggle('noscroll', true);
+  });
   this.$eventBus.$on("viewcode", function(s){
     self.currentOLView="codeviewer";
     self.showOverlay.show=true;
@@ -120,6 +126,7 @@ export default {
     objcreator,
     objdeposit,
     ioviewer,
+    objact,
     codeviewer,
     libraryusers,
     confirmdialog

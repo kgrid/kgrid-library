@@ -12,7 +12,7 @@
 			</div>
 		</div>
 		<div slot='header'>
-			<div v-show='isLoggedIn' class='kg-roundbtn kgl-newobj fade-in' v-on:click='addObject'>
+			<div v-show='true' class='kg-roundbtn kgl-newobj fade-in' v-on:click='addObject'>
 				<a><span class='kg-fg-color'>Deposit Knowledge Object</span></a>
 				<div class='btnContent ft-sz-10 '>
 					<icon color="#0075bc" name="plus"></icon>

@@ -108,7 +108,8 @@
 			formData.append('ko', file);
 			this.stage='processing';
 			setTimeout(function(){
-			self.$http.put( self.url+self.arkid,
+
+			self.$http.put( "http://localhost:8080/"+self.arkid,
 				formData,
 				{
 					onUploadProgress: function( progressEvent ) {
@@ -120,8 +121,8 @@
 				setTimeout(function(){
 					console.log(resp);
 
-					self.$eventBus.$emit('objAdded',{})
-					
+					// self.$eventBus.$emit('objAdded',{})
+
 				} , 1500)
 			})
 			.catch(function(err){
