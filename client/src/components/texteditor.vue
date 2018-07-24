@@ -111,11 +111,11 @@
 					},
 				methods:{
 					viewfile: function(){
-						var yamlurl = "http://localhost:3000/shelf/"+this.objuri+'/'+this.value
+						var yamlurl = "./shelf/"+this.objuri+'/'+this.value
 						if(this.fieldname=='service') this.$eventBus.$emit('viewio',yamlurl);
 					},
 					viewcode: function(){
-						var codeurl = "http://localhost:3000/shelf/"+this.objuri+'/'+this.value
+						var codeurl = "./shelf/"+this.objuri+'/model/'+this.value
 						if(this.fieldname=='resource') this.$eventBus.$emit('viewcode',codeurl);
 					},
 					undoEdit:function(){

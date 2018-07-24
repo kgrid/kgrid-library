@@ -181,7 +181,7 @@ export default new Vuex.Store({
     },
     getcodeurl:state=>{
       if(state.currentObject.model){
-        return state.currentUrl +'/'+state.currentObject.model.resource
+        return state.currentUrl +'/model/'+state.currentObject.model.resource
       } else {
         return state.currentUrl
       }
