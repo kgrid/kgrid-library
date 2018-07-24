@@ -2,10 +2,6 @@
   "shelf_url": "./shelf/",
   "library_url": "./",
   "user_url": "./",
-  "activator_url":[
-    "https://kgrid-activator.herokuapp.com"
-  ],
-  "demo_url":[
-    "https://kgrid-demo.github.io/swaggerui"
-  ]
+  "activator_url":   "https://kgrid-activator.herokuapp.com",
+  "demo_url":    "https://kgrid-demo.github.io/swaggerui"
 }
