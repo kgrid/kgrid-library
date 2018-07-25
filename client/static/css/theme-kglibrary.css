@@ -71,6 +71,21 @@ a, a:hover, a:visited, a:focus {
   min-width: 100px;
 }
 
+.kg-btn-entry {
+  border: 1px solid #0075bc;
+  color: #fff;
+  background-color: #0075bc;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px;
+  margin:3px 0px 0px 0px;
+  line-height:1.2em;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: color 0.5s ease;
+  min-width:100px;
+}
+
 ul.actioniconlist li div.actioniconcap {
 	background-color:#fff;
 	border: 1px solid #0075bc;

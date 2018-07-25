@@ -11,7 +11,7 @@ const objModel={ metadata:{ metadata:{title:"",keywords:"",contributors:"",arkId
 const defaultfilterCheck={ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : true, showmyobj:false};
 const defaultSort={sortkey:'metadata.lastModified', order:'desc'};
 const defaultkgselect={'label':'Last Updated - Newest', 'value':'metadata.lastModified','order':'desc'};
-const defaultdateRange={datetype:'none',startTime: {time: moment('2016-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().endOf('day').format("MM/DD/YYYY")}};
+const defaultdateRange={datetype:'none',startTime: {time: moment('2017-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().endOf('day').format("MM/DD/YYYY")}};
 const sections = [ {name:"metadata",id:"#metadata",label:"METADATA"}
                  , {name:"model",id:"#model",label:"MODEL"}
                  // , {name:"resource",id:"#resource", label:"RESOURCE"}
@@ -26,17 +26,12 @@ const config=  { headers: {
       'Accept':'application/json'
     }, withCredentials: true, crossDomain: true }
 const vuexLocal = new VuexPersistence ({
-    key:"first",
+    key:"kgridlib",
     storage: window.localStorage,
     reducer: state => ({filtercheck:state.filtercheck
       , filterStrings:state.filterStrings
       , kgselect:state.kgselect
-      , baseurl:state.baseurl
       , paths:state.paths
-      , currentDownloadlink:state.currentDownloadlink
-      , currentVersion:state.currentVersion
-      , currentUrl:state.currentUrl
-      , currenturi:state.currenturi
       , currentObjectId:state.currentObjectId
     })
 })
@@ -47,18 +42,13 @@ export default new Vuex.Store({
     filtercheck:{ keywords : true, owners : true, title : true, citations : false, contributors : false, objectID : false, pub : true, pri : true, showmyobj:false},
     filterStrings:[],
     kgselect:{'label':'Last Updated - Newest', 'value':'metadata.lastModified','order':'desc'},
-    dateRange:{datetype:'none',startTime: {time: moment('2016-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().format("MM/DD/YYYY")}},
+    dateRange:{datetype:'none',startTime: {time: moment('2017-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().format("MM/DD/YYYY")}},
     debugEnabled:true,
-    baseurl:'',
     currentUser: {'username':''},
     isloading:false,
     currentObject: {} ,
     currentVersionlist:[],
     currentObjectId:{'naan':'','name':'','version':''},
-    currentDownloadlink:'',
-    currentUrl:'',
-    currenturi:'',
-    currentVersion:'',
     activeTab:'METADATA',
     currentbundlename:'',
     currentbundle:{},
@@ -73,9 +63,6 @@ export default new Vuex.Store({
     metaschema:{}
   },
   mutations: {
-    seturl(state, url) {
-      state.baseurl = url;
-    },
     setpaths(state, paths){
       state.paths=JSON.parse(JSON.stringify(paths))
     },
@@ -150,18 +137,6 @@ export default new Vuex.Store({
     updateMetadata(state,obj){
       Object.assign(state.currentMetadataBundle,obj)
     },
-    resetCurrentobj(state,id){
-      var arr=id.replace('ark:/','').split('/');
-      // console.log('Array:')
-      // console.log(arr)
-      state.currentObjectId.naan=arr[0]
-      state.currentObjectId.name=arr[1]
-      state.currentObjectId.version=arr[2]
-      // state.currentObject = objModel;
-      state.currentDownloadlink=state.paths.shelf_url+id.replace('ark:/','')
-      state.currentUrl=state.paths.shelf_url+id;
-      state.currenturi=id;
-    },
     'API_FAIL': function (state, error) {
       // console.error(error)
     },
@@ -172,31 +147,82 @@ export default new Vuex.Store({
       state.isloading=bool;
     },
     setcurrenturl(state,id){
-      state.currentUrl=state.paths.shelf_url+id
-    }
+      var arr=id.replace('ark:/','').split('/');
+      state.currentObjectId.naan=arr[0]
+      state.currentObjectId.name=arr[1]
+      state.currentObjectId.version=arr[2]
+    },
+    setdefaultdemourlindex(state, i){
+      state.paths.default_demo_url_index =i
+    },
+    setdemourls(state,urls){
+      if(urls.length>0){
+        state.paths.demo_urls = []
+        urls.forEach(function(e){
+            state.paths.demo_urls.push(e)
+          }
+        )
+      }
+    },
+    setdefaultactivatorurlindex(state,i){
+      state.paths.default_act_url_index = i
+    },
+    setactivatorurls(state,urls){
+      if(urls.length>0){
+        state.paths.activator_urls = []
+        urls.forEach(function(e){
+            state.paths.activator_urls.push(e)
+          }
+        )
+      }
+    },
   },
   getters: {
-    getyamlurl:state=>{
-      return state.currentUrl +'/'+state.currentObject.service
+    getshelfurl:state=>{
+      return state.paths.shelf_url
     },
-    getcodeurl:state=>{
+    getuserurl:state=>{
+      return state.paths.user_url
+    },
+    getlibraryurl:state=>{
+      return state.paths.library_url
+    },
+    getdefaultdemourlindex:state=>{
+      return state.paths.default_demo_url_index
+    },
+    getdemourls:state=>{
+      return state.paths.demo_urls
+    },
+    getdefaultactivatorurlindex:state=>{
+      return state.paths.default_act_url_index
+    },
+    getactivatorurls:state=>{
+      return state.paths.activator_urls
+    },
+    getcurrenturl:state=>{
+      return state.paths.shelf_url+state.currentObjectId.naan+'/'+state.currentObjectId.name+'/'+state.currentObjectId.version
+    },
+    getcurrenturi:state=>{
+      return state.currentObjectId.naan+'/'+state.currentObjectId.name+'/'+state.currentObjectId.version
+    },
+    getnaandashname:state=>{
+      return state.currentObjectId.naan+'-'+state.currentObjectId.name
+    },
+    getnaanslashname:state=>{
+      return state.currentObjectId.naan+'/'+state.currentObjectId.name
+    },
+    getkoserviceurl:state=>{
+      return state.paths.shelf_url+state.currentObjectId.naan+'/'+state.currentObjectId.name+'/'+state.currentObjectId.version +'/'+state.currentObject.service
+    },
+    getkoresourceurl:state=>{
       if(state.currentObject.model){
-        return state.currentUrl +'/model/'+state.currentObject.model.resource
+        return state.paths.shelf_url+state.currentObjectId.naan+'/'+state.currentObjectId.name+'/'+state.currentObjectId.version +'/model/'+state.currentObject.model.resource
       } else {
-        return state.currentUrl
+        return state.paths.shelf_url+state.currentObjectId.naan+'/'+state.currentObjectId.name+'/'+state.currentObjectId.version
       }
     },
     constSections:state=>{
       return sections
-    },
-    getcurrenturl:state=>{
-      return state.currentUrl
-    },
-    getcurrenturi:state=>{
-      return state.currenturi
-    },
-    getcurrentdownloadlink:state=>{
-      return state.currentDownloadlink
     },
     getSortKey: state=>{
       return (state.kgselect.value)
@@ -383,7 +409,7 @@ export default new Vuex.Store({
       return api.get(endpoint)
         .then((response) => {
           context.commit('setobject', response.data)
-          context.commit('resetCurrentobj',param.uri)
+          context.commit('setcurrenturl',param.uri)
         })
         .catch((error) => context.commit('API_FAIL', error))
     },

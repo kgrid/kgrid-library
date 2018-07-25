@@ -114,12 +114,12 @@
 										<li>
 										<div>
 											<a>
-											<div v-show='false' class='actionicon' v-on:click='sendtoactivator'>
+											<div class='actionicon' v-on:click='sendtoactivator'>
 													<icon color="#fff" name="play"></icon>
 											</div>
 											</a>
 											<div class='actioniconcap'>
-											<span >Try Out</span>
+											<span >Live Demo</span>
 											</div>
 											</div>
 										</li>
@@ -290,12 +290,12 @@
 			}
 			, beforeRouteEnter (to, from, next) {
 				axios.get("./static/json/config.json").then(response=> {
-					store.commit('setpaths',response.data);
-					// console.log("before Route Enter:"+store.getters.getshelfurl)
+					if(!store.state.paths.shelf_url){
+						store.commit('setpaths',response.data);
+					}
 			 		store.dispatch('fetchko', to.params).then(function(){
 			 			next()
 			 		})
-
 				})
 			}
 			, beforeDestroy:function(){
@@ -399,8 +399,8 @@
 								}
 					},
 				downloadLink : function() {
-				return this.$store.getters.getcurrentdownloadlink
-			},
+					return this.$store.getters.getcurrenturl
+				},
 			htmldownloadlink: function(){
 				return this.downloadLink+'?format=zip'
 			},

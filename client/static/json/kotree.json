@@ -11,10 +11,11 @@
             { "label": "metadata.json"  },
             {
               "label": "resource",
-              "nodes": [ { "label": "metadata.json"},	{ "label": "content.js"} ]
+              "nodes": [ { "label": "content.js"} ]
             },
             {
-              "label": "service", "nodes": [ { "label": "metadata.json"}, { "label": "iospec.json"}]
+              "label": "service",
+              "nodes": [ { "label": "servicedescriptor.yaml"}]
             }
           ]
         }

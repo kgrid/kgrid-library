@@ -237,8 +237,8 @@ export default {
 			confirmrequest:{name:"removeallfilter",statement:"All filters will be cleared!"},
 			filterStrings:[],
  			newstring:'',
- 			dateRange:{datetype:'none',startTime: {time: moment('2016-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().format("MM/DD/YYYY")}},
- 			defaultDateRange:{datetype:'none', startTime:{time: moment('2016-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().format("MM/DD/YYYY")}},
+ 			dateRange:{datetype:'none',startTime: {time: moment('2017-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().format("MM/DD/YYYY")}},
+ 			defaultDateRange:{datetype:'none', startTime:{time: moment('2017-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().format("MM/DD/YYYY")}},
 			kgselect:{label: "Title - Z to A", value: "metadata.title", order: "desc"},
 			showFilterControl:false,
       option: {
@@ -279,7 +279,7 @@ export default {
 		        },
 		        {
 		          type: 'fromto',
-		          from: '2016-01-01',
+		          from: '2017-09-01',
 		          to: ''
 		        }]
 		      }
@@ -298,7 +298,9 @@ export default {
 	},
 	beforeRouteEnter (to, from, next) {
 		axios.get("./static/json/config.json").then(response=> {
-			store.commit('setpaths',response.data);
+			if(!store.state.paths.shelf_url){
+				store.commit('setpaths',response.data);
+			}
 			// console.log("before Route Enter:"+store.getters.getshelfurl)
 			store.dispatch('fetchkolist').then(function(){
 			 	next()
