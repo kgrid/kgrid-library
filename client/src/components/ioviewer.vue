@@ -51,7 +51,7 @@
 	},
 	computed:{
 		url:function(){
-			return this.$store.getters.getyamlurl
+			return this.$store.getters.getkoserviceurl
 		}
 	}
 };

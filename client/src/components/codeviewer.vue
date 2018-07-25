@@ -3,7 +3,7 @@
 		<div slot="ol-form">
 			<prism language='javascript' >{{rawfile}}</prism>
 		</div>
-			<div slot='buttons'></div>
+		<div slot='buttons'></div>
 	</olpane>
 </template>
 	<script>
@@ -37,7 +37,7 @@
 	},
 	computed:{
 		url:function(){
-			return this.$store.getters.getcodeurl
+			return this.$store.getters.getkoresourceurl
 		}
 	}
 };
