@@ -41,7 +41,7 @@ public class IdService {
     }
 
 	public void create(ArkId arkId) {
-		ezidService.create(arkId.getArkId());
+		ezidService.create(arkId.getAsFullArk());
 	}
 
 	// TODO: Add back in ark id statuses
@@ -55,7 +55,7 @@ public class IdService {
 	
 	public String resolve (ArkId arkId){
 		// TODO: 1. fuseki 2. ezid
-		return ezidService.get(arkId.getArkId());
+		return ezidService.get(arkId.getAsFullArk());
 	}
 
 	public boolean ping() throws LibraryException {
@@ -64,7 +64,7 @@ public class IdService {
 
 	public void bind(ArkId arkId,  List<String> metadata, URI targetUrl) {
 
-		ezidService.bind(arkId.getArkId(), metadata, targetUrl);
+		ezidService.bind(arkId.getAsFullArk(), metadata, targetUrl);
 	}
 	
 	public List<String> createBasicMetadata(String who, String what){
