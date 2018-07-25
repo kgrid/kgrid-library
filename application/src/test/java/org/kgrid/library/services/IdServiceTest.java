@@ -55,7 +55,7 @@ public class IdServiceTest {
 	public void publishKnowledgeObject(){
 
 		ArrayList<String> metadata = new ArrayList<String>();
-		idService.publish(new ArkId(), metadata);
+		idService.publish(new ArkId("ark:/test/ark"), metadata);
 		
 //		verify(ezidService).status(ARKID_STRING, metadata, ArkId.Status.PUBLIC);
 	}
