@@ -1,12 +1,19 @@
 <template>
 	<olpane layerid=0 :stage='stage'>
-		<div slot="ol-form">
+		<div slot="oltitle"  v-if='viewraw'>
+			<div class='row'  >
+				<h2>Knowledge Object
+					<span style="padding: 3px;"> {{uri}}</span></h2>
+			</div>
+		</div>
+		<div slot="ol-form" style="height:100%;">
+				<h2  v-show='viewraw'>{{rscfilename}}</h2>
 			<div id="ui_container" v-show='!viewraw'></div>
-			<prism language='yaml' v-show='viewraw'>{{rawfile}}</prism>
+			<prism language='yaml' v-show='viewraw' style="max-height:90%;">{{rawfile}}</prism>
 		</div>
 		<div slot='buttons'>
-				<button class="kg-btn-primary" @click="viewraw=!viewraw">
-					<span v-if='viewraw'>View in Swagger UI</span>
+				<button class="kg-btn-primary" @click="golivedemo">
+					<span v-if='viewraw'>Live Demo</span>
 					<span v-else> View Raw YAML file </span>
 				</button>
 		</div>
@@ -22,7 +29,7 @@
 			return {
 				stage:'',
 				rawfile:'',
-				viewraw:false
+				viewraw:true
 			}
 		},
 	created:function(){
@@ -52,6 +59,23 @@
 	computed:{
 		url:function(){
 			return this.$store.getters.getkoserviceurl
+		},
+		urlarray: function(){
+			return this.url.split('/')
+		},
+		rscfilename:function(){
+			return this.urlarray[this.urlarray.length-1]
+		},
+		uri:function(){
+			return this.$store.getters.getcurrenturi
+		},
+	},
+	methods:{
+		switchview:function(){
+			this.viewraw=!this.viewraw
+		},
+		golivedemo:function(){
+			this.$eventBus.$emit('objactivation','')
 		}
 	}
 };
@@ -68,13 +92,15 @@ const DisableTryItOutPlugin = function() {
 }
 	</script>
 	<style >
-	#ui_container, #rawyaml {
+	#ui_container {
 		padding: 10px;
 		border:none;
+		margin-top:-60px;
 	}
-	#rawyaml {
-		overflow: auto;
+.ol_pane pre {
+		overflow-y: auto;
 	}
+
 .swagger-ui .info .title small pre  {
 		background-color: transparent;
 		padding:2px 4px;
