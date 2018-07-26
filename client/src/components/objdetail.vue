@@ -164,7 +164,7 @@
 				<ul class='nav nav-tabs view inline' role='tablist' id='tabs'>
 					<li v-for='section in constSections' v-bind:id='section.name' v-if='section.name!="assets"' v-show='(section.name=="metadata"&&isEditMode)|(!isEditMode)' v-bind:class="{ active: activeTab === section.label }" v-on:click="selectTab(section)">
 						<a >{{section.label}}</a>
-							<div v-show='validobj' v-if='section.name=="metadata" && activeTab === section.label && !isEditMode &&isLoggedIn' style='position:absolute;top: 0px;right:-20px;' @click='seteditmode'>
+							<div v-show='validobj' v-if='section.name=="metadata" && activeTab === section.label && !isEditMode ' style='position:absolute;top: 0px;right:-20px;' @click='seteditmode'>
 								<icon color="#0075bc" name="regular/edit" ></icon>
 							</div>
 					</li>
