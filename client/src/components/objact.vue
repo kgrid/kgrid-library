@@ -1,9 +1,17 @@
 <template>
 	<olpane layerid=0 :stage='stage'>
+		<div slot="oltitle">
+			<div class='row' >
+				<h2>Knowledge Object
+					<span style="padding: 3px;"> {{uri}}</span>
+					<span v-if='objpackaged' style="background-color:#0075bc;font-size:0.6em;color:#fff; padding:1px 4px; margin:0px 3px 5px 3px;">packaged</span>
+					<span v-if='objactivated' style="background-color:#0075bc;font-size:0.6em;color:#fff; padding:1px 4px; margin:0px 3px 5px 3px;">activated</span></h2>
+			</div>
+		</div>
 		<div slot="ol-form">
 			<div id="activator_pane" v-if='objpackaged && !objactivated'>
 				<div class='row' >
-					<h2>Knowledge Object <span style="background-color:#eee;padding: 3px;"> {{uri}}</span> has been packaged and ready to deploy.</h2><br>
+					<h4>The knowledge object has been packaged. Please enter or select the activator to send the KO.</h4>
 				</div>
 				<!-- <div class='row' >
 					<p>* Enter the activator url or select from the list of available activators. If a new url is entered, you can save to the list and set it as default.
@@ -37,9 +45,14 @@
 				</div>
 			</div>
 			<div id="demo_pane"  v-if='objactivated'>
-				<div class='row' >
- 				 <h2>Knowledge Object <span style="background-color:#eee;padding: 3px;"> {{uri}}</span> has been activated at <span style="background-color:#eee;padding: 3px;">{{activatorurl}}</span>.</h2><br>
+				<div class='card'>
+				<div class='row' style="padding:10px;">
+ 				 <h2>KO Access at the activator: </h2>
+			 </div>
+			 <div class='row' >
+					<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="targeturl" target="_blank" style="padding: 3px;position:relative;font-size:1.5em;text-align:center;"><span >{{targeturl}}</span></a></h2>
  			 </div>
+		 </div>
  			 <!-- <div class='row mar-t-10' >
  				 <p>* Enter the demo site url or select from the list of available demo sites. If a new url is entered, you can save to the list and set it as default.				 </p>
  			 </div>
@@ -47,41 +60,60 @@
  				 <p>* When ready, click on "Go to Demo Swagger UI", a new tab will open for you to try the knowledge object using Swagger UI.
  				 </p>
  			 </div> -->
-
-			 <div class='row mar-top30'>
-				 <div class='col-md-3 pad-t-10'>
-					 <h2>Demo Site URL</h2>
-				 </div>
-				 <div class='col-md-7'>
-					 <input type='text' v-model='demourl' />
-				 </div>
-				 <div class='col-md-2'>
-					 <button class='kg-btn-entry' v-if='demourlindex==-1' @click='adddemoentry'>Save URL</button>
-					 <button class='kg-btn-entry' v-if='!isDefaultDemo' @click='setdefaultdemo'>Set as Default</button>
-				 </div>
-			 </div>
-			 <div class='row mar-top30'>
-				 <div class='col-md-3'>
-					 <h4>Available Demo Sites</h4>
-				 </div>
-				 <div class='col-md-7'>
- 				 		<div class='row' v-for="(entry,index) in demourls">
-				 			<input type="radio" :id="entry" :value="entry" @change='selectdemosite' v-model='demourlselect'>
-				 			<label :for="entry">{{entry}}</label>
-							<button v-if='index!=defaultdemoindex' style="background-color:transparent;float:right;margin-top:10px;" @click='deletedemoentry(index)'><icon color="#0075bc" name="times"></icon></button>
+			 	<!-- <div class='card'>
+			 		<div class='row mar-top30'>
+				 		<div class='col-md-3 pad-t-10'>
+					 		<h2>Demo SwaggerUI URL</h2>
+				 		</div>
+				 		<div class='col-md-7'>
+					 		<input type='text' v-model='demourl' />
+				 		</div>
+				 		<div class='col-md-2'>
+					 		<button class='kg-btn-entry' v-if='demourlindex==-1' @click='adddemoentry'>Save URL</button>
+					 		<button class='kg-btn-entry' v-if='!isDefaultDemo' @click='setdefaultdemo'>Set as Default</button>
+				 		</div>
+			 		</div>
+			 		<div class='row mar-top30'>
+				 		<div class='col-md-3'>
+					 		<h4>Available Demo Sites</h4>
+				 		</div>
+				 		<div class='col-md-7'>
+ 				 			<div class='row' v-for="(entry,index) in demourls">
+				 				<input type="radio" :id="entry" :value="entry" @change='selectdemosite' v-model='demourlselect'>
+				 				<label :for="entry">{{entry}}</label>
+								<button v-if='index!=defaultdemoindex' style="background-color:transparent;float:right;margin-top:10px;" @click='deletedemoentry(index)'><icon color="#0075bc" name="times"></icon></button>
+			 				</div>
 			 			</div>
-			 	</div>
-			 <div class='col-md-2'>
+			 			<div class='col-md-2'>
+			 			</div>
+			 		</div>
+		 		</div> -->
 
-			 </div>
-			 </div>
+				<div class='card'>
+					<div class='row' style="padding:10px;">
+					 <h2>KO Demo at KGRID-DEMOS Swagger UI  </h2>
+					</div>
+					<div class='row' >
+						<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="kgriddemosurl" target="_blank" style="padding: 3px;position:relative;font-size:1.1em;text-align:center;"><span >{{kgriddemosurl}}</span></a></h2>
+					</div>
+				</div>
+
+				<div class='card'>
+					<div class='row' style="padding:10px;">
+					 <h2>KO Demo at Online Swagger Editor </h2>
+					</div>
+					<div class='row' >
+						<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="swaggereditorurl" target="_blank" style="padding: 3px;position:relative;font-size:1.1em;text-align:center;"><span >{{swaggereditorurl}}</span></a></h2>
+					</div>
+				</div>
+
+
 			</div>
-
 		</div>
 		<div slot='buttons' >
-				<button v-if='stage=="ready"' class="kg-btn-primary" @click="btnclick" :disabled="btndisabled">
-					<span v-if='objactivated'>Go to Demo Swagger UI</span>
-					<span v-else > Send KO to Activator </span>
+				<button v-if='stage=="ready"&&!objactivated' class="kg-btn-primary" @click="btnclick" :disabled="btndisabled">
+					<!-- <span v-if='objactivated'>Go to Demo Swagger UI</span> -->
+					<span> Send KO to Activator </span>
 				</button>
 		</div>
 		<div slot="ol-processing"><span>{{processMsg}}</span></div>
@@ -194,6 +226,15 @@
 			}else {
 				return true
 			}
+		},
+		targeturl:function(){
+			return this.activatorurl+"/"+this.uri
+		},
+		kgriddemosurl:function(){
+			return "https://kgrid-demos.github.io/swaggerui?url="+this.targeturl+'/service'
+		},
+		swaggereditorurl:function(){
+			return "https://editor.swagger.io?url="+this.targeturl+'/service'
 		}
 	},
 	methods: {
@@ -292,5 +333,14 @@
 	input[type=text] {
 		font-size:16px;
 		font-weight:600;
+	}
+	.overlay-title {
+		border-bottom:1px solid #eee;
+	}
+	.card {
+		border: 2px solid #eee;
+		margin-top: 50px;
+		margin-right:5px;
+		box-shadow: 5px 5px 1px 1px #ddd;
 	}
 	</style>
