@@ -45,53 +45,19 @@
 				</div>
 			</div>
 			<div id="demo_pane"  v-if='objactivated'>
-				<div class='card'>
-				<div class='row' style="padding:10px;">
- 				 <h2>KO Access at the activator: </h2>
-			 </div>
-			 <div class='row' >
-					<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="targeturl" target="_blank" style="padding: 3px;position:relative;font-size:1.5em;text-align:center;"><span >{{targeturl}}</span></a></h2>
- 			 </div>
-		 </div>
- 			 <!-- <div class='row mar-t-10' >
- 				 <p>* Enter the demo site url or select from the list of available demo sites. If a new url is entered, you can save to the list and set it as default.				 </p>
- 			 </div>
-			 <div class='row mar-t-10' >
- 				 <p>* When ready, click on "Go to Demo Swagger UI", a new tab will open for you to try the knowledge object using Swagger UI.
- 				 </p>
- 			 </div> -->
-			 	<!-- <div class='card'>
-			 		<div class='row mar-top30'>
-				 		<div class='col-md-3 pad-t-10'>
-					 		<h2>Demo SwaggerUI URL</h2>
-				 		</div>
-				 		<div class='col-md-7'>
-					 		<input type='text' v-model='demourl' />
-				 		</div>
-				 		<div class='col-md-2'>
-					 		<button class='kg-btn-entry' v-if='demourlindex==-1' @click='adddemoentry'>Save URL</button>
-					 		<button class='kg-btn-entry' v-if='!isDefaultDemo' @click='setdefaultdemo'>Set as Default</button>
-				 		</div>
-			 		</div>
-			 		<div class='row mar-top30'>
-				 		<div class='col-md-3'>
-					 		<h4>Available Demo Sites</h4>
-				 		</div>
-				 		<div class='col-md-7'>
- 				 			<div class='row' v-for="(entry,index) in demourls">
-				 				<input type="radio" :id="entry" :value="entry" @change='selectdemosite' v-model='demourlselect'>
-				 				<label :for="entry">{{entry}}</label>
-								<button v-if='index!=defaultdemoindex' style="background-color:transparent;float:right;margin-top:10px;" @click='deletedemoentry(index)'><icon color="#0075bc" name="times"></icon></button>
-			 				</div>
-			 			</div>
-			 			<div class='col-md-2'>
-			 			</div>
-			 		</div>
-		 		</div> -->
 
 				<div class='card'>
 					<div class='row' style="padding:10px;">
-					 <h2>KO Demo at KGRID-DEMOS Swagger UI  </h2>
+ 				 		<h2>KO Access at the activator: </h2>
+			 		</div>
+			 		<div class='row' >
+						<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="targeturl" target="_blank" style="padding: 3px;position:relative;font-size:1.5em;text-align:center;"><span >{{targeturl}}</span></a></h2>
+ 			 		</div>
+		 		</div>
+
+				<div class='card'>
+					<div class='row' style="padding:10px;">
+					 <h2>KO Demo at KGRID-DEMOS <a href="https://swagger.io/tools/swagger-ui/" target="_blank">Swagger UI</a>  </h2>
 					</div>
 					<div class='row' >
 						<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="kgriddemosurl" target="_blank" style="padding: 3px;position:relative;font-size:1.1em;text-align:center;"><span >{{kgriddemosurl}}</span></a></h2>
@@ -100,18 +66,17 @@
 
 				<div class='card'>
 					<div class='row' style="padding:10px;">
-					 <h2>KO Demo at Online Swagger Editor </h2>
+					 <h2>KO Demo at Online <a href="https://swagger.io/tools/swagger-editor/" target="_blank">Swagger Editor</a> </h2>
 					</div>
 					<div class='row' >
 						<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="swaggereditorurl" target="_blank" style="padding: 3px;position:relative;font-size:1.1em;text-align:center;"><span >{{swaggereditorurl}}</span></a></h2>
 					</div>
 				</div>
 
-
 			</div>
 		</div>
 		<div slot='buttons' >
-				<button v-if='stage=="ready"&&!objactivated' class="kg-btn-primary" @click="btnclick" :disabled="btndisabled">
+				<button v-if='stage=="ready"&&!objactivated' class="kg-btn-primary" @click="sendzip" :disabled="btndisabled">
 					<!-- <span v-if='objactivated'>Go to Demo Swagger UI</span> -->
 					<span> Send KO to Activator </span>
 				</button>
@@ -129,9 +94,7 @@
 		name:"objact",
 		data:function(){
 			return {
-
 				stage:'',
-				blob:'',
 				zipfile:'',
 				objpackaged:false,
 				objactivated:false,
@@ -164,7 +127,6 @@
 	      console.log(e)
 	    })
 		}, 2500)
-
 	},
 	mounted:function(){
 		this.demourl=this.demourls[this.defaultdemoindex]
@@ -238,18 +200,8 @@
 		}
 	},
 	methods: {
-		selectdemosite:function(){
-			this.demourl=this.demourlselect
-		},
 		selectactivatorsite:function(){
 			this.activatorurl=this.activatorurlselect
-		},
-		btnclick:function(){
-			if(this.objactivated){
-				this.gotodemo()
-			}else {
-				this.sendzip()
-			}
 		},
 		sendzip:		function(){
 					var formData = new FormData();
@@ -283,25 +235,6 @@
 							self.stage='ready'
 						},1500)
 					});}, 1000)
-				},
-				gotodemo: function(){
-					this.$eventBus.$emit('hideOverlay',"0");
-					var target = this.demourl+'?url='+this.activatorurl+"/"+this.uri+'/service'
-					setTimeout(function(){
-						window.open(target);
-					}, 500)
-				},
-				adddemoentry:function(){
-					this.demourls.push(this.demourl)
-					this.demourlselect=this.demourl
-					this.$store.commit('setdemourls', this.demourls)
-				},
-				deletedemoentry:function(i){
-					this.demourls.splice(i,1)
-					this.$store.commit('setdemourls', this.demourls)
-				},
-				setdefaultdemo:function(){
-					this.$store.commit("setdefaultdemourlindex", this.demourlindex)
 				},
 				addactivatorentry:function(){
 					this.activatorurls.push(this.activatorurl)
