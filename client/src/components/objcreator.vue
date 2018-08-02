@@ -5,7 +5,9 @@
 				<div class="panel-body">
 					<div id="file-drag-drop">
 						<form ref="fileform" v-show='files.length==0'>
-							<span class="drop-files">Drop the KO ZIP file here!</span>
+							<label for='selectfile'><span class="drop-files">Select or Drop the KO ZIP file here!</span></label>
+							<input type="file" id="selectfile" @change="onFileChange" class="inputfile"
+										data-multiple-caption="{count} files selected" multiple style="display: none;"/>
 						</form>
 						<div v-for="(file, key) in files" class="file-listing" v-show='files.length>0'>
 							{{ file.name }}
@@ -109,26 +111,33 @@
 			this.stage='processing';
 			setTimeout(function(){
 
-			self.$http.put( "http://localhost:8080/"+self.arkid,
+			self.$http.put( self.url+self.arkid,
 				formData,
 				{
 					onUploadProgress: function( progressEvent ) {
-						this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded * 100 ) / progressEvent.total ) );
+						self.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded * 100 ) / progressEvent.total ) );
 					}.bind(this)
 				}
 			).then(function(resp){
 				self.stage='success'
 				setTimeout(function(){
 					console.log(resp);
-
-					// self.$eventBus.$emit('objAdded',{})
-
+					self.$eventBus.$emit('objAdded',{})
 				} , 1500)
 			})
 			.catch(function(err){
 				self.stage='error'
 				console.log(err);
 			});}, 1000)
+		},
+		onFileChange: function(e) {
+			var files = e.target.files || e.dataTransfer.files;
+				this.selectedfile=true;
+				if (!files.length)
+					return;
+				this.files=[]
+				this.files.push( files[0] );
+
 		},
 		removeFile( key ){
 			this.files.splice( key, 1 );

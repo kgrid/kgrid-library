@@ -80,7 +80,7 @@ export default {
 	this.$eventBus.$on('objAdded', function(obj){
 		self.showOverlay.show=false;
 		document.body.classList.toggle('noscroll', false);
-    // self.$router.go(self.$router.currentRoute)
+    self.$router.go(self.$router.currentRoute)
 	});
 	this.$eventBus.$on('slideout', function(layerid){
 		switch(layerid){

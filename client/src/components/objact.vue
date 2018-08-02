@@ -120,6 +120,16 @@
 				self.stage='ready'
 				console.log("reading zip...")
 				self.zipfile=new File([response.data], self.downloadFile, { type: 'application/zip' } )
+
+				// const url = window.URL.createObjectURL(new Blob([response.data]));
+				//  const link = document.createElement('a');
+				//  link.href = url;
+				//  link.setAttribute('download', 'file.zip'); //or any other extension
+				//  document.body.appendChild(link);
+				//  link.click();
+				//
+
+
 				console.log(self.zipfile.size)
 				setTimeout(function(){self.objpackaged =true},500)
 	    }).catch(e=>{
