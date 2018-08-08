@@ -33,7 +33,7 @@
           </execution>
           <!-- Install all project dependencies -->
           <execution>
-            <id>npm install</id>
+            <id>npm install-test</id>
             <goals>
               <goal>npm</goal>
             </goals>
@@ -41,7 +41,7 @@
             <phase>generate-resources</phase>
             <!-- Optional configuration which provides for running any npm command -->
             <configuration>
-              <arguments>install</arguments>
+              <arguments>install-test</arguments>
             </configuration>
           </execution>
           <!-- Build and minify static files -->
