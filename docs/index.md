@@ -12,13 +12,22 @@ For running the application you need:
 
 - [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
-### Running the Activator
+### Running the Library
 
 Download the latest activator jar from GitHub [Latest Activator Release](https://github.com/kgrid/kgrid-library/releases/latest).
 
+1. Create a _library_ directory
 1. Download [kgrid-library-#.#.#.jar](https://github.com/kgrid/kgrid-library/releases/latest)  
+1. Place the _kgrid-library-#.#.#.jar_ into the _library_ 
+1. Create a directory named _shelf_ in the new _library_ directory 
 
 Directory structure should look similar to the following
+
+```text 
+ ├── library
+     └── shelf  
+     └── kgrid-library-#.#.#.jar
+```
 
 The library is executable jar and can be run from the command line.  Open a terminal window and navigate to the directory where the jar and shelf are located.  
 
@@ -34,28 +43,31 @@ the [library health endpoint](http://localhost:8080/health).  The health of the 
 ```yaml
 {
    status: "UP",
-   shelf: {
+   userDetailService: {
+     status: "UP",
+     number of users: 2
+    }  ,
+    ezidService: {
       status: "UP",
-      kgrid.shelf.cdostore.url: "shelf"
-   },
-   activationService: {
+      ezid.base.url: "https://ezid.lib.purdue.edu/",
+      ezid.mock: "false"
+    },
+    shelf: {
       status: "UP",
-      Knowledge Objects found: 1,
-      Adapters loaded: [
-        "JAVASCRIPT",
-        "PROXY"
-       ],
-   EndPoints loaded: [
-        "hello/world/v0.0.1/welcome"
-   ]
-   },
-   diskSpace: {
+      kgrid.shelf.cdostore.url: "/Users/me/library/shelf"
+    },
+    diskSpace: {
       status: "UP",
-      total: 499963170816,
-      free: 415911948288,
+      total: 402672611328,
+      free: 269428576256,
       threshold: 10485760
-   }
- }
+    },
+      db: {
+      status: "UP",
+      database: "H2",
+      hello: 1
+    }
+}
  
 ```
 
