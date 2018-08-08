@@ -26,12 +26,18 @@ jobs:
           - v1-dependencies-
 
       #must run install to ensure multi module dependencies(shelf-api) are cached
-      - run: mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline -s .circleci/settings.xml
+      - run: mvn -DskipTests clean install -pl application dependency:resolve-plugins dependency:go-offline -s .circleci/settings.xml
 
       - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
+
+      #create a shelf with KOs
+      - run:
+         name: Create Shelf
+         command: |
+            .circleci/create_shelf.sh
 
       - run:
           name: Deploy/Release
@@ -49,13 +55,6 @@ jobs:
                     --data-binary "@application/target/$TAG_NAME.jar"
              else
                mvn package -s .circleci/settings.xml
-               mkdir application/shelf
-               .circleci/download_assets.sh https://api.github.com/repos/kgrid/CPIC-objects/releases/latest
-               .circleci/download_assets.sh https://api.github.com/repos/kgrid/mopen-opioid-collection/releases/latest
-               .circleci/download_assets.sh https://api.github.com/repos/kgrid/kgrid-activator/releases/latest
-               unzip -o opioid-all.zip -d application/shelf
-               unzip -o cpic-all.zip -d application/shelf
-               unzip -o hello-world.zip -d application/shelf
                HEROKU_API_KEY=$HEROKU_API_KEY mvn clean heroku:deploy -s .circleci/settings.xml -pl application
              fi
 
