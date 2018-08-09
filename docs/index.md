@@ -71,10 +71,41 @@ the [library health endpoint](http://localhost:8080/health).  The health of the 
  
 ```
 
+Now simply navigate to the [KGrid Library](http://localhost:8080).
+
 ## Adding the Hello World KO on the Library 
 
-The Hello World is a very simple KO with a Javascript based service that takes in a name and displays 
- a _Welcome to the Knowledge Grid_ message. 
- 
+The Library allows you to take deposit a Knowledge Object archive (zip file).  On the KGrid Library 
+main page you will see a _Deposit Knowledge Object_. 
 
+1. Download [hello-world.zip](https://github.com/kgrid/kgrid-activator/releases/latest)
+1. Navigate to the [KGrid Library](http://localhost:8080) site.
+1. Follow this screen flow
+<ol>
+<div>
+<a target="_blank" href="./assets/img/AddKOScreenShot1.png">
+  <img src="./assets/img/AddKOScreenShot1.png" alt="">
+</a>
+<div>Click on <i>Deposit Knowledge Object</i> in the right side of the screen</div>
+</div>
+<div>
+<a target="_blank" href="./assets/img/AddKOScreenShot2.png">
+  <img src="./assets/img/AddKOScreenShot2.png" alt="">
+</a>
+<div>Click in the grey box to bring up a file select window.
+</div>
+<div>
+<a target="_blank" href="./assets/img/AddKOScreenShot3.png">
+  <img src="./assets/img/AddKOScreenShot3.png" alt="" >
+</a>
+<div>Select the hello-world.zip you just download<br>
+Click <i>Deposit Object</i> in the lower right of the screen. 
+</div>
+<div>
+<a target="_blank" href="./assets/img/AddKOScreenShot6.png">
+  <img src="./assets/img/AddKOScreenShot4.png" alt="" >
+</a>
+<div> The file will be upload to the 
+     library and you return to library main screen.</div>
+</div>
 
