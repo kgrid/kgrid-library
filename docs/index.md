@@ -14,10 +14,10 @@ For running the application you need:
 
 ### Running the Library
 
-Download the latest activator jar from GitHub [Latest Activator Release](https://github.com/kgrid/kgrid-library/releases/latest).
+Download the latest library jar from GitHub [Latest Activator Release](https://github.com/kgrid/kgrid-activator/releases/latest).
 
 1. Create a _library_ directory
-1. Download [kgrid-library-#.#.#.jar](https://github.com/kgrid/kgrid-library/releases/latest)  
+1. Download [kgrid-library-#.#.#.jar](https://github.com/kgrid/kgrid-activator/releases/latest)  
 1. Place the _kgrid-library-#.#.#.jar_ into the _library_ 
 1. Create a directory named _shelf_ in the new _library_ directory 
 
