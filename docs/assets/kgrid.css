@@ -191,3 +191,9 @@ ul#markdown-toc li {
 .post-content {
   position: relative;
 }
+img {
+  border: 3px solid #ddd; /* Gray border */
+  border-radius: 4px;  /* Rounded border */
+  padding: 5px; /* Some padding */
+  width: 150px; /* Set a small width */
+}
