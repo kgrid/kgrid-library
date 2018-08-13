@@ -1,6 +1,13 @@
 <template id="fieldtile-template">
 	<div class="addtext" :id="fieldname" style='position:relative;'>
-		<input type="text" class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='inputtype=="text"' />
+		<div v-if='fieldname=="citations"&& isDisabled'>
+			<a :href="fieldvalue"	target="_blank">
+					<input type="text" class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='inputtype=="text"' style="cursor:pointer;" />
+			</a>
+		</div>
+		<div v-else>
+			<input type="text" class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='inputtype=="text"' />
+		</div>
 		<a v-if='fieldname=="service"' @click='viewfile' style='position:absolute; top:12px; left:-15px;display:inline-block'>
 			<div><icon color="#0075bc" name="external-link-alt" ></icon></div>
 		</a>
