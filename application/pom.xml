@@ -5,7 +5,7 @@
   <groupId>org.kgrid</groupId>
   <artifactId>kgrid-library</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.7</version>
+  <version>1.0.8-SNAPSHOT</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -16,7 +16,7 @@
 
   <scm>
     <developerConnection>scm:git:git@github.com:kgrid/kgrid-library.git</developerConnection>
-    <tag>kgrid-library-1.0.7</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <repositories>
