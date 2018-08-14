@@ -78,7 +78,7 @@ Now simply navigate to the [KGrid Library](http://localhost:8080).
 The Library allows you to take deposit a Knowledge Object archive (zip file).  On the KGrid Library 
 main page you will see a _Deposit Knowledge Object_. 
 
-1. Download [hello-world.zip](https://github.com/kgrid/kgrid-activator/releases/latest)
+1. Download [hello-world.zip](https://github.com/kgrid-objects/example-projects/releases/latest)
 1. Navigate to the [KGrid Library](http://localhost:8080) site.
 1. Follow this screen flow
 <ol>
