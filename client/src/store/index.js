@@ -59,7 +59,14 @@ export default new Vuex.Store({
     userlist:[],
     kotree:{},
     currentMetadataBundle:{},
-    paths:{},
+    paths:{  "shelf_url": "./shelf/",
+      "library_url": "./",
+      "user_url": "./",
+      "default_act_url_index":   0,
+      "default_demo_url_index":    0,
+      "activator_urls":["https://kgrid-activator.herokuapp.com"],
+      "demo_urls":["https://kgrid-demos.github.io/swaggerui", "https://editor.swagger.io"]
+    },
     metaschema:{}
   },
   mutations: {
@@ -164,7 +171,7 @@ export default new Vuex.Store({
         )
       }
     },
-    setdefaultactivatorurlindex(state,i){
+    setdefaultactivatorurlindex(state, i){
       state.paths.default_act_url_index = i
     },
     setactivatorurls(state,urls){
@@ -194,7 +201,8 @@ export default new Vuex.Store({
       return state.paths.demo_urls
     },
     getdefaultactivatorurlindex:state=>{
-      return state.paths.default_act_url_index
+      var i = state.paths.default_act_url_index
+      return i
     },
     getactivatorurls:state=>{
       return state.paths.activator_urls

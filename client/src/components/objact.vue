@@ -256,6 +256,7 @@
 					this.$store.commit('setactivatorurls', this.activatorurls)
 				},
 				setdefaultactivator:function(){
+					console.log(this.activatorurlindex)
 					this.$store.commit("setdefaultactivatorurlindex", this.activatorurlindex)
 				}
 	}
