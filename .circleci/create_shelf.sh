@@ -6,8 +6,10 @@
  .circleci/download_assets.sh https://api.github.com/repos/kgrid-objects/example-kos/releases/latest
  .circleci/download_assets.sh https://api.github.com/repos/kgrid-objects/cancer-risk/releases/latest
  .circleci/download_assets.sh https://api.github.com/repos/kgrid-objects/icon-array/releases/latest
+ .circleci/download_assets.sh https://api.github.com/repos/kgrid-objects/script-numerate/releases/latest
  unzip -o opioid-all.zip -d application/shelf
  unzip -o cpic-all.zip -d application/shelf
  unzip -o hello-world.zip -d application/shelf
  unzip -o cancer-risk.zip -d application/shelf
  unzip -o icon-array.zip -d application/shelf
+ unzip -o scriptnumerate-all.zip -d application/shelf
