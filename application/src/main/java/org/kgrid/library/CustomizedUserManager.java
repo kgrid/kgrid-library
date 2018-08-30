@@ -38,7 +38,7 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 		
 		UserProfile profile = getUserProfile(username);
 
-		LibraryUser libraryUser = new LibraryUser(uDetails.getUsername(), uDetails.getPassword(), uDetails.getAuthorities(), profile);
+		LibraryUser libraryUser = new LibraryUser(uDetails.getUsername(), "{noop}" + uDetails.getPassword(), uDetails.getAuthorities(), profile);
 		
 		return libraryUser;
 	}
@@ -98,7 +98,7 @@ public class CustomizedUserManager extends JdbcUserDetailsManager  {
 				boolean enabled = rs.getBoolean(3);
 				List<GrantedAuthority> authorities = loadUserAuthorities(username);
 				UserProfile profile = getUserProfile(username);
-				return new LibraryUser(username, password, enabled, true, true, true,
+				return new LibraryUser(username, "{noop}" + password, enabled, true, true, true,
 						authorities,profile);
 			}
 
