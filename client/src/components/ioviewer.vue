@@ -21,7 +21,7 @@
 </template>
 	<script>
 	import olpane from '../components/olpane';
-	import SwaggerUI from 'swagger-ui'
+	// import SwaggerUI from 'swagger-ui'
 	import Prism from 'vue-prism-component'
 	export default {
 		name:"ioviewer",
@@ -43,17 +43,17 @@
     })
 	},
 	mounted:function(){
-		SwaggerUI({
-			dom_id:'#ui_container',
-			url:this.url,
-			plugins: [
-	 			DisableTryItOutPlugin
- 			]
-		})
+		// SwaggerUI({
+		// 	dom_id:'#ui_container',
+		// 	url:this.url,
+		// 	plugins: [
+	 	// 		DisableTryItOutPlugin
+ 		// 	]
+		// })
 	},
 	components: {
 		olpane,
-		SwaggerUI,
+		// SwaggerUI,
 		Prism
 	},
 	computed:{
@@ -100,13 +100,4 @@ const DisableTryItOutPlugin = function() {
 .ol_pane pre {
 		overflow-y: auto;
 	}
-
-.swagger-ui .info .title small pre  {
-		background-color: transparent;
-		padding:2px 4px;
-		border:none;
-	}
-	.swagger-ui .info {
-		margin: 30px 0 20px 0;
-	}
-	</style>
+</style>

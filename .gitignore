@@ -20,3 +20,4 @@ target
 *.iml
 
 /application/src/main/resources/public/*
+/*.bat

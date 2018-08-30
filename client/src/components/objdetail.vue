@@ -90,15 +90,6 @@
 												<span>DOWNLOAD</span></div>
 												</div>
 										</li>
-										<!-- <li>
-										<div>
-											<a @click='viewswagger'>
-												<div class='actionicon'><icon color="#fff" name="eye"></icon></div>
-											</a>
-											<div class='actioniconcap'>
-												<span>VIEW I/O</span></div>
-												</div>
-										</li> -->
 										<li>
 										<div>
 											<a>
@@ -415,10 +406,6 @@
 			 })
 			 this.selectTab(this.constSections[0])
 		 },
-			viewswagger:function(){
-				console.log("View Service Descriptor using Swagger UI")
-				if(this.fieldname=='service') this.$eventBus.$emit('viewio','');
-			},
 			seteditmode:function(){
 				this.isEditMode = true;
 				this.$store.commit('updateMetadata',this.knowledgeobject)
