@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication(scanBasePackages = {"org.kgrid.library","org.kgrid.shelf"})
-public class LibraryApplication extends WebMvcConfigurerAdapter {
+public class LibraryApplication implements WebMvcConfigurer {
 
     public LibraryApplication(@Value("${library.name}") String name) {
         this.name = name;
@@ -27,7 +27,6 @@ public class LibraryApplication extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController( "/" ).setViewName( "forward:/index.html" );
         registry.setOrder( Ordered.HIGHEST_PRECEDENCE );
-        super.addViewControllers( registry );
     }
 
     @Bean
