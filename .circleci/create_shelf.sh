@@ -6,7 +6,7 @@
  for i in "${repos[@]}"
  do
   url=(https://api.github.com/repos/kgrid-objects/$i/releases/latest)
-  .circlecidownload_assets.sh "$url"
+  .circleci/download_assets.sh "$url"
  done
 
  unzip -o *.zip -d application/shelf
