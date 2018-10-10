@@ -9,7 +9,7 @@ jobs:
     working_directory: ~/kgrid
 
     docker:
-      - image: circleci/openjdk:8-jdk
+    - image: circleci/openjdk:8-jdk-node
 
     environment:
       # Customize the JVM maximum heap limit
