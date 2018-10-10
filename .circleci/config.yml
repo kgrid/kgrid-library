@@ -75,3 +75,12 @@ jobs:
           path: ~/junit
       - store_artifacts:
           path: application/target
+
+workflows:
+  version: 2
+  main:
+    jobs:
+    - build:
+        filters:
+          branches:
+            only: master
