@@ -69,7 +69,7 @@ jobs:
       - run:
           name: Deploy VuePress GitHub Pages
           command: |
-            .circleci/vuepress_deploy.sh
+            npm install && .circleci/vuepress_deploy.sh
 
       - store_test_results:
           path: ~/junit
