@@ -8,7 +8,6 @@ git config --global user.name "circleci"
 # build
 npm run docs:build
 # copy web demo to github pages dist
-cp -r web docs/.vuepress/dist
 mkdir -p docs/.vuepress/dist/.circleci
 cp -a .circleci/. docs/.vuepress/dist/.circleci/.
 
@@ -20,4 +19,4 @@ git add -A
 git commit -m "Automated deployment to GitHub Pages"
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-git push -f https://${GITHUB_TOKEN}@github.com/kgrid-demos/cpic-kit.git master:gh-pages
+git push -f https://${GITHUB_TOKEN}@github.com/kgrid/kgrid-library.git master:gh-pages
