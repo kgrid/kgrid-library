@@ -66,6 +66,11 @@ jobs:
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
           when: always
 
+      - run:
+          name: Deploy VuePress GitHub Pages
+          command: |
+            .circleci/vuepress_deploy.sh
+
       - store_test_results:
           path: ~/junit
       - store_artifacts:
