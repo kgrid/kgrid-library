@@ -81,30 +81,30 @@ main page you will see a _Deposit Knowledge Object_.
 <ol type="A">
 <li>
 <div>
-<a target="_blank" href="./assets/img/AddKOScreenShot1.png">
-  <img src="./assets/img/AddKOScreenShot1.png" alt="" width=250>
+<a target="_blank" href="./img/AddKOScreenShot1.png">
+  <img src="./img/AddKOScreenShot1.png" alt="" width=350>
 </a>
 <div>Click on <i>Deposit Knowledge Object</i> in the right side of the screen</div>
 </div></li>
 <li>
 <div>
-<a target="_blank" href="./assets/img/AddKOScreenShot2.png">
-  <img src="./assets/img/AddKOScreenShot2.png" alt=""  width=250>
+<a target="_blank" href="./img/AddKOScreenShot2.png">
+  <img src="./img/AddKOScreenShot2.png" alt=""  width=350>
 </a>
 <div>Click in the grey box to bring up a file select window.</div>
 </div></li>
 <li>
 <div>
-<a target="_blank" href="./assets/img/AddKOScreenShot3.png">
-  <img src="./assets/img/AddKOScreenShot3.png" alt=""  width=250>
+<a target="_blank" href="./img/AddKOScreenShot3.png">
+  <img src="./img/AddKOScreenShot3.png" alt=""  width=350>
 </a>
 <div>Select the hello-world.zip you just download<br>
 Click <i>Deposit Object</i> in the lower right of the screen.</div>
 </div></li>
 <li>
 <div>
-<a target="_blank" href="./assets/img/AddKOScreenShot4.png">
-  <img src="./assets/img/AddKOScreenShot4.png" alt=""  width=250>
+<a target="_blank" href="./img/AddKOScreenShot4.png">
+  <img src="./img/AddKOScreenShot4.png" alt=""  width=350>
 </a>
 <div> The file will be upload to the 
      library and you return to library main screen.</div>
