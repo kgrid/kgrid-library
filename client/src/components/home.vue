@@ -324,27 +324,27 @@ export default {
 		kolist:function(){
 			var self=this
 			var list=[]
-			this.rawlist.forEach(function(e){
+			this.rawlist.forEach(function(e, index){
 				var obj={arkId:'', title:'', keyword:'',createdOn:0,lastModified:0,version:'',owners:''}
-				var key = Object.keys(e)[0]
-				var vlist=self.koversionlist[key]
-				var o = e[key][vlist[0]]
+				// var key = Object.keys(e)[0]
+				// var vlist=self.koversionlist[key]
+				// var o = e[key][vlist[0]]
 				// console.log("o from rawlist"+ JSON.stringify(o))
-				var rawobj ={}
-				if(o.metadata){
-					rawobj = o.metadata
-				} else {
-					rawobj =o
-				}
-					// console.log(JSON.stringify(rawobj))
-
-					obj.arkId = rawobj.arkId
-					obj.title = rawobj.title
-					obj.keywords = rawobj.keywords
-					obj.createdOn = rawobj.createdOn
-					obj.lastModified = rawobj.lastModified
-					obj.version = rawobj.version
-					obj.owners=rawobj.owners
+				// var rawobj = e
+				// if(o.metadata){
+				// 	rawobj = o.metadata
+				// } else {
+				// 	rawobj =o
+				// }
+				var o = Object.values(e)[0]
+					console.log("Object #"+index+"   "+ o)
+					obj.arkId = o.identifier
+					obj.title = o.title
+					obj.keywords = o.keywords
+					obj.createdOn = new moment()
+					obj.lastModified = new moment()
+					// obj.version = rawobj.version
+					// obj.owners=rawobj.owners
 				list.push(obj)
 
 			})

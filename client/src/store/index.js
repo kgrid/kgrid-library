@@ -83,7 +83,11 @@ export default new Vuex.Store({
       state.currentObject = obj;
     },
     setkolist(state, list){
-      state.kolist=list
+      state.kolist=[]
+      list.forEach(function(e){
+        state.kolist.push(e)
+      })
+      console.log(state.kolist)
     },
     setuserlist(state, list){
       state.userlist=list
@@ -336,15 +340,18 @@ export default new Vuex.Store({
   actions: {
     fetchkolist (context) {
       var url = context.getters.getshelfurl
-      console.log('fetch ko list from '+url)
+      // console.log('fetch ko list from '+url)
       return api.get(url)
         .then(function(response){
+          // console.log(response.data)
           var l = [];
           for(var key in response.data){
             var obj={}
             obj[key]=response.data[key]
+            // console.log(key+" "+JSON.stringify(obj))
             l.push(obj)
           }
+          // console.log(JSON.stringify(l))
           context.commit('setkolist',l)
         })
         .catch((error) => {
