@@ -2,22 +2,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.kgrid</groupId>
-  <artifactId>kgrid-library</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0.10-SNAPSHOT</version>
-
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.0.4.RELEASE</version>
-    <relativePath /> <!-- lookup parent from repository -->
+    <relativePath />
+    <!-- lookup parent from repository -->
   </parent>
+
+  <groupId>org.kgrid</groupId>
+  <artifactId>kgrid-library</artifactId>
+  <version>1.0.10-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
   <scm>
     <developerConnection>scm:git:git@github.com:kgrid/kgrid-library.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <mockito.version>2.23.4</mockito.version>
+  </properties>
 
   <dependencies>
     <!-- Spring dependencies -->
@@ -105,14 +112,9 @@
     <dependency>
       <groupId>org.kgrid</groupId>
       <artifactId>shelf-api</artifactId>
-      <version>0.6.7</version>
+      <version>0.6.8-SNAPSHOT</version>
     </dependency>
   </dependencies>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
-  </properties>
 
   <build>
     <plugins>
@@ -212,6 +214,4 @@
       </plugin>
     </plugins>
   </build>
-
-
 </project>
