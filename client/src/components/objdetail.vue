@@ -20,7 +20,7 @@
 						</div>
 					</div>
 					<div v-else class='col-md-11 col-sm-11 col-xs-11'>
-						<div class="inlineblock mar-t-10 ft-sz-24" ><span>{{uriarray[2]}}</span></div>
+						<div class="inlineblock mar-t-10 ft-sz-24" ><span>{{objectversion}}</span></div>
 						<!-- <div class='objtag mar-l-20 ft-sz-18' v-if='isDefault'><span>Default</span></div>
 						<div class='mar-l-20 ft-sz-16 inlineblock' v-else>
 							<span>This is not the default version for this object! Go to <a @click='gotodefault'>default version </a></span>
@@ -34,24 +34,24 @@
 					<div class='inlineblock pad-l-18'>
 						<p class='kg-label'>Object ID</p>
 						<p class='date-data'>
-							<span>{{knowledgeobject.arkId}}</span>
+							<span>{{objectid}}</span>
 						</p>
 					</div>
 
-					<div class='inlineblock pad-l-50'>
+					<div class='inlineblock pad-l-50' v-if='formattedUpdateDate!=""'>
 						<p class='kg-label'>Last Updated</p>
 						<p class='date-data'>
 							<span v-text='formattedUpdateDate'></span>
 						</p>
 					</div>
-					<div class='inlineblock pad-l-50'>
+					<div class='inlineblock pad-l-50' v-if='formattedCreateDate!=""' >
 						<p v-if='isMutable' class='kg-label'>Created On</p>
 						<p v-else class='kg-label'>Generated On</p>
 						<p class='date-data'>
 							<span v-text='formattedCreateDate'></span>
 						</p>
 					</div>
-					<div class='inlineblock pad-l-50'>
+					<!-- <div class='inlineblock pad-l-50'>
 						<div class='float-r wd-70'>
 							<p class='kg-label'>View Type</p>
 							<div v-if='isAdmin&&isMutable'>
@@ -78,7 +78,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					<div class='pad-l-50 inlineblock float-r'>
 									<ul class="actioniconlist float-r" v-if='true'>
 										<li>

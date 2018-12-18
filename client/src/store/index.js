@@ -13,7 +13,7 @@ const defaultSort={sortkey:'metadata.lastModified', order:'desc'};
 const defaultkgselect={'label':'Last Updated - Newest', 'value':'metadata.lastModified','order':'desc'};
 const defaultdateRange={datetype:'none',startTime: {time: moment('2017-09-01T00:00:00-05:00').format("MM/DD/YYYY")}, endTime: {time: moment().endOf('day').format("MM/DD/YYYY")}};
 const sections = [ {name:"metadata",id:"#metadata",label:"METADATA"}
-                 , {name:"model",id:"#model",label:"MODEL"}
+                 // , {name:"model",id:"#model",label:"MODEL"}
                  // , {name:"resource",id:"#resource", label:"RESOURCE"}
                  // , {name:"service",id:"#service", label:"SERVICE"}
                  , {name:"assets",id:"#assets",label:"ASSETS"}

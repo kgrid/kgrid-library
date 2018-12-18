@@ -23,8 +23,8 @@
 						<span v-if='object.hasImplementation!=""' class="pad-l-15"> Implementation: {{object.hasImplementation[0].substring(object.hasImplementation[0].lastIndexOf('/')+1)}}</span>
 						<span v-else class="pad-l-15"> No Version </span>
 					</div>
-					<div class="col-md-3 col-sm-3 col-xs-3 kgl-udate">
-						<span> Date: <span v-text="formattedlastModified"></span></span>
+					<div class="col-md-3 col-sm-3 col-xs-3 kgl-udate" >
+						<span> Date: <span v-if='formattedlastModified!=""' v-text="formattedlastModified"></span></span>
 					</div></div>
 					</div>
 				</div>
@@ -40,15 +40,23 @@
 		created: function(){},
 		computed : {
 			formattedlastModified : function() {
-				return moment(new Date(
-					this.object.lastModified)).format('MMM DD, YYYY')
+				var datestring = ''
+				if(this.object.lastModified){
+					datestring =  moment(new Date(
+						this.object.lastModified)).format('MMM DD, YYYY')
+					}
+				return datestring
 				},
 			formattedCreatedOn : function() {
-				return moment(new Date(
+				var datestring = ''
+				if(this.object.lastModified){
+					datestring = moment(new Date(
 					this.object.createdOn)).format('MMM DD, YYYY')
+				}
+				return datestring
 			},
 			objuri:function(){
-						return '/'+ this.object.hasImplementation[0].replace('-','/')
+						return this.object.hasImplementation[0].replace('-','/')
 			},
 		},
 		methods : {

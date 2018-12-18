@@ -89,7 +89,7 @@
             }
 
         },
-        "service": {
+        "hasServiceSpecification": {
           "type": "string",
           "title": "SERVICE",
           "attrs": {
@@ -97,41 +97,18 @@
             "placeholder": "Knowledge Object Service Description",
             "title": "Please enter the path for service description file"
           }
+        },
+        "hasDeploymentSpecification": {
+          "type": "string",
+          "title": "DEPLOYMENT",
+          "attrs": {
+            "type":"text",
+            "placeholder": "Knowledge Object Deployment Description",
+            "title": "Please enter the path for deployment description file"
+          }
         }
       }
     },
-    "model":{
-      "type": "object",
-      "properties": {
-        "functionName": {
-          "type": "string",
-          "title": "FUNCTION NAME",
-          "attrs": {
-            "type":"text",
-            "placeholder": "Knowledge Object Contributors",
-            "title": "Please enter the contributors of this knowledge object"
-          }
-        },
-        "adapterType": {
-          "type": "string",
-          "title": "ADAPTER TYPE",
-          "attrs": {
-            "type":"text",
-            "placeholder": "Knowledge Object Contributors",
-            "title": "Please enter the contributors of this knowledge object"
-          }
-        },
-        "resource": {
-          "type": "string",
-          "title": "RESOURCE",
-          "attrs": {
-            "type":"text",
-            "placeholder": "Knowledge Object Contributors",
-            "title": "Please enter the contributors of this knowledge object"
-          }
-        }
-    }
-  },
     "logData":{
       "type": "object",
       "properties": {
