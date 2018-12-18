@@ -75,14 +75,14 @@
 				return decodeURIComponent(this.$route.params.uri).split("/")
 				},
 			objectid:function(){
-				return this.object.arkId
+				return this.object.identifier
 			},
 			objectversion: function(){
 				return this.ver.version
 			},
 			isCurrentView:function(){
-				if(this.uriarray[3]){
-					return this.ver.version==this.uriarray[3]
+				if(this.uriarray[4]){
+					return this.ver.version==this.uriarray[4]
 				}else{
 					if(this.objectversion==""){
 						return true

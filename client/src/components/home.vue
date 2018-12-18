@@ -312,39 +312,11 @@ export default {
 		})
   },
 	computed : {
-		koversionlist:function(){
-			var objlist={}
-			this.rawlist.forEach(function(e){
-				var key = Object.keys(e)[0]
-				var obj = e[key]
-					objlist[key]=Object.keys(obj)
-			})
-			return objlist
-		},
 		kolist:function(){
 			var self=this
 			var list=[]
 			this.rawlist.forEach(function(e, index){
-				var obj={arkId:'', title:'', keyword:'',createdOn:0,lastModified:0,version:'',owners:''}
-				// var key = Object.keys(e)[0]
-				// var vlist=self.koversionlist[key]
-				// var o = e[key][vlist[0]]
-				// console.log("o from rawlist"+ JSON.stringify(o))
-				// var rawobj = e
-				// if(o.metadata){
-				// 	rawobj = o.metadata
-				// } else {
-				// 	rawobj =o
-				// }
-				var o = Object.values(e)[0]
-					console.log("Object #"+index+"   "+ o)
-					obj.arkId = o.identifier
-					obj.title = o.title
-					obj.keywords = o.keywords
-					obj.createdOn = new moment()
-					obj.lastModified = new moment()
-					// obj.version = rawobj.version
-					// obj.owners=rawobj.owners
+				var obj = Object.values(e)[0]
 				list.push(obj)
 
 			})
@@ -448,7 +420,7 @@ export default {
 			case 'metadata.lastModified':
 				return _.orderBy(l, [i=>i.lastModified], this.neworder);
 			case 'uri':
-				return _.orderBy(l, [i=>i.arkId.toLowerCase()], this.neworder);
+				return _.orderBy(l, [i=>i.identifier.toLowerCase()], this.neworder);
 			case 'metadata.title':
 				return _.orderBy(l, [i=>i.title.toLowerCase()], this.neworder);
 			default:
