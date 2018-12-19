@@ -35,11 +35,11 @@ export default {
       console.log(e)
     })
     // will move to objdetail and construct the tree using model children array
-    this.$http.get("./static/json/kotree.json").then(response=> {
-      self.$store.commit('setkottree',response.data);
-    }).catch(e=>{
-      console.log(e)
-    })
+    // this.$http.get("./static/json/kotree.json").then(response=> {
+    //   self.$store.commit('setkottree',response.data);
+    // }).catch(e=>{
+    //   console.log(e)
+    // })
     // =======================================================================
     this.$eventBus.$on('openLogin', function () {
       self.showOverlay.show = true;

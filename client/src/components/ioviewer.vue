@@ -21,7 +21,6 @@
 </template>
 	<script>
 	import olpane from '../components/olpane';
-	// import SwaggerUI from 'swagger-ui'
 	import Prism from 'vue-prism-component'
 	export default {
 		name:"ioviewer",
@@ -30,13 +29,12 @@
 				stage:'',
 				rawfile:'',
 				viewraw:true
-				// url:''
 			}
 		},
 	created:function(){
 		var self = this
 		this.$http.get(this.url).then(response=> {
-			console.log("redaing service descriptor...")
+			console.log("reading service descriptor...")
 			console.log(response)
       self.rawfile = response.data
     }).catch(e=>{

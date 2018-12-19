@@ -16,7 +16,7 @@ const sections = [ {name:"metadata",id:"#metadata",label:"METADATA"}
                  // , {name:"model",id:"#model",label:"MODEL"}
                  // , {name:"resource",id:"#resource", label:"RESOURCE"}
                  // , {name:"service",id:"#service", label:"SERVICE"}
-                 , {name:"assets",id:"#assets",label:"ASSETS"}
+                 // , {name:"assets",id:"#assets",label:"ASSETS"}
                  , {name:"logData",id:"#logData", label:"LOG DATA"}
                  , {name:"versions",id:"#version", label:"VERSIONS"}
                ];
@@ -57,7 +57,7 @@ export default new Vuex.Store({
     fields_json:{fields:[]},
     kolist:[],
     userlist:[],
-    kotree:{},
+    // kotree:{},
     currentMetadataBundle:{},
     koiourl:'',
     paths:{  "shelf_url": "./shelf/",
@@ -100,9 +100,9 @@ export default new Vuex.Store({
       state.currentVersionlist=[]
       list.forEach(function(e, index){
         var ver={};
-        ver.version=e.version;
-        ver.title=e.object.title
-        ver.notes=e.version
+        ver.version=e;
+        ver.title='title'
+        ver.notes=e
         ver.isdefault=false;
         if(index==0)  ver.isdefault=true
         state.currentVersionlist.push(ver)
@@ -131,9 +131,9 @@ export default new Vuex.Store({
     setfields(state,data){
       state.fields_json=data;
     },
-    setkottree(state,data){
-      state.kotree=data
-    },
+    // setkottree(state,data){
+    //   state.kotree=data
+    // },
     setkgselect(state, sel){
       state.kgselect=sel;
     },
@@ -270,9 +270,9 @@ export default new Vuex.Store({
     getfirstname: state => {
       return (state.currentUser.first_name || '')
     },
-    getkotree:state=>{
-      return state.kotree
-    },
+    // getkotree:state=>{
+    //   return state.kotree
+    // },
     getuser: state => {
        return state.currentUser
     },
@@ -382,19 +382,34 @@ export default new Vuex.Store({
     },
     fetchversionlist (context, uri) {
       var endpoint = context.getters.getshelfurl +uri;
-      context.commit('setversionlist', [])
-      return api.get(endpoint, config)
-        .then((response) => {
-          var vlist =[]
-          var obj = response.data
-          for(var key in obj){
-            if(obj.hasOwnProperty(key)){
-              vlist.push({"version":key, "object":obj[key]})
-            }
-          }
-          context.commit('setversionlist', vlist)
-        })
-        .catch((error) => context.commit('API_FAIL', error))
+      // context.commit('setversionlist', [])
+      var kolist = context.getters.getobjectlist
+      console.log("Fetching version list:"+ kolist.length)
+      var list = []
+      kolist.forEach(function(e){
+        var key = Object.keys(e)[0]
+        console.log("uri:"+uri+' key:'+key.replace('ark:/',''))
+        if(uri==key.replace('ark:/','')) {
+          var implementationlist = e[key].hasImplementation
+          implementationlist.forEach(function(ee){
+            list.push(ee)
+          })
+        }
+        console.log(JSON.stringify(list))
+      })
+
+      // return api.get(endpoint, config)
+      //   .then((response) => {
+      //     var vlist =[]
+      //     var obj = response.data
+      //     for(var key in obj){
+      //       if(obj.hasOwnProperty(key)){
+      //         vlist.push({"version":key, "object":obj[key]})
+      //       }
+      //     }
+      context.commit('setversionlist', list)
+      //   })
+      //   .catch((error) => context.commit('API_FAIL', error))
     },
     saveMetadata (context, data) {
       var bundle=JSON.parse(data)

@@ -29,12 +29,12 @@
 		},
 		created:function(){
 			var self = this
-			if(this.section=="assets"){
-				this.tree=JSON.parse(JSON.stringify(this.$store.getters.getkotree))
-				var ko=JSON.parse(JSON.stringify(this.tree.nodes[0]))
-				this.tree.label=this.parentobject.metadata.arkId.fedoraPath
-				this.tree.nodes[0].label=this.parentobject.metadata.version
-			}
+			// if(this.section=="assets"){
+			// 	this.tree=JSON.parse(JSON.stringify(this.$store.getters.getkotree))
+			// 	var ko=JSON.parse(JSON.stringify(this.tree.nodes[0]))
+			// 	this.tree.label=this.parentobject.metadata.arkId.fedoraPath
+			// 	this.tree.nodes[0].label=this.parentobject.metadata.version
+			// }
 			if(this.section!="logData"&&this.section!="versions"){
 				this.refreshbundle()
 			}
