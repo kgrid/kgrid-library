@@ -6,7 +6,14 @@
 			</a>
 		</div>
 		<div v-else>
-			<input type="text" class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='inputtype=="text"' />
+			<div v-if='fieldname=="hasServiceSpecification"||fieldname=="hasDeploymentSpecification"'>
+				<a @click='viewfile' style='color:#0075bc;'>
+					<input type="text" style='color:#0075bc;' class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='inputtype=="text"' />
+				</a>
+			</div>
+			<div v-else>
+				<input type="text" class="metaEdit ft-sz-16" :disabled='isDisabled' v-model='fieldvalue' v-if='inputtype=="text"' />
+			</div>
 		</div>
 		<a v-if='fieldname=="service"' @click='viewfile' style='position:absolute; top:12px; left:-15px;display:inline-block'>
 			<div><icon color="#0075bc" name="external-link-alt" ></icon></div>
@@ -70,6 +77,10 @@
 				},
 				components:{},
 				computed : {
+					filename: function(){
+						var array = this.fieldvalue.split('/')
+						return array[1]
+					},
 					inputtype: function(){
 						if(this.index==-1){
 							return this.schemaProp.attrs.type
@@ -118,8 +129,9 @@
 					},
 				methods:{
 					viewfile: function(){
-						var yamlurl = "./shelf/"+this.objuri+'/'+this.value
-						if(this.fieldname=='service') this.$eventBus.$emit('viewio',yamlurl);
+						var yamlurl = "./shelf/"+this.objuri+'/'+this.filename
+						this.$store.commit('setkoiourl',yamlurl)
+						if(this.fieldname=='hasServiceSpecification'||this.fieldname=='hasDeploymentSpecification') this.$eventBus.$emit('viewio',yamlurl);
 					},
 					viewcode: function(){
 						var codeurl = "./shelf/"+this.objuri+'/model/'+this.value

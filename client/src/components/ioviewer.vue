@@ -30,6 +30,7 @@
 				stage:'',
 				rawfile:'',
 				viewraw:true
+				// url:''
 			}
 		},
 	created:function(){
@@ -58,7 +59,7 @@
 	},
 	computed:{
 		url:function(){
-			return this.$store.getters.getkoserviceurl
+			return this.$store.getters.getkoiourl
 		},
 		urlarray: function(){
 			return this.url.split('/')

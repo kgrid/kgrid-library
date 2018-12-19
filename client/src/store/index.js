@@ -59,6 +59,7 @@ export default new Vuex.Store({
     userlist:[],
     kotree:{},
     currentMetadataBundle:{},
+    koiourl:'',
     paths:{  "shelf_url": "./shelf/",
       "library_url": "./",
       "user_url": "./",
@@ -166,6 +167,9 @@ export default new Vuex.Store({
     setdefaultdemourlindex(state, i){
       state.paths.default_demo_url_index =i
     },
+    setkoiourl(state,s) {
+      state.koiourl =s
+    },
     setdemourls(state,urls){
       if(urls.length>0){
         state.paths.demo_urls = []
@@ -225,6 +229,9 @@ export default new Vuex.Store({
     },
     getkoserviceurl:state=>{
       return state.paths.shelf_url+state.currentObjectId.naan+'/'+state.currentObjectId.name+'/'+state.currentObjectId.version +'/'+state.currentObject.service
+    },
+    getkoiourl:state=>{
+      return state.koiourl
     },
     getkoresourceurl:state=>{
       if(state.currentObject.model){
