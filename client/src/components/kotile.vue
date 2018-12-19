@@ -20,8 +20,11 @@
 					<div class='row'>
 					<div class="col-md-8 col-sm-8 col-xs-8 kgl-id">
 						<span class="kgl-left">Object ID: {{object.identifier}}</span>
-						<span v-if='object.hasImplementation!=""' class="pad-l-15"> Implementation: {{object.hasImplementation[0].substring(object.hasImplementation[0].lastIndexOf('/')+1)}}</span>
-						<span v-else class="pad-l-15"> No Version </span>
+            <span> Implementation:
+              <span v-if='object.hasImplementation!=""' v-text="currentImplementation" class="pad-l-15"></span>
+             <span v-else class="pad-l-15"> No Version </span>
+            </span>
+
 					</div>
 					<div class="col-md-3 col-sm-3 col-xs-3 kgl-udate" >
 						<span> Date: <span v-if='formattedlastModified!=""' v-text="formattedlastModified"></span></span>
@@ -58,6 +61,14 @@
 			objuri:function(){
 						return this.object.hasImplementation[0].replace('-','/')
 			},
+      currentImplementation:function(){
+         if (Array.isArray(this.object.hasImplementation)){
+          return this.object.hasImplementation[0].substring(this.object.hasImplementation[0].lastIndexOf('/')+1);
+         } else {
+           return this.object.hasImplementation.substring(this.object.hasImplementation.lastIndexOf('/')+1);
+         }
+
+      },
 		},
 		methods : {
 			selected: function(){
