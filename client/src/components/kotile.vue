@@ -58,9 +58,24 @@
 				}
 				return datestring
 			},
+      //THIS SMELLS
+      //Handles single string and array plus handles relative vs absolute.
 			objuri:function(){
-						return this.object.hasImplementation[0].replace('-','/')
+
+			  let link = Array.isArray(this.object.hasImplementation)?
+          this.object.hasImplementation[0]:
+          this.object.hasImplementation;
+
+			  if ( link.startsWith("http")){
+          return link.substring(this.object["@id"].lastIndexOf('/')).replace('-','/');
+        } else {
+          return link.replace('-','/');
+        }
+
 			},
+      //THIS SMELLS
+      //TODO
+      //Handles single string and array
       currentImplementation:function(){
          if (Array.isArray(this.object.hasImplementation)){
           return this.object.hasImplementation[0].substring(this.object.hasImplementation[0].lastIndexOf('/')+1);
