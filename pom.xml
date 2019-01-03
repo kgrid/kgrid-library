@@ -20,16 +20,11 @@
     <developerConnection>scm:git:https://github.com/kgrid/kgrid-library.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
-        <configuration>
-          <goals>install</goals>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+
+  <properties>
+    <!-- override spring boot parent; sets java source & target -->
+    <java.version>1.8</java.version>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
 </project>
