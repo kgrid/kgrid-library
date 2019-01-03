@@ -143,6 +143,10 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-maven-plugin</artifactId>
         <version>4.2.0</version>
