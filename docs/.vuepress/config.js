@@ -7,6 +7,7 @@ module.exports = {
     nav: [
       { text: 'Guide', link: '/' },
       { text: 'Configuration', link: '/configuration/'},
+      { text: 'Docker', link: '/docker/' }
 
     ],
     search: true,
