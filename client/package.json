@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.0",
     "element-ui": "^2.0.4",
     "es6-promise": "^4.1.0",
     "jquery": "^3.3.1",

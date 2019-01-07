@@ -2,9 +2,9 @@
 [![CircleCI](https://circleci.com/gh/kgrid/kgrid-library.svg?style=svg)](https://circleci.com/gh/kgrid/kgrid-library)
 [![GitHub release](https://img.shields.io/github/release/kgrid/kgrid-library.svg)](https://github.com/kgrid/kgrid-library/releases/)
 
-## Getting Started
+More information on using Knowledge Objects in the Activator and integration with other systems 
+can be found here: [Getting Started with the KGrid Library](http://kgrid.org/kgrid-library/).
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 For building and running the application you need:
