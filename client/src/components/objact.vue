@@ -2,21 +2,20 @@
 	<olpane layerid=0 :stage='stage'>
 		<div slot="oltitle">
 			<div class='row' >
-				<h2>Knowledge Object
-					<span style="padding: 3px;"> {{uri}}</span>
-					<span v-if='objpackaged' style="background-color:#0075bc;font-size:0.6em;color:#fff; padding:1px 4px; margin:0px 3px 5px 3px;">packaged</span>
-					<span v-if='objactivated' style="background-color:#0075bc;font-size:0.6em;color:#fff; padding:1px 4px; margin:0px 3px 5px 3px;">activated</span></h2>
+				<span class='body-1'>Knowledge Object</span><br>
+					<span class='headline'> {{url}}</span>
+					<!-- <v-chip v-if='objpackaged' outline color="#0075bc">packaged</v-chip>
+					<v-chip v-if='objactivated' outline color="#0075bc">activated</v-chip> -->
+
+					<span v-if='objpackaged' style="background-color:#0075bc;font-size:1em;color:#fff; padding:1px 4px; margin:0px 3px 5px 30px;">packaged</span>
+					<span v-if='objactivated' style="background-color:#0075bc;font-size:1em;color:#fff; padding:1px 4px; margin:0px 3px 5px 10px;">activated</span>
 			</div>
 		</div>
 		<div slot="ol-form">
 			<div id="activator_pane" v-if='objpackaged && !objactivated'>
-				<div class='row' >
-					<h4>The knowledge object has been packaged. Please enter or select the activator to send the KO.</h4>
-				</div>
-				<!-- <div class='row' >
-					<p>* Enter the activator url or select from the list of available activators. If a new url is entered, you can save to the list and set it as default.
-					</p>
-				</div> -->
+				<v-layout row wrap my-2>
+					<span class='body-1'>The knowledge object has been packaged. Please enter or select the activator to send the KO.</span>
+				</v-layout>
 				<div class='row mar-top30'>
 					<div class='col-md-3 pad-t-10'>
 						<h2>Activator Site URL</h2>
@@ -37,7 +36,7 @@
 						 <div class='row' v-for="(entry,index) in activatorurls" style="border-bottom:1px solid #eee;">
 							 <input type="radio" :id="entry" :value="entry" @change='selectactivatorsite' v-model='activatorurlselect'>
 							 <label :for="entry">{{entry}}</label>
-							 <button v-if='index!=defaultactivatorindex' style="background-color:transparent;float:right;margin-top:10px;" @click='deleteactentry(index)'><icon color="#0075bc" name="times"></icon></button>
+							 <button v-if='index!=defaultactivatorindex' style="background-color:transparent;float:right;margin-top:10px;" @click='deleteactentry(index)'><v-icon>clear</v-icon></button>
 						 </div>
 				 	</div>
 					<div class='col-md-2'>
@@ -76,10 +75,19 @@
 			</div>
 		</div>
 		<div slot='buttons' >
-				<button v-if='stage=="ready"&&!objactivated' class="kg-btn-primary" @click="sendzip" :disabled="btndisabled">
-					<!-- <span v-if='objactivated'>Go to Demo Swagger UI</span> -->
-					<span> Send KO to Activator </span>
-				</button>
+			<v-btn
+			 color="#0075bc"
+			 right
+			 bottom
+			 relative
+			 outline
+			 @click='sendzip'
+			 v-if='stage=="ready"&&!objactivated'
+			 :disabled="btndisabled"
+			 >
+			 <span>Send KO to Activator</span>
+		 </v-btn>
+
 		</div>
 		<div slot="ol-processing"><span>{{processMsg}}</span></div>
 		<div slot="ol-success"><span>The Knowledge Object has been succesfully deployed. </span></div>
@@ -114,7 +122,7 @@
 		self.stage='processing'
 		setTimeout(function(){
 			self.$http.get(
-				self.url+'?format=zip',
+				self.htmldownloadlink,
 				{ responseType: 'blob' }
 			).then(response=> {
 				self.stage='ready'
@@ -167,8 +175,14 @@
 		url:function(){
 			return this.$store.getters.getcurrenturl
 		},
+		currentKOId: function(){
+			return this.$store.getters.getCurrentKOId
+		},
+		htmldownloadlink: function(){
+			return this.$store.getters.getshelfurl+this.currentKOId.naan+'/'+this.currentKOId.name+'?format=zip'
+		},
 		downloadFile : function() {
-			return this.$store.getters.getnaandashname + '.zip'
+			return this.currentKOId.naan+'-'+this.currentKOId.name+'.zip'
 		},
 		defaultdemoindex: function(){
 				return this.$store.getters.getdefaultdemourlindex
@@ -200,7 +214,7 @@
 			}
 		},
 		targeturl:function(){
-			return this.activatorurl+"/"+this.uri
+			return this.activatorurl+"/"+this.url
 		},
 		kgriddemosurl:function(){
 			return "https://kgrid-demos.github.io/swaggerui?url="+this.targeturl+'/service'
@@ -219,7 +233,7 @@
 					formData.append('ko', this.zipfile);
 					this.stage='processing';
 					setTimeout(function(){
-					self.$http.put( self.activatorurl+'/'+self.$store.getters.getnaanslashname+"/",
+					self.$http.put( self.targeturl,
 						formData,
 						{  headers: {}  }
 					).then(function(resp){

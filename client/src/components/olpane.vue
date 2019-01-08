@@ -5,12 +5,10 @@
 			<div class='sidebar_close kg-btn-close'   v-on:click='closeOverlay'>
 				<h3><span>Close</span></h3>
 				<div class='kgl-close'>
-					<i class="fa fa-close " aria-hidden="false"></i>
-					<icon style='{width:0.5em;height:1em;margin-top:10px;}' color="#0075bc" name="times"></icon>
+					<v-icon>close</v-icon>
 				</div>
 			</div>
-			<div class="overlay-top">
-			</div>
+			<div class="overlay-top"></div>
 			<div class="overlay-board" ref='oboard' :style='oboardstyle'>
 				<div class="overlay-title" v-if="hasTitleSlot">
 					<slot name="oltitle"></slot>
@@ -31,7 +29,6 @@
 	</transition>
 </template>
 <script>
-import 'vue-awesome/icons/times'
 export default {
   name: "olpane",
   props:['layerid', 'left', 'stage'],
@@ -73,8 +70,8 @@ export default {
 		handleresize:function(){
 			var ol_pane_height = window.innerHeight;
 			// console.log('ol_pane_height: '+ol_pane_height)
-			var boardHeight = ol_pane_height - 100;
-			if(this.hasFooterSlot) boardHeight =boardHeight -100
+			var boardHeight = ol_pane_height - 80;
+			if(this.hasFooterSlot) boardHeight = boardHeight -100
 			// console.log('boardHeight: '+boardHeight)
 			var formHeight = boardHeight
 			if(this.hasTitleSlot) formHeight = formHeight- 50;
@@ -124,6 +121,17 @@ export default {
 .modal-enter .ol_pane,	.modal-leave-active .ol_pane {
 	  right: -1080px;
 	}
+	.kgl-close {
+	position: relative;
+	top: 0px;
+	left: 0px;
+  border: none;
+  width: 55px;
+  height: 55px;
+  line-height: 55px;
+  padding: 0px 0px 0px 0px;
+  background-color: transparent;
+}
 .sidebar_close {
     background-color:#fff;
     position:absolute;
@@ -153,7 +161,7 @@ export default {
     height:28px;
 }
 .overlay-top {
-    height: 100px;
+    height: 80px;
     width: 1030px;
     position: absolute;
     top: 0;
@@ -168,7 +176,7 @@ export default {
     position: absolute;
     background-color: transparent;
     width: 1030px;
-    top: 100px;
+    top: 80px;
     left: 55px;
     padding: 0px 0px;
 }

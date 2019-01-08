@@ -1,26 +1,34 @@
-# kgrid-libraryfront
+# libfront
 
-The project provides a front-end reference web app for Knowledge Grid Library. It works with Kgrid-library 2.0 Backend and still under development.
-
-### Installation
-
-To try it, clone this Repository.
-
-`Node.js` is required.
-
-Run `npm install`
-
-
-### Start Library Backend
-
-You need to build the latest kgrid library backend. (`https://github.com/kgrid/kgrid-library`)
-
-Start the back end:
-
+## Project setup
 ```
-java -jar target\kgrid-library-0.2.4-SNAPSHOT.war --cors.url=http://localhost:3000 --shelf.location=shelf
+npm install
 ```
 
-### Start Library Front End app
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-Run `npm run dev`. A webpack dev-server will start at http://localhost:3000
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Run your tests
+```
+npm run test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Run your unit tests
+```
+npm run test:unit
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

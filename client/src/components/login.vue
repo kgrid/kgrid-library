@@ -7,15 +7,15 @@
 			<div class='loginField'>
                <label class="ft-sz-12 label text-cap">Username</label>
                 <p class="control has-icon has-icon-right">
-                    <input spellcheck=false v-model='userModel.user.username' name="email" ref='email' v-validate data-vv-delay="1000" data-vv-rules="required|email" :class="{'input': true, 'is-danger': errors.has('email', 'loginform') }" type="text" placeholder="Enter your email">
-                    <span v-show="errors.has('email', 'loginform')" class="help is-danger">{{ errors.first('email', 'loginform') }}</span>
+                    <input spellcheck=false v-model='userModel.user.username' name="email" ref='email'  type="text" placeholder="Enter your email">
+                    <!-- <span v-show="errors.has('email', 'loginform')" class="help is-danger">{{ errors.first('email', 'loginform') }}</span> -->
                 </p>
 				</div>
 				<div class='loginField'>
 				 <label class="ft-sz-12 label text-cap">Password</label>
                  <p class="control has-icon has-icon-right">
-                     <input spellcheck=false  v-model='userModel.user.password' name="password" v-validate data-vv-delay="800" data-vv-rules="required|min:4" :class="{'input': true, 'is-danger': errors.has('password', 'loginform') }" type="password" placeholder="Enter your password">
-                     <span v-show="errors.has('password', 'loginform')" class="help is-danger">{{ errors.first('password', 'loginform') }}</span>
+                     <input spellcheck=false  v-model='userModel.user.password' name="password" type="password" placeholder="Enter your password">
+                     <!-- <span v-show="errors.has('password', 'loginform')" class="help is-danger">{{ errors.first('password', 'loginform') }}</span> -->
                  </p>
 				</div>
 				<div class='loginField'>
@@ -42,7 +42,8 @@ export default {
     return {
       userModel: {user: {username: '', password: ''}},
       skipAuth: false,
-			status:{'ready':true,'processing':false,'success':false,'error':false}
+			status:{'ready':true,'processing':false,'success':false,'error':false},
+      errors:{}
     };
   },
   components: {
@@ -52,18 +53,18 @@ export default {
 		this.$refs.email.focus()
 	},
   methods: {
-	  validateLoginForm(e) {
-          this.$validator.validateAll('loginform');
-          if (!this.errors.any('loginform')) {
-	            this.userlogin()
-	        }
-      },
-	  validateBeforeSubmit(e) {
-	        this.$validator.validateAll();
-	        if (!this.errors.any()) {
-	            this.userlogin()
-	        }
-	      },
+	  // validateLoginForm(e) {
+    //       this.$validator.validateAll('loginform');
+    //       if (!this.errors.any('loginform')) {
+	  //           this.userlogin()
+	  //       }
+    //   },
+	  // validateBeforeSubmit(e) {
+	  //       this.$validator.validateAll();
+	  //       if (!this.errors.any()) {
+	  //           this.userlogin()
+	  //       }
+	  //     },
 		setButton: function(div, bool){
 			this.status[div]=bool;
 		},
@@ -159,9 +160,10 @@ color: #bc2526;
     position: relative;
     height: 95%;
     overflow: auto;
-margin: 0 auto;
-padding: 0px 0px;
-}
+		margin: 0 auto;
+		padding: 0px 0px;
+		border-style:none;
+	}
  .btnContent{
  position: relative;
  top:20px;

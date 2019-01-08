@@ -1,169 +1,78 @@
 <template>
-		<div class="container kgl-tile" v-bind:id="object.uri" v-on:click="selected">
-				<div class="row kgl-2">
-					<div class="col-md-1 col-sm-1 col-xs-1 kgl-type ft-sz-12">
-						<icon style='{width:0.5em;height:1em;margin-top:10px;}' v-if="object.published" color="#0075bc" name="circle"></icon>
-						</div>
-					<div class="col-md-11 col-sm-11 col-xs-11 kgl-title kg-fg-color" data-toggle="tooltip"
-							data-placement="top" v-bind:title="object.title">{{object.title}}
-					</div>
-
-				</div>
-				<div class="row kgl-2">
-					<div class="col-md-1 col-sm-1 col-xs-1 kgl-empty"></div>
-					<div class="col-md-11 col-sm-11 col-xs-11 kgl-owner">{{object.owners}}</div>
-				</div>
-				<div class="row kgl-2">
-					<div class="col-md-1 col-sm-1 col-xs-1 kgl-empty"></div>
-					<div class="col-md-5 col-sm-5 col-xs-5 kgl-keywords">{{object.keywords}}</div>
-					<div class='col-md-6 col-sm-6 col-xs-6 kgl-iddate'>
-					<div class='row'>
-					<div class="col-md-8 col-sm-8 col-xs-8 kgl-id">
-						<span class="kgl-left">Object ID: {{object.identifier}}</span>
-            <span> Implementation:
-              <span v-if='object.hasImplementation!=""' v-text="currentImplementation" class="pad-l-15"></span>
-             <span v-else class="pad-l-15"> No Version </span>
-            </span>
-
-					</div>
-					<div class="col-md-3 col-sm-3 col-xs-3 kgl-udate" >
-						<span> Date: <span v-if='formattedlastModified!=""' v-text="formattedlastModified"></span></span>
-					</div></div>
-					</div>
-				</div>
-
-		</div>
+		<v-container grid-list-xs class='kg-tile' v-bind:id="object.uri"  pa-10 v-on:click="selected(object.identifier)">
+		    <v-layout row wrap pa-10>
+		      <v-flex xs6 sm6 md6 py-1>
+		        <span class='body-1 kg-koentry' v-on:click="selected(object.identifier)">{{object.identifier}}</span>
+		      </v-flex>
+					<v-flex  xs12 sm12 md12 py-1>
+		        <div class='title'>{{object.title}}</div>
+		      </v-flex>
+					<v-flex  xs12 sm12 md12 py-0>
+						<span class='text-uppercase caption font-italic'>Keywords: </span><span v-for='key in keywords' class='body-2 kg-keyentry'>{{key}}</span>
+					</v-flex>
+					<v-flex  xs12 sm12 md12 py-0 class='text-xs-right'>
+						<span class='text-uppercase caption font-italic'>Implementations: </span>
+						<span v-for='imp in implementation' class='body-2 kg-impentry' v-on:click.stop="selected(imp)">{{imp}}</span>
+					</v-flex>
+		    </v-layout>
+		</v-container>
 	</template>
 	<script>
-	import moment from 'moment'
-	import 'vue-awesome/icons/circle'
 	export default {
 		name:	"kotile",
 		props : [ 'object', 'listsize' ,'tileindex'],
+		data : function(){
+			return {
+			}
+		},
 		created: function(){},
 		computed : {
-			formattedlastModified : function() {
-				var datestring = ''
-				if(this.object.lastModified){
-					datestring =  moment(new Date(
-						this.object.lastModified)).format('MMM DD, YYYY')
-					}
-				return datestring
-				},
-			formattedCreatedOn : function() {
-				var datestring = ''
-				if(this.object.lastModified){
-					datestring = moment(new Date(
-					this.object.createdOn)).format('MMM DD, YYYY')
+			keywords:function(){
+				return this.object.keywords.split(" ")
+			},
+			implementation:function(){
+				if(Array.isArray(this.object.hasImplementation)){
+					return this.object.hasImplementation
+				} else {
+					var list = []
+					list.push(this.object.hasImplementation)
+					return list
 				}
-				return datestring
 			},
-      //THIS SMELLS
-      //Handles single string and array plus handles relative vs absolute.
-			objuri:function(){
-
-			  let link = Array.isArray(this.object.hasImplementation)?
-          this.object.hasImplementation[0]:
-          this.object.hasImplementation;
-
-			  if ( link.startsWith("http")){
-          return link.substring(this.object["@id"].lastIndexOf('/')).replace('-','/');
-        } else {
-          return link.replace('-','/');
-        }
-
-			},
-      //THIS SMELLS
-      //TODO
-      //Handles single string and array
-      currentImplementation:function(){
-         if (Array.isArray(this.object.hasImplementation)){
-          return this.object.hasImplementation[0].substring(this.object.hasImplementation[0].lastIndexOf('/')+1);
-         } else {
-           return this.object.hasImplementation.substring(this.object.hasImplementation.lastIndexOf('/')+1);
-         }
-
-      },
 		},
 		methods : {
-			selected: function(){
-	        this.$eventBus.$emit("objectSelected", this.objuri);
-
+			selected: function(s){
+				if(this.$DEBUG) console.log(s);
+				s=s.replace('ark:/','');
+				s=s.replace('-','/');
+				this.$store.commit('setCurrentKO',s);
+        this.$eventBus.$emit("objectSelected", s);
 				return false;
 			}
 		}
 	};
 	</script>
 	<style scoped>
-	.kgl-type {
-    vertical-align: middle;
-    height: 25px;
-    width: 60px;
-		text-align: center;
-	}
-	.kgl-empty {
-    background-color: #fff;
-    height: 0px;
-    width: 60px;
-	}
-	.kgl-tile {
-	  text-align: left;
-	  width: 1024px;
-	  background-color: #fff;
-	 	color: #696969;
-	  font-weight: 400;
-	  border-left: 3px solid #fff;
-	  padding: 0px ;
+	.kg-tile {
+		background-color: #fff;
+		border-left: 3px solid #fff;
 		transition: all 0.8s ease;
 	}
-	.kgl-tile:hover {
-	  border-left: 3px solid #0075bc;
-	 cursor:pointer;
+	.kg-tile:hover {
+		border-left: 3px solid #0075bc;
 	}
-	.kgl-tile>.row {
-		margin: 10px 0px;
+	.kg-keyentry {
+		padding: 0 4px;
 	}
-	.kgl-type>i{
-		line-height:3.1em;
+	.kg-impentry {
+		padding: 0px 4px;
+		color: #0075bc;
+		cursor:pointer;
+		margin: 0 4px;
 	}
-	.kgl-title{
-		font-size: 18px;
-		font-weight: 400;
-		white-space: nowrap;
-		overflow: hidden;
-  	text-overflow: ellipsis;
-		padding: 5px 0px 0px 0px;
-		width:950px;
+	.kg-koentry {
+		padding: 0 4px;
+		color: #0075bc;
+		cursor:pointer;
 	}
-	.kgl-owner{
-		font-size: 14px;
-		font-style: italic;
-		white-space: nowrap;
-		overflow: hidden;
-		min-height:20px;
-  	text-overflow: ellipsis;
-    padding: 0px 15px 0px 0px;
-	}
-	.kgl-keywords, .kgl-id, .kgl-udate {
-		font-size: 12px;
-		white-space: nowrap;
-		overflow: hidden;
-  	text-overflow: ellipsis;
-    padding: 0px 15px 5px 0px;
-		}
-	.kgl-keywords {
-		width: 450px;
-		}
-	.kgl-iddate {
-		padding-right: 0px;
-		}
-	.kgl-id {
-		padding-right: 0px;
-		right:-10px;
-		text-align:right;
-		}
-	.kgl-udate {
-		text-align: right;
-		padding: 0px;
-		}
 	</style>

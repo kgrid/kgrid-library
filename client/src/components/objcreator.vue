@@ -14,13 +14,22 @@
 							<div class="inline float-r">
 								<a class="remove " v-on:click="removeFile( key )"><i class='fa fa-times'></i></a>
 							</div>
+							<v-progress-linear v-model="uploadPercentage"></v-progress-linear>
 						</div>
-						<progress max="100" :value.prop="uploadPercentage" v-show='files.length>0'></progress>
 					</div>
 				</div>
 			</div>
 			<div slot='buttons'>
-					<button class="kg-btn-primary" v-bind:disabled='files.length == 0' v-on:click="submitFiles">Deposit Object</button>
+					<v-btn
+					 color="#0075bc"
+					 right
+					 bottom
+					 relative
+					 outline
+					 @click='submitFiles'
+					 >
+					 <span>Deposit Object</span>
+				 </v-btn>
 			</div>
 		<div slot="ol-processing"><span>Processing...</span></div>
 		<div slot="ol-success"><span>The knowledge Object succesfully added to the shelf.  Object ID:{{arkid}}</span></div>
