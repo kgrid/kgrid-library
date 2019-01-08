@@ -8,7 +8,7 @@ to create a docker image of the current activator project simply run the dockerf
 
 ``` 
 mvn clean package
-mvn dockerfile:build  -pl application
+mvn dockerfile:build  -Ddockerfile.tag=1.0.4-rc2 -pl application
 ```
 
 After this run you will have a docker image 
@@ -47,6 +47,5 @@ Activator images are stored on [DockerHub](https://cloud.docker.com/u/kgrid/repo
 
 ```mvn dockerfile:push -Ddockerfile.tag=1.0.4-rc1 -s /Users/me/.m2/my_settings.xml ```
 
-```mvn dockerfile:push -Ddockerfile.tag=1.0.4-rc1 -s /Users/me/.m2/my_settings.xml ```
 
 
