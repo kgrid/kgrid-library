@@ -73,5 +73,8 @@ module.exports = {
       '/info':ops,
       '/shelf':ops
     }
+  },
+  chainWebpack: config => {
+    config.module.rules.delete('eslint');
   }
 }

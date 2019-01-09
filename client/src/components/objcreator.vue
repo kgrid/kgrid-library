@@ -12,7 +12,7 @@
 						<div v-for="(file, key) in files" class="file-listing" v-show='files.length>0'>
 							{{ file.name }}
 							<div class="inline float-r">
-								<a class="remove " v-on:click="removeFile( key )"><i class='fa fa-times'></i></a>
+								<a class="remove" v-on:click="removeFile( key )"><i class='fa fa-times'></i></a>
 							</div>
 							<v-progress-linear v-model="uploadPercentage"></v-progress-linear>
 						</div>
@@ -159,9 +159,8 @@
 		display: block;
 		height: 400px;
 		width: 400px;
-		background: #ccc;
+		background: #eee;
 		margin: auto;
-		margin-top: 40px;
 		text-align: center;
 		line-height: 400px;
 		border-radius: 4px;
@@ -170,20 +169,12 @@
 		width: 400px;
 		margin: auto;
 		padding: 10px;
-		border-bottom: 1px solid #ddd;
+		min-height:400px;
 	}
 	.alert-box  div span{
 		color: #fff;
 	}
-	progress{
-		width: 400px;
-		margin: auto;
-		display: block;
-		margin-top: 20px;
-		margin-bottom: 20px;
-	}
 	.panel-body {
-		height:630px;
 		padding: 15px;
 		border:1px solid #0075bc;
 	}

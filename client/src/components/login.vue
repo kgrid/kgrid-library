@@ -213,17 +213,7 @@ h3 {
     font-size: 32px;
     font-weight: 500;
 }
-input[type=text], input[type=password], input[type=textarea] {
-    width: 350px;
-    height: 53px;
-    padding: 0px 16px;
-    border: 1px solid #666666;
-    border-radius: 0px;
-    margin: 2px 0;
-    font-size: 14px;
-    color: #666666;
-    font-weight: 400;
-}
+
 .saving span {
 		/**
 		 * Use the blink animation, which is defined above

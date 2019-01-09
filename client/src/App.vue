@@ -82,6 +82,11 @@ export default {
           break;
       }
     });
+    this.$eventBus.$on('objAdded', function(obj){
+      self.showOverlay.show=false;
+      document.body.classList.toggle('noscroll', false);
+      self.$router.go(self.$router.currentRoute)
+    });
   },
   methods: {
     login_click: function () {

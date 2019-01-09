@@ -165,6 +165,9 @@ export default new Vuex.Store({
         )
       }
     },
+    setdefaultactivatorurlindex(state, i){
+      state.paths.default_act_url_index = i
+    },
   },
   actions: {
     fetchkolist (context) {

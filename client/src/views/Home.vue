@@ -113,7 +113,6 @@
                 hide-details
               ></v-select>
             </v-flex>
-
           </v-layout>
         </v-container>
       </v-flex>

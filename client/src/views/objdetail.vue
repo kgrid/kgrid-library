@@ -85,6 +85,7 @@
                   v-model='modelObject[key]'
                   :label="upper(key)"
                   :disabled='isDisabled(key)'
+                  :box="inEditMode"
                   v-if='value.attrs.type=="text"'
                 >
                 </v-text-field>
@@ -94,6 +95,7 @@
                   :disabled='isDisabled(key)'
                   rows=1
                   auto-grow
+                  :box="inEditMode"
                   style="min-height: 60px"
                   v-if='value.attrs.type=="textarea"'
                 >
@@ -106,6 +108,7 @@
                   <v-text-field
                     v-model='modelObject[key][objkey]'
                     :label="upper(objkey)"
+                    :box="inEditMode"
                     :disabled='isDisabled(key)'
                     hide-details
                   >
@@ -124,6 +127,7 @@
                       v-model='modelObject[key][index]'
                       :label="upper(key)"
                       :disabled='isDisabled(key)'
+                      :box="inEditMode"
                       single-line
                       hide-details
                     >
@@ -259,7 +263,11 @@
         return this.currentKOId.naan+'-'+this.currentKOId.name+'.zip'
       },
       htmldownloadlink: function(){
-        return this.$store.getters.getshelfurl+this.currentKOId.naan+'/'+this.currentKOId.name+'?format=zip'
+        var link = this.$store.getters.getshelfurl+this.currentKOId.naan+'/'+this.currentKOId.name
+        if(this.currentKOId.version!=''){
+          link = link +'/'+this.currentKOId.version
+        }
+        return link+'?format=zip'
       },
       currentKO: function(){
         return this.$store.getters.getCurrentKO

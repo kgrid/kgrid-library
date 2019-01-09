@@ -4,9 +4,6 @@
 			<div class='row' >
 				<span class='body-1'>Knowledge Object</span><br>
 					<span class='headline'> {{url}}</span>
-					<!-- <v-chip v-if='objpackaged' outline color="#0075bc">packaged</v-chip>
-					<v-chip v-if='objactivated' outline color="#0075bc">activated</v-chip> -->
-
 					<span v-if='objpackaged' style="background-color:#0075bc;font-size:1em;color:#fff; padding:1px 4px; margin:0px 3px 5px 30px;">packaged</span>
 					<span v-if='objactivated' style="background-color:#0075bc;font-size:1em;color:#fff; padding:1px 4px; margin:0px 3px 5px 10px;">activated</span>
 			</div>
@@ -16,32 +13,68 @@
 				<v-layout row wrap my-2>
 					<span class='body-1'>The knowledge object has been packaged. Please enter or select the activator to send the KO.</span>
 				</v-layout>
-				<div class='row mar-top30'>
-					<div class='col-md-3 pad-t-10'>
-						<h2>Activator Site URL</h2>
-					</div>
-					<div class='col-md-7'>
-						<input type='text' v-model='activatorurl' />
-					</div>
+
+				<v-layout row wrap my-5 >
+					<v-flex xs3>
+						<span class='title'>Activator Site URL</span>
+					</v-flex>
+					<v-flex xs7>
+						<v-text-field
+							label="Activator Site URL"
+							box
+							solo
+							v-model='activatorurl'
+						></v-text-field>
+					</v-flex>
+				<v-flex xs2>
 					<div class='col-md-2'>
-						<button class='kg-btn-entry' v-if='activatorurlindex==-1' @click='addactivatorentry'>Save URL</button>
-						<button class='kg-btn-entry' v-if='!isDefaultActivator' @click='setdefaultactivator'>Set as Default</button>
+						<v-btn
+						 color="#0075bc"
+						 outline
+						 @click='addactivatorentry'
+						 v-if='activatorurlindex==-1'
+						 >
+						 <span>Save URL</span>
+					 </v-btn>
+					 <v-btn
+						color="#0075bc"
+						outline
+						@click='setdefaultactivator'
+						v-if='!isDefaultActivator'
+						>
+						<span>Set as Default</span>
+					</v-btn>
 					</div>
-				</div>
-				<div class='row mar-top30'>
-					<div class='col-md-3'>
-						<h4>Available activator Sites</h4>
-					</div>
-					<div class='col-md-7'>
-						 <div class='row' v-for="(entry,index) in activatorurls" style="border-bottom:1px solid #eee;">
-							 <input type="radio" :id="entry" :value="entry" @change='selectactivatorsite' v-model='activatorurlselect'>
-							 <label :for="entry">{{entry}}</label>
-							 <button v-if='index!=defaultactivatorindex' style="background-color:transparent;float:right;margin-top:10px;" @click='deleteactentry(index)'><v-icon>clear</v-icon></button>
-						 </div>
-				 	</div>
-					<div class='col-md-2'>
-					</div>
-				</div>
+				</v-flex>
+			</v-layout>
+
+			<v-layout row wrap my-5>
+				<v-flex xs3>
+						<span class='title'>Available Activator Sites</span>
+				</v-flex>
+				<v-flex xs9>
+					<v-radio-group v-model='activatorurlselect' :mandatory="false" >
+						<v-layout row wrap v-for="(entry,index) in activatorurls" my-1 py-2 align-center fill-height>
+							<v-flex xs10>
+								<v-radio :label="entry" :value="entry"></v-radio>
+							</v-flex>
+							<v-flex xs2>
+								<v-btn
+								 fab
+								 small
+								 color="#0075bc"
+								 outline
+								 @click='deleteactentry(index)'
+								 :disabled='(index==defaultactivatorindex)||(index==activatorurlindex)'
+								>
+								 <v-icon>clear</v-icon>
+								</v-btn>
+							</v-flex>
+							<v-divider></v-divider>
+						</v-layout>
+					</v-radio-group>
+				</v-flex>
+				</v-layout>
 			</div>
 			<div id="demo_pane"  v-if='objactivated'>
 
@@ -50,7 +83,7 @@
  				 		<h2>KO Access at the activator: </h2>
 			 		</div>
 			 		<div class='row' >
-						<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="targeturl" target="_blank" style="padding: 3px;position:relative;font-size:1.5em;text-align:center;"><span >{{targeturl}}</span></a></h2>
+						<h2 style=" padding: 10px 3px;position:relative;text-align:center;">  <a :href="targeturl" target="_blank" style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span >{{targeturl}}</span></a></h2>
  			 		</div>
 		 		</div>
 
@@ -59,7 +92,7 @@
 					 <h2>KO Demo at KGRID-DEMOS <a href="https://swagger.io/tools/swagger-ui/" target="_blank">Swagger UI</a>  </h2>
 					</div>
 					<div class='row' >
-						<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="kgriddemosurl" target="_blank" style="padding: 3px;position:relative;font-size:1.1em;text-align:center;"><span >{{kgriddemosurl}}</span></a></h2>
+						<h2 style=" padding: 10px 3px;position:relative;text-align:center;">  <a :href="kgriddemosurl" target="_blank" style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span >{{kgriddemosurl}}</span></a></h2>
 					</div>
 				</div>
 
@@ -68,7 +101,7 @@
 					 <h2>KO Demo at Online <a href="https://swagger.io/tools/swagger-editor/" target="_blank">Swagger Editor</a> </h2>
 					</div>
 					<div class='row' >
-						<h2 style=" padding: 30px 3px;position:relative;text-align:center;">  <a :href="swaggereditorurl" target="_blank" style="padding: 3px;position:relative;font-size:1.1em;text-align:center;"><span >{{swaggereditorurl}}</span></a></h2>
+						<h2 style=" padding: 10px 3px;position:relative;text-align:center;">  <a :href="swaggereditorurl" target="_blank" style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span >{{swaggereditorurl}}</span></a></h2>
 					</div>
 				</div>
 
@@ -156,6 +189,11 @@
 	},
 	components: {
 		olpane
+	},
+	watch: {
+		activatorurlselect () {
+			this.selectactivatorsite()
+		}
 	},
 	computed:{
 		processMsg:function(){
@@ -254,7 +292,7 @@
 					})
 					.catch(function(err){
 						self.stage='error'
-						console.log(err);
+						console.log(error);
 						setTimeout(function(){
 							self.stage='ready'
 						},1500)
@@ -276,29 +314,28 @@
 	}
 };
 	</script>
-	<style scoped>
+	<style>
 	#activator_pane {
 		padding: 10px;
 		border:none;
 	}
-	.row{
-		margin-left:0px;
-		margin-right:0px;
-	}
+
 	.alert-box  div span{
 		color: #fff;
 	}
-	input[type=text] {
-		font-size:16px;
-		font-weight:600;
-	}
-	.overlay-title {
-		border-bottom:1px solid #eee;
-	}
 	.card {
 		border: 2px solid #eee;
-		margin-top: 50px;
+		margin-top: 30px;
 		margin-right:5px;
 		box-shadow: 5px 5px 1px 1px #ddd;
+	}
+	.entryform .v-input  {
+		font-size: 1.8em;
+	}
+	.entryform .v-input--selection-controls .v-input__control {
+		flex-grow: 1;
+	}
+	.entryform .v-input--selection-controls {
+		margin-top: 0;
 	}
 	</style>
