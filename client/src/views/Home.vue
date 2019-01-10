@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-layout row wrap>
+    <v-layout row wrap v-scroll="onScroll" >
       <!-- <v-flex xs2 md2 px-0 > -->
         <v-flex xs2 md2 my-4>
           <v-text-field
@@ -153,6 +153,21 @@
     >
     <uploader></uploader>
     </v-dialog>
+    <v-fab-transition>
+    <v-btn
+              color="#0075bc"
+              dark
+              small
+              fixed
+              bottom
+              left
+              fab
+              v-show='offsetTop>=10'
+              @click = 'backtoTop'
+            >
+              <v-icon>keyboard_arrow_up</v-icon>
+            </v-btn>
+          </v-fab-transition>
     </v-layout>
   </v-container>
 </template>
@@ -199,7 +214,8 @@
             {'text':'Object ID - A to Z','v':'uri','order':'asc'},
             {'text':'Object ID - Z to A','v':'uri','order':'desc'}
             ],
-        sortSelect:{}
+        sortSelect:{},
+        offsetTop:0
       }
     }
     , created : function() {
@@ -338,6 +354,10 @@
       }
     },
     methods: {
+      onScroll (e) {
+        this.offsetTop = e.target.scrollingElement.scrollTop
+        console.log('Scrolling...'+  this.offsetTop )
+      },
       setSearchSources: function(){
         this.$store.commit('setSearchSources', this.searchsources);
       },
@@ -368,6 +388,11 @@
       removeAllFilters () {
         this.filterStrings.splice(0, this.filterStrings.length)
         this.$store.commit('setfilterstrings', this.filterStrings);
+      },
+      backtoTop () {
+        this.offsetTop = 0
+        console.log('Back to Top...')
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
       }
     }
   }

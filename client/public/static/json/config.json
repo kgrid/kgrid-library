@@ -1,7 +1,7 @@
 {
   "shelf_url": "./shelf/",
   "library_url": "./",
-  "user_url": "./",
+  "user_url": "./user",
   "default_act_url_index":   0,
   "default_demo_url_index":    0,
   "activator_urls":["https://kgrid-activator.herokuapp.com"],

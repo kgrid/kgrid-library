@@ -23,7 +23,7 @@
       </v-btn>
     </v-toolbar>
 
-    <v-content>
+    <v-content  >
       <router-view/>
       <div v-bind:is='currentOLView'  v-if='showOverlay.show'></div>
     </v-content>
@@ -42,7 +42,8 @@ export default {
       showOverlay: { show: false },
       showSecOverlay:{show:false},
       currentOLView: 'login',
-      request: {name:"",statement:"q",content:"",btnText:"OK"}
+      request: {name:"",statement:"q",content:"",btnText:"OK"},
+      offsetTop:0
     };
   },
   created: function(){
@@ -52,6 +53,12 @@ export default {
     }).catch(e=>{
       console.log(e)
     })
+    this.$http.get("./static/json/config.json").then(response=> {
+      if(this.$DEBUG) console.log(response.data)
+      self.$store.commit('initConfig', response.data)
+    }).catch(e=>{
+      console.log(e)
+    });
     this.$eventBus.$on("viewio", function(s){
       self.currentOLView="ioviewer";
       self.showOverlay.show=true;
@@ -95,6 +102,7 @@ export default {
       this.currentOLView = 'login';
       document.body.classList.toggle('noscroll', true);
     }   ,
+
   },
   components: {
     login,
@@ -187,4 +195,18 @@ h4 {
 a {
   text-decoration: none;
 }
+::-webkit-scrollbar {  width: 10px;  }
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+    border-radius: 0px;
+}
+::-webkit-scrollbar-thumb {   border-radius: 0px; }
+::-webkit-scrollbar-track {   background-color: #fff;  } /* the new scrollbar will have a flat appearance with the set background color */
+::-webkit-scrollbar-thumb {   background-color: #d5d5d5; } /* this will style the thumb, ignoring the track */
+::-webkit-scrollbar-button {
+    display:none;
+    background-color: #d5d5d5;
+} /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
+::-webkit-scrollbar-corner {  background-color: #fff;  } /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
+
 </style>

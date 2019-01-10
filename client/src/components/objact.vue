@@ -54,7 +54,7 @@
 				</v-flex>
 				<v-flex xs9>
 					<v-radio-group v-model='activatorurlselect' :mandatory="false" >
-						<v-layout row wrap v-for="(entry,index) in activatorurls" my-1 py-2 align-center fill-height>
+						<v-layout row wrap v-for="(entry,index) in activatorurls" :key='entry' my-1 py-2 align-center fill-height>
 							<v-flex xs10>
 								<v-radio :label="entry" :value="entry"></v-radio>
 							</v-flex>
@@ -161,16 +161,12 @@
 				self.stage='ready'
 				console.log("reading zip...")
 				self.zipfile=new File([response.data], self.downloadFile, { type: 'application/zip' } )
-
 				// const url = window.URL.createObjectURL(new Blob([response.data]));
-				//  const link = document.createElement('a');
-				//  link.href = url;
-				//  link.setAttribute('download', 'file.zip'); //or any other extension
-				//  document.body.appendChild(link);
-				//  link.click();
-				//
-
-
+				// const link = document.createElement('a');
+				// link.href = url;
+				// link.setAttribute('download', 'file.zip'); //or any other extension
+				// document.body.appendChild(link);
+				// link.click();
 				console.log(self.zipfile.size)
 				setTimeout(function(){self.objpackaged =true},500)
 	    }).catch(e=>{
@@ -235,7 +231,7 @@
 			return this.activatorurls.indexOf(this.activatorurl)
 		},
 		uri:function(){
-			return this.$store.getters.getcurrenturi
+			return this.currentKOId.naan+'/'+this.currentKOId.name
 		},
 		isDefaultDemo: function(){
 			if(this.demourlindex!=-1){
@@ -252,7 +248,7 @@
 			}
 		},
 		targeturl:function(){
-			return this.activatorurl+"/"+this.url
+			return this.activatorurl+"/"+this.uri
 		},
 		kgriddemosurl:function(){
 			return "https://kgrid-demos.github.io/swaggerui?url="+this.targeturl+'/service'
@@ -319,7 +315,6 @@
 		padding: 10px;
 		border:none;
 	}
-
 	.alert-box  div span{
 		color: #fff;
 	}
