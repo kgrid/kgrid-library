@@ -9,4 +9,4 @@
   .circleci/download_assets.sh "$url"
  done
 
- find . -name "*.zip" -exec unzip -o -q -d application/shelf {} \;
+ find . -name "*.koio.zip"" -exec unzip -o -q -d application/shelf {} \;
