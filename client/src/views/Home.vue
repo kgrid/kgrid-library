@@ -215,7 +215,10 @@
             {'text':'Object ID - Z to A','v':'uri','order':'desc'}
             ],
         sortSelect:{},
-        offsetTop:0
+        offsetTop:0,
+        duration: 300,
+        offset:0,
+        easing:'easeInOutCubic',
       }
     }
     , created : function() {
@@ -236,6 +239,13 @@
         panelStyle () {
           return {
             height: `${this.panelheight}px`,
+          }
+        },
+        options () {
+          return {
+            duration: this.duration,
+            offset: this.offset,
+            easing: this.easing
           }
         },
         orderedList : function() {
@@ -390,9 +400,9 @@
         this.$store.commit('setfilterstrings', this.filterStrings);
       },
       backtoTop () {
-        this.offsetTop = 0
         console.log('Back to Top...')
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        this.$vuetify.goTo(0, this.options)
+        this.offsetTop = 0
       }
     }
   }

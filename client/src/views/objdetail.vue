@@ -46,12 +46,12 @@
                 </v-btn>
                 <span>DOWNLOAD</span>
               </v-tooltip>
-              <v-tooltip bottom content-class='actioniconcap'>
+              <!-- <v-tooltip bottom content-class='actioniconcap'>
                 <v-btn outline slot="activator" small fab color="#0075bc" :disabled='inEditMode'>
                     <v-icon>assignment</v-icon>
                 </v-btn>
                 <span>COPY URL</span>
-              </v-tooltip>
+              </v-tooltip> -->
               <!-- <v-tooltip bottom content-class='actioniconcap'>
                 <v-btn outline slot="activator" small fab color="#0075bc" :disabled='inEditMode'>
                     <v-icon>delete</v-icon>
