@@ -18,7 +18,7 @@
  #Upload jar file to GitHub Release
  curl -X POST "https://uploads.github.com/repos/kgrid/kgrid-library/releases/$RELEASE_ID/assets?access_token=$GITHUB_TOKEN&name=$FILE_NAME" \
            -H "Content-Type: application/octet-stream" \
-           --data-binary "@@application/target/$FILE_NAME"
+           --data-binary "@application/target/$FILE_NAME"
 
 
 
