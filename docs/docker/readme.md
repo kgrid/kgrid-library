@@ -8,7 +8,7 @@ to create a docker image of the current activator project simply run the dockerf
 
 ``` 
 mvn clean package
-mvn dockerfile:build  -Ddockerfile.tag=1.0.4-rc2 -pl application
+mvn dockerfile:build -pl application
 ```
 
 After this run you will have a docker image 
@@ -21,7 +21,7 @@ kgrid/library               latest                fbe2de94cfa9        3 minutes 
 ### Using the Image
 Now using the activator image you can create a container based on the image
 
-#### Running the Activator 
+#### Running the Library 
 
 ```docker run -p 8080:8080 --name library kgrid/library```
 

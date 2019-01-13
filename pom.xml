@@ -27,6 +27,7 @@
     <!-- override spring boot parent; sets java source & target -->
     <java.version>1.8</java.version>
     <maven.deploy.skip>true</maven.deploy.skip>
+    <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
   </properties>
 
 </project>
