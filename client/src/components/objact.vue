@@ -251,10 +251,10 @@
 			return this.activatorurl+"/"+this.uri
 		},
 		kgriddemosurl:function(){
-			return "https://kgrid-demos.github.io/swaggerui?url="+this.targeturl+'/service'
+			return "https://kgrid-demos.github.io/swaggerui?url="+this.activatorurl+"/"+this.url+'/service'
 		},
 		swaggereditorurl:function(){
-			return "https://editor.swagger.io?url="+this.targeturl+'/service'
+			return "https://editor.swagger.io?url="+this.activatorurl+"/"+this.url+'/service'
 		}
 	},
 	methods: {
