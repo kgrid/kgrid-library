@@ -196,6 +196,7 @@
 </template>
 <script>
   import store from '../store.js'
+
   export default {
     name:'objDetail',
     data : function() {
@@ -212,6 +213,7 @@
       if(this.currentKOId.version!=''){
         id=id+'/'+this.currentKOId.version
       }
+      this.active=[]
       this.active.push(id)
       this.modelObject=JSON.parse(JSON.stringify(this.$store.getters.getCurrentObject))
     }
@@ -223,12 +225,19 @@
         });
     }
     ,	beforeRouteEnter (to, from, next) {
-        var uri = store.getters.getcurrenturl
-  			store.dispatch('fetchko', {'uri':uri}).then(function(){
-    			 	next()
-  		  }).catch(e=>{
-    			console.log(e)
-    		})
+        console.log(to.params.uri)
+        store.dispatch('fetchkolist').then(function(){
+  				store.commit('setCurrentKO',to.params.uri);
+          var uri = store.getters.getcurrenturl
+          store.dispatch('fetchko', {'uri':uri}).then(function(){
+              next()
+          }).catch(e=>{
+            console.log(e)
+          })
+        }).catch(e=>{
+          console.log(e)
+        })
+
     },
     watch: {
       selected: function(){

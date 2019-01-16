@@ -120,6 +120,7 @@ export default new Vuex.Store({
       var arkid = 'ark:/'+s[0]+'/'+s[1]
       state.kolist.forEach(function(e){
         var key = Object.keys(e)[0]
+        console.log(arkid)
         if(key==arkid){
           state.currentKO=Object.values(e)[0]
         }
