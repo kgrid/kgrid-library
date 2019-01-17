@@ -31,7 +31,15 @@ export default new Vuex.Store({
     currentObject:{},
     currentIOFileurl:'',
     kolist:[],
-    paths:{},
+    paths:{
+      "shelf_url": "./shelf/",
+      "library_url": "./",
+      "user_url": "./",
+      "default_act_url_index":   0,
+      "default_demo_url_index":    0,
+      "activator_urls":["https://kgrid-activator.herokuapp.com"],
+      "demo_urls":["https://kgrid-demos.github.io/swaggerui", "https://editor.swagger.io"]
+    },
     metaschema:{},
   },
   getters: {
@@ -160,12 +168,7 @@ export default new Vuex.Store({
     },
     setdefaultactivatorurlindex(state, i){
       state.paths.default_act_url_index = i
-    },
-    initConfig(state, obj){
-      if(state.paths=={}){
-        state.paths=obj;
-      }
-    },
+    }
   },
   actions: {
     fetchkolist (context) {

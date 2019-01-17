@@ -53,12 +53,6 @@ export default {
     }).catch(e=>{
       console.log(e)
     })
-    this.$http.get("./static/json/config.json").then(response=> {
-      if(this.$DEBUG) console.log(response.data)
-      self.$store.commit('initConfig', response.data)
-    }).catch(e=>{
-      console.log(e)
-    });
     this.$eventBus.$on("viewio", function(s){
       self.currentOLView="ioviewer";
       self.showOverlay.show=true;
