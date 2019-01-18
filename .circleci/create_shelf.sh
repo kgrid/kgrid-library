@@ -13,7 +13,7 @@
      else
        url=(https://api.github.com/repos/kgrid-objects/$i/releases/latest?access_token=$GIT_TOKEN  )
      fi
-     .circleci//download.sh "$url"
+     .circleci/download.sh "$url"
   done
 
  find . -name "*.zip" -exec unzip -o -q -d application/shelf {} \;
