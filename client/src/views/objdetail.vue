@@ -448,17 +448,20 @@
   border-left: 2px solid transparent;
   transition: all 0.8s ease;
 }
+.v-treeview-node {
+  color: #0075bc;
+}
 .v-treeview-node--active>.v-treeview-node__root {
   border-left: 2px solid #0075bc;
 }
 
 .theme--light.v-treeview .v-treeview-node--active {
-  color: #0075bc;
+  color: #333;
   background-color: transparent;
 
 }
 .v-treeview-node--active .v-treeview-node {
-  color: #333;
+  color: #0075bc;
 }
 .v-treeview-node--leaf {
   margin-left: 30px;

@@ -251,10 +251,16 @@
 			return this.activatorurl+"/"+this.uri
 		},
 		kgriddemosurl:function(){
-			return "https://kgrid-demos.github.io/swaggerui?url="+this.activatorurl+"/"+this.url+'/service'
+			// return "https://kgrid-demos.github.io/swaggerui?url="+this.activatorurl+"/"+this.url+'/service'
+			return "https://kgrid-demos.github.io/swaggerui?url="+this.activatorurl+"/"+this.uri+'/'+this.currentObject.hasServiceSpecification
+
 		},
 		swaggereditorurl:function(){
-			return "https://editor.swagger.io?url="+this.activatorurl+"/"+this.url+'/service'
+			// return "https://editor.swagger.io?url="+this.activatorurl+"/"+this.url+'/service'
+			return "https://editor.swagger.io?url="+this.activatorurl+"/"+this.uri+'/'+this.currentObject.hasServiceSpecification
+		},
+		currentObject: function() {
+			return this.$store.getters.getCurrentObject
 		}
 	},
 	methods: {
