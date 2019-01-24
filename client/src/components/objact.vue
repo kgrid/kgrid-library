@@ -277,7 +277,7 @@
 						formData,
 						{  headers: {}  }
 					).then(function(resp){
-						self.$http.get( self.activatorurl+'/endpoints').then(function(response){
+						self.$http.get( self.activatorurl+'/reload').then(function(response){
 							self.stage='success'
 							setTimeout(function(){
 								console.log(resp);
