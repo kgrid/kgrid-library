@@ -11,16 +11,16 @@ For running the application you need:
 
 ### Running the Library
 
-Download the latest library jar from GitHub [Latest Activator Release](https://github.com/kgrid/kgrid-library/releases/latest).
+Download the latest library jar from GitHub [Latest Library Release](https://github.com/kgrid/kgrid-library/releases/latest).
 
 1. Create a _library_ directory
 1. Download [kgrid-library-#.#.#.jar](https://github.com/kgrid/kgrid-library/releases/latest)  
-1. Place the _kgrid-library-#.#.#.jar_ into the _library_ 
-1. Create a directory named _shelf_ in the new _library_ directory 
+1. Place the _kgrid-library-#.#.#.jar_ into the _library_
+1. Create a directory named _shelf_ in the new _library_ directory
 
 Directory structure should look similar to the following
 
-```text 
+```text
  ├── library
      └── shelf  
      └── kgrid-library-#.#.#.jar
@@ -28,13 +28,13 @@ Directory structure should look similar to the following
 
 The library is executable jar and can be run from the command line.  Open a terminal window and navigate to the directory where the jar and shelf are located.  
 
-Type in the following. 
+Type in the following.
 
 ```bash
- java -jar kgrid-library-#.#.#.jar 
+ java -jar kgrid-library-#.#.#.jar
 ```
 
-By default the activator will run on port 8080. You can validate the activator is up and running using 
+By default the activator will run on port 8080. You can validate the activator is up and running using
 the [library health endpoint](http://localhost:8080/health).  The health of the Activator should display a status of **UP**.  
 
 ```yaml
@@ -65,15 +65,15 @@ the [library health endpoint](http://localhost:8080/health).  The health of the 
       hello: 1
     }
 }
- 
+
 ```
 
 Now simply navigate to the [KGrid Library](http://localhost:8080).
 
-## Adding the Hello World KO on the Library 
+## Adding the Hello World KO on the Library
 
-The Library allows you to take deposit a Knowledge Object archive (zip file).  On the KGrid Library 
-main page you will see a _Deposit Knowledge Object_. 
+The Library allows you to take deposit a Knowledge Object archive (zip file).  On the KGrid Library
+main page you will see a _Deposit Knowledge Object_.
 
 1. Download [hello-world.zip](https://github.com/kgrid-objects/example-projects/releases/latest)
 1. Navigate to the [KGrid Library](http://localhost:8080) site.
@@ -106,7 +106,7 @@ Click <i>Deposit Object</i> in the lower right of the screen.</div>
 <a target="_blank" href="./img/AddKOScreenShot4.png">
   <img src="./assets/img/AddKOScreenShot4.png" alt=""  width=350>
 </a>
-<div> The file will be upload to the 
+<div> The file will be upload to the
      library and you return to library main screen.</div>
 </div></li>
 </ol>
