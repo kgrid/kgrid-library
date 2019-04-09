@@ -68,7 +68,7 @@ jobs:
       - run:
           name: Create Heroku Shelf
           command: |
-            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com "opioid-collection cpic-collection example-collection cancer-risk-collection icon-array script-numerate postpci labwise ipp-collection"
+            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/shelf "opioid-collection cpic-collection example-collection cancer-risk-collection icon-array script-numerate postpci labwise ipp-collection"
 
 
 
