@@ -25,19 +25,19 @@
             <v-flex xs12 mb-4>
               <span class='display-1'>{{currentObject.title}}</span>
             </v-flex>
-            <v-flex xs6 align-start my-3>
+            <v-flex xs8 align-start my-3>
               <v-layout row wrap>
-                <v-flex xs6>
+                <v-flex xs7>
                   <span class='body-1'>OBJECT ID</span><br>
                   <span class='subheading'>{{currentObject['identifier']}}</span>
                 </v-flex>
-                <v-flex xs6>
+                <v-flex xs5>
                   <span class='body-1'>OBJECT TYPE</span><br>
                   <span class='subheading'>{{currentObject['@type']}}</span>
                 </v-flex>
             </v-layout>
             </v-flex>
-            <v-flex xs6 class='text-xs-right' align-start mt-2>
+            <v-flex xs4 class='text-xs-right' align-start mt-2>
               <v-tooltip bottom content-class='actioniconcap'>
                 <v-btn slot="activator" outline small fab color="#0075bc" :disabled='inEditMode'>
                   <a :href='htmldownloadlink' :download='downloadFile'>
@@ -397,9 +397,9 @@
             this.active.push(entry)
             break;
           default:
-            var file = entry.split('/')
-            var filename=file[file.length-1]
-            var yamlurl = "./shelf/"+this.$store.getters.getcurrenturl+'/'+filename
+            // var file = entry.split('/')
+            // var filename=file[file.length-1]
+            var yamlurl = "./shelf/"+this.$store.getters.getcurrenturl+'/../'+entry
     				this.$store.commit('setkoiourl',yamlurl)
             this.$eventBus.$emit('viewio',yamlurl)
             break;

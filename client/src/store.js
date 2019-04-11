@@ -37,7 +37,7 @@ export default new Vuex.Store({
       "user_url": "./",
       "default_act_url_index":   0,
       "default_demo_url_index":    0,
-      "activator_urls":["https://kgrid-activator.herokuapp.com"],
+      "activator_urls":["https://monkey-activator.kgrid.org"],
       "demo_urls":["https://kgrid-demos.github.io/swaggerui", "https://editor.swagger.io"]
     },
     metaschema:{},

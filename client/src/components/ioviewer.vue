@@ -25,7 +25,7 @@
 	created:function(){
 		var self = this
 		this.$http.get(this.url).then(response=> {
-			console.log("reading service descriptor...")
+			console.log("Reading "+this.rscfilename+" ...")
 			console.log(response)
       self.rawfile = response.data
     }).catch(e=>{
@@ -78,7 +78,8 @@
 	.ol_pane pre {
 		overflow-y: auto;
 	}
-	code {
+	code, pre, code.language-javascript,  pre.language-javascript{
 		box-shadow: none;
+		white-space: pre-wrap;
 	}
 </style>
