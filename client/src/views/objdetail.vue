@@ -27,13 +27,19 @@
             </v-flex>
             <v-flex xs8 align-start my-3>
               <v-layout row wrap>
-                <v-flex xs7>
+                <v-flex xs7 class='overflow-x-hidden' style='text-overflow:ellipsis;'>
                   <span class='body-1'>OBJECT ID</span><br>
-                  <span class='subheading'>{{currentObject['identifier']}}</span>
+                  <v-tooltip top>
+                    <span slot="activator"  class='subheading'>{{currentObject['identifier']}}</span>
+                    <span>{{currentObject['identifier']}}</span>
+                  </v-tooltip>
                 </v-flex>
-                <v-flex xs5>
+                <v-flex xs5 class='overflow-x-hidden' style='text-overflow:ellipsis;'>
                   <span class='body-1'>OBJECT TYPE</span><br>
-                  <span class='subheading'>{{currentObject['@type']}}</span>
+                  <v-tooltip top>
+                    <span slot="activator"  class='subheading'>{{currentObject['@type']}}</span>
+                    <span>{{currentObject['@type']}}</span>
+                  </v-tooltip>
                 </v-flex>
             </v-layout>
             </v-flex>
@@ -205,7 +211,8 @@
         active:[],
         windowHeight:0,
         inEditMode:false,
-        modelObject:{}
+        modelObject:{},
+        // on:false
       }
     }
     , created : function() {
