@@ -3,7 +3,8 @@
 		<div slot="oltitle">
 			<div class='row' >
 				<span class='body-1'>Knowledge Object</span><br>
-					<span class='headline'> {{url}}</span>
+					<span class='headline' v-if='!objactivated'> {{url}}</span>
+					<span class='headline' v-else ><a :href="targeturl" target="_blank" style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span >{{url}}</span></a></span>
 					<span v-if='objpackaged' style="background-color:#0075bc;font-size:1em;color:#fff; padding:1px 4px; margin:0px 3px 5px 30px;">packaged</span>
 					<span v-if='objactivated' style="background-color:#0075bc;font-size:1em;color:#fff; padding:1px 4px; margin:0px 3px 5px 10px;">activated</span>
 			</div>
@@ -13,7 +14,6 @@
 				<v-layout row wrap my-2>
 					<span class='body-1'>The knowledge object has been packaged. Please enter or select the activator to send the KO.</span>
 				</v-layout>
-
 				<v-layout row wrap my-5 >
 					<v-flex xs3>
 						<span class='title'>Activator Site URL</span>
@@ -76,35 +76,12 @@
 				</v-flex>
 				</v-layout>
 			</div>
-			<div id="demo_pane"  v-if='objactivated'>
-
-				<div class='card'>
-					<div class='row' style="padding:10px;">
- 				 		<h2>KO Access at the activator: </h2>
-			 		</div>
-			 		<div class='row' >
-						<h2 style=" padding: 10px 3px;position:relative;text-align:center;">  <a :href="targeturl" target="_blank" style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span >{{targeturl}}</span></a></h2>
- 			 		</div>
-		 		</div>
-
-				<div class='card'>
-					<div class='row' style="padding:10px;">
-					 <h2>KO Demo at KGRID-DEMOS <a href="https://swagger.io/tools/swagger-ui/" target="_blank">Swagger UI</a>  </h2>
-					</div>
+			<div id="demo_pane"  v-if='objactivated' style=" padding: 100px 0px; margin:30px 0px;">
+				<div class='card' style=" padding: 50px 0px;">
 					<div class='row' >
-						<h2 style=" padding: 10px 3px;position:relative;text-align:center;">  <a :href="kgriddemosurl" target="_blank" style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span >{{kgriddemosurl}}</span></a></h2>
+						<h2 style=" padding: 10px 3px;position:relative;text-align:center;">  <a :href="swaggereditorurl" target="_blank" style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span>Go to Swagger Editor to try the KO '{{uri}}'</span></a></h2>
 					</div>
 				</div>
-
-				<div class='card'>
-					<div class='row' style="padding:10px;">
-					 <h2>KO Demo at Online <a href="https://swagger.io/tools/swagger-editor/" target="_blank">Swagger Editor</a> </h2>
-					</div>
-					<div class='row' >
-						<h2 style=" padding: 10px 3px;position:relative;text-align:center;">  <a :href="swaggereditorurl" target="_blank" style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span >{{swaggereditorurl}}</span></a></h2>
-					</div>
-				</div>
-
 			</div>
 		</div>
 		<div slot='buttons' >
@@ -161,12 +138,6 @@
 				self.stage='ready'
 				console.log("reading zip...")
 				self.zipfile=new File([response.data], self.downloadFile, { type: 'application/zip' } )
-				// const url = window.URL.createObjectURL(new Blob([response.data]));
-				// const link = document.createElement('a');
-				// link.href = url;
-				// link.setAttribute('download', 'file.zip'); //or any other extension
-				// document.body.appendChild(link);
-				// link.click();
 				console.log(self.zipfile.size)
 				setTimeout(function(){self.objpackaged =true},500)
 	    }).catch(e=>{
