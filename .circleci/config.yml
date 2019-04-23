@@ -90,11 +90,10 @@ workflows:
   earlymorning:
     triggers:
       - schedule:
-          cron: "0 0 10 * *"
+          cron: "* 10 * * *"
           filters:
             branches:
               only:
                 - master
-
     jobs:
       - build
