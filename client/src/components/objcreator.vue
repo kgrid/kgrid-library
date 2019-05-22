@@ -120,7 +120,7 @@
 			this.stage='processing';
 			setTimeout(function(){
 
-			self.$http.put( self.url+self.arkid,
+			self.$http.post( self.url,
 				formData,
 				{
 					onUploadProgress: function( progressEvent ) {
