@@ -208,7 +208,7 @@
 			}
 		},
 		targeturl:function(){
-			return this.activatorurl+"/"+this.uri
+			return this.activatorurl
 		},
 		swaggereditorurl:function(){
 			return this.demourl+"?url="+this.activatorurl+"/"+this.uri+'/'+this.currentObject.hasServiceSpecification
@@ -227,7 +227,7 @@
 			formData.append('ko', this.zipfile);
 			this.stage='processing';
 			setTimeout(function(){
-				self.$http.put(
+				self.$http.post(
 					self.targeturl,
 					formData,
 					{  headers: {}  }
