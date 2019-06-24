@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import objDetail from './views/objdetail.vue'
+import objDetail from './views/objdetail.vue';
+import objList from './views/objlist.vue';
+
 Vue.use(Router);
 
 export default new Router({
@@ -12,12 +14,17 @@ export default new Router({
       component: Home,
     },
     {
+      path: '/list',
+      name: 'objlist',
+      component: objList,
+    },
+    {
       path: '/object/:uri',
-      name : 'object',
-      component : objDetail,
-      data: function(){
-  	    	console.log("current URI"+ this.$route.params.uri);
-	    }
+      name: 'object',
+      component: objDetail,
+      data() {
+        console.log(`current URI${this.$route.params.uri}`);
+      },
     },
     {
       path: '/about',

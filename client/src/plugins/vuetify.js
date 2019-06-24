@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-import theme from '../theme'
+import Vue from 'vue';
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
+import theme from '../theme';
+
 Vue.use(Vuetify, {
-  theme
-  // : {
+  theme, // : {
   //   primary: '#ee44aa',
   //   secondary: '#424242',
   //   accent: '#82B1FF',
@@ -13,7 +13,7 @@ Vue.use(Vuetify, {
   //   success: '#4CAF50',
   //   warning: '#FFC107'
   // }
-  ,
+
   customProperties: true,
   // iconfont: 'fa',
-})
+});

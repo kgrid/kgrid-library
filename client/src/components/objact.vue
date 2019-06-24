@@ -97,13 +97,11 @@
 			 >
 			 <span>Send KO to Activator</span>
 		 </v-btn>
-
 		</div>
 		<div slot="ol-processing"><span>{{processMsg}}</span></div>
 		<div slot="ol-success"><span>The Knowledge Object has been succesfully deployed. </span></div>
 		<div slot="ol-failure"><span>{{errorMsg}}</span></div>
 		<div slot="ol-warning"><span>Warning !!!</span></div>
-
 	</olpane>
 </template>
 	<script>
@@ -119,40 +117,40 @@
 				activatorurls:[],
 				activatorurl:'',
 				activatorurlselect:'',
-				demourls:[],
 				demourl:'',
-				demourlselect:'',
 				btndisabled:false
 			}
 		},
 	created:function(){
 		var self = this
-		this.demourls=this.$store.getters.getdemourls
 		this.activatorurls=this.$store.getters.getactivatorurls
-		self.stage='processing'
-		setTimeout(function(){
-			self.$http.get(
-				self.htmldownloadlink,
-				{ responseType: 'blob' }
-			).then(response=> {
-				self.stage='ready'
-				console.log("reading zip...")
-				self.zipfile=new File([response.data], self.downloadFile, { type: 'application/zip' } )
-				console.log(self.zipfile.size)
-				setTimeout(function(){self.objpackaged =true},500)
-	    }).catch(e=>{
-				self.stage='error'
-	      console.log(e)
-	    })
-		}, 2500)
+		if(this.currentserver.type=='Activator'){
+			self.stage='ready'
+		}else {
+			self.stage='processing'
+			setTimeout(function(){
+				self.$http.get(
+					self.htmldownloadlink,
+					{ responseType: 'blob' }
+				).then(response=> {
+					self.stage='ready'
+					console.log("reading zip...")
+					self.zipfile=new File([response.data], self.downloadFile, { type: 'application/zip' } )
+					console.log(self.zipfile.size)
+					setTimeout(function(){self.objpackaged =true},500)
+		    }).catch(e=>{
+					self.stage='error'
+		      console.log(e)
+		    })
+			}, 2500)
+		}
 	},
 	mounted:function(){
-		this.demourl=this.demourls[this.defaultdemoindex]
+		this.demourl=this.$store.getters.getdemourl
 		this.activatorurl=this.activatorurls[this.defaultactivatorindex]
-		this.demourlselect=this.demourl
 		this.activatorurlselect=this.activatorurl
-		this.objactivated=false
-		this.objpackaged = false
+		this.objactivated= this.currentserver.type=='Activator'
+		this.objpackaged = this.currentserver.type=='Activator'
 	},
 	components: {
 		olpane
@@ -163,6 +161,9 @@
 		}
 	},
 	computed:{
+		currentserver: function(){
+			return this.$store.getters.getCurrentServer
+		},
 		processMsg:function(){
 			if(this.objpackaged){
 				return 'Deploying KO to the activator ...'
@@ -184,32 +185,20 @@
 			return this.$store.getters.getCurrentKOId
 		},
 		htmldownloadlink: function(){
-			return this.$store.getters.getshelfurl+this.currentKOId.naan+'/'+this.currentKOId.name+'?format=zip'
+			// var url = this.$store.getters.getbaseurl
+			return this.$store.getters.getbaseurl+this.currentKOId.naan+'/'+this.currentKOId.name+'?format=zip'
 		},
 		downloadFile : function() {
 			return this.currentKOId.naan+'-'+this.currentKOId.name+'.zip'
 		},
-		defaultdemoindex: function(){
-				return this.$store.getters.getdefaultdemourlindex
-		},
 		defaultactivatorindex: function(){
 				return this.$store.getters.getdefaultactivatorurlindex
-		},
-		demourlindex: function(){
-			return this.demourls.indexOf(this.demourl)
 		},
 		activatorurlindex: function(){
 			return this.activatorurls.indexOf(this.activatorurl)
 		},
 		uri:function(){
 			return this.currentKOId.naan+'/'+this.currentKOId.name
-		},
-		isDefaultDemo: function(){
-			if(this.demourlindex!=-1){
-				return (this.defaultdemoindex==this.demourlindex)
-			}else {
-				return true
-			}
 		},
 		isDefaultActivator: function(){
 			if(this.activatorurlindex!=-1){
@@ -221,14 +210,8 @@
 		targeturl:function(){
 			return this.activatorurl+"/"+this.uri
 		},
-		kgriddemosurl:function(){
-			// return "https://kgrid-demos.github.io/swaggerui?url="+this.activatorurl+"/"+this.url+'/service'
-			return "https://kgrid-demos.github.io/swaggerui?url="+this.activatorurl+"/"+this.uri+'/'+this.currentObject.hasServiceSpecification
-
-		},
 		swaggereditorurl:function(){
-			// return "https://editor.swagger.io?url="+this.activatorurl+"/"+this.url+'/service'
-			return "https://editor.swagger.io?url="+this.activatorurl+"/"+this.uri+'/'+this.currentObject.hasServiceSpecification
+			return this.demourl+"?url="+this.activatorurl+"/"+this.uri+'/'+this.currentObject.hasServiceSpecification
 		},
 		currentObject: function() {
 			return this.$store.getters.getCurrentObject
@@ -239,51 +222,53 @@
 			this.activatorurl=this.activatorurlselect
 		},
 		sendzip:		function(){
-					var formData = new FormData();
-					var self = this;
-					formData.append('ko', this.zipfile);
-					this.stage='processing';
-					setTimeout(function(){
-					self.$http.put( self.targeturl,
-						formData,
-						{  headers: {}  }
-					).then(function(resp){
-						self.$http.get( self.activatorurl+'/activate').then(function(response){
-							self.stage='success'
-							setTimeout(function(){
-								console.log(resp);
-								self.objactivated =true
-								self.stage='ready'
-								} , 1500)
-						}).catch(function(error){
-							self.stage='error'
-							console.log(err);
-							setTimeout(function(){
-								self.stage='ready'
-							},1500)
-						})
-					})
-					.catch(function(err){
+			var formData = new FormData();
+			var self = this;
+			formData.append('ko', this.zipfile);
+			this.stage='processing';
+			setTimeout(function(){
+				self.$http.put(
+					self.targeturl,
+					formData,
+					{  headers: {}  }
+				).then(function(resp){
+					self.$http.get( self.activatorurl+'/activate').then(function(response){
+						self.stage='success'
+						setTimeout(function(){
+							console.log(resp);
+							self.objactivated =true
+							self.stage='ready'
+						} , 1500)
+					}).catch(function(error){
 						self.stage='error'
-						console.log(error);
+						console.log(err);
 						setTimeout(function(){
 							self.stage='ready'
-						},1500)
-					});}, 1000)
-				},
-				addactivatorentry:function(){
-					this.activatorurls.push(this.activatorurl)
-					this.activatorurlselect=this.activatorurl
-					this.$store.commit('setactivatorurls', this.activatorurls)
-				},
-				deleteactentry:function(i){
-					this.activatorurls.splice(i,1)
-					this.$store.commit('setactivatorurls', this.activatorurls)
-				},
-				setdefaultactivator:function(){
-					console.log(this.activatorurlindex)
-					this.$store.commit("setdefaultactivatorurlindex", this.activatorurlindex)
-				}
+						}, 1500)
+					})
+				})
+				.catch(function(err){
+					self.stage='error'
+					console.log(error);
+					setTimeout(function(){
+						self.stage='ready'
+					},1500)
+				});
+			}, 1000)
+		},
+		addactivatorentry:function(){
+			this.activatorurls.push(this.activatorurl)
+			this.activatorurlselect=this.activatorurl
+			this.$store.commit('setactivatorurls', this.activatorurls)
+		},
+		deleteactentry:function(i){
+			this.activatorurls.splice(i,1)
+			this.$store.commit('setactivatorurls', this.activatorurls)
+		},
+		setdefaultactivator:function(){
+			console.log(this.activatorurlindex)
+			this.$store.commit("setdefaultactivatorurlindex", this.activatorurlindex)
+		}
 	}
 };
 	</script>

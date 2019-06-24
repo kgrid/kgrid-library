@@ -202,7 +202,6 @@
 </template>
 <script>
   import store from '../store.js'
-
   export default {
     name:'objDetail',
     data : function() {
@@ -212,16 +211,11 @@
         windowHeight:0,
         inEditMode:false,
         modelObject:{},
-        // on:false
       }
     }
     , created : function() {
-      var id = this.currentKOId.naan+'-'+this.currentKOId.name
-      if(this.currentKOId.version!=''){
-        id=id+'/'+this.currentKOId.version
-      }
       this.active=[]
-      this.active.push(id)
+      this.active.push(this.currentdashname)
       this.modelObject=JSON.parse(JSON.stringify(this.$store.getters.getCurrentObject))
     }
     , mounted: function() {
@@ -235,8 +229,7 @@
         console.log(to.params.uri)
         store.dispatch('fetchkolist').then(function(){
   				store.commit('setCurrentKO',to.params.uri);
-          var uri = store.getters.getcurrenturl
-          store.dispatch('fetchko', {'uri':uri}).then(function(){
+          store.dispatch('fetchko', {'uri':to.params.uri}).then(function(){
               next()
           }).catch(e=>{
             console.log(e)
@@ -244,7 +237,6 @@
         }).catch(e=>{
           console.log(e)
         })
-
     },
     watch: {
       selected: function(){
@@ -264,6 +256,9 @@
       }
     },
     computed: {
+      baseurl: function() {
+        return this.$store.getters.getbaseurl
+      },
       panelheight: function(){
         return this.windowHeight - 120
       },
@@ -279,7 +274,7 @@
         return this.currentKOId.naan+'-'+this.currentKOId.name+'.zip'
       },
       htmldownloadlink: function(){
-        var link = this.$store.getters.getshelfurl+this.currentKOId.naan+'/'+this.currentKOId.name
+        var link = this.baseurl+this.currentKOId.naan+'/'+this.currentKOId.name
         if(this.currentKOId.version!=''){
           link = link +'/'+this.currentKOId.version
         }
@@ -296,6 +291,13 @@
       },
       currentdashname () {
         var id = this.currentKOId.naan+'-'+this.currentKOId.name
+        if(this.currentKOId.version!=''){
+          id=id+'/'+this.currentKOId.version
+        }
+        return id
+      },
+      currenturi () {
+        var id = this.currentKOId.naan+'/'+this.currentKOId.name
         if(this.currentKOId.version!=''){
           id=id+'/'+this.currentKOId.version
         }
@@ -374,10 +376,9 @@
         return array
       },
       saveMeta: function() {
-        var bundle = this.modelObject
         var self = this
-        var uri = store.getters.getcurrenturl
-        this.$store.dispatch('saveMetadata', JSON.stringify(bundle)).then(function(){
+        var uri = this.currenturi
+        this.$store.dispatch('saveMetadata', JSON.stringify(this.modelObject)).then(function(){
 								self.$store.dispatch('fetchko', {"uri":uri})
                 self.inEditMode =false
 							})
@@ -386,11 +387,7 @@
         this.modelObject = JSON.parse(JSON.stringify(this.currentObject))
         this.inEditMode =false
       },
-      upper: function(s) {
-        return s.toUpperCase()
-      },
-      deployKO: function() {
-      },
+      upper: s => s.toUpperCase(),
       findKey: function(value){
         return _.findKey(this.modelObject, function(item) { return item.indexOf(value) !== -1; })
       },
@@ -404,9 +401,7 @@
             this.active.push(entry)
             break;
           default:
-            // var file = entry.split('/')
-            // var filename=file[file.length-1]
-            var yamlurl = "./shelf/"+this.$store.getters.getcurrenturl+'/../'+entry
+            var yamlurl = this.baseurl+this.currenturi+'/../'+entry
     				this.$store.commit('setkoiourl',yamlurl)
             this.$eventBus.$emit('viewio',yamlurl)
             break;
@@ -432,12 +427,8 @@
       sendtoactivator : function(){
         this.$eventBus.$emit('objactivation','')
       },
-      objlink: function(s){
-        return this.modelObject[s].linkfield
-      },
-      objtitle: function(s){
-        return this.modelObject[s].titlefield
-      }
+      objlink: s => this.modelObject[s].linkfield,
+      objtitle: s => this.modelObject[s].titlefield
     },
     components: {
     }
