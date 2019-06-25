@@ -118,7 +118,8 @@
 				activatorurl:'',
 				activatorurlselect:'',
 				demourl:'',
-				btndisabled:false
+				btndisabled:false,
+				shelfurl:'/'
 			}
 		},
 	created:function(){
@@ -157,7 +158,16 @@
 	},
 	watch: {
 		activatorurlselect () {
-			this.selectactivatorsite()
+			var self = this
+			this.$http.get(this.activatorurlselect+'/kos')
+			.then( () => {
+				self.activatorurl=self.activatorurlselect
+				self.shelfurl ='/kos/'
+			})
+			.catch( (err) => {
+				self.activatorurl=self.activatorurlselect
+				self.shelfurl ='/'
+			})
 		}
 	},
 	computed:{
@@ -208,19 +218,16 @@
 			}
 		},
 		targeturl:function(){
-			return this.activatorurl + "/kos"
+			return this.activatorurl + this.shelfurl
 		},
 		swaggereditorurl:function(){
-			return this.demourl+"?url="+this.activatorurl+"/kos/"+this.uri+'/'+this.currentObject.hasServiceSpecification
+			return this.demourl+"?url="+this.targeturl+this.uri+'/'+this.currentObject.hasServiceSpecification
 		},
 		currentObject: function() {
 			return this.$store.getters.getCurrentObject
 		}
 	},
 	methods: {
-		selectactivatorsite:function(){
-			this.activatorurl=this.activatorurlselect
-		},
 		sendzip:		function(){
 			var formData = new FormData();
 			var self = this;

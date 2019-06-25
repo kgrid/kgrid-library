@@ -34,8 +34,7 @@ export default new Vuex.Store({
     kolist: [],
     paths: {
       default_act_url_index: 0,
-      activator_urls: ['https://monkey-activator.kgrid.org'],
-      currentshelfurl:''
+      activator_urls: ['https://kgrid-activator.herokuapp.com','https://monkey-activator.kgrid.org']
     },
     metaschema: {},
     // New Properties
@@ -145,9 +144,6 @@ export default new Vuex.Store({
     setdefaultactivatorurlindex(state, i) {
       state.paths.default_act_url_index = i;
     },
-    setcurrentshelfurl(state, url){
-      state.paths.currentshelfurl = url
-    },
     // New setters
     setservers(state, list) {
       state.servers = []
@@ -164,7 +160,7 @@ export default new Vuex.Store({
     },
     setdemourl(state, url){
       state.demourl = url
-    }
+    },
   },
   actions: {
     fetchkolist(context) {

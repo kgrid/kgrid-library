@@ -64,6 +64,7 @@ const ops = {
 
 module.exports = {
   assetsDir: 'static',
+  publicPath:'./',
   devServer: {
     proxy: {
       '/user': ops,
@@ -72,6 +73,7 @@ module.exports = {
       '/knowledgeObject': ops,
       '/info': ops,
       '/shelf': ops,
+      '/kos':ops
     },
   },
   chainWebpack: (config) => {

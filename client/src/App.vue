@@ -115,6 +115,7 @@ export default {
       if(self.$store.getters.getservers.length==0){
         self.$store.commit('setcurrentServerIndex',responses[1].data.defaultserverindex);
         self.$http.get("https://demo.kgrid.org/kgrid/serverlist.json").then(function(response){
+        // self.$http.get("./static/json/serverlist.json").then(function(response){
           console.log(response)
           self.$store.commit('setservers',response.data.servers);
           self.servers=JSON.parse(JSON.stringify(response.data.servers))
