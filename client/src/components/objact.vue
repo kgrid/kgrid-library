@@ -208,10 +208,10 @@
 			}
 		},
 		targeturl:function(){
-			return this.activatorurl
+			return this.activatorurl + "/kos"
 		},
 		swaggereditorurl:function(){
-			return this.demourl+"?url="+this.activatorurl+"/"+this.uri+'/'+this.currentObject.hasServiceSpecification
+			return this.demourl+"?url="+this.activatorurl+"/kos/"+this.uri+'/'+this.currentObject.hasServiceSpecification
 		},
 		currentObject: function() {
 			return this.$store.getters.getCurrentObject
