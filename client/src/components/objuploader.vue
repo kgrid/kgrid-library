@@ -1,23 +1,67 @@
 <template>
 	<olpane layerid=0 :stage='stage'>
-		<div slot="oltitle"><h3>Add a Knowledge Object to the Library </h3></div>
+		<div slot="oltitle"><h3>Add Knowledge Objects to the Library </h3></div>
 		<div slot="ol-form" >
-				<div style='margin-top:220px;'>
-					<FilePond ref='fpond' name='ko' allowMultiple instantUpload=false allowRevert=false />
-				</div>
-			</div>
-			<div slot='buttons'>
-					<v-btn
-					 color="#0075bc"
-					 right
-					 bottom
-					 relative
-					 outline
-					 @click='uploadFiles'
-					 >
-					 <span>Deposit Object</span>
-				 </v-btn>
-			</div>
+			<v-layout row wrap>
+				<v-flex xs12>
+					<v-btn-toggle v-model="toggle_one" mandatory>
+           <v-btn flat>
+             <span>ZIP files</span>
+           </v-btn>
+           <v-btn flat>
+             <span>Manifest</span>
+           </v-btn>
+         </v-btn-toggle>
+				</v-flex>
+			</v-layout>
+			<v-layout row wrap>
+				<v-flex xs12 sm12 md12 v-if='toggle_one==0'>
+					<div style='margin-top:220px;'>
+						<FilePond ref='fpond' name='ko' allowMultiple instantUpload=false allowRevert=false />
+					</div>
+				</v-flex>
+				<v-flex xs12 sm12 md12 v-else>
+					<div style='margin-top:120px;'>
+						<input ref="fileInputImport" type="file" name="fileInputImport" @click="value=null" @change="selectFile">
+      			<v-btn color="primary" @click.stop="openFileExplorer()">Choose file</v-btn>
+						<v-textarea
+							box
+							disabled
+							name="manifestcontent"
+							class="manifestcontent"
+							label="Manifest"
+							:value="prettyManifest"
+							auto-grow
+						></v-textarea>
+					</div>
+				</v-flex>
+			</v-layout>
+		</div>
+		<div slot='buttons'>
+				<v-btn
+				 color="#0075bc"
+				 right
+				 bottom
+				 relative
+				 outline
+				 @click='uploadFiles'
+				 v-if='toggle_one==0'
+				 >
+				 <span>Deposit Object</span>
+			 </v-btn>
+			 <v-btn
+				color="#0075bc"
+				right
+				bottom
+				relative
+				outline
+				@click='loadFiles'
+				:disabled='prettyManifest==""'
+				v-else
+				>
+				<span>Load Objects</span>
+			</v-btn>
+		</div>
 		<div slot="ol-processing"><span>Processing...</span></div>
 		<div slot="ol-success"><span>{{filecount}} Knowledge <span v-if='filecount>1'>Objects have</span> <span v-else>Object has</span> been succesfully added to the shelf. </span></div>
 		<div slot="ol-failure"><span>Error in depositing the KO! </span></div>
@@ -34,7 +78,9 @@
 			return {
 				stage:'',
 				requestField:'ko',
-				filecount:0
+				filecount:0,
+				toggle_one:0,
+				importedData:""
 			}
 		},
 	components: {
@@ -45,7 +91,22 @@
 		url:function(){
 			return this.$store.getters.getbaseurl
 		},
+		manifestJson () {
+			var obj = {}
+			try {
+				obj = JSON.parse(this.importedData)
+			} catch (e) {
 
+			}
+			return obj
+		},
+		prettyManifest () {
+			if(Object.keys(this.manifestJson).length==0) {
+				return ''
+			} else {
+				return JSON.stringify(this.manifestJson, null, 4)
+			}
+		}
 	},
 	methods:{
 		uploadFiles () {
@@ -127,11 +188,44 @@
 				next();
 			})
 		},
+		loadFiles: function() {
+			var self = this
+			this.filecount = this.manifestJson.ko.length
+			self.$http({
+					method: 'post',
+					url: self.url,
+					data: self.manifestJson,
+			}).then(()=>{
+								console.log('Done with loading '+self.manifestJson.ko.length+ ' KOs.')
+								self.stage='success'
+								setTimeout(function(){
+									self.$eventBus.$emit('objAdded',{})
+								} , 1200)
+							}).catch((err) => {
+								self.stage='error'
+								console.log(err)
+							}
+						)
+		},
+		openFileExplorer() {
+			this.$refs.fileInputImport.click();
+		},
+		selectFile(e) {
+			const self = this;
+			const file = e.target.files[0];
+			let reader = new FileReader();
+			reader.onload = e => {
+				self.importedData = reader.result;
+				self.dialogImport = true;
+			};
+			reader.readAsText(file);
+			 this.$refs.fileInputImport.value = "";
+		}
 	}
 };
 	</script>
-	<style scoped>
-	form{
+	<style>
+	/* form{
 		display: block;
 		height: 400px;
 		width: 400px;
@@ -140,8 +234,17 @@
 		text-align: center;
 		line-height: 400px;
 		border-radius: 4px;
-	}
-	.alert-box  div span{
+	} */
+	/* .alert-box  div span{
 		color: #fff;
+	} */
+	[type="file"] {
+  	display: none;
+	}
+	.v-textarea textarea[name="manifestcontent"],
+	.manifestcontent textarea
+	 {
+		font-size: 0.7em;
+		line-height:1.5em;
 	}
 	</style>
