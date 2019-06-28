@@ -1,7 +1,7 @@
 <template>
 	<olpane layerid=0 :stage='stage'>
 		<div slot="oltitle"><h3>Add Knowledge Objects to the Library </h3></div>
-		<div slot="ol-form" >
+		<div slot="ol-form">
 			<v-layout row wrap>
 				<v-flex xs12>
 					<v-btn-toggle v-model="toggle_one" mandatory>
@@ -12,18 +12,18 @@
              <span>Manifest</span>
            </v-btn>
          </v-btn-toggle>
+				 <div style="display:inline-block; " v-if='toggle_one==1'>
+				 <input ref="fileInputImport" type="file" name="fileInputImport" @click="value=null" @change="selectFile">
+				 <v-btn color="primary" name='manifestchooser' @click.stop="openFileExplorer()">Choose file</v-btn>
+			 </div>
 				</v-flex>
+
 			</v-layout>
-			<v-layout row wrap>
+			<v-layout row wrap fill-height align-space-around mt-3>
 				<v-flex xs12 sm12 md12 v-if='toggle_one==0'>
-					<div style='margin-top:220px;'>
 						<FilePond ref='fpond' name='ko' allowMultiple instantUpload=false allowRevert=false />
-					</div>
 				</v-flex>
 				<v-flex xs12 sm12 md12 v-else>
-					<div style='margin-top:120px;'>
-						<input ref="fileInputImport" type="file" name="fileInputImport" @click="value=null" @change="selectFile">
-      			<v-btn color="primary" @click.stop="openFileExplorer()">Choose file</v-btn>
 						<v-textarea
 							box
 							disabled
@@ -33,7 +33,6 @@
 							:value="prettyManifest"
 							auto-grow
 						></v-textarea>
-					</div>
 				</v-flex>
 			</v-layout>
 		</div>
@@ -246,5 +245,9 @@
 	 {
 		font-size: 0.7em;
 		line-height:1.5em;
+	}
+	button[name='manifestchooser'] {
+		margin-top: 0px;
+		margin-bottom:0px;
 	}
 	</style>
