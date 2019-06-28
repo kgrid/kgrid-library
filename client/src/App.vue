@@ -137,33 +137,27 @@ export default {
     this.$eventBus.$on("viewio", function(s){
       self.currentOLView="ioviewer";
       self.showOverlay.show=true;
-      document.body.classList.toggle('noscroll', true);
     });
     this.$eventBus.$on("addobj", function(s){
       self.currentOLView="objuploader";
       self.showOverlay.show=true;
-      document.body.classList.toggle('noscroll', true);
     });
     this.$eventBus.$on("objactivation", function(s){
       self.currentOLView="objact";
       self.showOverlay.show=true;
-      document.body.classList.toggle('noscroll', true);
     });
     this.$eventBus.$on('hideOverlay', function (layerid) {
       switch (layerid) {
         case '0':
           self.showOverlay.show = false;
-          document.body.classList.toggle('noscroll', false);
           break;
         case '9':
           self.showOverlay.show = false;
-          document.body.classList.toggle('noscroll', false);
           break;
       }
     });
     this.$eventBus.$on('objAdded', function(obj){
       self.showOverlay.show=false;
-      document.body.classList.toggle('noscroll', false);
       self.$router.go(self.$router.currentRoute)
     });
   },
@@ -172,7 +166,6 @@ export default {
       console.log(this.currentOLView)
       this.showOverlay.show = true;
       this.currentOLView = 'login';
-      document.body.classList.toggle('noscroll', true);
     },
     doneConfig: function(){
       this.dialog = false
@@ -208,6 +201,13 @@ export default {
 };
 </script>
 <style>
+.noscroll {
+  overflow: hidden;
+  height:100%;
+}
+html {
+  height:100%;
+}
 .theme--light.application {
   background: #e6e6e6;
 }

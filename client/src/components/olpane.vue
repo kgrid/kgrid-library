@@ -50,6 +50,10 @@ export default {
 	}
 	, mounted: function(){
 		this.handleresize()
+    document.body.classList.toggle('noscroll', true);
+	}
+	, destroyed: function() {
+    document.body.classList.toggle('noscroll', false);
 	}
 	, computed:{
 		paneclass:function(){

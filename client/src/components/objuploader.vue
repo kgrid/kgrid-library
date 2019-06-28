@@ -189,13 +189,14 @@
 		},
 		loadFiles: function() {
 			var self = this
-			this.filecount = this.manifestJson.ko.length
+			this.filecount = this.manifestJson.manifest.length
+			self.stage='processing'
 			self.$http({
 					method: 'post',
-					url: self.url,
+					url: self.url+'/manifest',
 					data: self.manifestJson,
 			}).then(()=>{
-								console.log('Done with loading '+self.manifestJson.ko.length+ ' KOs.')
+								console.log('Done with loading '+self.manifestJson.manifest.length+ ' KOs.')
 								self.stage='success'
 								setTimeout(function(){
 									self.$eventBus.$emit('objAdded',{})
@@ -224,19 +225,6 @@
 };
 	</script>
 	<style>
-	/* form{
-		display: block;
-		height: 400px;
-		width: 400px;
-		background: #eee;
-		margin: auto;
-		text-align: center;
-		line-height: 400px;
-		border-radius: 4px;
-	} */
-	/* .alert-box  div span{
-		color: #fff;
-	} */
 	[type="file"] {
   	display: none;
 	}
