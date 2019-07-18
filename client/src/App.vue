@@ -93,14 +93,27 @@ export default {
       showOverlay: { show: false },
       currentOLView: 'login',
       dialog: false,
-      servers:[],
+      servers:[
+        {
+          "host": ".",
+          "shelf": "/kos",
+          "type": "Library",
+          "name": ""
+        },
+        {
+          "host": ".",
+          "shelf": "/kos",
+          "type": "Activator",
+          "name": ""
+        }
+      ],
       server:{
         host:".",
         shelf:"/kos",
         type:"Library",
         name:""
       },
-      serverSelection:true
+      serverSelection:false
     };
   },
   created: function(){
@@ -112,25 +125,9 @@ export default {
       self.$store.commit('setmetaschema',responses[0].data);
       self.$store.commit('setdemourl',responses[1].data.demourl);
       self.serverSelection=responses[1].data.serverSelection
-      if(self.$store.getters.getservers.length==0){
-        self.$store.commit('setcurrentServerIndex',responses[1].data.defaultserverindex);
-        self.$http.get("https://demo.kgrid.org/kgrid/serverlist.json").then(function(response){
-        // self.$http.get("./static/json/serverlist.json").then(function(response){
-          console.log(response)
-          self.$store.commit('setservers',response.data.servers);
-          self.servers=JSON.parse(JSON.stringify(response.data.servers))
-          self.server = JSON.parse(JSON.stringify(self.currentserver))
-        }).catch(e=>{
-          self.servers.push(self.server)
-          self.$store.commit('setservers',self.servers);
-          self.$store.commit('setcurrentServerIndex', 0)
-          self.serverSelection=false
-          console.log(e)
-        })
-      } else {
-        console.log("Availabel Servers: "+self.$store.getters.getservers.length)
-        self.servers = self.$store.getters.getservers
-      }
+      self.$store.commit('setservers',self.servers);
+      self.$store.commit('setcurrentServerIndex', 0);
+      self.serverSelection=false;
     }).catch(error=>{
       console.log(error)
     })
