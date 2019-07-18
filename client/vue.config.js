@@ -72,7 +72,6 @@ module.exports = {
       '/logout': ops,
       '/knowledgeObject': ops,
       '/info': ops,
-      '/shelf': ops,
       '/kos':ops
     },
   },

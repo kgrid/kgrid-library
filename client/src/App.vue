@@ -96,7 +96,7 @@ export default {
       servers:[],
       server:{
         host:".",
-        shelf:"/shelf",
+        shelf:"/kos",
         type:"Library",
         name:""
       },
@@ -170,7 +170,7 @@ export default {
     doneConfig: function(){
       this.dialog = false
       if(this.server.type=='Library'){
-        this.server.shelf='/shelf'
+        this.server.shelf='/kos'
       }else {
         this.server.shelf = '/'
       }
