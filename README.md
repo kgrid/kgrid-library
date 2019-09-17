@@ -1,6 +1,7 @@
 # KGrid Library
 [![CircleCI](https://circleci.com/gh/kgrid/kgrid-library.svg?style=svg)](https://circleci.com/gh/kgrid/kgrid-library)
 [![GitHub release](https://img.shields.io/github/release/kgrid/kgrid-library.svg)](https://github.com/kgrid/kgrid-library/releases/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ### Prerequisites
 For building and running the application you need:
