@@ -168,14 +168,23 @@ export default new Vuex.Store({
       var url = server.host+server.shelf
       return api.get(url)
         .then((response) => {
+          console.log('[ACTION] fetch ko list')
           console.log(response)
-          const l = [];
-          Object.keys(response.data).forEach((e) => {
-            const obj = {};
-            obj[e] = response.data[e];
-            l.push(obj);
+          var tempJson = response.data
+          console.log(tempJson)
+          var l={}
+          Object.keys(tempJson).forEach((e) => {
+            if(!l[e]){
+              l[e]=[]
+            }
+            l[e].push(tempJson[e])
           });
-          context.commit('setkolist', l);
+          console.log(l)
+          var list=[]
+          Object.keys(l).forEach((e) => {
+            list.push(l[e])
+          });
+          context.commit('setkolist', list);
         })
         .catch((error) => {
           context.commit('setErrorStatus', 'API_FAIL')

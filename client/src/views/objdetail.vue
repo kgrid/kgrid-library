@@ -401,7 +401,7 @@
             this.active.push(entry)
             break;
           default:
-            var yamlurl = this.baseurl+this.currenturi+'/../'+entry
+            var yamlurl = this.baseurl+this.currenturi+'/'+entry
     				this.$store.commit('setkoiourl',yamlurl)
             this.$eventBus.$emit('viewio',yamlurl)
             break;

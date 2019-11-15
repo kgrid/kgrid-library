@@ -11,7 +11,7 @@
 						<span class='text-uppercase caption font-italic'>Keywords: </span><span v-for='key in keywords' class='body-2 kg-keyentry'>{{key}}</span>
 					</v-flex>
 					<v-flex  xs12 sm12 md12 py-0 class='text-xs-right'>
-						<span class='text-uppercase caption font-italic'>Implementations: </span>
+						<span class='text-uppercase caption font-italic'>Versions: </span>
 						<span v-for='imp in trimmedimplementation' class='body-2 kg-impentry' v-on:click.stop="selected(imp)">{{imp}}</span> <span class='font-italic' v-if='moreimplementation>0'>and {{moreimplementation}} more</span>
 					</v-flex>
 		    </v-layout>
@@ -28,7 +28,11 @@
 		created: function(){},
 		computed : {
 			keywords:function(){
-				return this.object.keywords.split(" ")
+				if(Array.isArray(this.object.keywords)){
+					return this.object.keywords
+				}else {
+					return this.object.keywords.split(" ")
+				}
 			},
 			implementation:function(){
 				if(Array.isArray(this.object.hasImplementation)){

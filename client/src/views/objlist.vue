@@ -308,7 +308,13 @@
 																.search(fString))!=-1));
 													}
 													if (self.searchsources.indexOf('Keywords')!=-1&&field.keywords) {
-														filterResult = (filterResult || ((field.keywords
+                            var kw = ""
+                            if(Array.isArray(field.keywords)){
+                              kw=field.keywords.join(',')
+                            }else {
+                              kw=field.keywords
+                            }
+														filterResult = (filterResult || ((kw
 																.search(fString))!=-1));													}
 													if (self.searchsources.indexOf('Description')!=-1&&field.description) {
 														filterResult = (filterResult || ((field.description
