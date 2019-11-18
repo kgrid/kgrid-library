@@ -14,11 +14,11 @@ export default {
 	props:['list'],
 	data : function() {
 		return {
-			rawlist:[]
+			// rawlist:[]
 	  }
 	}
 	, created : function() {
-		this.rawlist=this.$store.getters.getobjectlist;
+		// this.rawlist=this.$store.getters.getobjectlist;
 	}
 	, computed : {
 		listSize : function() {

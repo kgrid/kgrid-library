@@ -88,7 +88,7 @@
         <v-container>
           <v-layout>
             <v-flex>
-              <KoList :list='orderedList'/>
+              <KoList :list='koIndexer'/>
             </v-flex>
           </v-layout>
         </v-container>
@@ -175,7 +175,6 @@
         fab:false,
         fling: false,
         hover: false,
-        tabs: null,
         top: false,
         right: true,
         bottom: true,
@@ -188,7 +187,6 @@
         enddate: new Date().toISOString().substr(0, 10),
         menu1: false,
         menu2: false,
-        landscape: false,
         reactive: false,
         searchinput:'',
         rawlist:[],
@@ -229,6 +227,22 @@
         }
     }
     , computed: {
+        koIndexer:function(){
+          var indexer = {}
+          this.orderedList.forEach(function(e){
+            var id = e.identifier
+            if(!indexer[id]){
+              indexer[id]=[]
+            }
+            indexer[id].push(e)
+          })
+          for(var key in indexer){
+            if(indexer[key].length>1){
+              indexer[key] = _.orderBy(indexer[key], 'version','desc')
+            }
+          }
+          return indexer
+        },
         panelheight: function(){
           return this.windowHeight - 120
         },
