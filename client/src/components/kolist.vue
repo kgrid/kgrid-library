@@ -2,7 +2,7 @@
 	<v-container grid-list-xl>
 		<v-layout row wrap justify-center>
 			<v-flex v-for='(object,index) in list' v-bind:key='index' xs12 >
-				<kotile :object='Object.values(object)[0]' :listsize='listSize' :tileindex='index' ></kotile>
+				<kotile :object='object' :listsize='listSize' :tileindex='index' ></kotile>
 			</v-flex>
 		</v-layout>
 	</v-container>

@@ -26,6 +26,7 @@ export default new Vuex.Store({
   state: {
     searchsources: ['Title'],
     filterStrings: [],
+    newfilterStrings: [],
     kgselect: { text: 'Title - A to Z', v: 'title', order: 'asc' },
     currentKOId: { naan: '', name: '', version: '' },
     currentKO: {},
@@ -65,6 +66,7 @@ export default new Vuex.Store({
     },
     getcheck: state => state.filtercheck,
     getfilters: state => state.filterStrings,
+    getnewfilters: state => state.newfilterStrings,
     getSortKey: state => (state.kgselect.value),
     getSortOrder: state => (state.kgselect.order),
     getSearchSources: state => state.searchsources,
@@ -127,8 +129,23 @@ export default new Vuex.Store({
     setkgselect(state, obj) {
       Object.assign(state.kgselect, obj);
     },
-    setfilterstrings(state, arr) {
+    // setoldfilterstrings(state, arr) {
+    //   state.oldfilterStrings = arr;
+    // },
+    setFilterStrings(state, arr) {
       state.filterStrings = arr;
+    },
+    addFilterString(state, s) {
+      var s_low=s.toLowerCase()
+      if(state.filterStrings.indexOf(s_low)==-1){
+        state.filterStrings.push(s_low)
+      }
+    },
+    removeFilterString(state, s) {
+      var i = state.filterStrings.indexOf(s)
+      if(i!=-1){
+        state.filterStrings.splice(i,1)
+      }
     },
     setSearchSources(state, arr) {
       state.searchsources = arr;
@@ -170,21 +187,23 @@ export default new Vuex.Store({
         .then((response) => {
           console.log('[ACTION] fetch ko list')
           console.log(response)
-          var tempJson = response.data
-          console.log(tempJson)
-          var l={}
-          Object.keys(tempJson).forEach((e) => {
-            if(!l[e]){
-              l[e]=[]
-            }
-            l[e].push(tempJson[e])
-          });
-          console.log(l)
-          var list=[]
-          Object.keys(l).forEach((e) => {
-            list.push(l[e])
-          });
-          context.commit('setkolist', list);
+          // var tempJson = response.data
+          // console.log(tempJson)
+          // var l={}
+          // tempJson.forEach((e) => {
+          //   var k = e["@id"]
+          //   if(!l[k]){
+          //     l[k]=[]
+          //   }
+          //   l[k].push(e)
+          // });
+          //
+          // var list=[]
+          // Object.keys(l).forEach((e) => {
+          //   list.push(l[e])
+          // });
+          // context.commit('setkolist', list);
+          context.commit('setkolist', response.data);
         })
         .catch((error) => {
           context.commit('setErrorStatus', 'API_FAIL')

@@ -9,7 +9,7 @@
           @keyup.enter='addFilterString'
         ></v-text-field>
         <div>
-          <v-chip close v-for='s in filterStrings' @input="removefilterstring(s)" key='s.id'>{{s.title}}</v-chip>
+          <v-chip close v-for='s in filterStrings' @input="removefilterstring(s)" :key='s'>{{s}}</v-chip>
           <v-chip v-if='filterStrings.length>0' @click="removeAllFilters">Remove All</v-chip>
         </div>
         <v-expansion-panel popout >
@@ -29,7 +29,7 @@
             </v-layout>
           </v-expansion-panel-content>
         </v-expansion-panel>
-        <v-expansion-panel popout my-3 >
+        <!-- <v-expansion-panel popout my-3 >
           <v-expansion-panel-content
             :key="filter"
           >
@@ -82,7 +82,7 @@
             </v-flex>
           </v-layout>
           </v-expansion-panel-content>
-        </v-expansion-panel>
+        </v-expansion-panel> -->
       </v-flex>
       <v-flex xs8 md8 px-0>
         <v-container>
@@ -168,7 +168,7 @@
   import KoList from '../components/kolist'
   import store from '../store.js'
   export default {
-    name:'Home',
+    name:'List',
     data : function() {
       return {
         direction: 'top',
@@ -181,7 +181,7 @@
         bottom: true,
         left: false,
         transition: 'slide-y-reverse-transition',
-        searchsources: ['Title'],
+        searchsources: ['Title', 'Keywords'],
         radios: 'none',
         picker: new Date().toISOString().substr(0, 10),
         startdate: new Date().toISOString().substr(0, 10),
@@ -194,7 +194,7 @@
         rawlist:[],
         search:'',
         filter:'',
-  			filterStrings:[],
+  			// filterStrings:[],
         items:['Title - A to Z','Title - Z to A','Object ID - A to Z','Object ID -Z to A'],
         optionlist:[
             {'text':'Title - A to Z','v':'title','order':'asc'},
@@ -210,6 +210,7 @@
       }
     }
     , created : function() {
+      var self= this
       this.rawlist=this.$store.getters.getobjectlist;
     }
     ,	beforeRouteEnter (to, from, next) {
@@ -250,9 +251,9 @@
           })
           switch(this.sortSelect.v) {
             case 'uri':
-              return _.orderBy(l, [i=>Object.values(i)[0].identifier.toLowerCase()], this.sortSelect.order);
+              return _.orderBy(l, 'identifier', this.sortSelect.order);
             case 'title':
-              return _.orderBy(l, [i=>Object.values(i)[0].title.toLowerCase()], this.sortSelect.order);
+              return _.orderBy(l, 'title', this.sortSelect.order);
             default:
               return l;
           }
@@ -289,62 +290,48 @@
     			var self = this;
     			var list = this.rawlist;
 			    return list.filter(function(e){
-                  var field= Object.values(e)[0]
-									var customFilter = true;
-									var filterString = {
-											id : 0,
-											title : ''
-									};
-									if (self.filterStrings.length > 0) {
-											for (var i = 0; i < self.filterStrings.length; i++) {
-												var filterResult = false;
-												filterString = self.filterStrings[i];
-												if (filterString.title === '') {
-													filterResult = true;
-												} else {
-													var fString = new RegExp(filterString.title,'i');
-													if (self.searchsources.indexOf('Title')!=-1&&field.title) {
-														filterResult = (filterResult || ((field.title
-																.search(fString))!=-1));
-													}
-													if (self.searchsources.indexOf('Keywords')!=-1&&field.keywords) {
-                            var kw = ""
-                            if(Array.isArray(field.keywords)){
-                              kw=field.keywords.join(',')
-                            }else {
-                              kw=field.keywords
-                            }
-														filterResult = (filterResult || ((kw
-																.search(fString))!=-1));													}
-													if (self.searchsources.indexOf('Description')!=-1&&field.description) {
-														filterResult = (filterResult || ((field.description
-																.search(fString))!=-1));
-													}
-												}
-													customFilter = customFilter	&& filterResult;
-											}
-										}
-										return customFilter;
-  			});
-  		},
+    				var customFilter = true;
+    				if (self.filterStrings.length > 0) {
+    						self.filterStrings.forEach(function(s) {
+    							var filterResult = false;
+    							if (s === '') {
+    								filterResult = true;
+    							} else {
+    								var fString = new RegExp(s,'i');
+    								if (self.searchsources.indexOf('Title')!=-1&&e.title) {
+    									filterResult = (filterResult || ((e.title
+    											.search(fString))!=-1));
+    								}
+    								if (self.searchsources.indexOf('Keywords')!=-1&&e.keywords) {
+                      var kw = ""
+                      if(Array.isArray(e.keywords)){
+                        kw=e.keywords.join(',')
+                      }else {
+                        kw=e.keywords
+                      }
+    									filterResult = (filterResult || ((kw
+    											.search(fString))!=-1));													}
+    								if (self.searchsources.indexOf('Description')!=-1&&e.description) {
+    									filterResult = (filterResult || ((e.description
+    											.search(fString))!=-1));
+    								}
+    							}
+    								customFilter = customFilter	&& filterResult;
+    						})
+    					}
+    					return customFilter;
+      			});
+  		    },
+          filterStrings: function() {
+            return this.$store.getters.getfilters;
+          }
     }
     , components: {
       KoList
     },
     mounted :function(){
-      var self = this;
       this.sortSelect = this.$store.getters.getKGSelect
-
-      this.filterStrings.splice(0);
-      var arr = this.$store.getters.getfilters;
-      arr.forEach(function(e){
-         self.filterStrings.push(e)
-      })
-      this.searchsources.splice(0)
-      var sources = this.$store.getters.getSearchSources
-      sources.forEach(function(e){
-         self.searchsources.push(e)
-      })
+      this.searchsources= this.$store.getters.getSearchSources
     },
     watch: {
       searchsources:{
@@ -376,27 +363,17 @@
       },
       addFilterString () {
         var value = this.searchinput && this.searchinput.trim();
-        if (!value) {
-          return;
-        }
-        var uid=this.filterStrings.length;
-        this.filterStrings.push({
-          id: uid++,
-          title: value,
-        });
+        if (!value) {      return;      }
         this.searchinput = '';
-        this.$store.commit('setfilterstrings', this.filterStrings);
+        this.$store.commit('addFilterString', value);
       },
       removefilterstring: function(s) {
-        this.filterStrings.splice(this.filterStrings.indexOf(s),1)
-        this.$store.commit('setfilterstrings', this.filterStrings);
+        this.$store.commit('removeFilterString', s);
       },
       removeAllFilters () {
-        this.filterStrings.splice(0, this.filterStrings.length)
-        this.$store.commit('setfilterstrings', this.filterStrings);
+        this.$store.commit('setFilterStrings', []);
       },
       backtoTop () {
-        console.log('Back to Top...')
         this.$vuetify.goTo(0, this.options)
         this.offsetTop = 0
       }
