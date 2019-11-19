@@ -98,21 +98,28 @@ export default new Vuex.Store({
     setkoiourl(state, uri) {
       state.currentIOFileurl = uri;
     },
-    setCurrentKO(state, id) {
-      const s = id.replace('ark:/', '').split(/[/-]+/);
-      state.currentKOId.naan = s[0];
-      state.currentKOId.name = s[1];
-      state.currentKOId.version = s[2] || '';
-      const arkid = `ark:/${s[0]}/${s[1]}`;
-      state.kolist.forEach((e) => {
-        const key = Object.keys(e)[0];
-        if (key === arkid) {
-          console.log(arkid);
-          state.currentKO = Object.values(e)[0];
-        }
-      });
+    // setCurrentKO(state, id) {
+    //   const s = id.replace('ark:/', '').split(/[/-]+/);
+    //   state.currentKOId.naan = s[0];
+    //   state.currentKOId.name = s[1];
+    //   state.currentKOId.version = s[2] || '';
+    //   const arkid = `ark:/${s[0]}/${s[1]}`;
+    //   state.kolist.forEach((e) => {
+    //     const key = Object.keys(e)[0];
+    //     if (key === arkid) {
+    //       console.log(arkid);
+    //       state.currentKO = Object.values(e)[0];
+    //     }
+    //   });
+    // },
+    setCurrentKO(state, ko) {
+      state.currentKO = ko;
     },
     setCurrentObject(state, obj) {
+      const s = obj.identifier.replace('ark:/', '').split(/[/-]+/);
+      state.currentKOId.naan = s[0];
+      state.currentKOId.name = s[1];
+      state.currentKOId.version = obj.version;
       state.currentObject = obj;
     },
     setkolist(state, list) {

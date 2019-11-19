@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
     <v-layout row >
-      <v-flex xs2 px-1 py-5 class='treepanel' :style='panelStyle' offset-xs2>
-        <v-treeview
+      <v-flex xs2 px-1 py-4 class='treepanel' :style='panelStyle' offset-xs2>
+        <!-- <v-treeview
           :active.sync='active'
           v-model="tree"
           :items="items"
@@ -12,11 +12,16 @@
           open-all
           expand-icon=""
         >
-        </v-treeview>
+        </v-treeview> -->
+        <v-flex xs12 px-2 class='subheading'>{{currentObject.identifier}}</v-flex>
+        <v-flex xs12 mx-1 px-3 py-1 my-1 v-for='ver in versionList' class='subheading' :class='{current:isCurrent(ver)}'>
+          <span @click='setVersion(ver)'>{{ver}}</span>
+        </v-flex>
       </v-flex>
       <v-flex xs6 class='displaypanel' :style='panelStyle'>
         <v-container class='white' fluid>
           <v-layout row wrap my-2 >
+
             <v-flex xs8 offset-xs4 class='text-xs-right'>
                  <span class='caption'>CONTEXT </span><a :href="currentObject['@context'][0]" target='_blank'><span class='body-2'>{{currentObject['@context'][0]}}</span></a>
             </v-flex>
@@ -35,9 +40,9 @@
                   </v-tooltip>
                 </v-flex>
                 <v-flex xs5 class='overflow-x-hidden' style='text-overflow:ellipsis;'>
-                  <span class='body-1'>OBJECT TYPE</span><br>
+                  <span class='body-1'>OBJECT VERSION</span><br>
                   <v-tooltip top>
-                    <span slot="activator"  class='subheading'>{{currentObject['@type']}}</span>
+                    <span slot="activator"  class='subheading'>{{currentObject['version']}}</span>
                     <span>{{currentObject['@type']}}</span>
                   </v-tooltip>
                 </v-flex>
@@ -224,20 +229,20 @@
       window.addEventListener('resize', () => {
           self.windowHeight = window.innerHeight
         });
-    }
-    ,	beforeRouteEnter (to, from, next) {
-        console.log(to.params.uri)
-        store.dispatch('fetchkolist').then(function(){
-  				store.commit('setCurrentKO',to.params.uri);
-          store.dispatch('fetchko', {'uri':to.params.uri}).then(function(){
-              next()
-          }).catch(e=>{
-            console.log(e)
-          })
-        }).catch(e=>{
-          console.log(e)
-        })
     },
+    // ,	beforeRouteEnter (to, from, next) {
+    //     console.log(to.params.uri)
+    //     // store.dispatch('fetchkolist').then(function(){
+  	// 		// 	store.commit('setCurrentKO',to.params.uri);
+    //     //   store.dispatch('fetchko', {'uri':to.params.uri}).then(function(){
+    //     //       next()
+    //     //   }).catch(e=>{
+    //     //     console.log(e)
+    //     //   })
+    //     // }).catch(e=>{
+    //     //   console.log(e)
+    //     // })
+    // },
     watch: {
       selected: function(){
         console.log("Selected a new one:"+this.selected);
@@ -246,16 +251,24 @@
         this.$store.dispatch('fetchko', {'uri':uri});
         this.$eventBus.$emit("objectSelected", uri);
       },
-      active: function() {
-        if(this.active.length==0){
-          this.active.push(this.currentdashname)
-        }
-      },
+      // active: function() {
+      //   if(this.active.length==0){
+      //     this.active.push(this.currentdashname)
+      //   }
+      // },
       currentObject () {
         this.modelObject=JSON.parse(JSON.stringify(this.$store.getters.getCurrentObject))
       }
     },
     computed: {
+      versionList: function(){
+        var vl = []
+        this.currentKO.forEach(function(e){
+          vl.push(e.version)
+        })
+        return vl
+      },
+
       baseurl: function() {
         return this.$store.getters.getbaseurl
       },
@@ -271,7 +284,7 @@
         return this.$store.getters.getCurrentKOId
       },
       downloadFile : function() {
-        return this.currentKOId.naan+'-'+this.currentKOId.name+'.zip'
+        return this.currentKOId.naan+'-'+this.currentKOId.name+'-'+this.currentKOId.version+'.zip'
       },
       htmldownloadlink: function(){
         var link = this.baseurl+this.currentKOId.naan+'/'+this.currentKOId.name
@@ -349,6 +362,14 @@
           bool = (key=='@id'||key=='@type'||key=='@context'||key=='identifier'||key=='hasImplementation'||key=='hasServiceSpecification'||key=='hasDeploymentSpecification'||key=='hasPayload')
         }
         return bool
+      },
+      setVersion: function(ver){
+        console.log(ver)
+        var vIndex = this.versionList.indexOf(ver)
+        this.$store.commit('setCurrentObject', this.currentKO[vIndex])
+      },
+      isCurrent: function(ver){
+        return ver == this.currentObject.version
       },
       displayMeta: function(key) {
         var bool = true;
@@ -483,8 +504,20 @@
   border: 1px solid #0075bc;
   font-size: 0.8rem;
 }
+.treepanel span {
+  color: #0075bc;
+  cursor: pointer;
+}
+.treepanel .current span {
+  color: #000000de;
+  cursor: default;
+}
+.treepanel .current {
+  border-left: 2px solid #0075bc;
+}
 .theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
   color: #333;
+
 }
 
 .theme--light.v-input--is-disabled.v-text-field>.v-input__control>.v-input__slot:before {
