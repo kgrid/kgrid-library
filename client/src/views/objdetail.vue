@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout row >
-      <v-flex xs2 px-1 py-4 class='treepanel' :style='panelStyle' offset-xs2>
+      <v-flex xs2 px-2 py-5 class='treepanel' :style='panelStyle' offset-xs2>
         <!-- <v-treeview
           :active.sync='active'
           v-model="tree"
@@ -13,8 +13,8 @@
           expand-icon=""
         >
         </v-treeview> -->
-        <v-flex xs12 px-2 class='subheading'>{{currentObject.identifier}}</v-flex>
-        <v-flex xs12 mx-1 px-3 py-1 my-1 v-for='ver in versionList' class='subheading' :class='{current:isCurrent(ver)}'>
+        <v-flex xs12 px-2 py-3 my-3 class='subheading'>{{currentObject.identifier}}</v-flex>
+        <v-flex xs12 mx-1 px-3 py-2 my-2 v-for='ver in versionList' class='subheading' :class='{current:isCurrent(ver)}'>
           <span @click='setVersion(ver)'>{{ver}}</span>
         </v-flex>
       </v-flex>
@@ -75,7 +75,7 @@
                   </v-btn>
                   <span>EDIT</span>
                 </v-tooltip>
-                <v-tooltip bottom content-class='actioniconcap' v-if='isImplementation'>
+                <v-tooltip bottom content-class='actioniconcap'>
                   <v-btn outline slot="activator" small fab color="#0075bc" :disabled='inEditMode' @click.stop='sendtoactivator'>
                       <v-icon>play_arrow</v-icon>
                   </v-btn>
@@ -359,7 +359,7 @@
       isDisabled: function(key) {
         var bool = true;
         if(this.inEditMode){
-          bool = (key=='@id'||key=='@type'||key=='@context'||key=='identifier'||key=='hasImplementation'||key=='hasServiceSpecification'||key=='hasDeploymentSpecification'||key=='hasPayload')
+          bool = (key=='@id'||key=='@type'||key=='@context'||key=='identifier'||key=='hasServiceSpecification'||key=='hasDeploymentSpecification'||key=='hasPayload')
         }
         return bool
       },

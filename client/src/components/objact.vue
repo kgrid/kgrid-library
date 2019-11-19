@@ -196,10 +196,10 @@
 		},
 		htmldownloadlink: function(){
 			// var url = this.$store.getters.getbaseurl
-			return this.$store.getters.getbaseurl+this.currentKOId.naan+'/'+this.currentKOId.name+'?format=zip'
+			return this.$store.getters.getbaseurl+this.currentKOId.naan+'/'+this.currentKOId.name+'/'+this.currentKOId.version+'?format=zip'
 		},
 		downloadFile : function() {
-			return this.currentKOId.naan+'-'+this.currentKOId.name+'.zip'
+			return this.currentKOId.naan+'-'+this.currentKOId.name+'-'+this.currentKOId.version+'.zip'
 		},
 		defaultactivatorindex: function(){
 				return this.$store.getters.getdefaultactivatorurlindex
@@ -221,7 +221,7 @@
 			return this.activatorurl + this.shelfurl
 		},
 		swaggereditorurl:function(){
-			return this.demourl+"?url="+this.targeturl+this.uri+'/'+this.currentObject.hasServiceSpecification
+			return this.demourl+"?url="+this.targeturl+this.uri+'/service'
 		},
 		currentObject: function() {
 			return this.$store.getters.getCurrentObject
