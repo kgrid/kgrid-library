@@ -46,18 +46,6 @@
                 </v-btn>
                 <span>DOWNLOAD</span>
               </v-tooltip>
-              <!-- <v-tooltip bottom content-class='actioniconcap'>
-                <v-btn outline slot="activator" small fab color="#0075bc" :disabled='inEditMode'>
-                    <v-icon>assignment</v-icon>
-                </v-btn>
-                <span>COPY URL</span>
-              </v-tooltip> -->
-              <!-- <v-tooltip bottom content-class='actioniconcap'>
-                <v-btn outline slot="activator" small fab color="#0075bc" :disabled='inEditMode'>
-                    <v-icon>delete</v-icon>
-                </v-btn>
-                <span>DELETE</span>
-              </v-tooltip> -->
               <v-tooltip bottom content-class='actioniconcap'>
                 <v-btn outline slot="activator" small fab color="#0075bc" :disabled='inEditMode' @click.stop='inEditMode=true'>
                     <v-icon>edit</v-icon>
@@ -304,7 +292,7 @@
         console.log(ver)
         var vIndex = this.versionList.indexOf(ver)
         this.$store.commit('setCurrentObject', this.currentKO[vIndex])
-        this.$eventBus.$emit("objectSelected",  this.currentKO[vIndex]);
+        this.$eventBus.$emit("objectSelected",  this.currenturi);
       },
       isCurrent: function(ver){
         return ver == this.currentObject.version

@@ -31,7 +31,7 @@
       if(!this.hasError){
         setTimeout(function(){
           self.$router.push('/list')
-        }, 1500)
+        }, 500)
       }
     },
     computed: {

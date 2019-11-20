@@ -52,7 +52,7 @@
 				if(this.$DEBUG) console.log(s);
 				this.$store.commit('setCurrentKO',this.object);
 				this.$store.commit('setCurrentObject',s)
-        this.$eventBus.$emit("objectSelected", s);
+        this.$eventBus.$emit("objectSelected", this.object[this.versionIndex].identifier.replace('ark:/','')+'/'+this.versionList[this.versionIndex]);
 				return false;
 			},
 			clickonkeyword: function(s){

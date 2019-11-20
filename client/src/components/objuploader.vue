@@ -219,7 +219,7 @@
 				self.dialogImport = true;
 			};
 			reader.readAsText(file);
-			 this.$refs.fileInputImport.value = "";
+			  this.$refs.fileInputImport.value = "";
 		}
 	}
 };

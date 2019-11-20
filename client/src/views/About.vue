@@ -49,9 +49,6 @@ export default {
     buildtime : function(){
       return this.$store.getters.getBuildTime
     },
-    // gitid : function(){
-    //   return this.$store.getters.getGitID;
-    // },
     isAdmin: function(){
       return this.$store.getters.isAdmin;
     }

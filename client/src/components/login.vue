@@ -53,18 +53,6 @@ export default {
 		this.$refs.email.focus()
 	},
   methods: {
-	  // validateLoginForm(e) {
-    //       this.$validator.validateAll('loginform');
-    //       if (!this.errors.any('loginform')) {
-	  //           this.userlogin()
-	  //       }
-    //   },
-	  // validateBeforeSubmit(e) {
-	  //       this.$validator.validateAll();
-	  //       if (!this.errors.any()) {
-	  //           this.userlogin()
-	  //       }
-	  //     },
 		setButton: function(div, bool){
 			this.status[div]=bool;
 		},

@@ -11,7 +11,7 @@
 		</div>
 	</olpane>
 </template>
-	<script>
+<script>
 	import olpane from '../components/olpane';
 	import Prism from 'vue-prism-component'
 	export default {
@@ -22,51 +22,50 @@
 				rawfile:''
 			}
 		},
-	created:function(){
-		var self = this
-		this.$http.get(this.url).then(response=> {
-			console.log("Reading "+this.rscfilename+" ...")
-			console.log(response)
-      self.rawfile = response.data
-    }).catch(e=>{
-      console.log(e)
-    })
-	},
-	mounted:function(){
-	},
-	components: {
-		olpane,
-		Prism
-	},
-	computed:{
-		url:function(){
-			return this.$store.getters.getkoiourl
+		created:function(){
+			var self = this
+			this.$http.get(this.url).then(response=> {
+				console.log("Reading "+this.rscfilename+" ...")
+	      self.rawfile = response.data
+	    }).catch(e=>{
+	      console.log(e)
+	    })
 		},
-		urlarray: function(){
-			return this.url.split('/')
+		mounted:function(){
 		},
-		rscfilename:function(){
-			return this.urlarray[this.urlarray.length-1]
+		components: {
+			olpane,
+			Prism
 		},
-		uri:function(){
-			return this.$store.getters.getcurrenturl
-		},
-		filetype: function(){
-			var file = this.rscfilename.split('.')
-			var ext = file[file.length-1]
-			switch (ext) {
-				case 'yaml':
-					return 'yaml'
-				case 'js':
-					return 'javascript'
-				default:
-					return 'yaml'
+		computed:{
+			url:function(){
+				return this.$store.getters.getkoiourl
+			},
+			urlarray: function(){
+				return this.url.split('/')
+			},
+			rscfilename:function(){
+				return this.urlarray[this.urlarray.length-1]
+			},
+			uri:function(){
+				return this.$store.getters.getcurrenturl
+			},
+			filetype: function(){
+				var file = this.rscfilename.split('.')
+				var ext = file[file.length-1]
+				switch (ext) {
+					case 'yaml':
+						return 'yaml'
+					case 'js':
+						return 'javascript'
+					default:
+						return 'yaml'
+				}
 			}
+		},
+		methods:{
 		}
-	},
-	methods:{
-	}
-};
+	};
 
 	</script>
 	<style >

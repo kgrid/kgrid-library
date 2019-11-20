@@ -22,67 +22,13 @@
               <v-checkbox v-model="searchsources" label="Title" hide-details value="Title" height='21px'></v-checkbox>
               <v-checkbox v-model="searchsources" label="Description" hide-details value="Description" height='21px'></v-checkbox>
               <v-checkbox v-model="searchsources" label="Keywords" hide-details value="Keywords"></v-checkbox>
-              <v-checkbox v-model="searchsources" label="Owners"  hide-details disabled value="Owners"></v-checkbox>
-              <v-checkbox v-model="searchsources" label="Contributors" hide-details disabled value="Contributors"></v-checkbox>
-              <v-checkbox v-model="searchsources" label="Object ID"  hide-details disabled value="uri"></v-checkbox>
+              <!-- <v-checkbox v-model="searchsources" label="Owners"  hide-details disabled value="Owners"></v-checkbox>
+              <v-checkbox v-model="searchsources" label="Contributors" hide-details disabled value="Contributors"></v-checkbox> -->
+              <v-checkbox v-model="searchsources" label="Object ID"  hide-details value="ID"></v-checkbox>
             </v-flex>
             </v-layout>
           </v-expansion-panel-content>
         </v-expansion-panel>
-        <!-- <v-expansion-panel popout my-3 >
-          <v-expansion-panel-content
-            :key="filter"
-          >
-            <div slot="header">Filter By Dates</div>
-            <v-layout row wrap justify-center>
-              <v-flex xs10>
-              <v-radio-group v-model="radios" :mandatory="false">
-                <v-radio label="None" value="none"></v-radio>
-                <v-radio label="Last Updated" disabled value="modifieddate"></v-radio>
-                <v-radio label="Created" disabled value="createdate"></v-radio>
-              </v-radio-group>
-              <div v-if='radios!="none"'>
-                <v-menu
-                  :close-on-content-click="false"
-                  v-model="menu1"
-                  :nudge-right="40"
-                  lazy
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <v-text-field
-                    slot="activator"
-                    v-model="startdate"
-                    label="Start Date"
-                    append-icon="event"
-                    readonly
-                  ></v-text-field>
-                  <v-date-picker v-model="startdate" @input="menu1 = false"></v-date-picker>
-                </v-menu>
-                <v-menu
-                  :close-on-content-click="false"
-                  v-model="menu2"
-                  :nudge-right="40"
-                  lazy
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <v-text-field
-                    slot="activator"
-                    v-model="enddate"
-                    label="End Date"
-                    append-icon="event"
-                    readonly
-                  ></v-text-field>
-                  <v-date-picker v-model="enddate" @input="menu2 = false"></v-date-picker>
-                </v-menu>
-              </div>
-            </v-flex>
-          </v-layout>
-          </v-expansion-panel-content>
-        </v-expansion-panel> -->
       </v-flex>
       <v-flex xs8 md8 px-0>
         <v-container>
@@ -329,6 +275,10 @@
     									filterResult = (filterResult || ((e.description
     											.search(fString))!=-1));
     								}
+                    if (self.searchsources.indexOf('ID')!=-1&&e.identifier) {
+                      filterResult = (filterResult || ((e.identifier
+                          .search(fString))!=-1));
+                    }
     							}
     								customFilter = customFilter	&& filterResult;
     						})

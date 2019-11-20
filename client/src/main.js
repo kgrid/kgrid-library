@@ -28,7 +28,7 @@ new Vue({
   store,
   created() {
     this.$eventBus.$on('objectSelected', (t) => {
-      router.push({ name: 'object', params: { uri: t.identifier.replace('ark:/','')+'/'+t.version } });
+      router.push({ name: 'object', params: { uri: t } });
     });
   },
   render: h => h(App),
