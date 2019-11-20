@@ -1,29 +1,18 @@
 <template>
   <v-container fluid>
     <v-layout row >
-      <v-flex xs2 px-2 py-5 class='treepanel' :style='panelStyle' offset-xs2>
-        <!-- <v-treeview
-          :active.sync='active'
-          v-model="tree"
-          :items="items"
-          activatable
-          hoverable
-          item-key="name"
-          open-all
-          expand-icon=""
-        >
-        </v-treeview> -->
+      <v-flex xs2 pl-2 py-5 class='treepanel' :style='panelStyle' offset-xs2>
         <v-flex xs12 px-2 py-3 my-3 class='subheading'>{{currentObject.identifier}}</v-flex>
-        <v-flex xs12 mx-1 px-3 py-2 my-2 v-for='ver in versionList' class='subheading' :class='{current:isCurrent(ver)}'>
+        <v-flex xs12 ml-2 pl-3 py-2 my-2 v-for='ver in versionList' class='subheading entry' :class='{current:isCurrent(ver)}'>
           <span @click='setVersion(ver)'>{{ver}}</span>
         </v-flex>
       </v-flex>
       <v-flex xs6 class='displaypanel' :style='panelStyle'>
         <v-container class='white' fluid>
           <v-layout row wrap my-2 >
-
             <v-flex xs8 offset-xs4 class='text-xs-right'>
-                 <span class='caption'>CONTEXT </span><a :href="currentObject['@context'][0]" target='_blank'><span class='body-2'>{{currentObject['@context'][0]}}</span></a>
+              <span class='caption'>CONTEXT </span>
+              <a :href="currentObject['@context'][0]" target='_blank'><span class='body-2'>{{currentObject['@context'][0]}}</span></a>
             </v-flex>
           </v-layout>
           <v-layout row wrap mt-4 >
@@ -33,14 +22,14 @@
             <v-flex xs8 align-start my-3>
               <v-layout row wrap>
                 <v-flex xs7 class='overflow-x-hidden' style='text-overflow:ellipsis;'>
-                  <span class='body-1'>OBJECT ID</span><br>
+                  <span class='body-1'>KO ID</span><br>
                   <v-tooltip top>
                     <span slot="activator"  class='subheading'>{{currentObject['identifier']}}</span>
                     <span>{{currentObject['identifier']}}</span>
                   </v-tooltip>
                 </v-flex>
                 <v-flex xs5 class='overflow-x-hidden' style='text-overflow:ellipsis;'>
-                  <span class='body-1'>OBJECT VERSION</span><br>
+                  <span class='body-1'>KO VERSION</span><br>
                   <v-tooltip top>
                     <span slot="activator"  class='subheading'>{{currentObject['version']}}</span>
                     <span>{{currentObject['@type']}}</span>
@@ -51,7 +40,7 @@
             <v-flex xs4 class='text-xs-right' align-start mt-2>
               <v-tooltip bottom content-class='actioniconcap'>
                 <v-btn slot="activator" outline small fab color="#0075bc" :disabled='inEditMode'>
-                  <a :href='htmldownloadlink' :download='downloadFile'>
+                  <a :href='htmldownloadlink'>
                     <v-icon>get_app</v-icon>
                   </a>
                 </v-btn>
@@ -83,7 +72,6 @@
                 </v-tooltip>
             </v-flex>
           </v-layout>
-
           <v-divider></v-divider>
           <v-layout row wrap my-2 >
             <v-flex xs12 v-for='(value, key) in metaSchema' v-if='isDisplayable(key)' >
@@ -211,16 +199,12 @@
     name:'objDetail',
     data : function() {
       return {
-        tree: [],
-        active:[],
         windowHeight:0,
         inEditMode:false,
         modelObject:{},
       }
     }
     , created : function() {
-      this.active=[]
-      this.active.push(this.currentdashname)
       this.modelObject=JSON.parse(JSON.stringify(this.$store.getters.getCurrentObject))
     }
     , mounted: function() {
@@ -229,33 +213,22 @@
       window.addEventListener('resize', () => {
           self.windowHeight = window.innerHeight
         });
+    }
+    ,	beforeRouteEnter (to, from, next) {
+        console.log(to.params.uri)
+        var koid = store.getters.getCurrentKOId
+        var id = koid.naan+'/'+koid.name+'/'+koid.version
+        if(id==to.params.uri){
+          next()
+        }else{
+          store.dispatch('fetchko', {'uri':to.params.uri}).then(function(){
+              next()
+          }).catch(e=>{
+            console.log(e)
+          })
+        }
     },
-    // ,	beforeRouteEnter (to, from, next) {
-    //     console.log(to.params.uri)
-    //     // store.dispatch('fetchkolist').then(function(){
-  	// 		// 	store.commit('setCurrentKO',to.params.uri);
-    //     //   store.dispatch('fetchko', {'uri':to.params.uri}).then(function(){
-    //     //       next()
-    //     //   }).catch(e=>{
-    //     //     console.log(e)
-    //     //   })
-    //     // }).catch(e=>{
-    //     //   console.log(e)
-    //     // })
-    // },
     watch: {
-      selected: function(){
-        console.log("Selected a new one:"+this.selected);
-        this.$store.commit('setCurrentKO',this.selected);
-        var uri=this.selected.replace('-','/')
-        this.$store.dispatch('fetchko', {'uri':uri});
-        this.$eventBus.$emit("objectSelected", uri);
-      },
-      // active: function() {
-      //   if(this.active.length==0){
-      //     this.active.push(this.currentdashname)
-      //   }
-      // },
       currentObject () {
         this.modelObject=JSON.parse(JSON.stringify(this.$store.getters.getCurrentObject))
       }
@@ -283,9 +256,6 @@
       currentKOId: function(){
         return this.$store.getters.getCurrentKOId
       },
-      downloadFile : function() {
-        return this.currentKOId.naan+'-'+this.currentKOId.name+'-'+this.currentKOId.version+'.zip'
-      },
       htmldownloadlink: function(){
         var link = this.baseurl+this.currentKOId.naan+'/'+this.currentKOId.name
         if(this.currentKOId.version!=''){
@@ -299,43 +269,10 @@
       currentObject: function(){
         return this.$store.getters.getCurrentObject
       },
-      isImplementation: function() {
-        return this.currentObject['@type']=='koio:Implementation'
-      },
-      currentdashname () {
-        var id = this.currentKOId.naan+'-'+this.currentKOId.name
-        if(this.currentKOId.version!=''){
-          id=id+'/'+this.currentKOId.version
-        }
-        return id
-      },
       currenturi () {
         var id = this.currentKOId.naan+'/'+this.currentKOId.name
         if(this.currentKOId.version!=''){
           id=id+'/'+this.currentKOId.version
-        }
-        return id
-      },
-      items () {
-        var l= []
-        var o = {'name':'','children':[]}
-        o.name = this.currentKOId.naan+'-'+this.currentKOId.name
-    	  if(Array.isArray(this.currentKO.hasImplementation)){
-          this.currentKO.hasImplementation.forEach(function(e){
-            var imp = {}
-            imp.name=e
-            o.children.push(imp)
-          })
-        }else {
-          o.children.push({'name':this.currentKO.hasImplementation})
-        }
-        l.push(o)
-        return l
-      },
-      selected () {
-        var id = this.currentdashname
-        if (this.active.length>0) {
-          id = this.active[0]
         }
         return id
       },
@@ -367,6 +304,7 @@
         console.log(ver)
         var vIndex = this.versionList.indexOf(ver)
         this.$store.commit('setCurrentObject', this.currentKO[vIndex])
+        this.$eventBus.$emit("objectSelected",  this.currentKO[vIndex]);
       },
       isCurrent: function(ver){
         return ver == this.currentObject.version
@@ -380,7 +318,7 @@
         return (this.currentObject[key]!=null)
       },
       isViewable: function(key) {
-        return (key=='hasServiceSpecification')||(key=='hasDeploymentSpecification')||(key=='hasPayload')||(key=='hasImplementation')
+        return (key=='hasServiceSpecification')||(key=='hasDeploymentSpecification')||(key=='hasPayload')
       },
       isEditable: function(key) {
         return (key=='title')||(key=='keywords')||(key=='description')||(key=='contributors')
@@ -400,7 +338,7 @@
         var self = this
         var uri = this.currenturi
         this.$store.dispatch('saveMetadata', JSON.stringify(this.modelObject)).then(function(){
-								self.$store.dispatch('fetchko', {"uri":uri})
+								self.$store.dispatch('fetchkoversion', {"uri":uri})
                 self.inEditMode =false
 							})
       },
@@ -414,19 +352,9 @@
       },
       viewfile: function(entry){
         console.log(entry)
-        var key = this.findKey(entry)
-        console.log(key)
-        switch (key){
-          case 'hasImplementation':
-            this.active.splice(0)
-            this.active.push(entry)
-            break;
-          default:
-            var yamlurl = this.baseurl+this.currenturi+'/'+entry
-    				this.$store.commit('setkoiourl',yamlurl)
-            this.$eventBus.$emit('viewio',yamlurl)
-            break;
-        }
+        var yamlurl = this.baseurl+this.currenturi+'/'+entry
+				this.$store.commit('setkoiourl',yamlurl)
+        this.$eventBus.$emit('viewio',yamlurl)
       },
       addentry: function(key) {
         this.modelObject[key].push('')
@@ -456,39 +384,6 @@
   }
 </script>
 <style>
-.v-treeview-node__label, .v-treeview-node__label:hover {
-  background-color: transparent;
-}
-.v-treeview-node__root {
-  /* background-color: #fff; */
-  /* border: 1px solid #eee; */
-  padding-left: 2px;
-  margin: 5px 0px;
-  border-left: 2px solid transparent;
-  transition: all 0.8s ease;
-}
-.v-treeview-node {
-  color: #0075bc;
-}
-.v-treeview-node--active>.v-treeview-node__root {
-  border-left: 2px solid #0075bc;
-}
-
-.theme--light.v-treeview .v-treeview-node--active {
-  color: #333;
-  background-color: transparent;
-
-}
-.v-treeview-node--active .v-treeview-node {
-  color: #0075bc;
-}
-.v-treeview-node--leaf {
-  margin-left: 30px;
-}
-.theme--light.v-treeview--hoverable .v-treeview-node__root:hover {
-  background-color: transparent;
-  border-left: 2px solid #0075bc;
-}
 .treepanel {
   overflow-y:auto;
   background-color: #fafafa;
@@ -504,16 +399,23 @@
   border: 1px solid #0075bc;
   font-size: 0.8rem;
 }
-.treepanel span {
+.entry {
+  transition: all 0.5s ease;
+}
+.entry span {
   color: #0075bc;
   cursor: pointer;
 }
-.treepanel .current span {
+.entry.current span {
   color: #000000de;
   cursor: default;
 }
-.treepanel .current {
+.entry.current {
   border-left: 2px solid #0075bc;
+  background-color: #fff;
+}
+.entry:not(.current) {
+  border-left: 2px solid #fafafa;
 }
 .theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
   color: #333;

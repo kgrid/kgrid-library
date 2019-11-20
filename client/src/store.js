@@ -59,8 +59,12 @@ export default new Vuex.Store({
     },
     getkoiourl: state => state.currentIOFileurl,
     getschemabysection: state => (section) => {
-      if (state.metaschema.properties[section]) {
-        return state.metaschema.properties[section];
+      if(state.metaschema){
+        if(state.metaschema.properties){
+          if (state.metaschema.properties[section]) {
+            return state.metaschema.properties[section];
+          }
+        }
       }
       return {};
     },
@@ -83,8 +87,11 @@ export default new Vuex.Store({
     getCurrentServer: state => state.servers[state.currentServerIndex],
     getErrorStatus : state => state.hasError,
     getbaseurl: state => {
-      var server = state.servers[state.currentServerIndex];
-      var url = server.host+server.shelf
+      var url = './kos'
+      if(state.servers.length!=0){
+        var server = state.servers[state.currentServerIndex];
+        url = server.host+server.shelf
+      }
       if(!url.endsWith('/')){
         url=url+'/'
       }
@@ -98,20 +105,6 @@ export default new Vuex.Store({
     setkoiourl(state, uri) {
       state.currentIOFileurl = uri;
     },
-    // setCurrentKO(state, id) {
-    //   const s = id.replace('ark:/', '').split(/[/-]+/);
-    //   state.currentKOId.naan = s[0];
-    //   state.currentKOId.name = s[1];
-    //   state.currentKOId.version = s[2] || '';
-    //   const arkid = `ark:/${s[0]}/${s[1]}`;
-    //   state.kolist.forEach((e) => {
-    //     const key = Object.keys(e)[0];
-    //     if (key === arkid) {
-    //       console.log(arkid);
-    //       state.currentKO = Object.values(e)[0];
-    //     }
-    //   });
-    // },
     setCurrentKO(state, ko) {
       state.currentKO = ko;
     },
@@ -136,9 +129,6 @@ export default new Vuex.Store({
     setkgselect(state, obj) {
       Object.assign(state.kgselect, obj);
     },
-    // setoldfilterstrings(state, arr) {
-    //   state.oldfilterStrings = arr;
-    // },
     setFilterStrings(state, arr) {
       state.filterStrings = arr;
     },
@@ -194,22 +184,6 @@ export default new Vuex.Store({
         .then((response) => {
           console.log('[ACTION] fetch ko list')
           console.log(response)
-          // var tempJson = response.data
-          // console.log(tempJson)
-          // var l={}
-          // tempJson.forEach((e) => {
-          //   var k = e["@id"]
-          //   if(!l[k]){
-          //     l[k]=[]
-          //   }
-          //   l[k].push(e)
-          // });
-          //
-          // var list=[]
-          // Object.keys(l).forEach((e) => {
-          //   list.push(l[e])
-          // });
-          // context.commit('setkolist', list);
           context.commit('setkolist', response.data);
         })
         .catch((error) => {
@@ -217,6 +191,28 @@ export default new Vuex.Store({
         });
     },
     fetchko(context, param) {
+      console.log('Fetch KO:');
+      console.log(param);
+      const baseurl = context.getters.getbaseurl;
+      var arkid = param.uri.split('/')
+      var endpoint = baseurl+arkid[0]+'/'+arkid[1]
+      console.log(endpoint);
+      return api.get(endpoint)
+        .then((response) => {
+          context.commit('setCurrentKO', response.data);
+          response.data.forEach(function(e){
+            if(arkid[2]){
+              if(e.version==arkid[2]){
+                context.commit('setCurrentObject', e);
+              }
+            }
+          })
+        })
+        .catch(error => {
+          context.commit('setErrorStatus', 'API_FAIL')
+        });
+    },
+    fetchkoversion(context, param) {
       console.log('Fetch KO:');
       console.log(param);
       const baseurl = context.getters.getbaseurl;
