@@ -57,6 +57,7 @@
 			},
 			clickonkeyword: function(s){
 				this.$store.commit('addFilterString', s);
+				this.$store.commit('addSearchSources', 'Keywords');
 			}
 		}
 	};

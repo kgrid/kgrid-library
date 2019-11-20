@@ -6,33 +6,28 @@
           :label="searchlabel"
           v-model='searchinput'
           append-icon="search"
+          :prepend-icon = 'prependIcon'
           @keyup.enter='addFilterString'
+          @click:prepend="toggleOptions"
         ></v-text-field>
+        <v-layout row wrap justify-center elevation-2  v-show='showOption'>
+          <v-flex xs10 pb-3>
+          <v-checkbox v-model="searchsources" label="Title" hide-details value="Title" height='21px'></v-checkbox>
+          <v-checkbox v-model="searchsources" label="Description" hide-details value="Description" height='21px'></v-checkbox>
+          <v-checkbox v-model="searchsources" label="Keywords" hide-details value="Keywords"></v-checkbox>
+          <!-- <v-checkbox v-model="searchsources" label="Owners"  hide-details disabled value="Owners"></v-checkbox>
+          <v-checkbox v-model="searchsources" label="Contributors" hide-details disabled value="Contributors"></v-checkbox> -->
+          <v-checkbox v-model="searchsources" label="Object ID"  hide-details value="ID"></v-checkbox>
+        </v-flex>
+        </v-layout>
         <div>
           <v-chip close v-for='s in filterStrings' @input="removefilterstring(s)" :key='s'>{{s}}</v-chip>
           <v-chip v-if='filterStrings.length>0' @click="removeAllFilters">Remove All</v-chip>
         </div>
-        <v-expansion-panel popout >
-          <v-expansion-panel-content
-            :key="search"
-          >
-            <div slot="header">Search Options</div>
-            <v-layout row wrap justify-center>
-              <v-flex xs10 pb-3>
-              <v-checkbox v-model="searchsources" label="Title" hide-details value="Title" height='21px'></v-checkbox>
-              <v-checkbox v-model="searchsources" label="Description" hide-details value="Description" height='21px'></v-checkbox>
-              <v-checkbox v-model="searchsources" label="Keywords" hide-details value="Keywords"></v-checkbox>
-              <!-- <v-checkbox v-model="searchsources" label="Owners"  hide-details disabled value="Owners"></v-checkbox>
-              <v-checkbox v-model="searchsources" label="Contributors" hide-details disabled value="Contributors"></v-checkbox> -->
-              <v-checkbox v-model="searchsources" label="Object ID"  hide-details value="ID"></v-checkbox>
-            </v-flex>
-            </v-layout>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
       </v-flex>
       <v-flex xs8 md8 px-0>
         <v-container>
-          <v-layout>
+          <v-layout >
             <v-flex>
               <KoList :list='koIndexer'/>
             </v-flex>
@@ -151,6 +146,8 @@
         duration: 300,
         offset:0,
         easing:'easeInOutCubic',
+        prependIcon:'keyboard_arrow_down',
+        showOption:  false
       }
     }
     , created : function() {
@@ -340,6 +337,11 @@
       backtoTop () {
         this.$vuetify.goTo(0, this.options)
         this.offsetTop = 0
+      },
+      toggleOptions: function() {
+        console.log(this.showOption)
+        this.showOption = !this.showOption
+        this.prependIcon = this.showOption ?'keyboard_arrow_up':'keyboard_arrow_down'
       }
     }
   }

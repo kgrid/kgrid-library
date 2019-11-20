@@ -16,7 +16,6 @@ const vuexLocal = new VuexPersistence({
     currentKOId: state.currentKOId,
     currentKO: state.currentKO,
     currentObject: state.currentObject,
-    // new entries
     servers:state.servers,
     currentServerIndex:state.currentServerIndex
   }),
@@ -146,6 +145,11 @@ export default new Vuex.Store({
     },
     setSearchSources(state, arr) {
       state.searchsources = arr;
+    },
+    addSearchSources(state, s) {
+      if(state.searchsources.indexOf(s)==-1){
+        state.searchsources.push(s)
+      }
     },
     setactivatorurls(state, urls) {
       if (urls.length > 0) {
