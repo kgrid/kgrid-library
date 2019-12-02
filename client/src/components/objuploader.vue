@@ -193,7 +193,7 @@
 			self.stage='processing'
 			self.$http({
 					method: 'post',
-					url: self.url+'/manifest',
+					url: self.url+'manifest',
 					data: self.manifestJson,
 			}).then(()=>{
 								console.log('Done with loading '+self.manifestJson.manifest.length+ ' KOs.')
