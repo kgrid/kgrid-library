@@ -101,4 +101,4 @@ jobs:
       - run:
           name: Create Heroku Shelf
           command: |
-            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "example-collection"
+            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "cpic-collection example-collection"
