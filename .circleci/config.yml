@@ -60,6 +60,15 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
+     # Release adds a Release to GitHub based on the tag via github api
+      - run:
+          name: Release
+          command: |
+
+            if [ $RELEASE ]; then
+                .circleci/release.sh
+            fi
+
       # save test results
       - run:
           name: Save test results
@@ -89,13 +98,9 @@ jobs:
       - run:
           name: Deploy/Release
           command: |
-             if [ $RELEASE ]; then
-              .circleci/release.sh
-             else
                mkdir application/shelf
                mvn package -s .circleci/settings.xml
                HEROKU_API_KEY=$HEROKU_API_KEY mvn clean heroku:deploy -s .circleci/settings.xml -pl application
-             fi
 
       # Create a shelf with KOs
       - run:
