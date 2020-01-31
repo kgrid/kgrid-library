@@ -33,4 +33,4 @@
   echo "$manifest"
   curl -X POST "${shelfUrl}/manifest"\
       -H "Content-Type: application/json" \
-      -d "$manifest"
+      -d "$manifest" -m 300
