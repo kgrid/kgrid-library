@@ -108,5 +108,6 @@ jobs:
           command: |
             .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "ipp-collection"
             .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "cpic-collection"
-            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "opioid-collection example-collection cancer-risk-collection icon-array script-numerate postpci labwise"
+            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "example-collection"
+            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "opioid-collection cancer-risk-collection icon-array script-numerate postpci labwise"
           no_output_timeout: 5m
