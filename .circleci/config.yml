@@ -60,6 +60,8 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
+      - setup_remote_docker
+
      # Release adds a Release to GitHub based on the tag via github api
       - run:
           name: Release
