@@ -3,7 +3,7 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build
+      - build:
           context: kgrid
       - deploy:
           context: kgrid
@@ -21,7 +21,7 @@ workflows:
               only:
                 - master
     jobs:
-      - build
+      - build:
           context: kgrid
       - deploy:
           context: kgrid
