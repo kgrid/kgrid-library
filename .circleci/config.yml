@@ -4,7 +4,9 @@ workflows:
   build-and-deploy:
     jobs:
       - build
+          context: kgrid
       - deploy:
+          context: kgrid
           requires:
             - build
           filters:
@@ -20,7 +22,9 @@ workflows:
                 - master
     jobs:
       - build
+          context: kgrid
       - deploy:
+          context: kgrid
           requires:
             - build
           filters:
