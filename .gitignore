@@ -21,3 +21,5 @@ target
 
 /application/src/main/resources/public/*
 /*.bat
+client/package-lock.json
+/client/node
