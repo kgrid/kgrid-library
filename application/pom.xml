@@ -146,13 +146,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>pl.project13.maven</groupId>
-        <artifactId>git-commit-id-plugin</artifactId>
-        <configuration>
-          <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-maven-plugin</artifactId>
         <version>4.2.0</version>
