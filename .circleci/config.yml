@@ -9,12 +9,9 @@ workflows:
     jobs:
       - maven/test:
           settings_file: ".circleci/settings.xml"
-      - run:
-          command: >
-            git push -f https://heroku:$<< parameters.api-key >>@git.heroku.com/<< parameters.app-name >>.git revise-circle-ci-script
-  #      - heroku/deploy-via-git:
-  #          requires:
-  #            - maven/test
+          - heroku/deploy-via-git:
+              requires:
+                - maven/test
   #          filters:
   #            branches:
   #              only: master
