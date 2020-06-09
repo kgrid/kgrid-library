@@ -5,13 +5,6 @@ workflows:
     jobs:
       - build:
           context: kgrid
-      - deploy:
-          context: kgrid
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
   earlymorning:
     triggers:
       - schedule:
@@ -40,7 +33,7 @@ jobs:
     working_directory: ~/kgrid
 
     docker:
-    - image: circleci/openjdk:8u171-jdk-node
+      - image: circleci/openjdk:8u171-jdk-node
 
     environment:
       # Customize the JVM maximum heap limit
@@ -52,9 +45,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
       #must run install to ensure multi module dependencies(shelf-api) are cached
       - run: mvn -DskipTests clean install -pl application dependency:resolve-plugins dependency:go-offline -s .circleci/settings.xml
@@ -66,7 +59,7 @@ jobs:
 
       - setup_remote_docker
 
-     # Release adds a Release to GitHub based on the tag via github api
+      # Release adds a Release to GitHub based on the tag via github api
       - run:
           name: Release
           command: |
@@ -91,29 +84,3 @@ jobs:
       - persist_to_workspace:
           root: . # Persist current working directory
           paths: ./* # Glob. Will persist everything in folder
-
-  deploy:
-
-    docker:
-      - image: circleci/openjdk:8u171-jdk-node
-
-    steps:
-
-      - attach_workspace:
-          at: ~/project
-      - run:
-          name: Deploy/Release
-          command: |
-               mkdir application/shelf
-               mvn package -s .circleci/settings.xml
-               HEROKU_API_KEY=$HEROKU_API_KEY mvn clean heroku:deploy -s .circleci/settings.xml -pl application
-
-      # Create a shelf with KOs
-      - run:
-          name: Create Heroku Shelf
-          command: |
-            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "ipp-collection"
-            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "cpic-collection"
-            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "example-collection"
-            .circleci/create_shelf.sh https://kgrid-library.herokuapp.com/kos "opioid-collection cancer-risk-collection icon-array script-numerate postpci labwise"
-          no_output_timeout: 5m
