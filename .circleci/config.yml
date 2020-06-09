@@ -9,9 +9,9 @@ workflows:
     jobs:
       - maven/test:
           settings_file: ".circleci/settings.xml"
-          - heroku/deploy-via-git:
-              requires:
-                - maven/test
+      - heroku/deploy-via-git:
+          requires:
+            - maven/test
   #          filters:
   #            branches:
   #              only: master
