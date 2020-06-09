@@ -10,6 +10,7 @@ workflows:
       - maven/test:
           settings_file: ".circleci/settings.xml"
       - heroku/deploy-via-git:
+          branch: "revise-circle-ci-script"
           requires:
             - maven/test
   #          filters:
