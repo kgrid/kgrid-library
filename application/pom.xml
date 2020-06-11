@@ -195,26 +195,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>com.heroku.sdk</groupId>
-        <artifactId>heroku-maven-plugin</artifactId>
-        <version>3.0.2</version>
-        <configuration>
-          <appName>kgrid-library</appName>
-          <includeTarget>false</includeTarget>
-          <includes>
-            <include>${project.build.directory}/${project.build.finalName}.jar</include>
-            <include>${project.basedir}/shelf</include>
-          </includes>
-          <configVars>
-            <JAVA_OPTS>-Xss512k -XX:+UseCompressedOops</JAVA_OPTS>
-          </configVars>
-          <jdkVersion>${java.version}</jdkVersion>
-          <processTypes>
-            <web>java -jar /app/target/${project.build.finalName}.jar $KGRID_CONFIG </web>
-          </processTypes>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>com.spotify</groupId>
         <artifactId>dockerfile-maven-plugin</artifactId>
         <version>1.4.9</version>
