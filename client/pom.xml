@@ -4,7 +4,7 @@
 
   <groupId>org.kgrid</groupId>
   <artifactId>kgrid-library-client</artifactId>
-  <version>1.2.7</version>
+  <version>1.2.8-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
