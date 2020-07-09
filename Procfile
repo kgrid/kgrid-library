@@ -1,1 +1,1 @@
-web: java -jar application/target/kgrid-library-1.2.7-SNAPSHOT.jar
+web: java -jar application/target/kgrid-library-1.2.8-SNAPSHOT.jar
