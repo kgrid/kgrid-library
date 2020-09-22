@@ -1,222 +1,223 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.1.RELEASE</version>
-    <relativePath />
-    <!-- lookup parent from repository -->
-  </parent>
-
-  <groupId>org.kgrid</groupId>
-  <artifactId>kgrid-library</artifactId>
-  <version>1.2.8-SNAPSHOT</version>
-  <packaging>jar</packaging>
-
-  <scm>
-    <developerConnection>scm:git:git@github.com:kgrid/kgrid-library.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>11</java.version>
-    <h2.version>1.4.196</h2.version>
-    <maven.deploy.skip>true</maven.deploy.skip>
-    <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-  </properties>
-
-  <dependencies>
-    <!-- Spring dependencies -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-properties-migrator</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-jdbc</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- Other dependencies -->
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.3</version>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.16</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator</artifactId>
-      <version>5.3.6.Final</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-beanutils</groupId>
-      <artifactId>commons-beanutils</artifactId>
-      <version>1.9.4</version>
-    </dependency>
-
-    <!--Test dependencies-->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <!--  Security Dependency  -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-security</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-      <version>5.2.4</version>
-    </dependency>
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.kgrid</groupId>
-      <artifactId>shelf-api</artifactId>
-      <version>2.1.4</version>
-    </dependency>
-  </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
+    <parent>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>build-info</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>pl.project13.maven</groupId>
-        <artifactId>git-commit-id-plugin</artifactId>
-        <configuration>
-          <failOnNoGitDirectory>false</failOnNoGitDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.flywaydb</groupId>
-        <artifactId>flyway-maven-plugin</artifactId>
-        <version>4.2.0</version>
-        <configuration>
-          <locations>filesystem:src/main/resources/db/migration/H2</locations>
-          <url>jdbc:h2:file:./target/library2</url>
-          <user>sa</user>
-        </configuration>
-        <dependencies>
-          <dependency>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.4.RELEASE</version>
+        <relativePath/>
+        <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>org.kgrid</groupId>
+    <artifactId>kgrid-library</artifactId>
+    <version>1.2.8-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <scm>
+        <developerConnection>scm:git:git@github.com:kgrid/kgrid-library.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>11</java.version>
+        <h2.version>1.4.196</h2.version>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+    </properties>
+
+    <dependencies>
+        <!-- Spring dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Other dependencies -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.16</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.3.6.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
+        <!--Test dependencies-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--  Security Dependency  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>5.2.4</version>
+        </dependency>
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy Vue.js frontend content</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/classes/public</outputDirectory>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>../client/dist</directory>ß
-                  <includes>
-                    <include>static/</include>
-                    <include>index.html</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.spotify</groupId>
-        <artifactId>dockerfile-maven-plugin</artifactId>
-        <version>1.4.9</version>
-        <executions>
-          <execution>
-            <id>default</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>build</goal>
-              <goal>push</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-          <googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
-          <repository>kgrid/library</repository>
-          <buildArgs>
-            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-          </buildArgs>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.kgrid</groupId>
+            <artifactId>shelf-api</artifactId>
+            <version>2.1.4</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <configuration>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>4.2.0</version>
+                <configuration>
+                    <locations>filesystem:src/main/resources/db/migration/H2</locations>
+                    <url>jdbc:h2:file:./target/library2</url>
+                    <user>sa</user>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>${h2.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy Vue.js frontend content</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes/public</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>../client/dist</directory>ß
+                                    <includes>
+                                        <include>static/</include>
+                                        <include>index.html</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.9</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
+                    <repository>kgrid/library</repository>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
