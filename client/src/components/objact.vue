@@ -208,7 +208,7 @@
 			return this.activatorurls.indexOf(this.activatorurl)
 		},
 		uri:function(){
-			return this.currentKOId.naan+'/'+this.currentKOId.name
+			return this.currentKOId.naan+'/'+this.currentKOId.name+'/'+this.currentKOId.version
 		},
 		isDefaultActivator: function(){
 			if(this.activatorurlindex!=-1){
@@ -221,7 +221,7 @@
 			return this.activatorurl + this.shelfurl
 		},
 		swaggereditorurl:function(){
-			return this.demourl+"?url="+this.targeturl+this.uri+'/service'
+			return this.demourl+"?url="+this.targeturl+this.uri+'/'+this.$store.getters.getCurrentObject.hasServiceSpecification
 		},
 		currentObject: function() {
 			return this.$store.getters.getCurrentObject
