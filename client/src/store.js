@@ -16,8 +16,8 @@ const vuexLocal = new VuexPersistence({
     currentKOId: state.currentKOId,
     currentKO: state.currentKO,
     currentObject: state.currentObject,
-    servers:state.servers,
-    currentServerIndex:state.currentServerIndex
+    servers: state.servers,
+    currentServerIndex: state.currentServerIndex
   }),
 });
 export default new Vuex.Store({
@@ -26,23 +26,23 @@ export default new Vuex.Store({
     searchsources: ['Title'],
     filterStrings: [],
     newfilterStrings: [],
-    kgselect: { text: 'Title - A to Z', v: 'title', order: 'asc' },
-    currentKOId: { naan: '', name: '', version: '' },
+    kgselect: {text: 'Title - A to Z', v: 'title', order: 'asc'},
+    currentKOId: {naan: '', name: '', version: ''},
     currentKO: {},
     currentObject: {},
     currentIOFileurl: '',
     kolist: [],
     paths: {
       default_act_url_index: 0,
-      activator_urls: ['https://kgrid-activator.herokuapp.com','https://monkey-activator.kgrid.org']
+      activator_urls: []
     },
     metaschema: {},
     // New Properties
-    servers:[],
-    currentServerIndex:2,
+    servers: [],
+    currentServerIndex: 2,
     hasError: false,
     errorMessage: '',
-    demourl:'https://editor.swagger.io'
+    demourl: 'https://editor.swagger.io'
   },
   getters: {
     getobjectlist: state => state.kolist,
@@ -58,8 +58,8 @@ export default new Vuex.Store({
     },
     getkoiourl: state => state.currentIOFileurl,
     getschemabysection: state => (section) => {
-      if(state.metaschema){
-        if(state.metaschema.properties){
+      if (state.metaschema) {
+        if (state.metaschema.properties) {
           if (state.metaschema.properties[section]) {
             return state.metaschema.properties[section];
           }
@@ -84,15 +84,15 @@ export default new Vuex.Store({
     getservers: state => state.servers,
     getCurrentServerIndex: state => state.currentServerIndex,
     getCurrentServer: state => state.servers[state.currentServerIndex],
-    getErrorStatus : state => state.hasError,
+    getErrorStatus: state => state.hasError,
     getbaseurl: state => {
       var url = './kos'
-      if(state.servers.length!=0){
+      if (state.servers.length != 0) {
         var server = state.servers[state.currentServerIndex];
-        url = server.host+server.shelf
+        url = server.host + server.shelf
       }
-      if(!url.endsWith('/')){
-        url=url+'/'
+      if (!url.endsWith('/')) {
+        url = url + '/'
       }
       return url
     }
@@ -132,22 +132,22 @@ export default new Vuex.Store({
       state.filterStrings = arr;
     },
     addFilterString(state, s) {
-      var s_low=s.toLowerCase()
-      if(state.filterStrings.indexOf(s_low)==-1){
+      var s_low = s.toLowerCase()
+      if (state.filterStrings.indexOf(s_low) == -1) {
         state.filterStrings.push(s_low)
       }
     },
     removeFilterString(state, s) {
       var i = state.filterStrings.indexOf(s)
-      if(i!=-1){
-        state.filterStrings.splice(i,1)
+      if (i != -1) {
+        state.filterStrings.splice(i, 1)
       }
     },
     setSearchSources(state, arr) {
       state.searchsources = arr;
     },
     addSearchSources(state, s) {
-      if(state.searchsources.indexOf(s)==-1){
+      if (state.searchsources.indexOf(s) == -1) {
         state.searchsources.push(s)
       }
     },
@@ -165,25 +165,25 @@ export default new Vuex.Store({
     // New setters
     setservers(state, list) {
       state.servers = []
-      list.forEach(function(e){
+      list.forEach(function (e) {
         state.servers.push(e)
       })
     },
-    setcurrentServerIndex(state, i){
-      state.currentServerIndex =i
+    setcurrentServerIndex(state, i) {
+      state.currentServerIndex = i
     },
-    setErrorStatus(state, text){
-      state.hasError = (text!='')
+    setErrorStatus(state, text) {
+      state.hasError = (text != '')
       state.errorMessage = text
     },
-    setdemourl(state, url){
+    setdemourl(state, url) {
       state.demourl = url
     },
   },
   actions: {
     fetchkolist(context) {
       const server = context.getters.getCurrentServer;
-      var url = server.host+server.shelf
+      var url = server.host + server.shelf
       return api.get(url)
         .then((response) => {
           console.log('[ACTION] fetch ko list')
@@ -199,14 +199,14 @@ export default new Vuex.Store({
       console.log(param);
       const baseurl = context.getters.getbaseurl;
       var arkid = param.uri.split('/')
-      var endpoint = baseurl+arkid[0]+'/'+arkid[1]
+      var endpoint = baseurl + arkid[0] + '/' + arkid[1]
       console.log(endpoint);
       return api.get(endpoint)
         .then((response) => {
           context.commit('setCurrentKO', response.data);
-          response.data.forEach(function(e){
-            if(arkid[2]){
-              if(e.version==arkid[2]){
+          response.data.forEach(function (e) {
+            if (arkid[2]) {
+              if (e.version == arkid[2]) {
                 context.commit('setCurrentObject', e);
               }
             }
@@ -220,7 +220,7 @@ export default new Vuex.Store({
       console.log('Fetch KO:');
       console.log(param);
       const baseurl = context.getters.getbaseurl;
-      var endpoint = baseurl+param.uri
+      var endpoint = baseurl + param.uri
       console.log(endpoint);
       return api.get(endpoint)
         .then((response) => {
