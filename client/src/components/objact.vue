@@ -130,7 +130,8 @@ export default {
       activatorurlselect: '',
       demourl: '',
       btndisabled: false,
-      shelfurl: '/'
+      shelfurl: '/',
+      securedactivator: false
     }
   },
   created: function () {
@@ -196,6 +197,9 @@ export default {
     },
     errorMsg: function () {
       if (this.objpackaged) {
+        if (this.securedactivator) {
+          return 'Cannot deploy KO to secured activator. Check the URL and try again.'
+        }
         return 'Error in deploying the KO! Check the URL and try again.'
       } else {
         return 'Error in packaging the KO!'
@@ -261,19 +265,21 @@ export default {
             }, 1500)
           }).catch(function (error) {
             self.stage = 'error'
-            console.log(err);
-            setTimeout(function () {
-              self.stage = 'ready'
-            }, 1500)
-          })
-        })
-          .catch(function (err) {
-            self.stage = 'error'
-            console.log(err);
+            console.log(error);
             setTimeout(function () {
               self.stage = 'ready'
             }, 5000)
           });
+        }).catch(function (err) {
+          self.stage = 'error'
+          console.log(err);
+          if (err.message.endsWith("401")) {
+            self.securedactivator = true;
+          }
+          setTimeout(function () {
+            self.stage = 'ready'
+          }, 5000)
+        });
       }, 1000)
     },
     addactivatorentry: function () {
@@ -283,6 +289,10 @@ export default {
     },
     deleteactentry: function (i) {
       this.activatorurls.splice(i, 1)
+      let defaultActivatorIndex = this.$store.getters.getdefaultactivatorurlindex;
+      if (defaultActivatorIndex > i) {
+        this.$store.commit("setdefaultactivatorurlindex", defaultActivatorIndex - 1)
+      }
       this.$store.commit('setactivatorurls', this.activatorurls)
     },
     setdefaultactivator: function () {

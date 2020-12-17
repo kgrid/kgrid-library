@@ -144,9 +144,13 @@ export default {
       let activatorUrlList = process.env.VUE_APP_KGRID_ACTIVATOR_URLS;
       let activatorUrls = activatorUrlList ? activatorUrlList.split(";") :
         ["http://localhost:8080", "https://kgrid-activator.herokuapp.com"];
-
-      self.$store.commit('setactivatorurls', activatorUrls)
-      self.$store.commit('setdefaultactivator', 0)
+      let storedUrls = self.$store.getters.getactivatorurls;
+      activatorUrls.forEach(url => {
+        if (storedUrls.indexOf(url) === -1) {
+          storedUrls.push(url);
+        }
+      })
+      self.$store.commit('setactivatorurls', storedUrls)
       self.$store.commit('setmetaschema', responses[0].data);
       self.$store.commit('setdemourl', responses[1].data.demourl);
       self.serverSelection = responses[1].data.serverSelection

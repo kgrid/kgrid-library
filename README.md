@@ -39,6 +39,8 @@ Once Running access the [Activators Health Endpoint](http://localhost:8080/healt
   
 ```
 
+The default list of activators that the library can push objects to can be overridden by setting the environment variable `VUE_APP_KGRID_ACTIVATOR_URLS` with a semicolon-separated list of urls.
+
 ## Running the tests
 
 #### Automated tests 
