@@ -273,9 +273,7 @@ export default {
         }).catch(function (err) {
           self.stage = 'error'
           console.log(err);
-          if (err.message.endsWith("401")) {
-            self.securedactivator = true;
-          }
+          self.securedactivator = err.message.endsWith("401")
           setTimeout(function () {
             self.stage = 'ready'
           }, 5000)

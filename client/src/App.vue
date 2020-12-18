@@ -142,6 +142,7 @@ export default {
       this.$http.get("./static/json/config.json")
     ]).then(function (responses) {
       let activatorUrlList = process.env.VUE_APP_KGRID_ACTIVATOR_URLS;
+      console.log("Env Var - VUE_APP_KGRID_ACTIVATOR_URLS: "+ activatorUrlList);
       let activatorUrls = activatorUrlList ? activatorUrlList.split(";") :
         ["http://localhost:8080", "https://kgrid-activator.herokuapp.com"];
       let storedUrls = self.$store.getters.getactivatorurls;
