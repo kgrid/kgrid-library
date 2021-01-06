@@ -42,7 +42,8 @@ export default new Vuex.Store({
     currentServerIndex: 2,
     hasError: false,
     errorMessage: '',
-    demourl: 'https://editor.swagger.io'
+    demourl: 'https://editor.swagger.io',
+    libraryInfo:{}
   },
   getters: {
     getobjectlist: state => state.kolist,
@@ -95,9 +96,15 @@ export default new Vuex.Store({
         url = url + '/'
       }
       return url
+    },
+    getLibraryInfo: state=>{
+      return state.libraryInfo
     }
   },
   mutations: {
+    setlibraryinfo(state, info){
+      state.libraryInfo = info;
+    },
     setmetaschema(state, schema) {
       state.metaschema = schema;
     },

@@ -155,6 +155,7 @@ export default {
       })
       self.$store.commit('setactivatorurls', storedUrls)
       self.$store.commit('setmetaschema', responses[0].data);
+      self.$store.commit('setlibraryinfo', responses[2].data);
       self.$store.commit('setdemourl', responses[1].data.demourl);
       self.serverSelection = responses[1].data.serverSelection
       self.$store.commit('setservers', self.servers);
