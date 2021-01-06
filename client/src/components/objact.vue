@@ -172,6 +172,8 @@ export default {
   },
   watch: {
     activatorurlselect() {
+      // Need to check with the activator for the shelf endpoint
+
       var self = this
       this.$http.get(this.activatorurlselect + '/kos')
         .then(() => {
