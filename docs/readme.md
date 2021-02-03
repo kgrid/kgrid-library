@@ -43,12 +43,7 @@ the [library health endpoint](http://localhost:8080/health).  The health of the 
    userDetailService: {
      status: "UP",
      number of users: 2
-    }  ,
-    ezidService: {
-      status: "UP",
-      ezid.base.url: "https://ezid.lib.purdue.edu/",
-      ezid.mock: "false"
-    },
+    } ,
     shelf: {
       status: "UP",
       kgrid.shelf.cdostore.url: "/Users/me/library/shelf"
