@@ -143,7 +143,7 @@ export default {
     ]).then(function (responses) {
       let activatorUrlList = process.env.VUE_APP_KGRID_ACTIVATOR_URLS;
       let activatorUrls = activatorUrlList ? activatorUrlList.split(";") :
-        ["http://localhost:8080", "https://kgrid-activator.herokuapp.com"];
+        ["http://localhost:8080", "https://activator-playground.herokuapp.com"];
       let storedUrls = self.$store.getters.getactivatorurls;
       activatorUrls.forEach(url => {
         if (storedUrls.indexOf(url) === -1) {
