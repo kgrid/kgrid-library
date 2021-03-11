@@ -8,6 +8,8 @@ orbs:
 workflows:
   commit:
     jobs:
+      - maven/test:
+          command: package
       - docker/publish:
           image: kgrid-library/library
           tag: latest
