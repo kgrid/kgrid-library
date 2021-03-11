@@ -9,7 +9,7 @@ workflows:
   commit:
     jobs:
       - docker/publish:
-          image: registry.aws.web.umich.edu/kgrid-library/library
+          image: kgrid-library/library
           tag: latest
           path: application
           docker-context: application
