@@ -7,7 +7,7 @@ ENV KGRID_CONFIG=""
 WORKDIR /home/kgrid
 ARG JAR_FILE
 
-COPY target/${JAR_FILE} .
+COPY application/target/${JAR_FILE} .
 
 EXPOSE 8080
 CMD java -jar kgrid-library*.jar $KGRID_CONFIG
