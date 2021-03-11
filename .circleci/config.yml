@@ -12,6 +12,7 @@ workflows:
           image: registry.aws.web.umich.edu/kgrid-library/library
           tag: latest
           path: application
+          docker-context: application
           registry: registry.aws.web.umich.edu
 
   build: # build, test, resolve dependencies, and deploy if branch is main
