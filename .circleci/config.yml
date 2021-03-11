@@ -3,8 +3,17 @@ version: 2.1
 orbs:
   maven: circleci/maven@1.0.1
   heroku: circleci/heroku@1.0.1
+  docker: circleci/docker@1.5.0
 
 workflows:
+  commit:
+    jobs:
+      - docker/publish:
+          image: registry.aws.web.umich.edu/kgrid-library/library
+          tag: latest
+          path: application
+          registry: registry.aws.web.umich.edu
+
   build: # build, test, resolve dependencies, and deploy if branch is main
     jobs:
       - maven/test:
