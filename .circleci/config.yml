@@ -9,6 +9,14 @@ jobs:
     machine: true
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+      - run: ./mvnw -Dmaven.test.skip=true package
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
       - run: |
           mvn spring-boot:build-image
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD registry.aws.web.umich.edu
