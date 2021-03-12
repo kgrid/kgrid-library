@@ -9,7 +9,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - maven/test
+      - maven/test:
+          context: kgrid
+          settings_file: ".circleci/settings.xml"
       - run: |
           mvn spring-boot:build-image
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD registry.aws.web.umich.edu
