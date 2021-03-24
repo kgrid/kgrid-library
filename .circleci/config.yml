@@ -5,21 +5,8 @@ orbs:
   heroku: circleci/heroku@1.0.1
 
 workflows:
-  commit:
+  build:
     jobs:
       - maven/test:
           context: kgrid
           settings_file: ".circleci/settings.xml"
-      - build-and-push
-
-jobs:
-  build-and-push:
-    machine: true
-    steps:
-      - checkout
-      - run: |
-          cd application
-          mvn spring-boot:build-image
-          docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD registry.aws.web.umich.edu
-          docker tag kgrid-library registry.aws.web.umich.edu/kgrid-library/library:latest
-          docker push registry.aws.web.umich.edu/kgrid-library/library:latest
