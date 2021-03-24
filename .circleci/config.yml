@@ -7,6 +7,9 @@ orbs:
 workflows:
   commit:
     jobs:
+      - maven/test:
+          context: kgrid
+          settings_file: ".circleci/settings.xml"
       - build-and-push
   earlymorning: # build and deploy main at the crack-o-dawn
     triggers:
@@ -29,10 +32,6 @@ jobs:
   build-and-push:
     machine: true
     steps:
-      - checkout
-      - maven/test:
-          context: kgrid
-          settings_file: ".circleci/settings.xml"
       - run: |
           mvn spring-boot:build-image
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD registry.aws.web.umich.edu
