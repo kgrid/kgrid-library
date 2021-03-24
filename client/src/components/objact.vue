@@ -172,6 +172,8 @@ export default {
   },
   watch: {
     activatorurlselect() {
+      // Need to check with the activator for the shelf endpoint
+
       var self = this
       this.$http.get(this.activatorurlselect + '/kos')
         .then(() => {
@@ -273,9 +275,7 @@ export default {
         }).catch(function (err) {
           self.stage = 'error'
           console.log(err);
-          if (err.message.endsWith("401")) {
-            self.securedactivator = true;
-          }
+          self.securedactivator = err.message.endsWith("401")
           setTimeout(function () {
             self.stage = 'ready'
           }, 5000)

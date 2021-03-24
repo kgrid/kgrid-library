@@ -15,8 +15,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication(scanBasePackages = {"org.kgrid.library","org.kgrid.shelf"})
 public class LibraryApplication implements WebMvcConfigurer {
 
-    public LibraryApplication(@Value("${library.name}") String name) {
+    public LibraryApplication(@Value("${library.name}") String name,@Value("${kgrid.activator.url}") String activatorUrl
+                              ) {
         this.name = name;
+        this.activatorUrl = activatorUrl;
     }
 
     public static void main(String[] args) {
@@ -34,7 +36,14 @@ public class LibraryApplication implements WebMvcConfigurer {
         return new SimpleInfoContributor("library.name", name);
     }
 
+    @Bean
+    SimpleInfoContributor getActivatorUrlContributor()  {
+        return new SimpleInfoContributor("kgrid.activator.url", activatorUrl);
+    }
+    
     private String name;
+
+    private String activatorUrl;
 
     public String getLibraryName() {
         return name;
