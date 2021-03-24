@@ -4,29 +4,10 @@ orbs:
   maven: circleci/maven@1.0.1
   heroku: circleci/heroku@1.0.1
 
-jobs:
-  build-and-push:
-    machine: true
-    steps:
-      - checkout
-      - maven/test:
-          context: kgrid
-          settings_file: ".circleci/settings.xml"
-      - run: |
-          mvn spring-boot:build-image
-          docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD registry.aws.web.umich.edu
-          docker tag kgrid-library registry.aws.web.umich.edu/kgrid-library/library:latest
-          docker push registry.aws.web.umich.edu/kgrid-library/library:latest
-
 workflows:
   commit:
     jobs:
       - build-and-push
-  #    build: # build, test, resolve dependencies, and deploy if branch is main
-  #      jobs:
-  #        - maven/test:
-  #            context: kgrid
-  #            settings_file: ".circleci/settings.xml"
   earlymorning: # build and deploy main at the crack-o-dawn
     triggers:
       - schedule:
@@ -43,3 +24,17 @@ workflows:
           context: kgrid
           requires:
             - maven/test
+
+jobs:
+  build-and-push:
+    machine: true
+    steps:
+      - checkout
+      - maven/test:
+          context: kgrid
+          settings_file: ".circleci/settings.xml"
+      - run: |
+          mvn spring-boot:build-image
+          docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD registry.aws.web.umich.edu
+          docker tag kgrid-library registry.aws.web.umich.edu/kgrid-library/library:latest
+          docker push registry.aws.web.umich.edu/kgrid-library/library:latest
