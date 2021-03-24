@@ -32,6 +32,7 @@ jobs:
   build-and-push:
     machine: true
     steps:
+      - checkout
       - run: |
           mvn spring-boot:build-image
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD registry.aws.web.umich.edu
