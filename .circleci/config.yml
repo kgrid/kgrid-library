@@ -18,6 +18,7 @@ jobs:
     steps:
       - checkout
       - run: |
+          cd application
           mvn spring-boot:build-image
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD registry.aws.web.umich.edu
           docker tag kgrid-library registry.aws.web.umich.edu/kgrid-library/library:latest
