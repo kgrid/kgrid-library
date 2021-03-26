@@ -258,20 +258,28 @@ export default {
           formData,
           {headers: {}}
         ).then(function (resp) {
-          self.$http.get(self.activatorurl + '/activate').then(function (response) {
-            self.stage = 'success'
-            setTimeout(function () {
-              console.log(resp);
-              self.objactivated = true
-              self.stage = 'ready'
-            }, 1500)
-          }).catch(function (error) {
-            self.stage = 'error'
-            console.log(error);
-            setTimeout(function () {
-              self.stage = 'ready'
-            }, 5000)
-          });
+          self.$http.get(self.activatorurl + '/actuator/activation/reload')
+            .then(function (response) {})
+            .catch(function (error) {});
+          setTimeout(function () {
+            self.$http.get(self.activatorurl + '/endpoints').then(function (response) {
+              let activated = false
+              response.data.forEach(function(e, index){
+                activated = activated || (e.knowledgeObject.includes(self.uri)&&(e.status=="ACTIVATED"))
+              })
+              self.stage = activated ? 'success' :'error'
+              setTimeout(function () {
+                self.objactivated = activated
+                self.stage = 'ready'
+              }, 1500)
+            }).catch(function (error) {
+              self.stage = 'error'
+              console.log(error);
+              setTimeout(function () {
+                self.stage = 'ready'
+              }, 5000)
+            });
+          }, 2000)
         }).catch(function (err) {
           self.stage = 'error'
           console.log(err);
