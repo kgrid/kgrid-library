@@ -258,7 +258,7 @@ export default {
           formData,
           {headers: {}}
         ).then(function (resp) {
-          self.$http.get(self.activatorurl + '/actuator/activation/reload')
+          self.$http.get(self.activatorurl + '/actuator/activation/reload/'+self.uri)
             .then(function (response) {})
             .catch(function (error) {});
           setTimeout(function () {
