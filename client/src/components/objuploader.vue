@@ -21,7 +21,7 @@
 			</v-layout>
 			<v-layout row wrap fill-height align-space-around mt-3>
 				<v-flex xs12 sm12 md12 v-if='toggle_one==0'>
-						<FilePond ref='fpond' name='ko' allowMultiple instantUpload=false allowRevert=false />
+						<FilePond ref='fpond' name='ko' allowMultiple instantUpload=false allowRevert=false accepted-file-types="application/zip"/>
 				</v-flex>
 				<v-flex xs12 sm12 md12 v-else>
 						<v-textarea
@@ -137,7 +137,8 @@
 					        if (self.$http.isCancel(thrown)) {
 					            console.log('Request canceled', thrown.message);
 					        } else {
-					            // handle error
+                    self.stage='error'
+                    console.log(thrown)
 					        }
 					    });
 							// Setup abort interface
