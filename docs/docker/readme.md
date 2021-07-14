@@ -1,51 +1,33 @@
+### Docker Image/Container
+## [Pull from DockerHub](https://docs.docker.com/engine/reference/commandline/pull/)
+  ```bash
+  docker pull kgrid/kgrid-library
+  ```
+## [Running the Image](https://docs.docker.com/engine/reference/commandline/run)
 
-## KGrid Docker Container
+- Running in a container mapped to port 8080 (default port for the library)
 
-
-### Build Image
-We are using [Spotify's Dockerfile Maven plug](https://github.com/spotify/dockerfile-maven) for docker image build and push.  
-to create a docker image of the current activator project simply run the dockerfile:build after s build.  
-
-``` 
-mvn clean package
-mvn dockerfile:build -pl application
+```bash
+  docker run -p 8080:8080 --name library kgrid/kgrid-library
 ```
 
-After this run you will have a docker image 
+- [Mapped to a local shelf](https://docs.docker.com/engine/reference/commandline/run/#mount-volume--v---read-only)
+
+```bash
+  docker run -p 8080:8080 -v ${PWD}/shelf:/applications/shelf --name library -d kgrid/kgrid-library 
 ```
-~/kgrid-library $ docker images
-REPOSITORY                  TAG                   IMAGE ID            CREATED             SIZE
-kgrid/library               latest                fbe2de94cfa9        3 minutes ago       149MB
 
+- Example:
+
+```bash
+  docker run -it --rm --network host -p 8080:8080 -v ${PWD}/shelf:/application/shelf --name library kgrid/kgrid-library:latest
 ```
-### Using the Image
-Now using the activator image you can create a container based on the image
+- This example has a few things going on:
+    - `--network host` [Running with a network bridge](https://docs.docker.com/engine/reference/commandline/run/#connect-a-container-to-a-network---network) (if your containerized activator needs to talk to the network, i.e. you're running an external runtime in another container)
+    - `-it --rm` Running interactive and Removing the Container when stopped. can be found in the [options](https://docs.docker.com/engine/reference/commandline/run/#options)
 
-#### Running the Library 
+- Once created, you can stop and start the container using `docker stop library` and `docker start library`.
+#### Good to Know
 
-```docker run -p 8080:8080 --name library kgrid/library```
-
-Mapped to local shelf and running in the background
-
-```docker run -p 8080:8080 -v /mydirectory/shelf:/home/kgrid/shelf --name library -d  kgrid/library ```
-
-#### Stop and Start Actvator
-
-```docker stop library```
-
-```docker start library```
-
-
-### Good to Know
-
-1. View Container Logs  ```docker logs activator```
-1. Access container ```docker exec -it activator sh```
-
-### Push New Image
-
-Activator images are stored on [DockerHub](https://cloud.docker.com/u/kgrid/repository/docker/kgrid/activator) 
-
-```mvn dockerfile:push -Ddockerfile.tag=1.0.4-rc1 -s /Users/me/.m2/my_settings.xml ```
-
-
-
+1. View Container Logs  ```docker logs library```
+1. Access container ```docker exec -it library sh```
