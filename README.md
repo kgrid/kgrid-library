@@ -51,75 +51,35 @@ mvn clean verify
 ```
 
 ### Docker Image/Container
+## [Pull from DockerHub](https://docs.docker.com/engine/reference/commandline/pull/)
+  ```bash
+  docker pull kgrid/kgrid-library
+  ```
+## [Running the Image](https://docs.docker.com/engine/reference/commandline/run)
 
+- Running in a container mapped to port 8080 (default port for the library)
 
-#### Build Image
-We are using [Spotify's Dockerfile Maven plug](https://github.com/spotify/dockerfile-maven) for docker image build and push.  
-to create a docker image of the current activator project simply run the dockerfile:build after s build.  
-
-```
-mvn clean package
-mvn dockerfile:build -pl application
-```
-
-After this run you will have a docker image 
-```
-~/kgrid-library $ docker images
-REPOSITORY                  TAG                   IMAGE ID            CREATED             SIZE
-kgrid/library               latest                fbe2de94cfa9        3 minutes ago       149MB
-
-```
-##### Running the Library 
-
-```
-docker run -p 8080:8080 --name library kgrid/library
+```bash
+  docker run -p 8080:8080 --name library kgrid/kgrid-library
 ```
 
-Mapped to local shelf and running in the background
+- [Mapped to a local shelf](https://docs.docker.com/engine/reference/commandline/run/#mount-volume--v---read-only)
 
-```
-docker run -p 8080:8080 -v /mydirectory/shelf:/home/kgrid/shelf --name library -d  kgrid/library 
-```
-
-##### Stop and Start Actvator
-
-```
-docker stop library
+```bash
+  docker run -p 8080:8080 -v ${PWD}/shelf:/applications/shelf --name library -d kgrid/kgrid-library 
 ```
 
-```
-docker start library
-```
+- Example:
 
-
+```bash
+  docker run -it --rm --network host -p 8080:8080 -v ${PWD}/shelf:/application/shelf --name library kgrid/kgrid-library:latest
+```
+- This example has a few things going on:
+    - `--network host` [Running with a network bridge](https://docs.docker.com/engine/reference/commandline/run/#connect-a-container-to-a-network---network) (if your containerized activator needs to talk to the network, i.e. you're running an external runtime in another container)
+    - `-it --rm` Running interactive and Removing the Container when stopped. can be found in the [options](https://docs.docker.com/engine/reference/commandline/run/#options)
+   
+- Once created, you can stop and start the container using `docker stop library` and `docker start library`.
 #### Good to Know
 
 1. View Container Logs  ```docker logs library```
 1. Access container ```docker exec -it library sh```
-
-### Push New Image
-
-Library images are stored on [DockerHub](https://cloud.docker.com/u/kgrid/repository/docker/kgrid/library) 
-
-``
-`mvn dockerfile:push -Ddockerfile.tag=1.0.4-rc1 -s /Users/me/.m2/my_settings.xml 
-```
-
-
-## Publish Documentation
-
-Running Local Dev Docs Publish
-```
-npm install
-npm run docs:dev
-```
-
-Build dist directory ready for publish
-
-```
-npm run docs:build`
-```
-
-CircleCi publishes the documentation use [VuePress](https://vuepress.vuejs.org/) and 
-the ```.circleci/vuepress_deploy.sh``` script.  The gh-pages branch is used for the publishing process and setup in the
-GitHub repository's GitHub Pages.
