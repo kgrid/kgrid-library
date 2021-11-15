@@ -103,6 +103,7 @@ import login from './components/login';
 import ioviewer from './components/ioviewer';
 import objuploader from './components/objuploader';
 import objact from './components/objact';
+import {normalizeUrl} from "@/urlUtils";
 
 export default {
   name: 'App',
@@ -147,6 +148,7 @@ export default {
       console.log("Env Var - VUE_APP_KGRID_ACTIVATOR_URLS: "+ activatorUrlList);
       let activatorUrls = activatorUrlList ? activatorUrlList.split(";") :
         ["http://localhost:8080", "https://activator-playground.herokuapp.com"];
+      activatorUrls = activatorUrls.map(normalizeUrl)
       let storedUrls = self.$store.getters.getactivatorurls;
       activatorUrls.forEach(url => {
         if (storedUrls.indexOf(url) === -1) {

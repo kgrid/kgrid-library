@@ -59,7 +59,8 @@
           </v-flex>
           <v-flex xs9>
             <v-radio-group v-model='activatorurlselect' :mandatory="false">
-              <v-layout row wrap v-for="(entry,index) in activatorurls" :key='entry' my-1 py-2 align-center fill-height>
+              <v-layout row wrap v-for="(entry,index) in activatorurls" :key='entry' my-1 py-2
+                        align-center fill-height>
                 <v-flex xs10>
                   <v-radio :label="entry" :value="entry"></v-radio>
                 </v-flex>
@@ -84,9 +85,10 @@
       <div id="demo_pane" v-if='objactivated' style=" padding: 100px 0px; margin:30px 0px;">
         <div class='card' style=" padding: 50px 0px;">
           <div class='row'>
-            <h2 style=" padding: 10px 3px;position:relative;text-align:center;"><a :href="swaggereditorurl"
-                                                                                   target="_blank"
-                                                                                   style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span>Go to Swagger Editor to try the KO '{{
+            <h2 style=" padding: 10px 3px;position:relative;text-align:center;"><a
+              :href="swaggereditorurl"
+              target="_blank"
+              style="padding: 3px;position:relative;font-size:1.2em;text-align:center;"><span>Go to Swagger Editor to try the KO '{{
                 uri
               }}'</span></a>
             </h2>
@@ -116,7 +118,7 @@
 </template>
 <script>
 import olpane from '../components/olpane';
-
+import {normalizeUrl} from "@/urlUtils";
 export default {
   name: "objact",
   data: function () {
@@ -130,7 +132,7 @@ export default {
       activatorurlselect: '',
       demourl: '',
       btndisabled: false,
-      shelfurl: '/',
+      shelfurl: '/kos/',
       securedactivator: false
     }
   },
@@ -172,18 +174,7 @@ export default {
   },
   watch: {
     activatorurlselect() {
-      // Need to check with the activator for the shelf endpoint
-
-      var self = this
-      this.$http.get(this.activatorurlselect + '/kos')
-        .then(() => {
-          self.activatorurl = self.activatorurlselect
-          self.shelfurl = '/kos/'
-        })
-        .catch((err) => {
-          self.activatorurl = self.activatorurlselect
-          self.shelfurl = '/'
-        })
+      this.activatorurl = this.activatorurlselect
     }
   },
   computed: {
@@ -237,7 +228,7 @@ export default {
       }
     },
     targeturl: function () {
-      return this.activatorurl + this.shelfurl
+      return normalizeUrl(this.activatorurl) + this.shelfurl
     },
     swaggereditorurl: function () {
       return this.demourl + "?url=" + this.targeturl + this.uri + '/' + this.$store.getters.getCurrentObject.hasServiceSpecification
@@ -258,17 +249,20 @@ export default {
           formData,
           {headers: {}}
         ).then(function (resp) {
-          self.$http.get(self.activatorurl + '/actuator/activation/reload/'+self.uri)
-            .then(function (response) {})
-            .catch(function (error) {})
+          let activatorUrlOrigin = normalizeUrl(self.activatorurl);
+          self.$http.get(activatorUrlOrigin + '/actuator/activation/reload/' + self.uri)
+            .then(function (response) {
+            })
+            .catch(function (error) {
+            })
             .finally(
               function () {
-                self.$http.get(self.activatorurl + '/endpoints').then(function (response) {
+                self.$http.get(activatorUrlOrigin + '/endpoints').then(function (response) {
                   let activated = false
-                  response.data.forEach(function(e, index){
+                  response.data.forEach(function (e, index) {
                     activated = activated || (e.knowledgeObject.includes(self.uri))
                   })
-                  self.stage = activated ? 'success' :'error'
+                  self.stage = activated ? 'success' : 'error'
                   setTimeout(function () {
                     self.objactivated = activated
                     self.stage = 'ready'
@@ -280,7 +274,7 @@ export default {
                     self.stage = 'ready'
                   }, 5000)
                 });
-          })
+              })
         }).catch(function (err) {
           self.stage = 'error'
           console.log(err);
@@ -292,6 +286,7 @@ export default {
       }, 1000)
     },
     addactivatorentry: function () {
+      this.activatorurl = normalizeUrl(this.activatorurl)
       this.activatorurls.push(this.activatorurl)
       this.activatorurlselect = this.activatorurl
       this.$store.commit('setactivatorurls', this.activatorurls)
