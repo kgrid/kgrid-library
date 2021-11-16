@@ -136,7 +136,6 @@ export default {
     };
   },
   created: function () {
-    console.log();
     var self = this
     Promise.all([
       this.$http.get("./static/json/metadataschema.json"),
@@ -144,11 +143,10 @@ export default {
       this.$http.get("/info")
     ]).then(function (responses) {
       console.log(responses[2].data);
-      let activatorUrlList = responses[2].data["kgrid.activator.url"];
-      console.log("Env Var - VUE_APP_KGRID_ACTIVATOR_URLS: "+ activatorUrlList);
-      let activatorUrls = activatorUrlList ? activatorUrlList.split(";") :
-        ["http://localhost:8080", "https://activator-playground.herokuapp.com"];
-      activatorUrls = activatorUrls.map(normalizeUrl)
+      let activatorUrls = responses[2].data["kgrid.activator.url"].split(";");
+      activatorUrls = activatorUrls.map((url) => {
+        return normalizeUrl(url)
+      })
       let storedUrls = self.$store.getters.getactivatorurls;
       activatorUrls.forEach(url => {
         if (storedUrls.indexOf(url) === -1) {

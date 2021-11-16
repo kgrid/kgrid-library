@@ -149,9 +149,7 @@ export default {
           {responseType: 'blob'}
         ).then(response => {
           self.stage = 'ready'
-          console.log("reading zip...")
           self.zipfile = new File([response.data], self.downloadFile, {type: 'application/zip'})
-          console.log(self.zipfile.size)
           setTimeout(function () {
             self.objpackaged = true
           }, 500)
@@ -205,7 +203,6 @@ export default {
       return this.$store.getters.getCurrentKOId
     },
     htmldownloadlink: function () {
-      // var url = this.$store.getters.getbaseurl
       return this.$store.getters.getbaseurl + this.currentKOId.naan + '/' + this.currentKOId.name + '/' + this.currentKOId.version + '?format=zip'
     },
     downloadFile: function () {
